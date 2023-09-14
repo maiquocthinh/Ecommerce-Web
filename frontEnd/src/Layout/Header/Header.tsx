@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = () => {
                 <div className="hidden md:block">
                     <img src="https://cdn.cellphones.com.vn/media/logo/logo-cps-full-2.png" alt="avata" height={30} width={160} />
                 </div>
-                <div className="w-72 flex items-center justify-start">
+                <div className="w-80 flex items-center justify-start">
                     <div className=" bg-white rounded-l-search px-3 border-r-2 cursor-pointer text-black">
                         <FaSearch className="h-10" />
                     </div>

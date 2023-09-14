@@ -9,7 +9,7 @@ interface HeaderItemProps {
 }
 const HeaderItem: React.FC<HeaderItemProps> = ({ data }) => {
     return (
-        <div className="flex items-center cursor-pointer text-white">
+        <div className="flex items-center cursor-pointer text-white hover:invert transition-all duration-200 ease-linear">
             {data.Icon}
             <span className="ml-2 text-sm font-medium">{capitalizeFirstLetter(data.title)}</span>
         </div>
