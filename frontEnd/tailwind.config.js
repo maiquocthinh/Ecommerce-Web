@@ -13,9 +13,13 @@ export default {
       height: {
         header: '65px',
       },
+      inset: {
+        '1/6': '16.6666667%',
+      },
       backgroundColor: {
         primary: '#d70018',
         backgroundRgba:'rgba(0,0,0,.4)',
+        backgroundHover: '#f3f4f6'
       },
       borderRadius:{
         search:'25px',

@@ -37,7 +37,7 @@ const Header: React.FC<HeaderProps> = () => {
     return (
         <div className="w-full h-header bg-primary border-border border-b">
             <div className="md:container md:mx-auto mx-4 sm:mx-8 xl:w-3/4 flex justify-between items-center gap-4 h-full ">
-                <div className="md:hidden cursor-pointer">
+                <div className="md:hidden cursor-pointer text-white">
                     <FaBars className="text-2xl" />
                 </div>
                 <div className="hidden md:block">
