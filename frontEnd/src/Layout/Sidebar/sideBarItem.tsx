@@ -16,7 +16,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({ data, index }) => {
         !showModal ? dispatch(openModal()) : dispatch(closeModal());
     }
     return (
-        <div className="flex justify-between items-center p-2 cursor-pointer" onMouseEnter={handleShowModal}>
+        <div className="flex justify-between items-center p-2 cursor-pointer" onMouseUp={handleShowModal}>
             <div className="flex text-xs font-semibold">
                 {data.icon}
                 <span className="ml-3">{data.title}</span>
