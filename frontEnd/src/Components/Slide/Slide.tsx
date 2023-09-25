@@ -26,7 +26,6 @@ const Slide: React.FC<SlideProps> = ({ data, numberSlide, ItemSlide }) => {
         sliderRef.current?.slickGoTo(index)
     }
     var settings = {
-        dots: true,
         infinite: true,
         speed: 500,
         slidesToShow: numberSlide || 1,
@@ -40,8 +39,8 @@ const Slide: React.FC<SlideProps> = ({ data, numberSlide, ItemSlide }) => {
         },
     };
     return (
-        <div className="h-full ">
-            <Slider {...settings} ref={sliderRef} className="overflow-hidden rounded-b-borderContnet group cursor-pointer">
+        <div className="">
+            <Slider {...settings} ref={sliderRef} className="rounded-b-borderContnet group cursor-pointer">
                 {data?.length > 0 && data.map((item, index) => (
                     <ItemSlide key={index} data={item} />
                 ))}

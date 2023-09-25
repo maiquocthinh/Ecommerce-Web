@@ -7,15 +7,16 @@ interface ProductProps {
         name: string,
         price: number,
         sale: number
-    }
+    },
+    col?: number;
 }
-const Product: React.FC<ProductProps> = ({ data }) => {
+const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
     const [isLike, setIsLike] = useState(false)
     const handleLike = () => {
         setIsLike(!isLike)
     }
     return (
-        <div className="shadow-custom relative font-bold bg-white rounded-borderContnet mx-1 flex flex-col p-2">
+        <div className={`relative font-bold bg-white rounded-borderContnet mx-1 flex flex-col p-2 shadow-custom col-span-${col} cursor-pointer`}>
             <div className="center">
                 <img src={data.src} alt="" width={160} className="mt-3" />
             </div>

@@ -8,7 +8,7 @@ const HeaderProduct: React.FC<HeaderProductProps> = ({ heading, listProduct }) =
             <h1 className="font-bold text-2xl">{heading}</h1>
             <div className="flex gap-2">
                 {listProduct?.length > 0 && listProduct.map((product, index) => (
-                    <button key={index} className="bg-backgroundHover py-1 px-3 rounded-border text-xs">{product}</button>
+                    <button key={index} className="bg-backgroundHover py-1 px-3 rounded-border text-xs lg:block hidden">{product}</button>
                 ))}
             </div>
         </div>

@@ -6,6 +6,7 @@ import { FaCartPlus } from "@react-icons/all-files/fa/FaCartPlus";
 import { FaUser } from "@react-icons/all-files/fa/FaUser";
 import { FaArrowRight } from "@react-icons/all-files/fa/FaArrowRight";
 import HeaderItem from "./headerItem";
+import SearchModal from "../../Components/SearchModal/SearchModal";
 interface HeaderProps {
 
 }
@@ -35,7 +36,7 @@ const Header: React.FC<HeaderProps> = () => {
         // }
     ]
     return (
-        <div className="w-full h-header bg-primary border-border border-b">
+        <div className="w-full h-header bg-primary border-border border-b fixed z-10">
             <div className="md:container md:mx-auto mx-4 sm:mx-8 xl:w-3/4 flex justify-between items-center gap-4 h-full ">
                 <div className="md:hidden cursor-pointer text-white">
                     <FaBars className="text-2xl" />
@@ -60,6 +61,7 @@ const Header: React.FC<HeaderProps> = () => {
                     ))}
                 </div>
             </div>
+            {/* <SearchModal /> */}
         </div>
     );
 }
