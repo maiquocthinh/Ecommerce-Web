@@ -6,7 +6,7 @@ interface ProductProps {
         src: string,
         name: string,
         price: number,
-        sale: number
+        sale?: number
     },
     col?: number;
 }
@@ -24,7 +24,7 @@ const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
                 <span>{data.name}</span>
             </div>
             <div className="flex justify-start gap-4 my-4">
-                <span className="font-bold text-custom-primary">{Math.floor((data.price) * (data.sale))}đ</span>
+                {data.sale && <span className="font-bold text-custom-primary">{Math.floor((data.price) * (data.sale))}đ</span>}
                 <span className="font-bold line-through text-custom-disable">{data.price}đ</span>
             </div>
             <div className="flex items-center justify-end gap-2 font-normal mt-1">
@@ -39,9 +39,13 @@ const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
                     </button>
                 }
             </div>
-            <div className="absolute top-0 -left-1 bg_img ">
-                <span className="text-white text-xs font-semibold mb-2 block w-80 h-full pl-1 py-2">Giảm {data.sale * 100}%</span>
-            </div>
+            {
+                data.sale && (
+                    <div className="absolute top-0 -left-1 bg_img ">
+                        <span className="text-white text-xs font-semibold mb-2 block w-80 h-full pl-1 py-2">Giảm {data.sale * 100}%</span>
+                    </div>
+                )
+            }
         </div>
     );
 }
