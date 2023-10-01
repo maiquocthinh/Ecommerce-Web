@@ -1,4 +1,6 @@
+using Backend.Data;
 using Backend.Middlewares;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
@@ -10,6 +12,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<DBContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"));
+});
 
 builder.Host.UseSerilog((context, loggerConfig) 
     => loggerConfig.ReadFrom.Configuration(context.Configuration));
