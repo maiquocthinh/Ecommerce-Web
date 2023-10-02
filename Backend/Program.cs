@@ -1,8 +1,8 @@
+using Backend.Configurations;
 using Backend.Data;
 using Backend.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +21,8 @@ builder.Services.AddDbContext<DBContext>(option =>
 builder.Host.UseSerilog((context, loggerConfig) 
     => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddJwtConfiguration(builder.Configuration, builder.Environment);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +39,7 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
