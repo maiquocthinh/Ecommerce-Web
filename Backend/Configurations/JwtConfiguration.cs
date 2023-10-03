@@ -1,7 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Backend.Authorization.PolicyProvider;
 using Backend.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Configurations;
@@ -81,7 +83,36 @@ public static class JwtConfiguration
                     context.HttpContext.Items["Jwt"] = context.SecurityToken as JwtSecurityToken;
                     return Task.CompletedTask;
                 },
+                
+                OnMessageReceived = context =>
+                {
+                    var requiresAuthorization = context.HttpContext.GetEndpoint()?.Metadata.GetMetadata<AuthorizeAttribute>() != null;
+                    if (requiresAuthorization)
+                    {
+                        string? token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+                        if (string.IsNullOrEmpty(token) || token?.Split('.').Length != 3)
+                        {
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            context.Response.ContentType = "application/json";
+                            context.HttpContext.Response.WriteAsJsonAsync(new ErrorResponse() { Message = "Unauthorized" });
+                        }
+                    }
+                    return Task.CompletedTask;
+                }
             };
         });
+        
+        services.AddAuthorization(options =>
+        {
+            options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .Build();
+        });
+        
+        // Register our custom Authorization handler
+        services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+
+        // Overrides the DefaultAuthorizationPolicyProvider with our own
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
     }
 }
