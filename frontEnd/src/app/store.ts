@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
-import modalReducer from '../Components/ModalMenu/modalSlice';
+import modalReducer from '../Components/components/ModalMenu/modalSlice';
 import pathSlice from "./pathSlice";
 export const store = configureStore({
   reducer: {

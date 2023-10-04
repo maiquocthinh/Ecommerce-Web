@@ -25,7 +25,7 @@ const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
             </div>
             <div className="flex justify-start gap-4 my-4">
                 {data.sale && <span className="font-bold text-custom-primary">{Math.floor((data.price) * (data.sale))}đ</span>}
-                <span className="font-bold line-through text-custom-disable">{data.price}đ</span>
+                <span className="font-bold" style={{ color: data.sale ? "#707070" : "#d70018", textDecorationLine: data.sale ? "line-through" : "none" }}>{data.price}đ</span>
             </div>
             <div className="flex items-center justify-end gap-2 font-normal mt-1">
                 <span className="text-custom-disable text-xs">Yêu thích</span>
@@ -35,7 +35,7 @@ const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
                     </button>
                     :
                     <button onClick={handleLike} >
-                        <BsHeart className="text-custom-primary" onclick={handleLike} />
+                        <BsHeart className="text-custom-primary" />
                     </button>
                 }
             </div>

@@ -1,8 +1,8 @@
 import { FaFilter } from "@react-icons/all-files/fa/FaFilter";
 import { FaTruckMoving } from "@react-icons/all-files/fa/FaTruckMoving";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
-import ItemIcon from "../OptionItem/ItemIcon";
-import ItemDropDown from "../OptionItem/ItemDropDown";
+import ItemIcon from "../components/OptionItem/ItemIcon";
+import ItemDropDown from "../components/OptionItem/ItemDropDown";
 
 const Filter = () => {
     const select = [

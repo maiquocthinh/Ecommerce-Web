@@ -5,8 +5,9 @@ import { FaUser } from "@react-icons/all-files/fa/FaUser";
 import { FaCar } from "@react-icons/all-files/fa/faCar";
 import { FaPhone } from "@react-icons/all-files/fa/faPhone";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import Navigate from "../../Components/Navigate/Navigate";
+import Navigate from "../../Components/components/Navigate/Navigate";
 import HeaderItem from "./headerItem";
+import { Link } from "react-router-dom";
 interface HeaderProps {
 
 }
@@ -44,7 +45,9 @@ const Header: React.FC<HeaderProps> = () => {
                         <FaBars className="text-2xl" />
                     </div>
                     <div className="hidden md:block">
-                        <img src="https://cdn.cellphones.com.vn/media/logo/logo-cps-full-2.png" alt="avata" height={30} width={160} />
+                        <Link to="/">
+                            <img src="https://cdn.cellphones.com.vn/media/logo/logo-cps-full-2.png" alt="avata" height={30} width={160} />
+                        </Link>
                     </div>
                     <div className="w-80 flex items-center justify-start">
                         <div className=" bg-white rounded-l-search px-3 border-r-2 cursor-pointer text-black">

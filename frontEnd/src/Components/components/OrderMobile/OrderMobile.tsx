@@ -1,4 +1,4 @@
-import GeneralProduct from "../GeneralProduct/GeneralProduct";
+import GeneralProduct from "../../GeneralProduct/GeneralProduct";
 
 interface OrderMobileProps {
 

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux";
 import Slide from "../Components/Slide/Slide";
-import ModalMenu from "../Components/ModalMenu/ModalMenu";
+import ModalMenu from "../Components/components/ModalMenu/ModalMenu";
 import RightBar from "../Layout/RightBar/RightBar";
-import { selectShowModal } from "../Components/ModalMenu/modalSlice";
+import { selectShowModal } from "../Components/components/ModalMenu/modalSlice";
 import HotSale from "../Components/HotSale/HotSale";
 import SlideBar from "../Layout/Sidebar/SideBar";
 import Product from "../Components/Product/Product";
-import Poster from "../Components/Poster/Poster";
+import Poster from "../Components/components/Poster/Poster";
 import HeaderProduct from "../Components/Header/HeaderProduct/HeaderProduct";
 import GeneralProduct from "../Components/GeneralProduct/GeneralProduct";
 import GenerralProductHeader from "../Components/Header/GenerralProductHeader/GenerralProductHeader";

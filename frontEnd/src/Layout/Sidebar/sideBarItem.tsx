@@ -1,7 +1,7 @@
 import { FaChevronRight } from "@react-icons/all-files/fa/FaChevronRight"
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from "react"
-import { selectShowModal, openModal, closeModal } from "../../Components/ModalMenu/modalSlice";
+import { selectShowModal, openModal, closeModal } from "../../Components/components/ModalMenu/modalSlice";
 import { Link } from "react-router-dom";
 interface SideBarItemProps {
     data: {
@@ -17,15 +17,13 @@ const SideBarItem: React.FC<SideBarItemProps> = ({ data }) => {
         !showModal ? dispatch(openModal()) : dispatch(closeModal());
     }
     return (
-        <Link to={`/${data.link}`} className="hover:text-green-500" >
+        <Link to={`/${data.link}`} className="hover:text-custom-primary" >
             <div className="flex justify-between items-center p-2 cursor-pointer" onMouseUp={handleShowModal}>
-                <div className="flex text-xs font-semibold">
-                    {data.icon}
+                <div className="flex text-[14px] font-semibold">
+                    <button className="block">{data.icon}</button>
                     <span className="ml-3">{data.title}</span>
                 </div>
-                <div>
-                    <FaChevronRight className="font-light" />
-                </div>
+                <FaChevronRight />
             </div>
         </Link>
     );

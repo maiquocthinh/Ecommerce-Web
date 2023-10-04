@@ -27,7 +27,7 @@ const Slide: React.FC<SlideProps> = ({ data, numberSlide, ItemSlide }) => {
     }
     var settings = {
         infinite: true,
-        speed: 500,
+        speed: 200,
         slidesToShow: numberSlide || 1,
         slidesToScroll: 1,
         nextArrow: <NextBtn onClick={handleNextClick} />,
@@ -39,8 +39,8 @@ const Slide: React.FC<SlideProps> = ({ data, numberSlide, ItemSlide }) => {
         },
     };
     return (
-        <div className="">
-            <Slider {...settings} ref={sliderRef} className="rounded-b-borderContnet group cursor-pointer">
+        <div>
+            <Slider {...settings} ref={sliderRef} className="group cursor-pointer rounded-borderContnet overflow-hidden">
                 {data?.length > 0 && data.map((item, index) => (
                     <ItemSlide key={index} data={item} />
                 ))}

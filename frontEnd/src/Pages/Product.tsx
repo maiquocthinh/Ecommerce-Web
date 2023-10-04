@@ -4,7 +4,7 @@ import HeaderProduct from "../Components/Header/HeaderProduct/HeaderProduct";
 import OrderMobile from "../Components/components/OrderMobile/OrderMobile";
 import Product from "../Components/Product/Product";
 import Sort from "../Components/components/Sort/Sort";
-const Mobile = () => {
+const ProductPage = () => {
     const branch = [
         {
             src: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/tmp/catalog/product/f/r/frame_59.png"
@@ -195,4 +195,4 @@ const Mobile = () => {
     );
 }
 
-export default Mobile;
+export default ProductPage;

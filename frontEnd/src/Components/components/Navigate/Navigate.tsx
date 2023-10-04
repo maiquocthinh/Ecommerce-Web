@@ -2,9 +2,9 @@ import { BsChevronRight } from "@react-icons/all-files/bs/BsChevronRight";
 import { FcHome } from "@react-icons/all-files/fc/FcHome";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import generatePathArray from "../../utils/Pathname";
+import generatePathArray from "../../../utils/Pathname";
 import { useDispatch } from "react-redux";
-import { setPathArray } from "../../app/pathSlice";
+import { setPathArray } from "../../../app/pathSlice";
 
 interface NavigateProps {
     listNav?: {

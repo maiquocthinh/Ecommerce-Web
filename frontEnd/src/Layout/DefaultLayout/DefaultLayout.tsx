@@ -2,7 +2,7 @@ import { useState } from "react"
 import Header from "../Header/Header";
 import RightBar from "../RightBar/RightBar";
 import SlideBar from "../Sidebar/SideBar";
-import ModalMenu from "../../Components/ModalMenu/ModalMenu";
+import ModalMenu from "../../Components/components/ModalMenu/ModalMenu";
 import Footer from "../Footer/Footer";
 
 interface DefaultLayoutProps {

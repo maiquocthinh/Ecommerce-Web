@@ -1,6 +1,8 @@
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
+import DetailProduct from "../Pages/DetailProduct";
 import Home from "../Pages/Home";
 import Mobile from "../Pages/Mobile";
+import ProductPage from "../Pages/Product";
 
 interface RouteConfig {
     path: string;
@@ -20,13 +22,13 @@ const publishRouter: RouteConfig[] = [
         Layout: DefaultLayout,
     },
     {
-        path: "/mobile/test1",
-        element: Mobile,
+        path: "/:product",
+        element: ProductPage,
         Layout: DefaultLayout,
-    },
+    },    
     {
-        path: "/mobile/test2",
-        element: Mobile,
+        path: "/:product/:detailProduct",
+        element: DetailProduct,
         Layout: DefaultLayout,
     },
 ];
