@@ -6,6 +6,7 @@ export default {
       colors: {
         custom: {
           primary: '#d70018',
+          Colorprimary: '#fd2424',
           bg_button: '#df3346',
           text_color: '#343a40',
           disable:"#707070",

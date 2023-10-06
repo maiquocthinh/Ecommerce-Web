@@ -10,6 +10,7 @@ import GenerralProductHeader from "../Components/Header/GenerralProductHeader/Ge
 import Product from "../Components/Product/Product";
 import Reviews from "../Components/components/Reviews/Reviews";
 import Star from "../Components/components/Star/Start";
+import Comments from "../Components/Comments/Comments";
 const DetailProduct = () => {
     const productImg = [
         {
@@ -139,7 +140,7 @@ const DetailProduct = () => {
         },
     ]
     return (
-        <div className="">
+        <div className="flex flex-col gap-2 mb-8">
             <header className="flex items-center gap-2 pb-2 mb-3 border-b-[2px]">
                 <h1 className="font-bold text-lg">Samsung Galaxy S23 Ultra 256GB</h1>
                 <Star numberStar={5} />
@@ -175,6 +176,7 @@ const DetailProduct = () => {
                 </div>
             </div>
             <Reviews />
+            <Comments />
         </div>
     );
 }

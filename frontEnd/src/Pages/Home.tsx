@@ -192,7 +192,7 @@ const Home: React.FC<HomeProps> = () => {
     ]
     return (
         <div className="flex flex-col gap-3">
-            <div className="relative grid grid-cols-12 gap-4 ">
+            <div className="relative grid grid-cols-12 gap-4">
                 <div className="lg:block col-span-2 hidden" >
                     <SlideBar />
                 </div >

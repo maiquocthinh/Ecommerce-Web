@@ -18,9 +18,9 @@ const HeaderSale = () => {
             <div>
                 <img src="https://cdn2.cellphones.com.vn/x/media/wysiwyg/Gif_hotsale_cu_i_tu_n_1.gif" alt="" className="object-cover max-w-md" />
             </div>
-            <div>
+            {/* <div>
                 <TimeSale />
-            </div>
+            </div> */}
         </div>
     );
 }
