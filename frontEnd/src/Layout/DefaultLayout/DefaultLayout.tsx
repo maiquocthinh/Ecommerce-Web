@@ -10,7 +10,7 @@ interface DefaultLayoutProps {
 }
 const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
     return (
-        <div className="bg-background_Color h-screen">
+        <div className="bg-background_Color min-h-screen">
             <Header />
             <div className="md:container md:mx-auto mx-4 sm:mx-8 xl:w-3/4 pt-[78px]">
                 {children}

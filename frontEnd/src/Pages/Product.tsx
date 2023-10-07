@@ -4,6 +4,7 @@ import HeaderProduct from "../Components/Header/HeaderProduct/HeaderProduct";
 import OrderMobile from "../Components/components/OrderMobile/OrderMobile";
 import Product from "../Components/Product/Product";
 import Sort from "../Components/components/Sort/Sort";
+import Comments from "../Components/Comments/Comments";
 const ProductPage = () => {
     const branch = [
         {
@@ -191,6 +192,7 @@ const ProductPage = () => {
             <div className="flex justify-center items-center mt-4">
                 <button className="shadow-custom py-2 px-12 cursor-pointer rounded-borderContnet text-sm hover:border-custom-primary border-[1px] hover:text-custom-primary">Xem thêm 20 sản phẩm</button>
             </div>
+            <Comments />
         </div>
     );
 }
