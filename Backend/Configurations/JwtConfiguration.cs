@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Backend.Authorization.PolicyProvider;
 using Backend.Data;
@@ -78,12 +77,6 @@ public static class JwtConfiguration
                     return Task.CompletedTask;
                 },
                 
-                OnTokenValidated = context =>
-                {
-                    context.HttpContext.Items["Jwt"] = context.SecurityToken as JwtSecurityToken;
-                    return Task.CompletedTask;
-                },
-                
                 OnMessageReceived = context =>
                 {
                     var requiresAuthorization = context.HttpContext.GetEndpoint()?.Metadata.GetMetadata<AuthorizeAttribute>() != null;
@@ -110,7 +103,7 @@ public static class JwtConfiguration
         });
         
         // Register our custom Authorization handler
-        services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+        services.AddTransient<IAuthorizationHandler, PermissionHandler>();
 
         // Overrides the DefaultAuthorizationPolicyProvider with our own
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();

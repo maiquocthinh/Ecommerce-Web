@@ -42,6 +42,8 @@ public partial class DBContext : DbContext
 
     public virtual DbSet<ProductVersion> ProductVersions { get; set; }
 
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     public virtual DbSet<Review> Reviews { get; set; }
 
     public virtual DbSet<ReviewsReply> ReviewsReplies { get; set; }
@@ -170,13 +172,13 @@ public partial class DBContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('https://i.imgur.com/Th0n214.jpg')")
                 .HasColumnName("avatar");
-            entity.Property(e => e.Birthday)
-                .HasColumnType("date")
-                .HasColumnName("birthday");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.DayOfBirth)
+                .HasColumnType("date")
+                .HasColumnName("day_of_birth");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -250,9 +252,6 @@ public partial class DBContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('https://i.imgur.com/Th0n214.jpg')")
                 .HasColumnName("avatar");
-            entity.Property(e => e.Birthday)
-                .HasColumnType("date")
-                .HasColumnName("birthday");
             entity.Property(e => e.CitizenId)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -261,6 +260,9 @@ public partial class DBContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.DayOfBirth)
+                .HasColumnType("smalldatetime")
+                .HasColumnName("day_of_birth");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -532,6 +534,31 @@ public partial class DBContext : DbContext
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductVersion_Product");
+        });
+
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__refresh___3213E83F531BB194");
+
+            entity.ToTable("refresh_tokens");
+
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("id");
+            entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+            entity.Property(e => e.ExpiresAt)
+                .HasColumnType("datetime")
+                .HasColumnName("expires_at");
+            entity.Property(e => e.Revoked).HasColumnName("revoked");
+            entity.Property(e => e.Token)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("token");
+
+            entity.HasOne(d => d.Employee).WithMany(p => p.RefreshTokens)
+                .HasForeignKey(d => d.EmployeeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RefreshToken_Employee");
         });
 
         modelBuilder.Entity<Review>(entity =>

@@ -13,7 +13,7 @@ public partial class Customer
 
     public bool? Gender { get; set; }
 
-    public DateTime Birthday { get; set; }
+    public DateTime DayOfBirth { get; set; }
 
     public string Email { get; set; } = null!;
 

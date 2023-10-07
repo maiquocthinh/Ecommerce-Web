@@ -13,7 +13,7 @@ public partial class Employee
 
     public bool? Gender { get; set; }
 
-    public DateTime Birthday { get; set; }
+    public DateTime DayOfBirth { get; set; }
 
     public string CitizenId { get; set; } = null!;
 
@@ -38,6 +38,8 @@ public partial class Employee
     public virtual ICollection<Import> Imports { get; set; } = new List<Import>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     public virtual ICollection<ReviewsReply> ReviewsReplies { get; set; } = new List<ReviewsReply>();
 
