@@ -1,0 +1,100 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/v/n/vn_iphone_15_pink_pdp_image_position-1a_pink_color_2.jpg",
+            "name": "Sản phẩm 1",
+            "description": "Mô tả sản phẩm 1",
+            "price": 888888,
+            "sale": 0.1
+        },
+        {
+            "id": 2,
+            "name": "Sản phẩm 2",
+            "description": "Mô tả sản phẩm 2",
+            "price": 5000000,
+            "sale": 0.2,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/d/4/d4a672c5-4709-4056-9f7f-72d6d70c2c1d_1_1.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Sản phẩm 3",
+            "description": "Mô tả sản phẩm 3",
+            "price": 2000000,
+            "sale": 0.2,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-256gb_1_.png"
+        },
+        {
+            "id": 4,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/s/m/sm-s908_galaxys22ultra_front_phantomblack_211119_2.jpg",
+            "name": "Sản phẩm 4",
+            "description": "Mô tả sản phẩm 4",
+            "price": 88888,
+            "sale": 0.1
+        },
+        {
+            "id": 5,
+            "name": "Sản phẩm 5",
+            "description": "Mô tả sản phẩm 5",
+            "price": 5000000,
+            "sale": 0.2,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max-1tb.png"
+        },
+        {
+            "id": 6,
+            "name": "Sản phẩm 6",
+            "description": "Mô tả sản phẩm 6",
+            "price": 2000000,
+            "sale": 0.2,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max-512gb.png"
+        },
+        {
+            "id": 7,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/_/7/_76666_7__3.jpg",
+            "name": "Sản phẩm 7",
+            "description": "Mô tả sản phẩm 7",
+            "price": 100000,
+            "sale": 0.1
+        },
+        {
+            "id": 8,
+            "name": "Sản phẩm 8",
+            "description": "Mô tả sản phẩm 8",
+            "price": 5000000,
+            "sale": 0.2,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_m_18.png"
+        },
+        {
+            "id": 9,
+            "name": "Sản phẩm 9",
+            "description": "Mô tả sản phẩm 9",
+            "price": 2000000,
+            "sale": 0.2,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiami-13t-xanh-01.jpg"
+        },
+        {
+            "id": 10,
+            "name": "Sản phẩm 10",
+            "description": "Mô tả sản phẩm 10",
+            "price": 2000000,
+            "sale": 0.2,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/g/t/gtt_7766_3__1.jpg"
+        },
+        {
+            "id": 11,
+            "name": "Sản phẩm 11",
+            "description": "Mô tả sản phẩm 11",
+            "price": 2000000,
+            "sale": 0.2,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiami-13t-xanh-01.jpg"
+        },
+        {
+            "id": 12,
+            "name": "Sản phẩm 12",
+            "description": "Mô tả sản phẩm 12",
+            "price": 2000000,
+            "sale": 0.2,
+            "src": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/g/t/gtt_7766_3__1.jpg"
+        }
+    ]
+}

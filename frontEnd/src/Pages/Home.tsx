@@ -1,23 +1,29 @@
-import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux";
-import Slide from "../Components/Slide/Slide";
-import ModalMenu from "../Components/components/ModalMenu/ModalMenu";
-import RightBar from "../Layout/RightBar/RightBar";
-import { selectShowModal } from "../Components/components/ModalMenu/modalSlice";
-import HotSale from "../Components/HotSale/HotSale";
-import SlideBar from "../Layout/Sidebar/SideBar";
-import Product from "../Components/Product/Product";
-import Poster from "../Components/components/Poster/Poster";
-import HeaderProduct from "../Components/Header/HeaderProduct/HeaderProduct";
+import { useEffect } from "react"
+import Banner from "../Components/Banner/Banner";
 import GeneralProduct from "../Components/GeneralProduct/GeneralProduct";
 import GenerralProductHeader from "../Components/Header/GenerralProductHeader/GenerralProductHeader";
-import Banner from "../Components/Banner/Banner";
-import Footer from "../Layout/Footer/Footer";
+import HeaderProduct from "../Components/Header/HeaderProduct/HeaderProduct";
+import HotSale from "../Components/HotSale/HotSale";
+import Product from "../Components/Product/Product";
+import Slide from "../Components/Slide/Slide";
+import ModalMenu from "../Components/components/ModalMenu/ModalMenu";
+import { selectShowModal } from "../Components/components/ModalMenu/modalSlice";
+import Poster from "../Components/components/Poster/Poster";
+import RightBar from "../Layout/RightBar/RightBar";
+import SlideBar from "../Layout/Sidebar/SideBar";
+import { getAllProduct } from "../app/action/action";
 interface HomeProps {
 
 }
+
 const Home: React.FC<HomeProps> = () => {
     const showModal = useSelector(selectShowModal);
+    const dispatch = useDispatch<any>();
+    const productdata = useSelector((state: any) => state.allproduct.data)
+    useEffect(() => {
+        dispatch(getAllProduct());
+    }, [dispatch])
     const dataSlide = [
         {
             imgURL: "https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/oppo-month-sliding-0109.png",
@@ -35,79 +41,6 @@ const Home: React.FC<HomeProps> = () => {
             imgURL: "https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/tecno-thang-9-sliding-0097.png",
             title: "hello"
         }
-    ]
-    const dataProduct = [
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/o/google-tivi-coocaa-4k-70-inch-70c9.png",
-            name: "Smart Google Tivi Coocaa 4K 70 inch 70C9",
-            price: 999999,
-            sale: 0.1,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/s/asus-rog-phone-6-diablo.png",
-            name: "ASUS ROG Phone 6 Diablo 16GB 512GB ",
-            price: 888888,
-            sale: 0.2,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/o/google-tivi-coocaa-4k-70-inch-70c9.png",
-            name: "Smart Google Tivi Coocaa 4K 70 inch 70C9",
-            price: 777777,
-            sale: 0.3,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/i/tivi-coocaa-hd-32-inch-32r5_1_.jpg",
-            name: "Tivi Coocaa HD 32 inch 32R5 (model 2023)",
-            price: 666666,
-            sale: 0.4,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/o/google-tivi-coocaa-4k-55-inch-55v8_1_1.jpg",
-            name: "Google Tivi Coocaa 4K 55 inch 55V8",
-            price: 555555,
-            sale: 0.5,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/s/1sdcsc.jpg",
-            name: "realme C33 3GB 32GB",
-            price: 444444,
-            sale: 0.6,
-        }, {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/o/google-tivi-coocaa-4k-70-inch-70c9.png",
-            name: "Smart Google Tivi Coocaa 4K 70 inch 70C9",
-            price: 999999,
-            sale: 0.1,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/s/asus-rog-phone-6-diablo.png",
-            name: "ASUS ROG Phone 6 Diablo 16GB 512GB ",
-            price: 888888,
-            sale: 0.2,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/o/google-tivi-coocaa-4k-70-inch-70c9.png",
-            name: "Smart Google Tivi Coocaa 4K 70 inch 70C9",
-            price: 777777,
-            sale: 0.3,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/i/tivi-coocaa-hd-32-inch-32r5_1_.jpg",
-            name: "Tivi Coocaa HD 32 inch 32R5 (model 2023)",
-            price: 666666,
-            sale: 0.4,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/o/google-tivi-coocaa-4k-55-inch-55v8_1_1.jpg",
-            name: "Google Tivi Coocaa 4K 55 inch 55V8",
-            price: 555555,
-            sale: 0.5,
-        },
-        {
-            src: "https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/s/1sdcsc.jpg",
-            name: "realme C33 3GB 32GB",
-            price: 444444,
-            sale: 0.6,
-        },
     ]
     const listProduct = [
         "Apple",
@@ -212,30 +145,30 @@ const Home: React.FC<HomeProps> = () => {
             </div >
             <div className="bg-backgroundSale rounded-borderContnet p-3">
                 <HotSale />
-                <div className="mt-4">
-                    <Slide data={dataProduct} ItemSlide={Product} numberSlide={5} />
-                </div>
+                {productdata && <div className="mt-4">
+                    <Slide data={productdata} ItemSlide={Product} numberSlide={5} />
+                </div>}
             </div>
             <div >
                 <HeaderProduct listProduct={listProduct} heading="ĐIỆN THOẠI NỔI BẬT NHẤT" />
-                <div className=" grid grid-cols-1 sm:grid-cols-4 md:grid-cols-12 gap-2">
-                    {dataProduct?.length > 0 && dataProduct.map((product, index) => (
+                <div className=" grid grid-cols-1 sm:grid-cols-4 md:grid-cols-10 gap-2">
+                    {productdata?.length > 0 && productdata.map((product: any, index: number) => (
                         <Product data={product} key={index} col={2} />
                     ))}
                 </div>
             </div>
             <div >
                 <HeaderProduct listProduct={listProduct} heading="ĐIỆN THOẠI NỔI BẬT NHẤT" />
-                <div className=" grid grid-clos-1 sm:grid-cols-4 md:grid-cols-12 gap-2 ">
-                    {dataProduct?.length > 0 && dataProduct.map((product, index) => (
+                <div className=" grid grid-clos-1 sm:grid-cols-4 md:grid-cols-10 gap-2 ">
+                    {productdata?.length > 0 && productdata.map((product: any, index: number) => (
                         <Product data={product} key={index} col={2} />
                     ))}
                 </div>
             </div>
             <div>
                 <HeaderProduct listProduct={listProduct} heading="ĐIỆN THOẠI NỔI BẬT NHẤT" />
-                <div className=" grid grid-clos-1 sm:grid-cols-4 md:grid-cols-12 gap-2 ">
-                    {dataProduct?.length > 0 && dataProduct.map((product, index) => (
+                <div className=" grid grid-clos-1 sm:grid-cols-4 md:grid-cols-10 gap-2 ">
+                    {productdata?.length > 0 && productdata.map((product: any, index: number) => (
                         <Product data={product} key={index} col={2} />
                     ))}
                 </div>

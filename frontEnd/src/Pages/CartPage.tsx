@@ -3,9 +3,9 @@ import EmptyCart from "../Components/EmptyCart/EmptyCart";
 
 const CartPage = () => {
     return (
-        <div className="mb-10 min-h-screen">
-            {/* <Cart /> */}
-            <EmptyCart />
+        <div className="">
+            <Cart />
+            {/* <EmptyCart /> */}
         </div>
     );
 }
