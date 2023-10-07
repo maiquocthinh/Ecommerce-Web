@@ -24,7 +24,8 @@ const Header: React.FC<HeaderProps> = () => {
         },
         {
             Icon: <FaCartPlus />,
-            title: "giỏ hàng"
+            title: "giỏ hàng",
+            link: "cart"
         },
     ]
     const auth = [

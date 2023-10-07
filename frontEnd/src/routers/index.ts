@@ -1,5 +1,6 @@
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import HeaderLayout from "../Layout/HeaderLayout/HeaderLayout";
+import Cart from "../Pages/CartPage";
 import DetailProduct from "../Pages/DetailProduct";
 import Home from "../Pages/Home";
 import ProductPage from "../Pages/Product";
@@ -30,6 +31,11 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/profile/:id",
         element: Profile,
+        Layout: HeaderLayout,
+    },
+    {
+        path: "/cart",
+        element: Cart,
         Layout: HeaderLayout,
     },
 ];
