@@ -1,3 +1,5 @@
 {
-    "/api/products*": "/products/$1"
+    "/api/mobile*": "/mobiles/$1",
+    "/api/laptop*": "/laptops/$1",
+    "/api/sale*": "/sales/$1"
 }

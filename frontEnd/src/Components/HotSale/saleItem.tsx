@@ -1,11 +1,12 @@
 interface SaleItemProps {
     title: string;
     active?: boolean;
+    link: string;
     handleActiveSale: (title: string) => void;
 }
-const SaleItem: React.FC<SaleItemProps> = ({ title, active, handleActiveSale }) => {
+const SaleItem: React.FC<SaleItemProps> = ({ title, link, active, handleActiveSale }) => {
     const handleActiveSaleChil = () => {
-        handleActiveSale(title);
+        handleActiveSale(link);
     }
     return (
         <button className={`px-2 py-1 rounded-border font-semibold ${active ? "bg-black text-white" : "bg-white  text-black"}`}

@@ -1,12 +1,19 @@
+import { ProductType } from "../../common/product";
+import Product from "../Product/Product";
+import Slide from "../Slide/Slide";
 import HeaderSale from "./headerSale";
 
 interface HotSaleProps {
-
+    data: ProductType[],
+    handleChangeData: (link: string) => void;
 }
-const HotSale: React.FC<HotSaleProps> = () => {
+const HotSale: React.FC<HotSaleProps> = ({ data, handleChangeData }) => {
     return (
-        <div className="">
-            <HeaderSale />
+        <div >
+            <HeaderSale handleChangeData={handleChangeData} />
+            {data && <div className="mt-4">
+                <Slide data={data} ItemSlide={Product} numberSlide={5} />
+            </div>}
         </div>
     );
 }

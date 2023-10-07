@@ -95,7 +95,7 @@ const Profile = () => {
                     <BoxContent />
                 </div>
                 <div className="bg-backgroundSale rounded-borderContnet p-3 mb-10">
-                    <HotSale />
+                    {/* <HotSale /> */}
                     <div className="mt-4">
                         <Slide data={dataProduct} ItemSlide={Product} numberSlide={5} />
                     </div>

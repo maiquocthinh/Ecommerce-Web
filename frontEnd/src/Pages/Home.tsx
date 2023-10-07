@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Banner from "../Components/Banner/Banner";
 import GeneralProduct from "../Components/GeneralProduct/GeneralProduct";
 import GenerralProductHeader from "../Components/Header/GenerralProductHeader/GenerralProductHeader";
@@ -12,17 +12,23 @@ import { selectShowModal } from "../Components/components/ModalMenu/modalSlice";
 import Poster from "../Components/components/Poster/Poster";
 import RightBar from "../Layout/RightBar/RightBar";
 import SlideBar from "../Layout/Sidebar/SideBar";
-import { getAllProduct } from "../app/action/action";
+import { getAllProduct, getSaleProduct } from "../app/action/action";
+import { ProductType } from "../common/product";
 interface HomeProps {
 
 }
 
 const Home: React.FC<HomeProps> = () => {
     const showModal = useSelector(selectShowModal);
+    const [changedDataSale, setChangedDataSale] = useState("mobile")
     const dispatch = useDispatch<any>();
-    const productdata = useSelector((state: any) => state.allproduct.data)
+    const productdata = useSelector((state: any) => state.allproduct.data as ProductType[])
+    const saleProductMobile = useSelector((sate: any) => sate.saleProduct.data.mobile as ProductType[])
+    const saleProductTablet = useSelector((sate: any) => sate.saleProduct.data.tablet as ProductType[])
+    const saleProductAccessories = useSelector((sate: any) => sate.saleProduct.data.accessories as ProductType[])
     useEffect(() => {
         dispatch(getAllProduct());
+        dispatch(getSaleProduct());
     }, [dispatch])
     const dataSlide = [
         {
@@ -123,6 +129,9 @@ const Home: React.FC<HomeProps> = () => {
             src: "https://cdn2.cellphones.com.vn/690x300,webp,q100/https://dashboard.cellphones.com.vn/storage/xiaomi.png"
         }
     ]
+    const handleChangeDatasale = (link: string) => {
+        setChangedDataSale(link);
+    }
     return (
         <div className="flex flex-col gap-3">
             <div className="relative grid grid-cols-12 gap-4">
@@ -144,10 +153,9 @@ const Home: React.FC<HomeProps> = () => {
                 }
             </div >
             <div className="bg-backgroundSale rounded-borderContnet p-3">
-                <HotSale />
-                {productdata && <div className="mt-4">
-                    <Slide data={productdata} ItemSlide={Product} numberSlide={5} />
-                </div>}
+                {saleProductTablet &&
+                    <HotSale data={changedDataSale === "mobile" ? saleProductMobile : changedDataSale === "tablet" ? saleProductTablet : saleProductAccessories} handleChangeData={handleChangeDatasale} />
+                }
             </div>
             <div >
                 <HeaderProduct listProduct={listProduct} heading="ĐIỆN THOẠI NỔI BẬT NHẤT" />

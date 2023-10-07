@@ -1,18 +1,34 @@
 import { useState } from "react";
 import SaleItem from "./saleItem";
 import TimeSale from "./timeSale";
-
-const HeaderSale = () => {
-    const data = ["Điện thoại,TV", "Laptop,Phụ kiện IT", "Phụ kiện"]
-    const [content, setContent] = useState(data[0])
-    const handleActiveSale = (title: string) => {
-        setContent(title)
+interface HeaderSaleProps {
+    handleChangeData: (link: string) => void;
+}
+const HeaderSale: React.FC<HeaderSaleProps> = ({ handleChangeData }) => {
+    const data = [
+        {
+            title: "Điện thoại,TV",
+            link: "mobile"
+        },
+        {
+            title: "Laptop,Phụ kiện IT",
+            link: "tablet"
+        },
+        {
+            title: "Phụ kiện",
+            link: "accessories"
+        }
+    ]
+    const [content, setContent] = useState(data[0].link)
+    const handleActiveSale = (link: string) => {
+        setContent(link)
+        handleChangeData(link);
     }
     return (
         <div className="flex justify-between text-center items-center">
             <div className="flex gap-3">
-                {data?.length > 0 && data.map((title, index) => (
-                    title === content ? <SaleItem key={index} title={title} handleActiveSale={handleActiveSale} active /> : <SaleItem key={index} title={title} handleActiveSale={handleActiveSale} />
+                {data?.length > 0 && data.map((item, index) => (
+                    item.link === content ? <SaleItem key={index} link={item.link} title={item.title} handleActiveSale={handleActiveSale} active /> : <SaleItem key={index} title={item.title} link={item.link} handleActiveSale={handleActiveSale} />
                 ))}
             </div>
             <div>

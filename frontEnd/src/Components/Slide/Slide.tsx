@@ -33,7 +33,7 @@ const Slide: React.FC<SlideProps> = ({ data, numberSlide, ItemSlide }) => {
         nextArrow: <NextBtn onClick={handleNextClick} />,
         prevArrow: <PreBtn onClick={handlePrevClick} />,
         autoplay: true,
-        autoplaySpeed: 5000,
+        autoplaySpeed: 2000,
         afterChange: (index: number) => {
             setCurrentSlide(index);
         },

@@ -1,8 +1,13 @@
 import axios from "../utils/instance";
-const handleGetAllProduct = (limit:number) => {
+const handleGetAllProduct = (limit?:number,product?:string) => {
     if(!limit) limit =10;
-    return axios.get(`/api/products?_limit=${limit}`);
+    if(!product) product ="mobile";
+    return axios.get(`/api/${product}?_limit=${limit}`);
+};
+const handleGetSaleProduct = () => {
+    return axios.get(`/api/sale`);
 };
 export {
-    handleGetAllProduct
+    handleGetAllProduct,
+    handleGetSaleProduct
 }
