@@ -2,7 +2,7 @@ using Backend.Common.Pagging;
 using Backend.Data;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Configurations;
+namespace Backend.Controllers;
 
 public class BaseController: ControllerBase
 {

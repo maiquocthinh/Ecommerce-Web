@@ -1,4 +1,4 @@
-using Backend.Configurations;
+using Backend.Extensions;
 using Backend.Data;
 using Backend.Infrastructure.Jwt;
 using Backend.Middlewares;
@@ -11,6 +11,9 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Serilog
+builder.Host.AddCustomSerilog();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -18,22 +21,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add Db Context
+// Service configs
+builder.Services.AddCors();
 builder.Services.AddDbContext<DBContext>(option =>
 {
     option
         .UseLazyLoadingProxies()
         .UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"));
 });
-
-// Use Serilog
-builder.Host.UseSerilog((context, loggerConfig) 
-    => loggerConfig.ReadFrom.Configuration(context.Configuration));
-
-// Add Jwt Config
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddJwtConfiguration(builder.Configuration, builder.Environment);
+builder.Services.AddResponseCaching();
 
-// Dependency Injection Config
 builder.Services.AddScoped<JwtUtil>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -53,6 +52,10 @@ app.UseSerilogRequestLogging();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseResponseCaching();
+
+app.UseCustomCors(builder.Configuration);
 
 app.UseAuthentication();
 app.UseAuthorization();

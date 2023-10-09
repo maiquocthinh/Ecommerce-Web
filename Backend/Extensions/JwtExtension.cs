@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Backend.Configurations;
+namespace Backend.Extensions;
 
-public static class JwtConfiguration
+public static class JwtExtension
 {
-    public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration,
+    public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration,
         IHostEnvironment environment)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -107,5 +107,7 @@ public static class JwtConfiguration
 
         // Overrides the DefaultAuthorizationPolicyProvider with our own
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+        
+        return services;
     }
 }
