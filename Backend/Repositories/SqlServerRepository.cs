@@ -14,12 +14,12 @@ public abstract class SqlServerRepository<T>: IRepository<T> where T : class
     protected SqlServerRepository(DBContext context)
     {
         _context = context;
-        _dbSet = _context.Set<T>(typeof(T).Name);
+        _dbSet = _context.Set<T>();
     }
 
     public virtual async Task<T> Add(T obj)
     {
-        _dbSet.Add(obj);
+        _dbSet.Attach(obj);
         await _context.SaveChangesAsync();
         return obj;
     }

@@ -5,31 +5,31 @@ namespace Backend.Models;
 
 public partial class Customer
 {
-    public long Id { get; set; }
+    public long? Id { get; set; } = null;
 
     public string FirstName { get; set; } = null!;
 
     public string LastName { get; set; } = null!;
 
-    public bool? Gender { get; set; }
+    public bool? Gender { get; set; } = null;
 
-    public DateTime DayOfBirth { get; set; }
+    public DateTime? DayOfBirth { get; set; } = null;
 
-    public string Email { get; set; } = null!;
+    public string? Email { get; set; }
 
-    public string PhoneNumber { get; set; } = null!;
+    public string? PhoneNumber { get; set; }
 
-    public string HashedPassword { get; set; } = null!;
+    public string? HashedPassword { get; set; }
 
-    public string? Avatar { get; set; }
+    public string? Avatar { get; set; } = string.Empty;
 
-    public long AddressId { get; set; }
+    public long? AddressId { get; set; }
 
-    public DateTime UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
-    public virtual Address Address { get; set; } = null!;
+    public virtual Address? Address { get; set; }
 
     public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 

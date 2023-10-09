@@ -34,8 +34,9 @@ builder.Services.AddJwtConfiguration(builder.Configuration, builder.Environment)
 builder.Services.AddResponseCaching();
 
 builder.Services.AddScoped<JwtUtil>();
-builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 var app = builder.Build();
 
