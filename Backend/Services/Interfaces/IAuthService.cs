@@ -8,4 +8,5 @@ public interface IAuthService
     Task<AccessTokenDto> RefreshAccessToken(RefreshAccessTokenDto refreshAccessTokenDto);
     Task<Customer> RegisterNewCustomer(CustomerRegisterDto customerRegisterDto);
     Task<AccessTokenDto> CustomerLogin(CustomerLoginDto customerLoginDto);
+    Task CustomerChangePassword(string? email, CustomerChangePasswordDto customerChangePasswordDto);
 }

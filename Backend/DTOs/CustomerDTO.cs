@@ -35,3 +35,16 @@ public class CustomerLoginDto
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; }
 }
+
+public class CustomerChangePasswordDto
+{
+    [Required(ErrorMessage = "Old Password is required")]
+    public string OldPassword { get; set; }
+    
+    [Required(ErrorMessage = "New Password is required")]
+    [MinLength(8, ErrorMessage = "New Password must be at least 8 characters")]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).*$",
+        ErrorMessage =
+            "New Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.")]
+    public string NewPassword { get; set; }
+}

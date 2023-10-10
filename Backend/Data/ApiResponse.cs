@@ -1,9 +1,13 @@
 namespace Backend.Data;
 
-public class SuccessResponse<T>
+public class SuccessResponseWithoutData
 {
     public bool Success { get; set; } = true;
     public string Message { get; set; } = string.Empty;
+}
+
+public class SuccessResponse<T>: SuccessResponseWithoutData
+{
     public T? Data { get; set; }
 }
 

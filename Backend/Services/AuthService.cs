@@ -99,4 +99,20 @@ public class AuthService : IAuthService
         }, _customerAccessTokenExpired);
         return new AccessTokenDto() { AccessToken = accessToken };
     }
+
+    public async Task CustomerChangePassword(string? email, CustomerChangePasswordDto customerChangePasswordDto)
+    {
+        // validate email & customer
+        if (email is null) throw new UnauthorizedException("Please login to do this action.");
+        var customer = await _customerRepository.GetByEmail(email);
+        if (customer is null) throw new UnauthorizedException("Please login to do this action.");
+
+        // compare old password
+        if (!BCrypt.Net.BCrypt.Verify(customerChangePasswordDto.OldPassword, customer.HashedPassword))
+            throw new BadRequestException("Old password not match.");
+        
+        // update new password
+        customer.HashedPassword = BCrypt.Net.BCrypt.HashPassword(customerChangePasswordDto.NewPassword);
+        await _customerRepository.Update((long)customer.Id, customer);
+    }
 }

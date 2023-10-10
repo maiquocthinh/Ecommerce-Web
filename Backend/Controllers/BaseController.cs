@@ -20,6 +20,15 @@ public class BaseController: ControllerBase
         };
     }
     
+    protected SuccessResponseWithoutData RenderSuccessResponseWithoutData(bool success = true, string message = null )
+    {
+        return new SuccessResponseWithoutData()
+        {
+            Success = success,
+            Message = message,
+        };
+    }
+    
     protected ErrorResponse RenderErrorResponse<T>(bool success = true, string message = null ) where T : class
     {
         return new ErrorResponse()

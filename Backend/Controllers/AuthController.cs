@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Backend.Data;
 using Backend.DTOs;
 using Backend.Models;
@@ -40,5 +41,14 @@ public class AuthController : BaseController
     {
         var token = await _authService.CustomerLogin(customerLoginDto);
         return Ok(RenderSuccessResponse(message: "Login success.", data: token));
+    }
+
+    [HttpPost("customer/change-password")]
+    public async Task<ActionResult<SuccessResponseWithoutData>> CustomerChangePassword(
+        [FromBody] CustomerChangePasswordDto customerChangePasswordDto)
+    {
+        var email = HttpContext.User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.Email)?.Value;
+        await _authService.CustomerChangePassword(email, customerChangePasswordDto);
+        return Ok(RenderSuccessResponseWithoutData(message: "Change password success."));
     }
 }
