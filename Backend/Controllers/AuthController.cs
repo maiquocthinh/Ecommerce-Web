@@ -1,5 +1,6 @@
 using Backend.Data;
 using Backend.DTOs;
+using Backend.Models;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,23 +21,13 @@ public class AuthController : BaseController
     public async Task<ActionResult<SuccessResponse<string>>> RefreshAccessToken(
         [FromBody] RefreshAccessTokenDto refreshAccessTokenDto)
     {
-        try
-        {
-            var accessToken = await _authService.RefreshAccessToken(refreshAccessTokenDto);
-            return Ok(
-                RenderSuccessResponse<AccessTokenDto>(message: "Refresh Access Token Success.", data: accessToken));
-        }
-        catch (Exception e)
-        {
-            return StatusCode(StatusCodes.Status401Unauthorized, new ErrorResponse()
-            {
-                Message = e.Message
-            });
-        }
+        var accessToken = await _authService.RefreshAccessToken(refreshAccessTokenDto);
+        return Ok(
+            RenderSuccessResponse(message: "Refresh Access Token Success.", data: accessToken));
     }
 
     [HttpPost("customer/register")]
-    public async Task<ActionResult<SuccessResponse<string>>> CustomerRegister(
+    public async Task<ActionResult<SuccessResponse<Customer>>> CustomerRegister(
         [FromBody] CustomerRegisterDto customerRegisterDto)
     {
         var newCustomer = await _authService.RegisterNewCustomer(customerRegisterDto);

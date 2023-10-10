@@ -1,3 +1,4 @@
+using Backend.Common.Exceptions;
 using Backend.Data;
 
 namespace Backend.Middlewares;
@@ -20,31 +21,39 @@ public class ErrorHandlingMiddleware
             await _next(context);
 
             if (context.Response.StatusCode == StatusCodes.Status404NotFound)
-            {
-                context.Response.ContentType = "application/json";
-                await context.Response.WriteAsJsonAsync(new ErrorResponse() { Message = "Not Found Resource." });
-            }
+                throw new NotFoundException("Not Found Resource.");
         }
-        catch (Exception ex)
+        catch (CustomHttpException e)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)e.StatusCode;
+            if (_env.IsDevelopment())
+                await context.Response.WriteAsJsonAsync(new ServerDevErrorResponse()
+                {
+                    Message = e.Message,
+                    StackTrace = e.StackTrace
+                });
+            else
+                await context.Response.WriteAsJsonAsync(new ErrorResponse()
+                {
+                    Message = e.Message,
+                });
+        }
+        catch (Exception e)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            
             if (_env.IsDevelopment())
-            {
                 await context.Response.WriteAsJsonAsync(new ServerDevErrorResponse()
                 {
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
+                    Message = e.Message,
+                    StackTrace = e.StackTrace
                 });
-            }
             else
-            {
                 await context.Response.WriteAsJsonAsync(new ErrorResponse()
                 {
                     Message = "Something went wrong",
                 });
-            }
         }
     }
 }

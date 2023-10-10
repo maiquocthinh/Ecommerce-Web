@@ -15,7 +15,7 @@ public class CustomerRegisterDto
     public string Email { get; set; }
 
     [Required(ErrorMessage = "PhoneNumber is required")]
-    [RegularExpression(@"^\d{10}$", ErrorMessage = "Invalid phone number format")]
+    [RegularExpression(@"^\d{1,}$", ErrorMessage = "Invalid phone number format")]
     public string PhoneNumber { get; set; }
 
     [Required(ErrorMessage = "Password is required")]

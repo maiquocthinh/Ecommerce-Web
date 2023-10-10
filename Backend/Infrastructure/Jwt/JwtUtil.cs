@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Backend.Common.Exceptions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Infrastructure.Jwt;
@@ -60,8 +61,8 @@ public class JwtUtil
         catch (Exception e)
         {
             throw e is SecurityTokenExpiredException
-                ? new Exception("Refresh Token Expired")
-                : new Exception("Refresh Token Invalid");
+                ? new UnauthorizedException("Refresh Token Expired")
+                : new UnauthorizedException("Refresh Token Invalid");
         }
     }
     

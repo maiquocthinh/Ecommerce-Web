@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using System.Security.Claims;
-using AutoMapper;
+using Backend.Common.Exceptions;
 using Backend.DTOs;
 using Backend.Infrastructure.Jwt;
 using Backend.Models;
@@ -33,14 +33,14 @@ public class AuthService : IAuthService
         var claims = _jwtUtil.ValidateToken(refreshAccessTokenDto.RefreshToken);
         // find and compare with refresh token in db
         string? refreshTokenId = claims?.Find(c => c.Type == AppClaimTypes.RefreshTokenId)?.Value;
-        if (refreshTokenId is null) throw new Exception("Refresh Token Invalid");
+        if (refreshTokenId is null) throw new UnauthorizedException("Refresh Token Invalid");
         var refreshToken = await _refreshTokenRepository.GetById(new Guid(refreshTokenId));
         if (refreshToken?.Token != refreshAccessTokenDto.RefreshToken && refreshToken?.ExpiresAt > DateTime.Now)
-            throw new Exception("Refresh Token Invalid");
+            throw new UnauthorizedException("Refresh Token Invalid");
 
         // get info need to create new token
         var employee = refreshToken?.Employee;
-        if (employee is null) throw new Exception("Cannot Refresh Access Token");
+        if (employee is null) throw new ForbiddenException("Cannot Refresh Access Token");
 
         // generate access token
         var accessToken = _jwtUtil.GenerateToken(new Claim[]
@@ -67,9 +67,9 @@ public class AuthService : IAuthService
         if (customerExits != null)
         {
             if (customerExits.Email == customerRegisterDto.Email)
-                throw new Exception("This email already used, please use another email.");
+                throw new ConflictException("This email already used, please use another email.");
             if (customerExits.PhoneNumber == customerRegisterDto.PhoneNumber)
-                throw new Exception("This phone number already used, please use another phone number.");
+                throw new ConflictException("This phone number already used, please use another phone number.");
         }
 
         // create new customer
@@ -87,9 +87,9 @@ public class AuthService : IAuthService
     {
         // check customer
         var customer = await _customerRepository.GetByEmail(customerLoginDto.Email);
-        if (customer is null) throw new Exception("Email or Password wrong!");
+        if (customer is null) throw new UnauthorizedException("Email or Password wrong!");
         if (!BCrypt.Net.BCrypt.Verify(customerLoginDto.Password, customer.HashedPassword))
-            throw new Exception("Email or Password wrong!");
+            throw new UnauthorizedException("Email or Password wrong!");
         // generate access token
         var accessToken = _jwtUtil.GenerateToken(new Claim[]
         {
