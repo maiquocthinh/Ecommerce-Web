@@ -1,7 +1,9 @@
 using Backend.Extensions;
 using Backend.Data;
+using Backend.Infrastructure.BackgroundJobs.Email;
 using Backend.Infrastructure.Email;
 using Backend.Infrastructure.Jwt;
+using Backend.Infrastructure.RabbitMQ;
 using Backend.Middlewares;
 using Backend.Repositories;
 using Backend.Respositories.Interfaces;
@@ -39,6 +41,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
+builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
+builder.Services.AddHostedService<EmailWorker>();
 
 var app = builder.Build();
 
