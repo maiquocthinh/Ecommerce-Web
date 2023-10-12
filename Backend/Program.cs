@@ -1,5 +1,6 @@
 using Backend.Extensions;
 using Backend.Data;
+using Backend.Infrastructure.Email;
 using Backend.Infrastructure.Jwt;
 using Backend.Middlewares;
 using Backend.Repositories;
@@ -37,6 +38,7 @@ builder.Services.AddScoped<JwtUtil>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
 
 var app = builder.Build();
 
