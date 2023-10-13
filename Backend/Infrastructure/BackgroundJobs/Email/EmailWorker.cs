@@ -18,7 +18,7 @@ public class EmailWorker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _rabbitMqService.StartConsuming("email_queue", async message =>
+        _rabbitMqService.StartConsuming(queueName: QueueNames.EmailQueue, messageHandler: async message =>
         {
             var emailMessage = JsonConvert.DeserializeObject<EmailMessage>(message);
             if (emailMessage != null) await _emailService.SendEmailAsync(emailMessage);

@@ -48,3 +48,20 @@ public class CustomerChangePasswordDto
             "New Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.")]
     public string NewPassword { get; set; }
 }
+
+public class CustomerRequestResetPasswordDto
+{
+    [Required(ErrorMessage = "Email is required")]
+    [EmailAddress(ErrorMessage = "Invalid email format")]
+    public string Email { get; set; }
+}
+
+public class CustomerResetPasswordDto
+{
+    [Required(ErrorMessage = "New Password is required")]
+    [MinLength(8, ErrorMessage = "New Password must be at least 8 characters")]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).*$",
+        ErrorMessage =
+            "New Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.")]
+    public string Password { get; set; }
+}

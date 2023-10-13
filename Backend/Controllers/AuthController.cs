@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using Backend.Authorization;
+using Backend.Authorization.PolicyProvider;
 using Backend.Data;
 using Backend.DTOs;
 using Backend.Models;
@@ -50,5 +52,25 @@ public class AuthController : BaseController
         var email = HttpContext.User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.Email)?.Value;
         await _authService.CustomerChangePassword(email, customerChangePasswordDto);
         return Ok(RenderSuccessResponseWithoutData(message: "Change password success."));
+    }
+    
+    [HttpPost("customer/request-reset-password")]
+    public async Task<ActionResult<SuccessResponseWithoutData>> CustomerRequestResetPassword(
+        [FromBody] CustomerRequestResetPasswordDto customerChangePasswordDto)
+    {
+        await _authService.CustomerSendEmailReset(customerChangePasswordDto.Email);
+        
+        return Ok(RenderSuccessResponseWithoutData(message: "Please check your email to reset password."));
+    }
+    
+    [PermissionAuthorize(Permissions.ResetPassword)]
+    [HttpPost("customer/reset-password")]
+    public async Task<ActionResult<SuccessResponseWithoutData>> CustomerResetPassword(
+        [FromBody] CustomerResetPasswordDto customerResetPasswordDto)
+    {
+        var email = HttpContext.User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.Email)?.Value;
+        await _authService.CustomerResetPassword(email, customerResetPasswordDto);
+        
+        return Ok(RenderSuccessResponseWithoutData(message: "Reset password success!."));
     }
 }
