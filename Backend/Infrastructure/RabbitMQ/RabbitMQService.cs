@@ -13,7 +13,7 @@ public class RabbitMQService: IRabbitMQService
     {
         var factory = new ConnectionFactory
         {
-            Uri = new Uri(configuration.GetValue<string>("RabbitMQUri") ?? string.Empty)
+            Uri = new Uri(configuration.GetConnectionString("RabbitMQ") ?? string.Empty)
         };
 
         _connection = factory.CreateConnection();

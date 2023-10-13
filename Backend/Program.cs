@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Backend.Extensions;
 using Backend.Data;
 using Backend.Infrastructure.BackgroundJobs.Email;
@@ -35,6 +36,7 @@ builder.Services.AddDbContext<DBContext>(option =>
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddJwtConfiguration(builder.Configuration, builder.Environment);
 builder.Services.AddResponseCaching();
+builder.Services.AddIpRateLimit();
 
 builder.Services.AddScoped<JwtUtil>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -59,6 +61,8 @@ app.UseSerilogRequestLogging();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseIpRateLimiting();
 
 app.UseResponseCaching();
 
