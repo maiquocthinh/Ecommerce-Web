@@ -5,7 +5,8 @@ namespace Backend.Services.Interfaces;
 
 public interface IAuthService
 {
-    Task<AccessTokenDto> RefreshAccessToken(RefreshAccessTokenDto refreshAccessTokenDto);
+    Task<RefreshTokenAndAccessTokenDto> EmployeeLogin(EmployeeLoginDto employeeLoginDto);
+    Task<AccessTokenDto> EmployeeRefreshAccessToken(RefreshTokenInputDto refreshTokenInputDto);
     Task<Customer> RegisterNewCustomer(CustomerRegisterDto customerRegisterDto);
     Task<AccessTokenDto> CustomerLogin(CustomerLoginDto customerLoginDto);
     Task CustomerChangePassword(string? email, CustomerChangePasswordDto customerChangePasswordDto);

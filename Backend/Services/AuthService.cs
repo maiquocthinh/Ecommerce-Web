@@ -8,7 +8,7 @@ using Backend.Infrastructure.Email.Templates;
 using Backend.Infrastructure.Jwt;
 using Backend.Infrastructure.RabbitMQ;
 using Backend.Models;
-using Backend.Respositories.Interfaces;
+using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
 using Newtonsoft.Json;
 
@@ -18,37 +18,78 @@ public class AuthService : IAuthService
 {
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly ICustomerRepository _customerRepository;
+    private readonly IEmployeeRepository _employeeRepository;
     private readonly JwtUtil _jwtUtil;
     private readonly IRabbitMQService _rabbitMqService;
     private readonly string _frontendBaseUrl;
     private readonly string _employeeAccessTokenExpired;
+    private readonly string _employeeRefreshTokenExpired;
     private readonly string _customerAccessTokenExpired;
     private readonly string _customerResetPasswordTokenExpired;
 
     public AuthService(IConfiguration configuration, JwtUtil jwtUtil, IRabbitMQService rabbitMqService,
         IRefreshTokenRepository refreshTokenRepository,
-        ICustomerRepository customerRepository)
+        ICustomerRepository customerRepository, IEmployeeRepository employeeRepository)
     {
         _jwtUtil = jwtUtil;
         _rabbitMqService = rabbitMqService;
         _frontendBaseUrl = configuration.GetValue<string>("Frontend:BaseUrl") ?? string.Empty;
         _employeeAccessTokenExpired = configuration.GetValue<string>("Jwt:EmployeeAccessTokenExpired") ?? string.Empty;
+        _employeeRefreshTokenExpired =
+            configuration.GetValue<string>("Jwt:EmployeeRefreshTokenExpired") ?? string.Empty;
         _customerAccessTokenExpired = configuration.GetValue<string>("Jwt:CustomerAccessTokenExpired") ?? string.Empty;
         _customerResetPasswordTokenExpired =
             configuration.GetValue<string>("Jwt:CustomerResetPasswordTokenExpired") ?? string.Empty;
         _refreshTokenRepository = refreshTokenRepository;
         _customerRepository = customerRepository;
+        _employeeRepository = employeeRepository;
     }
 
-    public async Task<AccessTokenDto> RefreshAccessToken(RefreshAccessTokenDto refreshAccessTokenDto)
+    public async Task<RefreshTokenAndAccessTokenDto> EmployeeLogin(EmployeeLoginDto employeeLoginDto)
+    {
+        // check employee
+        var employee = await _employeeRepository.GetByEmail(employeeLoginDto.Email);
+        if (employee is null) throw new UnauthorizedException("Email or Password wrong!");
+        if (!BCrypt.Net.BCrypt.Verify(employeeLoginDto.Password, employee.HashedPassword))
+            throw new UnauthorizedException("Email or Password wrong!");
+
+        // generate refresh token
+        var rt = await _refreshTokenRepository.GetByEmployeeId(employee!.Id) ??
+                 await _refreshTokenRepository.Add(new RefreshToken { EmployeeId = employee.Id });
+
+        var refreshToken = _jwtUtil.GenerateToken(new Claim[]
+            {
+                new Claim(AppClaimTypes.RefreshTokenId, rt.Id.ToString() ?? string.Empty),
+            }
+            , _employeeRefreshTokenExpired);
+
+        rt.Token = refreshToken;
+        await _refreshTokenRepository.Update(rt);
+
+        // generate access token
+        var accessToken = _jwtUtil.GenerateToken(new Claim[]
+            {
+                new Claim(ClaimTypes.Email, employee.Email),
+                new Claim(ClaimTypes.GivenName, employee.FirstName),
+                new Claim(ClaimTypes.Surname, employee.LastName),
+                new Claim(AppClaimTypes.Avatar, employee.Avatar),
+            }.Concat(
+                employee?.Role?.PermissionList?.Select(permission
+                    => new Claim(AppClaimTypes.Permissions, permission)) ?? Array.Empty<Claim>())
+            .ToImmutableArray(), _customerAccessTokenExpired);
+
+        return new RefreshTokenAndAccessTokenDto { AccessToken = accessToken, RefreshToken = refreshToken };
+    }
+
+    public async Task<AccessTokenDto> EmployeeRefreshAccessToken(RefreshTokenInputDto refreshTokenInputDto)
     {
         // jwt decode
-        var claims = _jwtUtil.ValidateToken(refreshAccessTokenDto.RefreshToken);
+        var claims = _jwtUtil.ValidateToken(refreshTokenInputDto.RefreshToken);
         // find and compare with refresh token in db
         string? refreshTokenId = claims?.Find(c => c.Type == AppClaimTypes.RefreshTokenId)?.Value;
         if (refreshTokenId is null) throw new UnauthorizedException("Refresh Token Invalid");
         var refreshToken = await _refreshTokenRepository.GetById(new Guid(refreshTokenId));
-        if (refreshToken?.Token != refreshAccessTokenDto.RefreshToken && refreshToken?.ExpiresAt > DateTime.Now)
+        if (refreshToken?.Token != refreshTokenInputDto.RefreshToken && refreshToken?.ExpiresAt > DateTime.Now)
             throw new UnauthorizedException("Refresh Token Invalid");
 
         // get info need to create new token
@@ -61,6 +102,7 @@ public class AuthService : IAuthService
                     new Claim(ClaimTypes.Email, employee.Email),
                     new Claim(ClaimTypes.GivenName, employee.FirstName),
                     new Claim(ClaimTypes.Surname, employee.LastName),
+                    new Claim(AppClaimTypes.Avatar, employee.Avatar),
                 }.Concat(
                     employee?.Role?.PermissionList?.Select(permission
                         => new Claim(AppClaimTypes.Permissions, permission)) ?? Array.Empty<Claim>())
@@ -126,7 +168,7 @@ public class AuthService : IAuthService
 
         // update new password
         customer.HashedPassword = BCrypt.Net.BCrypt.HashPassword(customerChangePasswordDto.NewPassword);
-        await _customerRepository.Update((long)customer.Id, customer);
+        await _customerRepository.Update(customer);
     }
 
     public async Task CustomerSendEmailReset(string email)
@@ -167,6 +209,6 @@ public class AuthService : IAuthService
 
         // update new password
         customer.HashedPassword = BCrypt.Net.BCrypt.HashPassword(customerResetPasswordDto.Password);
-        await _customerRepository.Update((long)customer.Id, customer);
+        await _customerRepository.Update(customer);
     }
 }

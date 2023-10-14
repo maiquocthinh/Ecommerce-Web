@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Backend.Data;
-using Backend.Respositories.Interfaces;
+using Backend.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories;
@@ -40,7 +40,7 @@ public abstract class SqlServerRepository<T>: IRepository<T> where T : class
 
     }
 
-    public virtual async Task<T> Update(long id, T obj)
+    public virtual async Task<T> Update(T obj)
     {
         _dbSet.Attach(obj);
         _context.Entry(obj).State = EntityState.Modified;

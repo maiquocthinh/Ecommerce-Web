@@ -20,11 +20,20 @@ public class AuthController : BaseController
         _authService = authService;
     }
 
-    [HttpPost("refresh-access-token")]
-    public async Task<ActionResult<SuccessResponse<string>>> RefreshAccessToken(
-        [FromBody] RefreshAccessTokenDto refreshAccessTokenDto)
+    [HttpPost("employee/login")]
+    public async Task<ActionResult<SuccessResponse<RefreshTokenAndAccessTokenDto>>> EmployeeLogin(
+        [FromBody] EmployeeLoginDto employeeLoginDto)
     {
-        var accessToken = await _authService.RefreshAccessToken(refreshAccessTokenDto);
+        var tokens = await _authService.EmployeeLogin(employeeLoginDto);
+        return Ok(
+            RenderSuccessResponse(message: "Login Success.", data: tokens));
+    }
+
+    [HttpPost("employee/refresh-access-token")]
+    public async Task<ActionResult<SuccessResponse<AccessTokenDto>>> EmployeeRefreshAccessToken(
+        [FromBody] RefreshTokenInputDto refreshTokenInputDto)
+    {
+        var accessToken = await _authService.EmployeeRefreshAccessToken(refreshTokenInputDto);
         return Ok(
             RenderSuccessResponse(message: "Refresh Access Token Success.", data: accessToken));
     }

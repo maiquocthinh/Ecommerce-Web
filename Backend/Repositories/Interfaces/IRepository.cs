@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Backend.Respositories.Interfaces;
+namespace Backend.Repositories.Interfaces;
 
 public interface IRepository<T> where T : class
 {
@@ -8,6 +8,6 @@ public interface IRepository<T> where T : class
     Task<T?> GetById(long id);
     Task<IEnumerable<T>> Where(Expression<Func<T, bool>> predicate);
     Task<IEnumerable<T>> GetAll();
-    Task<T> Update(long id, T obj);
+    Task<T> Update(T obj);
     Task<bool> Remove(long id);
 }

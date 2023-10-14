@@ -1,6 +1,6 @@
 using Backend.Models;
 
-namespace Backend.Respositories.Interfaces;
+namespace Backend.Repositories.Interfaces;
 
 public interface ICustomerRepository : IRepository<Customer>
 {

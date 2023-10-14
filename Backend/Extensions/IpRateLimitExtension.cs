@@ -28,7 +28,7 @@ public static class IpRateLimitExtension
                 {
                     Endpoint = "POST:/api/auth/customer/request-reset-password",
                     Period = "2h",
-                    Limit = 1,
+                    Limit = 3,
                 }
             };
         });
