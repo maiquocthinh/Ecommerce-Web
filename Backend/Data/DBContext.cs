@@ -24,8 +24,6 @@ public partial class DBContext : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
-    public virtual DbSet<CustomerShippingContact> CustomerShippingContacts { get; set; }
-
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Import> Imports { get; set; }
@@ -50,6 +48,8 @@ public partial class DBContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<ShippingAddress> ShippingAddresses { get; set; }
+    
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -166,7 +166,6 @@ public partial class DBContext : DbContext
             entity.ToTable("customers");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AddressId).HasColumnName("address_id");
             entity.Property(e => e.Avatar)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -204,39 +203,6 @@ public partial class DBContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
-
-            entity.HasOne(d => d.Address).WithMany(p => p.Customers)
-                .HasForeignKey(d => d.AddressId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Customer_Address");
-        });
-
-        modelBuilder.Entity<CustomerShippingContact>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__customer__3213E83F7F0E71EA");
-
-            entity.ToTable("customer_shipping_contact");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AddressId).HasColumnName("address_id");
-            entity.Property(e => e.CustomerId).HasColumnName("customer_id");
-            entity.Property(e => e.Fullname)
-                .HasMaxLength(255)
-                .HasColumnName("fullname");
-            entity.Property(e => e.PhoneNumber)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("phone_number");
-
-            entity.HasOne(d => d.Address).WithMany(p => p.CustomerShippingContacts)
-                .HasForeignKey(d => d.AddressId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CustomerShippingContact_Address");
-
-            entity.HasOne(d => d.Customer).WithMany(p => p.CustomerShippingContacts)
-                .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CustomerShippingContact_Customer");
         });
 
         modelBuilder.Entity<Employee>(entity =>
@@ -657,6 +623,37 @@ public partial class DBContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
+        });
+        
+        modelBuilder.Entity<ShippingAddress>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__shipping__3213E83FDBE1C9ED");
+
+            entity.ToTable("shipping_addresses");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.AddressId).HasColumnName("address_id");
+            entity.Property(e => e.CustomerId).HasColumnName("customer_id");
+            entity.Property(e => e.IsDefault)
+                .HasDefaultValueSql("((0))")
+                .HasColumnName("is_default");
+            entity.Property(e => e.PhoneNumber)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("phone_number");
+            entity.Property(e => e.RecipientName)
+                .HasMaxLength(255)
+                .HasColumnName("recipient_name");
+
+            entity.HasOne(d => d.Address).WithMany(p => p.ShippingAddresses)
+                .HasForeignKey(d => d.AddressId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ShippingAddress_Address");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.ShippingAddresses)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ShippingAddress_Customer");
         });
 
         modelBuilder.Entity<Supplier>(entity =>

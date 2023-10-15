@@ -12,11 +12,13 @@ public class CustomerService : ICustomerService
 {
     private readonly IMapper _mapper;
     private readonly ICustomerRepository _customerRepository;
+    private readonly IShippingAddressRepository _shippingAddressRepository;
 
-    public CustomerService(IMapper mapper, ICustomerRepository customerRepository)
+    public CustomerService(IMapper mapper, ICustomerRepository customerRepository, IShippingAddressRepository shippingAddressRepository)
     {
         _mapper = mapper;
         _customerRepository = customerRepository;
+        _shippingAddressRepository = shippingAddressRepository;
     }
 
     public async Task<CustomerProfileDto> GetProfile(string? email)
@@ -54,5 +56,14 @@ public class CustomerService : ICustomerService
 
         await _customerRepository.Update(customer);
         return _mapper.Map<CustomerProfileDto>(customer);
+    }
+
+    public async Task<IEnumerable<CustomerAddress>> GetAddressList(string? email)
+    {
+        if (email is null) throw new UnauthorizedException("Please login to continue");
+        var addressList = await _shippingAddressRepository.Where(sa => sa.Customer.Email == email);
+        if (addressList is null) throw new NotFoundException("Customer not found.");
+
+        return addressList.Select(ad => _mapper.Map<CustomerAddress>(ad)).ToList();
     }
 }

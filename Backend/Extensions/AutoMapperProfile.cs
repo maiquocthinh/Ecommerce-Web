@@ -9,5 +9,10 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateMap<Customer, CustomerProfileDto>();
+        CreateMap<ShippingAddress, CustomerAddress>()
+            .ForMember(dest => dest.SpecificAddress, otp => otp.MapFrom(src => src.Address.SpecificAddress))
+            .ForMember(dest => dest.Wards, otp => otp.MapFrom(src => src.Address.Wards))
+            .ForMember(dest => dest.Districts, otp => otp.MapFrom(src => src.Address.Districts))
+            .ForMember(dest => dest.Province, otp => otp.MapFrom(src => src.Address.Province));
     }
 }

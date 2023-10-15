@@ -22,10 +22,7 @@ public partial class Address
     public DateTime CreatedAt { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<CustomerShippingContact> CustomerShippingContacts { get; set; } = new List<CustomerShippingContact>();
-
-    [JsonIgnore]
-    public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
+    public virtual ICollection<ShippingAddress> ShippingAddresses { get; set; } = new List<ShippingAddress>();
 
     [JsonIgnore]
     public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
