@@ -8,18 +8,18 @@ using Backend.Services.Interfaces;
 
 namespace Backend.Services;
 
-public class ProfileService : IProfileService
+public class CustomerService : ICustomerService
 {
     private readonly IMapper _mapper;
     private readonly ICustomerRepository _customerRepository;
 
-    public ProfileService(IMapper mapper, ICustomerRepository customerRepository)
+    public CustomerService(IMapper mapper, ICustomerRepository customerRepository)
     {
         _mapper = mapper;
         _customerRepository = customerRepository;
     }
 
-    public async Task<CustomerProfileDto> GetCustomerProfile(string? email)
+    public async Task<CustomerProfileDto> GetProfile(string? email)
     {
         if (email is null) throw new UnauthorizedException("Please login to continue");
         var customer = await _customerRepository.GetByEmail(email);
@@ -28,7 +28,7 @@ public class ProfileService : IProfileService
         return _mapper.Map<CustomerProfileDto>(customer);
     }
 
-    public async Task<CustomerProfileDto> UpdateCustomerProfile(string? email,
+    public async Task<CustomerProfileDto> UpdateProfile(string? email,
         CustomerProfileUpdateDto customerProfileUpdateDto)
     {
         // check all properties of customerProfileUpdateDto are null? if all is null => not update

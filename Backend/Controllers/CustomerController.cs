@@ -7,32 +7,32 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers;
 
 [ApiController]
-[Route("api/profile")]
-public class ProfileController: BaseController
+[Route("api/customer")]
+public class CustomerController: BaseController
 {
-    private readonly IProfileService _profileService;
+    private readonly ICustomerService _customerService;
 
-    public ProfileController(IProfileService profileService)
+    public CustomerController(ICustomerService customerService)
     {
-        _profileService = profileService;
+        _customerService = customerService;
     }
 
     [Authorize]
-    [HttpGet("customer")]
+    [HttpGet("profile")]
     public async Task<ActionResult<CustomerProfileDto>> GetCustomerProfile()
     {
         var email = HttpContext.User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.Email)?.Value;
-        var profile = await _profileService.GetCustomerProfile(email);
+        var profile = await _customerService.GetProfile(email);
 
         return Ok(RenderSuccessResponse(data: profile));
     }
     
     [Authorize]
-    [HttpPatch("customer")]
+    [HttpPatch("profile")]
     public async Task<ActionResult<object>> UpdateCustomerProfile(CustomerProfileUpdateDto customerProfileUpdateDto)
     {
         var email = HttpContext.User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.Email)?.Value;
-        var profile = await _profileService.UpdateCustomerProfile(email, customerProfileUpdateDto);
+        var profile = await _customerService.UpdateProfile(email, customerProfileUpdateDto);
 
         return Ok(RenderSuccessResponse<object>(message: "Update profile success.",data: profile));
     }
