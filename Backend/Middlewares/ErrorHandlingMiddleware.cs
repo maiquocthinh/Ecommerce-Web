@@ -1,3 +1,4 @@
+using System.Net;
 using Backend.Common.Exceptions;
 using Backend.Data;
 
@@ -27,7 +28,7 @@ public class ErrorHandlingMiddleware
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)e.StatusCode;
-            if (_env.IsDevelopment())
+            if (_env.IsDevelopment() && e.StatusCode != HttpStatusCode.OK)
                 await context.Response.WriteAsJsonAsync(new ServerDevErrorResponse()
                 {
                     Message = e.Message,

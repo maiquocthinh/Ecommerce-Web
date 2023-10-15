@@ -1,10 +1,13 @@
 using AutoMapper;
+using Backend.DTOs;
+using Backend.Models;
 
 namespace Backend.Extensions;
 
-public class AutoMapperProfile: Profile
+public class AutoMapperProfile : Profile
 {
-    protected AutoMapperProfile()
+    public AutoMapperProfile()
     {
+        CreateMap<Customer, CustomerProfileDto>();
     }
 }

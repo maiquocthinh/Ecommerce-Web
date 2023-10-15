@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 
 namespace Backend.Models;
 
@@ -11,7 +10,7 @@ public partial class Customer
 
     public string LastName { get; set; } = null!;
 
-    public bool? Gender { get; set; } = null;
+    public bool Gender { get; set; }
 
     public DateTime? DayOfBirth { get; set; } = null;
 
@@ -19,10 +18,12 @@ public partial class Customer
 
     public string? PhoneNumber { get; set; }
 
+    [JsonIgnore]
     public string? HashedPassword { get; set; }
 
     public string? Avatar { get; set; } = string.Empty;
 
+    [JsonIgnore]
     public long? AddressId { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
