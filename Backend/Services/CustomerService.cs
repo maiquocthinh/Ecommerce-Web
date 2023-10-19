@@ -3,6 +3,7 @@ using AutoMapper;
 using Backend.Common.Exceptions;
 using Backend.DTOs;
 using Backend.Infrastructure.Utils;
+using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
 
@@ -12,12 +13,14 @@ public class CustomerService : ICustomerService
 {
     private readonly IMapper _mapper;
     private readonly ICustomerRepository _customerRepository;
+    private readonly IAddressRepository _addressRepository;
     private readonly IShippingAddressRepository _shippingAddressRepository;
 
-    public CustomerService(IMapper mapper, ICustomerRepository customerRepository, IShippingAddressRepository shippingAddressRepository)
+    public CustomerService(IMapper mapper, ICustomerRepository customerRepository, IAddressRepository addressRepository, IShippingAddressRepository shippingAddressRepository)
     {
         _mapper = mapper;
         _customerRepository = customerRepository;
+        _addressRepository = addressRepository;
         _shippingAddressRepository = shippingAddressRepository;
     }
 
@@ -58,12 +61,56 @@ public class CustomerService : ICustomerService
         return _mapper.Map<CustomerProfileDto>(customer);
     }
 
-    public async Task<IEnumerable<CustomerAddress>> GetAddressList(string? email)
+    public async Task<IEnumerable<ShippingAddressDto>> GetAddressList(string? email)
     {
         if (email is null) throw new UnauthorizedException("Please login to continue");
-        var addressList = await _shippingAddressRepository.Where(sa => sa.Customer.Email == email);
-        if (addressList is null) throw new NotFoundException("Customer not found.");
+        var shippingAddressList = await _shippingAddressRepository.Where(sa => sa.Customer.Email == email);
 
-        return addressList.Select(ad => _mapper.Map<CustomerAddress>(ad)).ToList();
+        return shippingAddressList.Select(ad => _mapper.Map<ShippingAddressDto>(ad)).ToList();
+    }
+
+    public async Task<ShippingAddressDto> CreateAddress(string? email, ShippingAddressCreateDto shippingAddressCreateDto)
+    {
+        if (email is null) throw new UnauthorizedException("Please login to continue");
+        var customer = await _customerRepository.GetByEmail(email);
+        if (customer is null) throw new NotFoundException("Customer not found.");
+        var newAddress = await _addressRepository.Add(_mapper.Map<Address>(shippingAddressCreateDto));
+        var newShippingAddress = await _shippingAddressRepository.Add(new ShippingAddress
+        {
+            CustomerId = (long)customer.Id,
+            AddressId = newAddress.Id,
+            RecipientName = shippingAddressCreateDto.RecipientName,
+            PhoneNumber = shippingAddressCreateDto.PhoneNumber,
+            IsDefault = shippingAddressCreateDto.IsDefault
+        });
+
+        return _mapper.Map<ShippingAddressDto>(newShippingAddress);
+    }
+
+    public async Task<ShippingAddressDto> UpdateAddress(string? email, long shippingAddressId, ShippingAddressUpdateDto shippingAddressUpdateDto)
+    {
+        if (email is null) throw new UnauthorizedException("Please login to continue");
+        var shippingAddress = await _shippingAddressRepository.GetById(shippingAddressId);
+        if (shippingAddress == null) throw new NotFoundException("Shipping address not found.");
+
+        if (shippingAddressUpdateDto.SpecificAddress != null) shippingAddress.Address.SpecificAddress = shippingAddressUpdateDto.SpecificAddress;
+        if (shippingAddressUpdateDto.Province != null) shippingAddress.Address.Province = shippingAddressUpdateDto.Province;
+        if (shippingAddressUpdateDto.Districts != null) shippingAddress.Address.Districts = shippingAddressUpdateDto.Districts;
+        if (shippingAddressUpdateDto.Wards != null) shippingAddress.Address.Wards = shippingAddressUpdateDto.Wards;
+        if (shippingAddressUpdateDto.RecipientName != null) shippingAddress.RecipientName = shippingAddressUpdateDto.RecipientName;
+        if (shippingAddressUpdateDto.PhoneNumber != null) shippingAddress.PhoneNumber = shippingAddressUpdateDto.PhoneNumber;
+        if (shippingAddressUpdateDto.IsDefault != null) shippingAddress.IsDefault = shippingAddressUpdateDto.IsDefault;
+
+        await _shippingAddressRepository.Update(shippingAddress);
+
+        return _mapper.Map<ShippingAddressDto>(shippingAddress);
+    }
+
+    public async Task DeleteAddress(string? email, long shippingAddressId)
+    {
+        if (email is null) throw new UnauthorizedException("Please login to continue");
+        var shippingAddress = await _shippingAddressRepository.GetById(shippingAddressId);
+        if (shippingAddress == null) throw new NotFoundException("Shipping address not found.");
+        await _shippingAddressRepository.Remove(shippingAddressId);
     }
 }

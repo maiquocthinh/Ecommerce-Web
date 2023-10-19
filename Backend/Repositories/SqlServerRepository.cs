@@ -19,7 +19,7 @@ public abstract class SqlServerRepository<T>: IRepository<T> where T : class
 
     public virtual async Task<T> Add(T obj)
     {
-        _dbSet.Attach(obj);
+        _dbSet.Add(obj);
         await _context.SaveChangesAsync();
         return obj;
     }

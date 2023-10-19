@@ -3,6 +3,8 @@ using Backend.Models;
 
 namespace Backend.DTOs;
 
+// Input dtos
+
 public class CustomerRegisterDto
 {
     [Required(ErrorMessage = "FirstName is required")]
@@ -91,6 +93,9 @@ public class CustomerProfileUpdateDto
     public string? Avatar { get; set; }
 }
 
+
+// Output dtos
+
 public class CustomerProfileDto
 {
     public string FirstName { get; set; } = string.Empty;
@@ -106,23 +111,4 @@ public class CustomerProfileDto
     public string PhoneNumber { get; set; } = string.Empty;
 
     public string Avatar { get; set; } = string.Empty;
-}
-
-public class CustomerAddress
-{
-    public long Id { get; set; }
-
-    public string SpecificAddress { get; set; } = null!;
-
-    public string Province { get; set; } = null!;
-
-    public string Districts { get; set; } = null!;
-
-    public string Wards { get; set; } = null!;
-    
-    public string RecipientName { get; set; }
-
-    public string PhoneNumber { get; set; }
-
-    public bool? IsDefault { get; set; }
 }
