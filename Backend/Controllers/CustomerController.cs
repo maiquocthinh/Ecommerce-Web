@@ -59,7 +59,7 @@ public class CustomerController : BaseController
 
     [Authorize]
     [HttpPatch("addresses/{id}")]
-    public async Task<ActionResult<ShippingAddressDto>> UpdateAddress([FromRoute] long id, [FromBody] ShippingAddressUpdateDto shippingAddressUpdateDto)
+    public async Task<ActionResult<ShippingAddressDto>> UpdateAddress([FromRoute] int id, [FromBody] ShippingAddressUpdateDto shippingAddressUpdateDto)
     {
         var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
         var addressList = await _customerService.UpdateAddress(email, id, shippingAddressUpdateDto);
@@ -69,7 +69,7 @@ public class CustomerController : BaseController
 
     [Authorize]
     [HttpDelete("addresses/{id}")]
-    public async Task<IActionResult> DeteleAddress([FromRoute] long id)
+    public async Task<IActionResult> DeteleAddress([FromRoute] int id)
     {
         var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
         await _customerService.DeleteAddress(email, id);

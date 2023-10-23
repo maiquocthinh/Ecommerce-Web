@@ -5,17 +5,17 @@ namespace Backend.Models;
 
 public partial class Import
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
-    public long EmployeeId { get; set; }
+    public int EmployeeId { get; set; }
 
-    public long SupplierId { get; set; }
+    public int SupplierId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public virtual Employee Employee { get; set; } = null!;
 
-    public virtual ICollection<ImportBatch> ImportBatches { get; set; } = new List<ImportBatch>();
+    public virtual ICollection<ImportShipment> ImportShipments { get; set; } = new List<ImportShipment>();
 
     public virtual Supplier Supplier { get; set; } = null!;
 }

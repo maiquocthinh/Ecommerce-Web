@@ -5,19 +5,19 @@ namespace Backend.Models;
 
 public partial class ProductVersion
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
-    public long ProductId { get; set; }
+    public int ProductId { get; set; }
 
     public string Name { get; set; } = null!;
 
-    public string Description { get; set; } = null!;
+    public string ImageUrl { get; set; } = null!;
 
     public string Color { get; set; } = null!;
 
     public string Specifications { get; set; } = null!;
 
-    public long Price { get; set; }
+    public int Price { get; set; }
 
     public int Inventory { get; set; }
 
@@ -25,11 +25,11 @@ public partial class ProductVersion
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
-    public virtual ICollection<ImportBatch> ImportBatches { get; set; } = new List<ImportBatch>();
+    public virtual ICollection<ImportShipment> ImportShipments { get; set; } = new List<ImportShipment>();
 
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
     public virtual Product Product { get; set; } = null!;
 

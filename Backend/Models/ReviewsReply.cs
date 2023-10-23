@@ -5,13 +5,13 @@ namespace Backend.Models;
 
 public partial class ReviewsReply
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
-    public long ReviewsId { get; set; }
+    public int ReviewsId { get; set; }
 
     public string Content { get; set; } = null!;
 
-    public long EmployeeId { get; set; }
+    public int EmployeeId { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 

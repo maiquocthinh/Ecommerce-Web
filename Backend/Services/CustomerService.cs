@@ -6,6 +6,8 @@ using Backend.Infrastructure.Utils;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Services;
 
@@ -55,7 +57,7 @@ public class CustomerService : ICustomerService
         if (customerProfileUpdateDto.DayOfBirth != null) customer.DayOfBirth = customerProfileUpdateDto.DayOfBirth;
         if (customerProfileUpdateDto.Email != null) customer.Email = customerProfileUpdateDto.Email;
         if (customerProfileUpdateDto.PhoneNumber != null) customer.PhoneNumber = customerProfileUpdateDto.PhoneNumber;
-        if (customerProfileUpdateDto.Avatar != null) customer.Avatar = customerProfileUpdateDto.Avatar;
+        if (customerProfileUpdateDto.AvatarUrl != null) customer.AvatarUrl = customerProfileUpdateDto.AvatarUrl;
 
         await _customerRepository.Update(customer);
         return _mapper.Map<CustomerProfileDto>(customer);
@@ -77,7 +79,7 @@ public class CustomerService : ICustomerService
         var newAddress = await _addressRepository.Add(_mapper.Map<Address>(shippingAddressCreateDto));
         var newShippingAddress = await _shippingAddressRepository.Add(new ShippingAddress
         {
-            CustomerId = (long)customer.Id,
+            CustomerId = (int)customer.Id!,
             AddressId = newAddress.Id,
             RecipientName = shippingAddressCreateDto.RecipientName,
             PhoneNumber = shippingAddressCreateDto.PhoneNumber,
@@ -87,7 +89,7 @@ public class CustomerService : ICustomerService
         return _mapper.Map<ShippingAddressDto>(newShippingAddress);
     }
 
-    public async Task<ShippingAddressDto> UpdateAddress(string? email, long shippingAddressId, ShippingAddressUpdateDto shippingAddressUpdateDto)
+    public async Task<ShippingAddressDto> UpdateAddress(string? email, int shippingAddressId, ShippingAddressUpdateDto shippingAddressUpdateDto)
     {
         if (email is null) throw new UnauthorizedException("Please login to continue");
         var shippingAddress = await _shippingAddressRepository.GetById(shippingAddressId);
@@ -100,13 +102,23 @@ public class CustomerService : ICustomerService
         if (shippingAddressUpdateDto.RecipientName != null) shippingAddress.RecipientName = shippingAddressUpdateDto.RecipientName;
         if (shippingAddressUpdateDto.PhoneNumber != null) shippingAddress.PhoneNumber = shippingAddressUpdateDto.PhoneNumber;
         if (shippingAddressUpdateDto.IsDefault != null) shippingAddress.IsDefault = shippingAddressUpdateDto.IsDefault;
-
-        await _shippingAddressRepository.Update(shippingAddress);
-
+        
+        try
+        {
+            await _shippingAddressRepository.Update(shippingAddress);
+        }
+        catch (DbUpdateException e)
+        {
+            if (e.InnerException is SqlException sqlException)
+                foreach (SqlError error in sqlException.Errors)
+                    if (error.Number == 50000)
+                        throw new BadRequestException(error.Message);
+        }
+        
         return _mapper.Map<ShippingAddressDto>(shippingAddress);
     }
 
-    public async Task DeleteAddress(string? email, long shippingAddressId)
+    public async Task DeleteAddress(string? email, int shippingAddressId)
     {
         if (email is null) throw new UnauthorizedException("Please login to continue");
         var shippingAddress = await _shippingAddressRepository.GetById(shippingAddressId);

@@ -5,7 +5,7 @@ namespace Backend.Models;
 
 public partial class Need
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     public string Title { get; set; } = null!;
 

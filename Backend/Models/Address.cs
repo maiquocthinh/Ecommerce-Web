@@ -7,7 +7,7 @@ namespace Backend.Models;
 public partial class Address
 {
     [JsonIgnore]
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     public string SpecificAddress { get; set; } = null!;
 

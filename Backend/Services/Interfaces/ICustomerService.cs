@@ -8,6 +8,6 @@ public interface ICustomerService
     Task<CustomerProfileDto> UpdateProfile(string? email, CustomerProfileUpdateDto customerProfileUpdateDto);
     Task<IEnumerable<ShippingAddressDto>> GetAddressList(string? email);
     Task<ShippingAddressDto> CreateAddress(string? email, ShippingAddressCreateDto shippingAddressCreateDto);
-    Task<ShippingAddressDto> UpdateAddress(string? email, long shippingAddressId, ShippingAddressUpdateDto shippingAddressUpdateDto);
-    Task DeleteAddress(string? email, long shippingAddressId);
+    Task<ShippingAddressDto> UpdateAddress(string? email, int shippingAddressId, ShippingAddressUpdateDto shippingAddressUpdateDto);
+    Task DeleteAddress(string? email, int shippingAddressId);
 }

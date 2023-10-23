@@ -5,7 +5,7 @@ namespace Backend.Models;
 
 public partial class Supplier
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -13,7 +13,7 @@ public partial class Supplier
 
     public string PhoneNumber { get; set; } = null!;
 
-    public long AddressId { get; set; }
+    public int AddressId { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 

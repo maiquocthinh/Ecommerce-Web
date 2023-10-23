@@ -5,15 +5,15 @@ namespace Backend.Models;
 
 public partial class Order
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     public string Status { get; set; } = null!;
 
-    public long EmployeeId { get; set; }
+    public int EmployeeId { get; set; }
 
-    public long CustomerId { get; set; }
+    public int? CustomerId { get; set; }
 
-    public string CustomerFullname { get; set; } = null!;
+    public string RecipientName { get; set; } = null!;
 
     public string PhoneNumber { get; set; } = null!;
 
@@ -23,9 +23,9 @@ public partial class Order
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual Customer Customer { get; set; } = null!;
+    public virtual Customer? Customer { get; set; } = null!;
 
     public virtual Employee Employee { get; set; } = null!;
 
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }

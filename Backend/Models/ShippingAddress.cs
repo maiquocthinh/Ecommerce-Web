@@ -5,11 +5,11 @@ namespace Backend.Models;
 
 public partial class ShippingAddress
 {
-    public long? Id { get; set; } = null;
+    public int? Id { get; set; } = null;
 
-    public long CustomerId { get; set; }
+    public int CustomerId { get; set; }
 
-    public long AddressId { get; set; }
+    public int AddressId { get; set; }
 
     public string RecipientName { get; set; } = null!;
 

@@ -1,33 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Backend.Models;
 
 public partial class Employee
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     public string FirstName { get; set; } = null!;
 
     public string LastName { get; set; } = null!;
 
-    public bool? Gender { get; set; }
+    public bool Gender { get; set; }
 
     public DateTime DayOfBirth { get; set; }
-
-    public string CitizenId { get; set; } = null!;
 
     public string Email { get; set; } = null!;
 
     public string PhoneNumber { get; set; } = null!;
 
+    [JsonIgnore]
     public string HashedPassword { get; set; } = null!;
 
-    public string? Avatar { get; set; }
+    public string? AvatarUrl { get; set; }
 
-    public long AddressId { get; set; }
+    public bool Active { get; set; }
 
-    public long RoleId { get; set; }
+    public int AddressId { get; set; }
+
+    public int RoleId { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 

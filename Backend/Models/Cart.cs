@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace Backend.Models;
 
-public partial class CartItem
+public partial class Cart
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     public int Quantity { get; set; }
 
-    public long CustomerId { get; set; }
+    public int CustomerId { get; set; }
 
-    public long ProductsVersionsId { get; set; }
+    public int ProductsVersionsId { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 

@@ -72,7 +72,7 @@ public class AuthService : IAuthService
                 new Claim(ClaimTypes.Email, employee.Email),
                 new Claim(ClaimTypes.GivenName, employee.FirstName),
                 new Claim(ClaimTypes.Surname, employee.LastName),
-                new Claim(AppClaimTypes.Avatar, employee.Avatar),
+                new Claim(AppClaimTypes.Avatar, employee.AvatarUrl),
             }.Concat(
                 employee?.Role?.PermissionList?.Select(permission
                     => new Claim(AppClaimTypes.Permissions, permission)) ?? Array.Empty<Claim>())
@@ -102,7 +102,7 @@ public class AuthService : IAuthService
                     new Claim(ClaimTypes.Email, employee.Email),
                     new Claim(ClaimTypes.GivenName, employee.FirstName),
                     new Claim(ClaimTypes.Surname, employee.LastName),
-                    new Claim(AppClaimTypes.Avatar, employee.Avatar),
+                    new Claim(AppClaimTypes.Avatar, employee.AvatarUrl),
                 }.Concat(
                     employee?.Role?.PermissionList?.Select(permission
                         => new Claim(AppClaimTypes.Permissions, permission)) ?? Array.Empty<Claim>())

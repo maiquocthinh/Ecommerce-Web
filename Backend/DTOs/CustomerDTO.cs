@@ -90,7 +90,7 @@ public class CustomerProfileUpdateDto
     public string? PhoneNumber { get; set; }
 
     [Url(ErrorMessage = "Invalid URL")]
-    public string? Avatar { get; set; }
+    public string? AvatarUrl { get; set; }
 }
 
 
@@ -110,5 +110,5 @@ public class CustomerProfileDto
 
     public string PhoneNumber { get; set; } = string.Empty;
 
-    public string Avatar { get; set; } = string.Empty;
+    public string AvatarUrl { get; set; } = string.Empty;
 }

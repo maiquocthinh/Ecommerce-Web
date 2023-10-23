@@ -5,15 +5,15 @@ namespace Backend.Models;
 
 public partial class Review
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     public string Content { get; set; } = null!;
 
-    public long ProductId { get; set; }
+    public int ProductId { get; set; }
 
-    public long ProductVersionId { get; set; }
+    public int ProductVersionId { get; set; }
 
-    public long CustomerId { get; set; }
+    public int CustomerId { get; set; }
 
     public decimal Score { get; set; }
 

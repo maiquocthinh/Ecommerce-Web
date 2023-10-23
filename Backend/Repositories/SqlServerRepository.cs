@@ -24,7 +24,7 @@ public abstract class SqlServerRepository<T>: IRepository<T> where T : class
         return obj;
     }
 
-    public virtual async Task<T?> GetById(long id)
+    public virtual async Task<T?> GetById(int id)
     {
         return await _dbSet.FindAsync(id);
     }
@@ -48,7 +48,7 @@ public abstract class SqlServerRepository<T>: IRepository<T> where T : class
         return obj;
     }
 
-    public virtual async Task<bool> Remove(long id)
+    public virtual async Task<bool> Remove(int id)
     {
         var objToDelete = await _dbSet.FindAsync(id);
         if (objToDelete is null) return false;

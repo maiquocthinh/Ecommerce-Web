@@ -3,19 +3,23 @@ using System.Collections.Generic;
 
 namespace Backend.Models;
 
-public partial class OrderItem
+public partial class OrderDetail
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
-    public long OrderId { get; set; }
+    public int OrderId { get; set; }
 
-    public long ProductVersionId { get; set; }
+    public int ProductVersionId { get; set; }
+
+    public int ImportShipmentId { get; set; }
 
     public int Price { get; set; }
 
     public int Quantity { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    public virtual ImportShipment ImportShipment { get; set; } = null!;
 
     public virtual Order Order { get; set; } = null!;
 

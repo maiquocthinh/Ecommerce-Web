@@ -18,23 +18,25 @@ public partial class DBContext : DbContext
 
     public virtual DbSet<Brand> Brands { get; set; }
 
-    public virtual DbSet<CartItem> CartItems { get; set; }
+    public virtual DbSet<Cart> Carts { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Customer> Customers { get; set; }
 
+    public virtual DbSet<Discount> Discounts { get; set; }
+
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Import> Imports { get; set; }
 
-    public virtual DbSet<ImportBatch> ImportBatches { get; set; }
+    public virtual DbSet<ImportShipment> ImportShipments { get; set; }
 
     public virtual DbSet<Need> Needs { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
-    public virtual DbSet<OrderItem> OrderItems { get; set; }
+    public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -49,14 +51,14 @@ public partial class DBContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<ShippingAddress> ShippingAddresses { get; set; }
-    
+
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Address>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__addresse__3213E83F22BEBFB7");
+            entity.HasKey(e => e.Id).HasName("PK_Addresses");
 
             entity.ToTable("addresses");
 
@@ -85,7 +87,7 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<Brand>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__brands__3213E83F30A4F9A3");
+            entity.HasKey(e => e.Id).HasName("PK_Brands");
 
             entity.ToTable("brands");
 
@@ -106,11 +108,11 @@ public partial class DBContext : DbContext
                 .HasColumnName("updated_at");
         });
 
-        modelBuilder.Entity<CartItem>(entity =>
+        modelBuilder.Entity<Cart>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__cart_ite__3213E83F56F8993F");
+            entity.HasKey(e => e.Id).HasName("PK_Carts");
 
-            entity.ToTable("cart_item");
+            entity.ToTable("carts");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
@@ -125,12 +127,12 @@ public partial class DBContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.CartItems)
+            entity.HasOne(d => d.Customer).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CartItem_Customer");
 
-            entity.HasOne(d => d.ProductsVersions).WithMany(p => p.CartItems)
+            entity.HasOne(d => d.ProductsVersions).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ProductsVersionsId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CartItem_ProductVersion");
@@ -138,7 +140,7 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__categori__3213E83FD1A53F8B");
+            entity.HasKey(e => e.Id).HasName("PK_Categories");
 
             entity.ToTable("categories");
 
@@ -161,22 +163,22 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__customer__3213E83F83055161");
+            entity.HasKey(e => e.Id).HasName("PK_Customers");
 
             entity.ToTable("customers");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Avatar)
+            entity.Property(e => e.AvatarUrl)
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasDefaultValueSql("('https://i.imgur.com/Th0n214.jpg')")
-                .HasColumnName("avatar");
+                .HasColumnName("avatar_url");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.DayOfBirth)
-                .HasColumnType("date")
+                .HasColumnType("smalldatetime")
                 .HasColumnName("day_of_birth");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
@@ -185,9 +187,7 @@ public partial class DBContext : DbContext
             entity.Property(e => e.FirstName)
                 .HasMaxLength(255)
                 .HasColumnName("first_name");
-            entity.Property(e => e.Gender)
-                .HasDefaultValueSql("((1))")
-                .HasColumnName("gender");
+            entity.Property(e => e.Gender).HasColumnName("gender");
             entity.Property(e => e.HashedPassword)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -205,23 +205,49 @@ public partial class DBContext : DbContext
                 .HasColumnName("updated_at");
         });
 
+        modelBuilder.Entity<Discount>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Discounts");
+
+            entity.ToTable("discounts");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Active)
+                .HasDefaultValueSql("((0))")
+                .HasColumnName("active");
+            entity.Property(e => e.DiscountPercent)
+                .HasDefaultValueSql("((0.00))")
+                .HasColumnType("decimal(3, 2)")
+                .HasColumnName("discount_percent");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("datetime")
+                .HasColumnName("end_date");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.StartDate)
+                .HasColumnType("datetime")
+                .HasColumnName("start_date");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Discounts)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Discount_Product");
+        });
+        
         modelBuilder.Entity<Employee>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__employee__3213E83F726A5302");
+            entity.HasKey(e => e.Id).HasName("PK_Employees");
 
             entity.ToTable("employees");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Active).HasColumnName("active");
             entity.Property(e => e.AddressId).HasColumnName("address_id");
-            entity.Property(e => e.Avatar)
+            entity.Property(e => e.AvatarUrl)
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasDefaultValueSql("('https://i.imgur.com/Th0n214.jpg')")
-                .HasColumnName("avatar");
-            entity.Property(e => e.CitizenId)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("citizen_id");
+                .HasColumnName("avatar_url");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -236,9 +262,7 @@ public partial class DBContext : DbContext
             entity.Property(e => e.FirstName)
                 .HasMaxLength(255)
                 .HasColumnName("first_name");
-            entity.Property(e => e.Gender)
-                .HasDefaultValueSql("((1))")
-                .HasColumnName("gender");
+            entity.Property(e => e.Gender).HasColumnName("gender");
             entity.Property(e => e.HashedPassword)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -269,7 +293,7 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<Import>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__imports__3213E83F84183122");
+            entity.HasKey(e => e.Id).HasName("PK_Imports");
 
             entity.ToTable("imports");
 
@@ -292,11 +316,11 @@ public partial class DBContext : DbContext
                 .HasConstraintName("FK_Import_Supplier");
         });
 
-        modelBuilder.Entity<ImportBatch>(entity =>
+        modelBuilder.Entity<ImportShipment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__import_b__3213E83F5CC5F109");
+            entity.HasKey(e => e.Id).HasName("PK_ImportShipments");
 
-            entity.ToTable("import_batches");
+            entity.ToTable("import_shipments");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Cost).HasColumnName("cost");
@@ -305,20 +329,20 @@ public partial class DBContext : DbContext
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Remaining).HasColumnName("remaining");
 
-            entity.HasOne(d => d.Import).WithMany(p => p.ImportBatches)
+            entity.HasOne(d => d.Import).WithMany(p => p.ImportShipments)
                 .HasForeignKey(d => d.ImportId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ImportBatch_Import");
+                .HasConstraintName("FK_ImportShipment_Import");
 
-            entity.HasOne(d => d.ProductVersion).WithMany(p => p.ImportBatches)
+            entity.HasOne(d => d.ProductVersion).WithMany(p => p.ImportShipments)
                 .HasForeignKey(d => d.ProductVersionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ImportBatch_ProductVersion");
+                .HasConstraintName("FK_ImportShipment_ProductVersion");
         });
 
         modelBuilder.Entity<Need>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__needs__3213E83FDE4D2C52");
+            entity.HasKey(e => e.Id).HasName("PK_Needs");
 
             entity.ToTable("needs");
 
@@ -341,7 +365,7 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__orders__3213E83F45428D75");
+            entity.HasKey(e => e.Id).HasName("PK_Orders");
 
             entity.ToTable("orders");
 
@@ -353,15 +377,15 @@ public partial class DBContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
-            entity.Property(e => e.CustomerFullname)
-                .HasMaxLength(255)
-                .HasColumnName("customer_fullname");
             entity.Property(e => e.CustomerId).HasColumnName("customer_id");
             entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
             entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("phone_number");
+            entity.Property(e => e.RecipientName)
+                .HasMaxLength(255)
+                .HasColumnName("recipient_name");
             entity.Property(e => e.Status)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -371,7 +395,6 @@ public partial class DBContext : DbContext
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Customer");
 
             entity.HasOne(d => d.Employee).WithMany(p => p.Orders)
@@ -380,36 +403,42 @@ public partial class DBContext : DbContext
                 .HasConstraintName("FK_Order_Employee");
         });
 
-        modelBuilder.Entity<OrderItem>(entity =>
+        modelBuilder.Entity<OrderDetail>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__order_it__3213E83F5D6890B1");
+            entity.HasKey(e => e.Id).HasName("PK_OrderDetails");
 
-            entity.ToTable("order_items");
+            entity.ToTable("order_details");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.ImportShipmentId).HasColumnName("import_shipment_id");
             entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.Price).HasColumnName("price");
             entity.Property(e => e.ProductVersionId).HasColumnName("product_version_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
 
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
+            entity.HasOne(d => d.ImportShipment).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.ImportShipmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrderDetail_ImportShipment");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderItem_Order");
+                .HasConstraintName("FK_OrderDetail_Order");
 
-            entity.HasOne(d => d.ProductVersion).WithMany(p => p.OrderItems)
+            entity.HasOne(d => d.ProductVersion).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ProductVersionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderItem_ProductVersion");
+                .HasConstraintName("FK_OrderDetail_ProductVersion");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__products__3213E83FDCB7C938");
+            entity.HasKey(e => e.Id).HasName("PK_Products");
 
             entity.ToTable("products");
 
@@ -420,20 +449,9 @@ public partial class DBContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
-            entity.Property(e => e.Detail)
+            entity.Property(e => e.Description)
                 .HasMaxLength(1000)
-                .HasColumnName("detail");
-            entity.Property(e => e.DiscountActive)
-                .HasDefaultValueSql("((0))")
-                .HasColumnName("discount_active");
-            entity.Property(e => e.DiscountPercent)
-                .HasColumnType("decimal(3, 2)")
-                .HasColumnName("discount_percent");
-            entity.Property(e => e.Images)
-                .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasDefaultValueSql("('[]')")
-                .HasColumnName("images");
+                .HasColumnName("description");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
@@ -445,6 +463,7 @@ public partial class DBContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
+            entity.Property(e => e.Viewable).HasColumnName("viewable");
             entity.Property(e => e.Warranty)
                 .HasMaxLength(255)
                 .HasColumnName("warranty");
@@ -461,13 +480,12 @@ public partial class DBContext : DbContext
 
             entity.HasOne(d => d.Need).WithMany(p => p.Products)
                 .HasForeignKey(d => d.NeedId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Product_Need");
         });
 
         modelBuilder.Entity<ProductVersion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__product___3213E83F2F4E42E5");
+            entity.HasKey(e => e.Id).HasName("PK_ProductVersions");
 
             entity.ToTable("product_versions");
 
@@ -479,9 +497,10 @@ public partial class DBContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
-            entity.Property(e => e.Description)
+            entity.Property(e => e.ImageUrl)
                 .HasMaxLength(500)
-                .HasColumnName("description");
+                .IsUnicode(false)
+                .HasColumnName("image_url");
             entity.Property(e => e.Inventory).HasColumnName("inventory");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
@@ -504,7 +523,7 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<RefreshToken>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__refresh___3213E83F531BB194");
+            entity.HasKey(e => e.Id).HasName("PK_RefreshTokens");
 
             entity.ToTable("refresh_tokens");
 
@@ -517,8 +536,7 @@ public partial class DBContext : DbContext
                 .HasColumnName("expires_at");
             entity.Property(e => e.Revoked).HasColumnName("revoked");
             entity.Property(e => e.Token)
-                .HasMaxLength(200)
-                .IsUnicode(false)
+                .HasMaxLength(300)
                 .HasColumnName("token");
 
             entity.HasOne(d => d.Employee).WithMany(p => p.RefreshTokens)
@@ -529,7 +547,7 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<Review>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__reviews__3213E83FDF170C43");
+            entity.HasKey(e => e.Id).HasName("PK_Reviews");
 
             entity.ToTable("reviews");
 
@@ -570,7 +588,7 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<ReviewsReply>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__reviews___3213E83FCE6F017B");
+            entity.HasKey(e => e.Id).HasName("PK_ReviewsReply");
 
             entity.ToTable("reviews_reply");
 
@@ -602,7 +620,7 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__roles__3213E83FA724E77F");
+            entity.HasKey(e => e.Id).HasName("PK_Roles");
 
             entity.ToTable("roles");
 
@@ -627,9 +645,13 @@ public partial class DBContext : DbContext
         
         modelBuilder.Entity<ShippingAddress>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__shipping__3213E83FDBE1C9ED");
+            entity.HasKey(e => e.Id).HasName("PK_ShippingAddresses");
 
-            entity.ToTable("shipping_addresses");
+            entity.ToTable("shipping_addresses", tb =>
+            {
+                tb.HasTrigger("trg_ShippingAddressDefault");
+                tb.HasTrigger("trg_RequireOneShippingAddressDefault");
+            });
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AddressId).HasColumnName("address_id");
@@ -658,7 +680,7 @@ public partial class DBContext : DbContext
 
         modelBuilder.Entity<Supplier>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__supplier__3213E83F5FFB29BB");
+            entity.HasKey(e => e.Id).HasName("PK_Suppliers");
 
             entity.ToTable("suppliers");
 
