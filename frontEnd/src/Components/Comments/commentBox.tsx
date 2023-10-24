@@ -1,4 +1,4 @@
-import Account from "../components/Account/Account";
+import Account from "../commonListing/Account/Account";
 import { FaClock } from "@react-icons/all-files/fa/FaClock"
 import { FaComments } from "@react-icons/all-files/fa/FaComments"
 import UserComment from "./userComment";

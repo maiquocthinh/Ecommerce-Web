@@ -1,0 +1,30 @@
+import { UserType } from "@/common";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction } from '@reduxjs/toolkit';
+import * as userApi from "../../Server/UserApi";
+export const login = createAsyncThunk(
+    "login/login",
+    async (formData:UserType.userLoginType) => {
+        try {
+            const response = await userApi.handleLogin(formData); 
+            let data = response.data;
+            return data ; 
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+export const register = createAsyncThunk(
+    "register/register",
+    async (formdata:UserType.UserRegisterType) => {
+        try {
+            const response = await userApi.handleRegister(formdata); 
+            let data = response.data;
+            return data ; 
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+
+export const logout = createAction('user/logout');

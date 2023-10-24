@@ -5,7 +5,6 @@ import TotalPrice from "./totalPrice";
 import BackPage from "./backPage";
 
 interface CartProps {
-
 }
 const Cart: React.FC<CartProps> = () => {
     return (

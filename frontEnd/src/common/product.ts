@@ -1,7 +1,20 @@
-export interface ProductType {
+export  interface ProductType {
     id: number;
     name: string;
     price: number;
-    sale?:string;
+    sale?:number;
     src:string;
+    listColorProduct:{
+      title: string;
+      price: string;
+      src: string;
+    }[],
+    listTypeProduct:{
+      title: string;
+      price: string;
+    }[],
+    listImg:{
+      src:string;
+      title:string;
+    }[]
   }

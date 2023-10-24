@@ -1,8 +1,8 @@
 import { FaFilter } from "@react-icons/all-files/fa/FaFilter";
 import { FaTruckMoving } from "@react-icons/all-files/fa/FaTruckMoving";
 import { FaDollarSign } from "@react-icons/all-files/fa/FaDollarSign";
-import ItemIcon from "../components/OptionItem/ItemIcon";
-import ItemDropDown from "../components/OptionItem/ItemDropDown";
+import ItemIcon from "../commonListing/OptionItem/ItemIcon";
+import ItemDropDown from "../commonListing/OptionItem/ItemDropDown";
 
 const Filter = () => {
     const select = [
@@ -23,33 +23,33 @@ const Filter = () => {
         {
             title: "Nhu cầu sử dụng"
         },
-        {
-            title: "Loại điện thoại"
-        },
-        {
-            title: "Bộ nhớ trong"
-        },
-        {
-            title: "Dung lượng RAM"
-        },
-        {
-            title: "Tính năng đặc biệt"
-        },
-        {
-            title: "Tính năng camera"
-        },
-        {
-            title: 'Tần số quét'
-        },
-        {
-            title: "Kích thước màn hình"
-        },
-        {
-            title: "Kiểu màn hình"
-        },
-        {
-            title: "Chip xử lí"
-        }
+        // {
+        //     title: "Loại điện thoại"
+        // },
+        // {
+        //     title: "Bộ nhớ trong"
+        // },
+        // {
+        //     title: "Dung lượng RAM"
+        // },
+        // {
+        //     title: "Tính năng đặc biệt"
+        // },
+        // {
+        //     title: "Tính năng camera"
+        // },
+        // {
+        //     title: 'Tần số quét'
+        // },
+        // {
+        //     title: "Kích thước màn hình"
+        // },
+        // {
+        //     title: "Kiểu màn hình"
+        // },
+        // {
+        //     title: "Chip xử lí"
+        // }
     ]
     return (
         <div className="mt-4">
