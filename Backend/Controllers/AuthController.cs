@@ -29,6 +29,14 @@ public class AuthController : BaseController
             RenderSuccessResponse(message: "Login Success.", data: tokens));
     }
 
+    [HttpDelete("employee/logout")]
+    public async Task<ActionResult<SuccessResponseWithoutData>> EmployeeLogout(
+        [FromBody] RefreshTokenInputDto refreshTokenInputDto)
+    {
+        await _authService.EmployeeLogout(refreshTokenInputDto);
+        return Ok(RenderSuccessResponseWithoutData(message: "Logout Success."));
+    }
+
     [HttpPost("employee/refresh-access-token")]
     public async Task<ActionResult<SuccessResponse<AccessTokenDto>>> EmployeeRefreshAccessToken(
         [FromBody] RefreshTokenInputDto refreshTokenInputDto)
@@ -54,32 +62,33 @@ public class AuthController : BaseController
         return Ok(RenderSuccessResponse(message: "Login success.", data: token));
     }
 
+    [PermissionAuthorize(Permissions.ResetPassword)]
     [HttpPost("customer/change-password")]
     public async Task<ActionResult<SuccessResponseWithoutData>> CustomerChangePassword(
         [FromBody] CustomerChangePasswordDto customerChangePasswordDto)
     {
-        var email = HttpContext.User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.Email)?.Value;
+        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
         await _authService.CustomerChangePassword(email, customerChangePasswordDto);
         return Ok(RenderSuccessResponseWithoutData(message: "Change password success."));
     }
-    
+
     [HttpPost("customer/request-reset-password")]
     public async Task<ActionResult<SuccessResponseWithoutData>> CustomerRequestResetPassword(
         [FromBody] CustomerRequestResetPasswordDto customerChangePasswordDto)
     {
         await _authService.CustomerSendEmailReset(customerChangePasswordDto.Email);
-        
+
         return Ok(RenderSuccessResponseWithoutData(message: "Please check your email to reset password."));
     }
-    
+
     [PermissionAuthorize(Permissions.ResetPassword)]
     [HttpPost("customer/reset-password")]
     public async Task<ActionResult<SuccessResponseWithoutData>> CustomerResetPassword(
         [FromBody] CustomerResetPasswordDto customerResetPasswordDto)
     {
-        var email = HttpContext.User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.Email)?.Value;
+        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
         await _authService.CustomerResetPassword(email, customerResetPasswordDto);
-        
+
         return Ok(RenderSuccessResponseWithoutData(message: "Reset password success!."));
     }
 }

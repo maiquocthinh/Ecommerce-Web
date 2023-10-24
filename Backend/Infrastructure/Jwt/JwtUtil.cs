@@ -36,6 +36,23 @@ public class JwtUtil
         return tokenHandler.WriteToken(token);
     }
 
+    public string GenerateToken(IEnumerable<Claim> claims, DateTime expired)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_secretKey);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = expired,
+            SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            Audience = _audience,
+            Issuer = _issuer,
+        };
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
+
     public List<Claim>? ValidateToken(string token)
     {
         try
@@ -66,7 +83,7 @@ public class JwtUtil
         }
     }
     
-    private static TimeSpan ParseTimeSpan(string input)
+    public static TimeSpan ParseTimeSpan(string input)
     {
         // Kiểm tra và trích xuất giá trị số và đơn vị thời gian
         int value = int.Parse(input.Substring(0, input.Length - 1));

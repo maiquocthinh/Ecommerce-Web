@@ -54,31 +54,46 @@ public class AuthService : IAuthService
             throw new UnauthorizedException("Email or Password wrong!");
 
         // generate refresh token
-        var rt = await _refreshTokenRepository.GetByEmployeeId(employee!.Id) ??
-                 await _refreshTokenRepository.Add(new RefreshToken { EmployeeId = employee.Id });
-
-        var refreshToken = _jwtUtil.GenerateToken(new Claim[]
-            {
-                new Claim(AppClaimTypes.RefreshTokenId, rt.Id.ToString() ?? string.Empty),
-            }
-            , _employeeRefreshTokenExpired);
+        var rtExpired = DateTime.Now.Add(JwtUtil.ParseTimeSpan(_employeeRefreshTokenExpired));
+        var rt = await _refreshTokenRepository.Add(new RefreshToken { EmployeeId = employee.Id, ExpiresAt = rtExpired });
+        var refreshToken = _jwtUtil.GenerateToken(new Claim[] { new Claim(AppClaimTypes.RefreshTokenId, rt.Id.ToString() ?? string.Empty) }, rtExpired);
 
         rt.Token = refreshToken;
         await _refreshTokenRepository.Update(rt);
 
         // generate access token
+        var atExpired = DateTime.Now.Add(JwtUtil.ParseTimeSpan(_employeeAccessTokenExpired));
         var accessToken = _jwtUtil.GenerateToken(new Claim[]
             {
                 new Claim(ClaimTypes.Email, employee.Email),
                 new Claim(ClaimTypes.GivenName, employee.FirstName),
                 new Claim(ClaimTypes.Surname, employee.LastName),
-                new Claim(AppClaimTypes.Avatar, employee.AvatarUrl),
+                new Claim(AppClaimTypes.AvatarUrl, employee.AvatarUrl),
             }.Concat(
                 employee?.Role?.PermissionList?.Select(permission
                     => new Claim(AppClaimTypes.Permissions, permission)) ?? Array.Empty<Claim>())
-            .ToImmutableArray(), _customerAccessTokenExpired);
+            .ToImmutableArray(), atExpired);
 
-        return new RefreshTokenAndAccessTokenDto { AccessToken = accessToken, RefreshToken = refreshToken };
+        return new RefreshTokenAndAccessTokenDto
+        {
+            AccessToken = accessToken,
+            AccessTokenExpiredIn = atExpired,
+            RefreshToken = refreshToken,
+            RefreshTokenExpiredIn = rtExpired
+        };
+    }
+
+    public async Task EmployeeLogout(RefreshTokenInputDto refreshTokenInputDto)
+    {
+        // jwt decode
+        var claims = _jwtUtil.ValidateToken(refreshTokenInputDto.RefreshToken);
+        // find and compare with refresh token in db
+        string? refreshTokenId = claims?.Find(c => c.Type == AppClaimTypes.RefreshTokenId)?.Value;
+        if (refreshTokenId is null) throw new UnauthorizedException("Refresh Token Invalid");
+
+        // delete refresh token in db
+        var removeSuccess = await _refreshTokenRepository.Remove(new Guid(refreshTokenId));
+        if (!removeSuccess) throw new BadRequestException("Logout fail.");
     }
 
     public async Task<AccessTokenDto> EmployeeRefreshAccessToken(RefreshTokenInputDto refreshTokenInputDto)
@@ -97,20 +112,21 @@ public class AuthService : IAuthService
         if (employee is null) throw new ForbiddenException("Cannot Refresh Access Token");
 
         // generate access token
+        var atExpired = DateTime.Now.Add(JwtUtil.ParseTimeSpan(_employeeAccessTokenExpired));
         var accessToken = _jwtUtil.GenerateToken(new Claim[]
                 {
                     new Claim(ClaimTypes.Email, employee.Email),
                     new Claim(ClaimTypes.GivenName, employee.FirstName),
                     new Claim(ClaimTypes.Surname, employee.LastName),
-                    new Claim(AppClaimTypes.Avatar, employee.AvatarUrl),
+                    new Claim(AppClaimTypes.AvatarUrl, employee.AvatarUrl),
                 }.Concat(
                     employee?.Role?.PermissionList?.Select(permission
                         => new Claim(AppClaimTypes.Permissions, permission)) ?? Array.Empty<Claim>())
                 .ToImmutableArray(),
-            _employeeAccessTokenExpired
+            atExpired
         );
 
-        return new AccessTokenDto() { AccessToken = accessToken };
+        return new AccessTokenDto() { AccessToken = accessToken, AccessTokenExpiredIn = atExpired};
     }
 
     public async Task<Customer> RegisterNewCustomer(CustomerRegisterDto customerRegisterDto)
@@ -146,13 +162,14 @@ public class AuthService : IAuthService
         if (!BCrypt.Net.BCrypt.Verify(customerLoginDto.Password, customer.HashedPassword))
             throw new UnauthorizedException("Email or Password wrong!");
         // generate access token
+        var atExpired = DateTime.Now.Add(JwtUtil.ParseTimeSpan(_customerAccessTokenExpired));
         var accessToken = _jwtUtil.GenerateToken(new Claim[]
         {
             new Claim(ClaimTypes.Email, customer.Email),
             new Claim(ClaimTypes.GivenName, customer.FirstName),
             new Claim(ClaimTypes.Surname, customer.LastName),
-        }, _customerAccessTokenExpired);
-        return new AccessTokenDto() { AccessToken = accessToken };
+        }, atExpired);
+        return new AccessTokenDto() { AccessToken = accessToken, AccessTokenExpiredIn = atExpired};
     }
 
     public async Task CustomerChangePassword(string? email, CustomerChangePasswordDto customerChangePasswordDto)

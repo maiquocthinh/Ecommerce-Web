@@ -25,4 +25,13 @@ public class RefreshTokenRepository : SqlServerRepository<RefreshToken>, IRefres
     {
         return await _dbSet.Where(rt => rt.EmployeeId == employeeId).FirstOrDefaultAsync();
     }
+
+    public async Task<bool> Remove(Guid id)
+    {
+        var refreshToken = await GetById(id);
+        if (refreshToken is null) return false;
+        _dbSet.Remove(refreshToken);
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }
