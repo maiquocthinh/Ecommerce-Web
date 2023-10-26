@@ -120,7 +120,7 @@ public partial class DBContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.CustomerId).HasColumnName("customer_id");
-            entity.Property(e => e.ProductsVersionsId).HasColumnName("products_versions_id");
+            entity.Property(e => e.ProductsVersionId).HasColumnName("products_version_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
@@ -132,8 +132,8 @@ public partial class DBContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CartItem_Customer");
 
-            entity.HasOne(d => d.ProductsVersions).WithMany(p => p.Carts)
-                .HasForeignKey(d => d.ProductsVersionsId)
+            entity.HasOne(d => d.ProductsVersion).WithMany(p => p.Carts)
+                .HasForeignKey(d => d.ProductsVersionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CartItem_ProductVersion");
         });
