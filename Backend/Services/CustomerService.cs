@@ -2,6 +2,7 @@ using System.Net;
 using AutoMapper;
 using Backend.Common.Exceptions;
 using Backend.DTOs;
+using Backend.Infrastructure.Jwt;
 using Backend.Infrastructure.Utils;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
@@ -13,37 +14,38 @@ namespace Backend.Services;
 
 public class CustomerService : ICustomerService
 {
+    private readonly HttpContext _httpContext;
     private readonly IMapper _mapper;
     private readonly ICustomerRepository _customerRepository;
     private readonly IAddressRepository _addressRepository;
     private readonly IShippingAddressRepository _shippingAddressRepository;
 
-    public CustomerService(IMapper mapper, ICustomerRepository customerRepository, IAddressRepository addressRepository, IShippingAddressRepository shippingAddressRepository)
+    public CustomerService(IHttpContextAccessor httpContextAccessor, IMapper mapper, ICustomerRepository customerRepository, IAddressRepository addressRepository, IShippingAddressRepository shippingAddressRepository)
     {
+        _httpContext = httpContextAccessor.HttpContext;
         _mapper = mapper;
         _customerRepository = customerRepository;
         _addressRepository = addressRepository;
         _shippingAddressRepository = shippingAddressRepository;
     }
 
-    public async Task<CustomerProfileDto> GetProfile(string? email)
+    public async Task<CustomerProfileDto> GetProfile()
     {
-        if (email is null) throw new UnauthorizedException("Please login to continue");
-        var customer = await _customerRepository.GetByEmail(email);
+        int customerId = int.Parse(_httpContext?.User.Claims.FirstOrDefault(c => c.Type == AppClaimTypes.CustomerId)?.Value);
+        var customer = await _customerRepository.GetById(customerId);
         if (customer is null) throw new NotFoundException("Customer not found.");
 
         return _mapper.Map<CustomerProfileDto>(customer);
     }
 
-    public async Task<CustomerProfileDto> UpdateProfile(string? email,
-        CustomerProfileUpdateDto customerProfileUpdateDto)
+    public async Task<CustomerProfileDto> UpdateProfile(CustomerProfileUpdateDto customerProfileUpdateDto)
     {
         // check all properties of customerProfileUpdateDto are null? if all is null => not update
         if (Utils.AreAllPropertiesNull(customerProfileUpdateDto))
             throw new CustomHttpException(statusCode: HttpStatusCode.OK, message: "Not thing update.");
 
-        if (email is null) throw new UnauthorizedException("Please login to continue");
-        var customer = await _customerRepository.GetByEmail(email);
+        int customerId = int.Parse(_httpContext?.User.Claims.FirstOrDefault(c => c.Type == AppClaimTypes.CustomerId)?.Value);
+        var customer = await _customerRepository.GetById(customerId);
         if (customer is null) throw new NotFoundException("Customer not found.");
 
         // check common properties of customerProfileUpdateDto and customer are different?
@@ -63,23 +65,27 @@ public class CustomerService : ICustomerService
         return _mapper.Map<CustomerProfileDto>(customer);
     }
 
-    public async Task<IEnumerable<ShippingAddressDto>> GetAddressList(string? email)
+    public async Task<IEnumerable<ShippingAddressDto>> GetAddressList()
     {
-        if (email is null) throw new UnauthorizedException("Please login to continue");
-        var shippingAddressList = await _shippingAddressRepository.Where(sa => sa.Customer.Email == email);
+        int customerId = int.Parse(_httpContext?.User.Claims.FirstOrDefault(c => c.Type == AppClaimTypes.CustomerId)?.Value);
+        var customer = await _customerRepository.GetById(customerId);
+        if (customer is null) throw new NotFoundException("Customer not found.");
+
+        var shippingAddressList = await _shippingAddressRepository.Where(sa => sa.CustomerId == customerId);
 
         return shippingAddressList.Select(ad => _mapper.Map<ShippingAddressDto>(ad)).ToList();
     }
 
-    public async Task<ShippingAddressDto> CreateAddress(string? email, ShippingAddressCreateDto shippingAddressCreateDto)
+    public async Task<ShippingAddressDto> CreateAddress(ShippingAddressCreateDto shippingAddressCreateDto)
     {
-        if (email is null) throw new UnauthorizedException("Please login to continue");
-        var customer = await _customerRepository.GetByEmail(email);
+        int customerId = int.Parse(_httpContext?.User.Claims.FirstOrDefault(c => c.Type == AppClaimTypes.CustomerId)?.Value);
+        var customer = await _customerRepository.GetById(customerId);
         if (customer is null) throw new NotFoundException("Customer not found.");
+
         var newAddress = await _addressRepository.Add(_mapper.Map<Address>(shippingAddressCreateDto));
         var newShippingAddress = await _shippingAddressRepository.Add(new ShippingAddress
         {
-            CustomerId = (int)customer.Id!,
+            CustomerId = customerId,
             AddressId = newAddress.Id,
             RecipientName = shippingAddressCreateDto.RecipientName,
             PhoneNumber = shippingAddressCreateDto.PhoneNumber,
@@ -89,9 +95,12 @@ public class CustomerService : ICustomerService
         return _mapper.Map<ShippingAddressDto>(newShippingAddress);
     }
 
-    public async Task<ShippingAddressDto> UpdateAddress(string? email, int shippingAddressId, ShippingAddressUpdateDto shippingAddressUpdateDto)
+    public async Task<ShippingAddressDto> UpdateAddress(int shippingAddressId, ShippingAddressUpdateDto shippingAddressUpdateDto)
     {
-        if (email is null) throw new UnauthorizedException("Please login to continue");
+        int customerId = int.Parse(_httpContext?.User.Claims.FirstOrDefault(c => c.Type == AppClaimTypes.CustomerId)?.Value);
+        var customer = await _customerRepository.GetById(customerId);
+        if (customer is null) throw new NotFoundException("Customer not found.");
+
         var shippingAddress = await _shippingAddressRepository.GetById(shippingAddressId);
         if (shippingAddress == null) throw new NotFoundException("Shipping address not found.");
 
@@ -102,7 +111,7 @@ public class CustomerService : ICustomerService
         if (shippingAddressUpdateDto.RecipientName != null) shippingAddress.RecipientName = shippingAddressUpdateDto.RecipientName;
         if (shippingAddressUpdateDto.PhoneNumber != null) shippingAddress.PhoneNumber = shippingAddressUpdateDto.PhoneNumber;
         if (shippingAddressUpdateDto.IsDefault != null) shippingAddress.IsDefault = shippingAddressUpdateDto.IsDefault;
-        
+
         try
         {
             await _shippingAddressRepository.Update(shippingAddress);
@@ -114,13 +123,16 @@ public class CustomerService : ICustomerService
                     if (error.Number == 50000)
                         throw new BadRequestException(error.Message);
         }
-        
+
         return _mapper.Map<ShippingAddressDto>(shippingAddress);
     }
 
-    public async Task DeleteAddress(string? email, int shippingAddressId)
+    public async Task DeleteAddress(int shippingAddressId)
     {
-        if (email is null) throw new UnauthorizedException("Please login to continue");
+        int customerId = int.Parse(_httpContext?.User.Claims.FirstOrDefault(c => c.Type == AppClaimTypes.CustomerId)?.Value);
+        var customer = await _customerRepository.GetById(customerId);
+        if (customer is null) throw new NotFoundException("Customer not found.");
+
         var shippingAddress = await _shippingAddressRepository.GetById(shippingAddressId);
         if (shippingAddress == null) throw new NotFoundException("Shipping address not found.");
         await _shippingAddressRepository.Remove(shippingAddressId);

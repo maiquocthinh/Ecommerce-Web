@@ -126,7 +126,7 @@ public class AuthService : IAuthService
             atExpired
         );
 
-        return new AccessTokenDto() { AccessToken = accessToken, AccessTokenExpiredIn = atExpired};
+        return new AccessTokenDto() { AccessToken = accessToken, AccessTokenExpiredIn = atExpired };
     }
 
     public async Task<Customer> RegisterNewCustomer(CustomerRegisterDto customerRegisterDto)
@@ -165,11 +165,12 @@ public class AuthService : IAuthService
         var atExpired = DateTime.Now.Add(JwtUtil.ParseTimeSpan(_customerAccessTokenExpired));
         var accessToken = _jwtUtil.GenerateToken(new Claim[]
         {
+            new Claim(AppClaimTypes.CustomerId, customer.Id.ToString()!),
             new Claim(ClaimTypes.Email, customer.Email),
             new Claim(ClaimTypes.GivenName, customer.FirstName),
             new Claim(ClaimTypes.Surname, customer.LastName),
         }, atExpired);
-        return new AccessTokenDto() { AccessToken = accessToken, AccessTokenExpiredIn = atExpired};
+        return new AccessTokenDto() { AccessToken = accessToken, AccessTokenExpiredIn = atExpired };
     }
 
     public async Task CustomerChangePassword(string? email, CustomerChangePasswordDto customerChangePasswordDto)

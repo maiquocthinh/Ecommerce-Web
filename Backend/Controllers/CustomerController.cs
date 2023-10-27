@@ -1,4 +1,4 @@
-using System.Security.Claims;
+using Backend.Data;
 using Backend.DTOs;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -19,61 +19,55 @@ public class CustomerController : BaseController
 
     [Authorize]
     [HttpGet("profile")]
-    public async Task<ActionResult<CustomerProfileDto>> GetProfile()
+    public async Task<ActionResult<SuccessResponse<CustomerProfileDto>>> GetProfile()
     {
-        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-        var profile = await _customerService.GetProfile(email);
+        var profile = await _customerService.GetProfile();
 
         return Ok(RenderSuccessResponse(data: profile));
     }
 
     [Authorize]
     [HttpPatch("profile")]
-    public async Task<ActionResult<CustomerProfileDto>> UpdateProfile([FromBody] CustomerProfileUpdateDto customerProfileUpdateDto)
+    public async Task<ActionResult<SuccessResponse<CustomerProfileDto>>> UpdateProfile([FromBody] CustomerProfileUpdateDto customerProfileUpdateDto)
     {
-        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-        var profile = await _customerService.UpdateProfile(email, customerProfileUpdateDto);
+        var profile = await _customerService.UpdateProfile(customerProfileUpdateDto);
 
         return Ok(RenderSuccessResponse<object>(message: "Update profile success.", data: profile));
     }
 
     [Authorize]
     [HttpGet("addresses")]
-    public async Task<ActionResult<object>> GetAddressList()
+    public async Task<ActionResult<SuccessResponse<IEnumerable<ShippingAddressDto>>>> GetAddressList()
     {
-        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-        var addressList = await _customerService.GetAddressList(email);
+        var addressList = await _customerService.GetAddressList();
 
         return Ok(RenderSuccessResponse<object>(data: addressList));
     }
 
     [Authorize]
     [HttpPost("addresses")]
-    public async Task<ActionResult<ShippingAddressDto>> CreateAddress([FromBody] ShippingAddressCreateDto shippingAddressCreateDto)
+    public async Task<ActionResult<SuccessResponse<ShippingAddressDto>>> CreateAddress([FromBody] ShippingAddressCreateDto shippingAddressCreateDto)
     {
-        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-        var addressList = await _customerService.CreateAddress(email, shippingAddressCreateDto);
+        var address = await _customerService.CreateAddress(shippingAddressCreateDto);
 
-        return Ok(RenderSuccessResponse<ShippingAddressDto>(message: "Create shipping address success.", data: addressList));
+        return Ok(RenderSuccessResponse<ShippingAddressDto>(message: "Create shipping address success.", data: address));
     }
 
     [Authorize]
     [HttpPatch("addresses/{id}")]
-    public async Task<ActionResult<ShippingAddressDto>> UpdateAddress([FromRoute] int id, [FromBody] ShippingAddressUpdateDto shippingAddressUpdateDto)
+    public async Task<ActionResult<SuccessResponse<ShippingAddressDto>>> UpdateAddress([FromRoute] int id, [FromBody] ShippingAddressUpdateDto shippingAddressUpdateDto)
     {
-        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-        var addressList = await _customerService.UpdateAddress(email, id, shippingAddressUpdateDto);
+        var address = await _customerService.UpdateAddress(id, shippingAddressUpdateDto);
 
-        return Ok(RenderSuccessResponse<ShippingAddressDto>(message: "Update shipping address success.", data: addressList));
+        return Ok(RenderSuccessResponse<ShippingAddressDto>(message: "Update shipping address success.", data: address));
     }
 
     [Authorize]
     [HttpDelete("addresses/{id}")]
-    public async Task<IActionResult> DeteleAddress([FromRoute] int id)
+    public async Task<ActionResult<SuccessResponseWithoutData>> DeteleAddress([FromRoute] int id)
     {
-        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-        await _customerService.DeleteAddress(email, id);
+        await _customerService.DeleteAddress(id);
 
-        return Ok(RenderSuccessResponse<object>(message: "Delete shipping address success."));
+        return Ok(RenderSuccessResponseWithoutData(message: "Delete shipping address success."));
     }
 }
