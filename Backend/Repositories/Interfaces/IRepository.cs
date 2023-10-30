@@ -1,3 +1,4 @@
+using Backend.Models;
 using System.Linq.Expressions;
 
 namespace Backend.Repositories.Interfaces;
@@ -10,4 +11,6 @@ public interface IRepository<T> where T : class
     Task<IEnumerable<T>> GetAll();
     Task<T> Update(T obj);
     Task<bool> Remove(int id);
+    Task<IEnumerable<T>> AddMultiple(IEnumerable<T> objs);
+    Task<bool> RemoveMultiple(IEnumerable<T> objs);
 }

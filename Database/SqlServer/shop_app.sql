@@ -1,4 +1,4 @@
-USE newdb;
+USE shop_app;
 
 CREATE TABLE [addresses]
 (
@@ -144,11 +144,11 @@ CREATE TABLE [carts]
     [id]                   INT CONSTRAINT PK_Carts PRIMARY KEY NOT NULL IDENTITY (1, 1),
     [quantity]             INT             NOT NULL CHECK ([quantity] > 0),
     [customer_id]          INT             NOT NULL,
-    [products_versions_id] INT             NOT NULL,
+    [products_version_id]  INT             NOT NULL,
     [updated_at]           DATETIME        NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     [created_at]           DATETIME        NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     CONSTRAINT FK_CartItem_Customer FOREIGN KEY ([customer_id]) REFERENCES [customers] ([id]),
-    CONSTRAINT FK_CartItem_ProductVersion FOREIGN KEY ([products_versions_id]) REFERENCES [product_versions] ([id]),
+    CONSTRAINT FK_CartItem_ProductVersion FOREIGN KEY ([products_version_id]) REFERENCES [product_versions] ([id]),
 );
 
 CREATE TABLE [imports]
@@ -177,9 +177,9 @@ CREATE TABLE [orders]
 (
     [id]                INT CONSTRAINT PK_Orders PRIMARY KEY NOT NULL IDENTITY (1, 1),
     [status]            VARCHAR(255)    NOT NULL CHECK ([status] IN ('processing', 'shipped', 'delivering', 'cancelled')) DEFAULT 'processing',
-    [employee_id]       INT             NOT NULL,
+    [employee_id]       INT,
     [customer_id]       INT,
-    [recipient_name] NVARCHAR(255)   NOT NULL,
+    [recipient_name]    NVARCHAR(255)   NOT NULL,
     [phone_number]      VARCHAR(20)     NOT NULL,
     [address]           NVARCHAR(255)   NOT NULL,
     [total_price]       INT             NOT NULL CHECK ([total_price] >= 0),
@@ -193,7 +193,8 @@ CREATE TABLE [order_details]
     [id]                 INT CONSTRAINT PK_OrderDetails PRIMARY KEY NOT NULL IDENTITY (1, 1),
     [order_id]           INT             NOT NULL,
     [product_version_id] INT             NOT NULL,
-    [import_shipment_id] INT             NOT NULL,
+    [import_shipment_id] INT,
+    [origin_price]       INT             NOT NULL CHECK ([origin_price] >= 0),
     [price]              INT             NOT NULL CHECK ([price] >= 0),
     [quantity]           INT             NOT NULL CHECK ([quantity] > 0),
     [created_at]         DATETIME        NOT NULL DEFAULT (CURRENT_TIMESTAMP),
@@ -257,7 +258,7 @@ CREATE TABLE refresh_tokens
 
 -- Đây là ràng buộc khi INSERT hoặc UPDATE 1 row thì nếu đặt nó là địa chỉ giao hàng mặc định 
 -- thì các địa chỉ giao hàng khác sẽ không được đặt là mặc định
-CREATE TRIGGER trg_ShippingAddressDefault
+CREATE OR ALTER TRIGGER trg_ShippingAddressDefault
     ON shipping_addresses
     INSTEAD OF INSERT, UPDATE
     AS
@@ -299,7 +300,7 @@ BEGIN
 END;
 
 -- Đây ràng buộc nếu địa chỉ giao hàng đang là mặc định thì nếu set nó về is_default = 0 thì sẽ báo lỗi
-CREATE TRIGGER trg_RequireOneShippingAddressDefault
+CREATE OR ALTER TRIGGER trg_RequireOneShippingAddressDefault
     ON shipping_addresses
     AFTER UPDATE
     AS
@@ -313,4 +314,57 @@ BEGIN
             RAISERROR ('Không thể thay đổi trạng thái mặc định của địa chỉ giao hàng.', 16, 1);
             ROLLBACK TRANSACTION;
         END
+END;
+
+-- Đây ràng buộc nếu địa chỉ giao hàng đang là mặc định nếu xóa nó thì sẽ báo lỗi
+CREATE TRIGGER trg_PreventShippingAddressDefaultDeletion
+ON shipping_addresses
+INSTEAD OF DELETE
+AS
+BEGIN
+    -- Kiểm tra xem có bản ghi nào đang là is_default = 1 trong dữ liệu DELETE không
+    IF EXISTS (
+        SELECT 1
+        FROM DELETED
+        WHERE is_default = 1
+    )
+    BEGIN
+        -- Phát ra lỗi và không cho xóa
+        RAISERROR ('Không thể xóa địa chỉ giao hàng mặc định.', 16, 1);
+    END
+    ELSE
+    BEGIN
+        -- Nếu không có bản ghi nào đang là is_default = 1, thực hiện xóa
+        DELETE s
+        FROM shipping_addresses s
+        INNER JOIN DELETED d ON s.id = d.id;
+    END
+END;
+
+
+-- Tự động giảm số lường trong kho khi order_detail được insert
+CREATE OR ALTER TRIGGER trg_DecreaseProductInventory
+ON order_details
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Kiểm tra xem sản phẩm có đủ số lượng tồn kho không
+    IF EXISTS (SELECT 1
+               FROM product_versions pv
+               INNER JOIN inserted od ON pv.id = od.product_version_id
+               WHERE pv.inventory - od.quantity < 0)
+    BEGIN
+        -- Nếu không đủ, rollback và báo lỗi
+        ROLLBACK TRANSACTION;
+        RAISERROR('Not enough stock.', 16, 1);
+        RETURN;
+    END
+
+    -- Nếu đủ, thực hiện trừ số lượng sản phẩm
+    UPDATE pv
+    SET pv.inventory = pv.inventory - od.quantity
+    FROM product_versions pv
+    INNER JOIN inserted od ON pv.id = od.product_version_id;
 END;

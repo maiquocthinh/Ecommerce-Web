@@ -135,6 +135,17 @@ public class CustomerService : ICustomerService
 
         var shippingAddress = await _shippingAddressRepository.GetById(shippingAddressId);
         if (shippingAddress == null) throw new NotFoundException("Shipping address not found.");
-        await _shippingAddressRepository.Remove(shippingAddressId);
+
+        try
+        {
+            await _shippingAddressRepository.Remove(shippingAddressId);
+        }
+        catch (DbUpdateException e)
+        {
+            if (e.InnerException is SqlException sqlException)
+                foreach (SqlError error in sqlException.Errors)
+                    if (error.Number == 50000)
+                        throw new BadRequestException(error.Message);
+        }
     }
 }

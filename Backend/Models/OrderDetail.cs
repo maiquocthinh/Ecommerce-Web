@@ -5,15 +5,17 @@ namespace Backend.Models;
 
 public partial class OrderDetail
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
     public int OrderId { get; set; }
 
     public int ProductVersionId { get; set; }
 
-    public int ImportShipmentId { get; set; }
+    public int? ImportShipmentId { get; set; }
 
     public int Price { get; set; }
+
+    public int OriginPrice { get; set; }
 
     public int Quantity { get; set; }
 

@@ -56,4 +56,44 @@ public abstract class SqlServerRepository<T>: IRepository<T> where T : class
         await _context.SaveChangesAsync();
         return true;
     }
+
+    public async Task<IEnumerable<T>> AddMultiple(IEnumerable<T> objs)
+    {
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                _dbSet.AddRange(objs);
+                await _context.SaveChangesAsync();
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+
+        return objs;
+    }
+
+    public async Task<bool> RemoveMultiple(IEnumerable<T> objs)
+    {
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                _dbSet.RemoveRange(objs);
+                await _context.SaveChangesAsync();
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

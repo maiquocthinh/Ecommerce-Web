@@ -407,7 +407,10 @@ public partial class DBContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_OrderDetails");
 
-            entity.ToTable("order_details");
+            entity.ToTable("order_details", tb =>
+            {
+                tb.HasTrigger("trg_DecreaseProductInventory");
+            });
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
@@ -417,6 +420,7 @@ public partial class DBContext : DbContext
             entity.Property(e => e.ImportShipmentId).HasColumnName("import_shipment_id");
             entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.Price).HasColumnName("price");
+            entity.Property(e => e.OriginPrice).HasColumnName("origin_price");
             entity.Property(e => e.ProductVersionId).HasColumnName("product_version_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
 
@@ -651,6 +655,7 @@ public partial class DBContext : DbContext
             {
                 tb.HasTrigger("trg_ShippingAddressDefault");
                 tb.HasTrigger("trg_RequireOneShippingAddressDefault");
+                tb.HasTrigger("trg_PreventShippingAddressDefaultDeletion");
             });
 
             entity.Property(e => e.Id).HasColumnName("id");
