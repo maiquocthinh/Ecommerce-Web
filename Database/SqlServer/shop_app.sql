@@ -368,3 +368,79 @@ BEGIN
     FROM product_versions pv
     INNER JOIN inserted od ON pv.id = od.product_version_id;
 END;
+
+-- Không cho cập nhật trạng thái đơn hàng khi đã hoặc đang giao
+-- Không cho cập nhật trạng thái đơn hàng khi đã hủy
+CREATE OR ALTER TRIGGER trg_PreventUpdateOrderStatus
+ON orders
+INSTEAD OF UPDATE
+AS
+BEGIN
+    -- Kiểm tra các dòng sẽ được cập nhật
+    IF EXISTS (SELECT 1 FROM inserted WHERE status IN ('shipped', 'delivering'))
+    BEGIN
+        -- Không cho phép cập nhật trạng thái sang "shipped" hoặc "delivering"
+        RAISERROR('Không thể cập nhật trạng thái đơn hàng.', 16, 1);
+    END
+    ELSE IF EXISTS (SELECT 1 FROM inserted i INNER JOIN deleted d ON i.id = d.id WHERE d.status = 'cancelled')
+    BEGIN
+        RAISERROR('Không thể cập nhật trạng thái cho đơn hàng đã hủy.', 16, 1);
+    END
+    ELSE
+    BEGIN
+        UPDATE orders
+        SET status = i.status
+        FROM orders o
+        INNER JOIN inserted i ON o.id = i.id;
+    END
+END;
+
+
+-- Hoàn lại số lượng tồn kho khi hủy đơn hàng
+CREATE OR ALTER TRIGGER trg_UpdateInventoryOnOrderCancel
+ON orders
+AFTER UPDATE
+AS
+BEGIN
+    IF UPDATE(status) -- Chỉ xử lý khi trường 'status' của bảng orders được cập nhật
+    BEGIN
+        DECLARE @order_id INT;
+        DECLARE @newStatus VARCHAR(255);
+        DECLARE @oldStatus VARCHAR(255);
+
+        -- Lấy trạng thái cũ và mới của đơn hàng
+        SELECT @order_id = inserted.id, @newStatus = inserted.status, @oldStatus = deleted.status
+        FROM inserted
+        INNER JOIN deleted ON inserted.id = deleted.id;
+
+        -- Kiểm tra nếu trạng thái mới là 'cancelled' và trạng thái cũ không phải 'cancelled'
+        IF @newStatus = 'cancelled' AND @oldStatus != 'cancelled'
+        BEGIN
+            -- Khai báo biến để lưu product_version_id và quantity từ order_detail
+            DECLARE @product_version_id INT;
+            DECLARE @quantity INT;
+
+            -- Khai báo con trỏ để lặp qua các dòng order_details
+            DECLARE detail_cursor CURSOR FOR
+            SELECT product_version_id, quantity
+            FROM order_details
+            WHERE order_id = @order_id;
+
+            OPEN detail_cursor;
+            FETCH NEXT FROM detail_cursor INTO @product_version_id, @quantity;
+
+            WHILE @@FETCH_STATUS = 0
+            BEGIN
+                -- Điều chỉnh số lượng inventory cho product_version tương ứng
+                UPDATE product_versions
+                SET inventory = inventory + @quantity
+                WHERE id = @product_version_id;
+
+                FETCH NEXT FROM detail_cursor INTO @product_version_id, @quantity;
+            END
+
+            CLOSE detail_cursor;
+            DEALLOCATE detail_cursor;
+        END
+    END
+END;

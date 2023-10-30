@@ -31,7 +31,7 @@ public abstract class SqlServerRepository<T>: IRepository<T> where T : class
 
     public virtual async Task<IEnumerable<T>> Where(Expression<Func<T, bool>> predicate)
     {
-        return await _dbSet.Where(predicate).ToListAsync();
+        return await _dbSet.Where(predicate).ToListAsync() ;
     }
 
     public virtual async Task<IEnumerable<T>> GetAll()

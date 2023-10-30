@@ -69,6 +69,7 @@ public class CheckoutService : ICheckoutService
 
         // get Shipping Info
         var shippingInfo = customer.ShippingAddresses.FirstOrDefault(sa => sa.IsDefault == true);
+        if (shippingInfo is null) throw new ConflictException("A minimum of 1 shipping address is required before placing an order");
         var addresss = shippingInfo.Address;
 
         // create order
@@ -84,10 +85,8 @@ public class CheckoutService : ICheckoutService
             var Discount = c.ProductsVersion.Product.Discounts.FirstOrDefault(d => d.EndDate > DateTime.Now && d.Active == true && d.Quantity > 0);
             var Price = c.ProductsVersion.Price;
 
-
             return new OrderDetail
             {
-                ImportShipmentId = 1,
                 OrderId = (int)order.Id!,
                 ProductVersionId = c.ProductsVersionId,
                 Quantity = c.Quantity,
@@ -259,4 +258,123 @@ public class CheckoutService : ICheckoutService
         return null;
     }
 
+    public async Task<CheckoutSuccessDto> CheckoutWithProductsAndAuthen(CheckoutWithProductsInputDto checkoutInput)
+    {
+        // vaidate customer
+        var customerId =
+            int.Parse(_httpContext?.User.Claims.FirstOrDefault(c => c.Type == AppClaimTypes.CustomerId)?.Value);
+        var customer = await _customerRepository.GetById(customerId);
+        if (customer is null) throw new NotFoundException("Customer not found.");
+
+        // check have any product to order?
+        if (checkoutInput.Items.IsNullOrEmpty())
+            throw new BadRequestException("Notthing to order!");
+
+        // check in stock
+        var itemProductVersionIds = checkoutInput.Items.Select(i => (int)i.ProductVersionId).ToList();
+        var productVersionsOrder = (await _productVersionRepository.Where(pv => itemProductVersionIds.Contains<int>((int)pv.Id)))
+            .Select(pv => new
+            {
+                ProductVersion = pv,
+                OrderQuantity = checkoutInput.Items.FirstOrDefault(i => i.ProductVersionId == pv.Id)?.Quantity
+            }).ToList();
+        var messagesError = new List<string>();
+
+        foreach (var pvo in productVersionsOrder)
+        {
+            if (pvo.ProductVersion.Inventory < pvo.OrderQuantity)
+                messagesError.Add($"{pvo.ProductVersion.Name} is not enough stock.");
+        }
+
+        if (!messagesError.IsNullOrEmpty())
+            throw new ConflictException(message: string.Join("\n", messagesError));
+
+        // get Shipping Info
+        var shippingInfo = customer.ShippingAddresses.FirstOrDefault(sa => sa.IsDefault == true);
+        if (shippingInfo is null) throw new ConflictException("A minimum of 1 shipping address is required before placing an order");
+        var address = shippingInfo.Address;
+
+        // create order
+        try
+        {
+            var order = await _orderRepository.Add(new Order
+            {
+                CustomerId = customer.Id,
+                RecipientName = shippingInfo.RecipientName,
+                PhoneNumber = shippingInfo.PhoneNumber,
+                Address = $"{address.SpecificAddress}, {address.Wards}, {address.Districts}, {address.Province}",
+            });
+            var orderDetails = productVersionsOrder.Select(pvo =>
+            {
+                var Discount = pvo.ProductVersion.Product.Discounts.FirstOrDefault(d => d.EndDate > DateTime.Now && d.Active == true && d.Quantity > 0);
+                var Price = pvo.ProductVersion.Price;
+                return new OrderDetail
+                {
+                    OrderId = (int)order.Id!,
+                    ProductVersionId = pvo.ProductVersion.Id,
+                    Quantity = (int)pvo.OrderQuantity!,
+                    OriginPrice = Price,
+                    Price = Discount is null ? Price : (int)Math.Round((decimal)(Price * (1 - Discount.DiscountPercent))!) * (int)pvo.OrderQuantity,
+                };
+            }).ToList();
+
+            order.TotalPrice = orderDetails.Sum(od => od.Price);
+            await _orderRepository.Update(order);
+
+            await _orderDetailRepository.AddMultiple(orderDetails);
+
+            // create checkoutSuccessDto
+            var checkoutSuccessDto = new CheckoutSuccessDto
+            {
+                OrderId = (int)order.Id!,
+                OrderStatus = order.Status,
+                TotalAmount = order.TotalPrice,
+                ShippingInfo = new ShippingInfo
+                {
+                    Address = order.Address,
+                    RecipientName = order.RecipientName,
+                    PhoneNumber = order.PhoneNumber,
+                },
+                OrderDetails = orderDetails.Select(od => new _OrderDetail
+                {
+                    ProductVersionId = od.ProductVersionId,
+                    ProductVersionName = od.ProductVersion.Name,
+                    Quantity = od.Quantity,
+                    OriginPrice = od.OriginPrice,
+                    Price = od.Price,
+                    TotalPrice = od.Price * od.Quantity,
+                })
+            };
+
+            // send email notify
+            string emailMessageJson = JsonConvert.SerializeObject(new EmailMessage
+            {
+                To = customer.Email!,
+                Subject = "New Order Notification",
+                Model = new NewOrderNotifyModel
+                {
+                    CustomerFirstname = shippingInfo.RecipientName,
+                    OrderId = (int)order.Id,
+                    OrderDate = order.CreatedAt.ToString("HH:mm:ss dd/MM/yy"),
+                    TotalPrice = order.TotalPrice,
+                    ShippingInfo = checkoutSuccessDto.ShippingInfo,
+                    OrderDetails = checkoutSuccessDto.OrderDetails
+                },
+                TemplateName = EmailTemplates.NewOrderNotify
+            });
+            _rabbitMqService.PublishMessage(queueName: QueueNames.EmailQueue, message: emailMessageJson);
+
+            // return checkoutSuccessDto
+            return checkoutSuccessDto;
+        }
+        catch (DbUpdateException e)
+        {
+            if (e.InnerException is SqlException sqlException)
+                foreach (SqlError error in sqlException.Errors)
+                    if (error.Number == 50000)
+                        throw new BadRequestException(error.Message);
+        }
+
+        return null;
+    }
 }

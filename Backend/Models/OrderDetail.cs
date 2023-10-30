@@ -21,7 +21,7 @@ public partial class OrderDetail
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual ImportShipment ImportShipment { get; set; } = null!;
+    public virtual ImportShipment? ImportShipment { get; set; }
 
     public virtual Order Order { get; set; } = null!;
 

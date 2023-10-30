@@ -38,4 +38,15 @@ public class CheckoutController : BaseController
         return Ok(RenderSuccessResponse(data: result,
             message: "Thank you for your purchase. We will send you an order notifiacation email."));
     }
+
+
+    [AllowAnonymous]
+    [HttpPost("product-with-authentication")]
+    public async Task<ActionResult<SuccessResponse<CheckoutSuccessDto>>> CheckoutWithProductAndQuantityWithAuthen(
+        [FromBody] CheckoutWithProductsInputDto checkoutInput)
+    {
+        var result = await _checkoutService.CheckoutWithProductsAndAuthen(checkoutInput);
+        return Ok(RenderSuccessResponse(data: result,
+            message: "Thank you for your purchase. We will send you an order notifiacation email."));
+    }
 }

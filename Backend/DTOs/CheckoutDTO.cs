@@ -11,12 +11,16 @@ public class CheckoutWithCartItemsInputDto
     public IEnumerable<int> CartItemsIds { get; set; }
 }
 
-public class CheckoutInputDto
+public class CheckoutWithProductsInputDto
+{
+    [Required(ErrorMessage = "Items is required")]
+    public IEnumerable<CheckoutProductItem> Items { get; set; }
+}
+
+public class CheckoutInputDto: CheckoutWithProductsInputDto
 {
     [Required(ErrorMessage = "DeliveryInfo is required")]
     public DeliveryInfo DeliveryInfo { get; set; }
-    [Required(ErrorMessage = "Items is required")]
-    public IEnumerable<CheckoutProductItem> Items { get; set; }
 }
 
 // Output DTO

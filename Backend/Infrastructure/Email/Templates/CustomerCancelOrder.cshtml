@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>New Order Notification</title>
+    <title>Order Cancellation Notifications</title>
     <style>
         table {
             border-collapse: collapse;
@@ -27,15 +27,9 @@
                 <table width="600" cellpadding="20" cellspacing="0">
                     <tr>
                         <td bgcolor="#ffffff">
-                            <h1>New Order Notification</h1>
+                            <h1>Order Cancellation Confirmation</h1>
                             <p>Hello <strong>@Model.CustomerFirstname</strong>,</p>
-                            <p>Thank you for placing an order with our store. Your order has been confirmed and is currently being processed. Here are the details of your order:</p>
-                            <p><strong>Order ID:</strong> <u>#@Model.OrderId</u></p>
-                            <p><strong>Order Date:</strong> @Model.OrderDate</p>
-                            <p><strong>Shipping Information:</strong></p>
-                            <p style="margin-left: 20px;">Address: @Model.ShippingInfo.Address</p>
-                            <p style="margin-left: 20px;">Phone: @Model.ShippingInfo.PhoneNumber</p>
-                            <p style="margin-left: 20px;">Recipient Name: @Model.ShippingInfo.RecipientName</p>
+                            <p>We have received your request to cancel order with ID <u>#@Model.OrderId</u>. Your order has been successfully canceled. Here are the details of the canceled order:</p>
                             <table>
                                 <tr>
                                     <th align="left">Product</th>
@@ -51,9 +45,9 @@
                                     </tr>
                                 }
                             </table>
-                            <p>Total: <u>@Model.TotalPrice @Model.Currency</u></p>
-                            <p>We will notify you once your order has been shipped. Please monitor your account for order status updates.</p>
-                            <p>Best regards.</p>
+                            <p>If you wish to place a new order or have any questions or need further assistance, please feel free to contact us.</p>
+                            <p>We look forward to serving you in the future. Thank you for choosing our store!</p>
+                            <p>Best regards</p>
                         </td>
                     </tr>
                 </table>

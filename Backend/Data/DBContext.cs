@@ -367,7 +367,11 @@ public partial class DBContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Orders");
 
-            entity.ToTable("orders");
+            entity.ToTable("orders", tb =>
+            {
+                tb.HasTrigger("trg_PreventUpdateOrderStatus");
+                tb.HasTrigger("trg_UpdateInventoryOnOrderCancel");
+            });
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address)

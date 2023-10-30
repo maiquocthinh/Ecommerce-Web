@@ -41,7 +41,7 @@ public class CustomerController : BaseController
     {
         var addressList = await _customerService.GetAddressList();
 
-        return Ok(RenderSuccessResponse<object>(data: addressList));
+        return Ok(RenderSuccessResponse<IEnumerable<ShippingAddressDto>>(data: addressList));
     }
 
     [Authorize]

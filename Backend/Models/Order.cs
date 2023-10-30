@@ -23,9 +23,9 @@ public partial class Order
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual Customer? Customer { get; set; } = null!;
+    public virtual Customer? Customer { get; set; }
 
-    public virtual Employee Employee { get; set; } = null!;
+    public virtual Employee? Employee { get; set; }
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }
