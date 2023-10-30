@@ -5,5 +5,6 @@
     "/api/sale*": "/sales/$1",
     "/api/poster*": "/posters/$1",
     "/api/device*": "/devices/$1",
+    "/api/cart*": "/carts/$1",
     "/api/product*": "/products/$1"
 }

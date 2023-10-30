@@ -5,6 +5,8 @@ import { FaSearch } from "@react-icons/all-files/fa/FaSearch";
 import { FaUser } from "@react-icons/all-files/fa/FaUser";
 import { FaCar } from "@react-icons/all-files/fa/faCar";
 import { FaPhone } from "@react-icons/all-files/fa/faPhone";
+import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose"
+import { AiOutlineLoading3Quarters } from "@react-icons/all-files/ai/AiOutlineLoading3Quarters"
 import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,12 +14,17 @@ import HeaderItem from "./headerItem";
 import Cookies from "js-cookie";
 import Notification from "@/Components/Notification";
 import { useDispatch } from "react-redux";
+import { Fragment, useState } from "react"
 import { logout } from "@/app/action/UserAction";
+import SearchModal from "@/Components/Modal/SearchModal";
 interface NavbarProps {
 
 }
 const Navbar: React.FC<NavbarProps> = () => {
     const pathArr = useSelector((state: any) => state.path)
+    const [isResults, setIsResults] = useState<boolean>(false)
+    const [showSearchModal, setShowSearchModal] = useState<boolean>(false)
+    const [searchValue, setSearchValue] = useState<string>("")
     const route = useNavigate();
     const dispatch = useDispatch()
     const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn)
@@ -57,15 +64,23 @@ const Navbar: React.FC<NavbarProps> = () => {
                             <img src="https://cdn.cellphones.com.vn/media/logo/logo-cps-full-2.png" alt="avata" height={30} width={160} />
                         </Link>
                     </div>
-                    <div className="w-80 flex items-center justify-start">
+                    <div className="relative w-80 flex items-center justify-start">
                         <div className=" bg-white rounded-l-search px-3 border-r-2 cursor-pointer text-black">
                             <FaSearch className="h-10" />
                         </div>
-                        <input type="text" placeholder="bạn cần tìm gì ?" className="rounded-r-search h-10 w-full pr-6 pl-2 text-black" />
+                        <input value={searchValue} onChange={(e) => setSearchValue(e.target.value)} type="text" placeholder="bạn cần tìm gì ?" className="rounded-r-search h-10 w-full pr-6 pl-2 text-black" />
+                        {showSearchModal && (
+                            <Fragment>
+                                <div className="absolute right-4 cursor-pointer top-1/2 -translate-y-1/2 text-sm text-red-500">
+                                    {isResults ? <AiOutlineClose /> : <AiOutlineLoading3Quarters className="animate-spin" />}
+                                </div>
+                                <SearchModal />
+                            </Fragment>
+                        )}
                     </div>
                     <div className="md:flex gap-4 hidden">
                         {navListing?.length > 0 && navListing.map((item) => (
-                            <div className={`cursor-pointer`} key={item.id}>
+                            <div className={`cursor-pointer`} key={item.id} onClick={() => route(`/${item?.link}`)}>
                                 <div className={`flex items-center cursor-pointer text-white hover:invert transition-all duration-200 ease-linear`}>
                                     {item.Icon}
                                     <span className="ml-2 text-sm font-bold">{capitalizeFirstLetter(item.title)}</span>
@@ -94,7 +109,6 @@ const Navbar: React.FC<NavbarProps> = () => {
                 </div>
                 {/* {pathArr?.length > 0 && <Navigate listNav={pathArr} />} */}
             </div>
-            {/* <SearchModal /> */}
             <Notification />
         </div>
     );

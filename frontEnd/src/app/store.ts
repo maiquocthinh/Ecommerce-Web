@@ -5,6 +5,7 @@ import pathSlice from "./Slices/common/pathSlice";
 import  * as SlicesApi from './Slices/product/index';
 import * as userSlice from "./Slices/user"
 import * as commonSlice from "./Slices/common"
+import * as cartSlice from "./Slices/cart"
 export const store = configureStore({
   reducer: {
     modal: modalReducer,
@@ -18,7 +19,9 @@ export const store = configureStore({
     product:SlicesApi.ProductByIdSlice.default,
     auth:userSlice.auth.default,
     pageLevelLoading:commonSlice.pageLevelLoading.default,
-    componentLeveLoading:commonSlice.componentLeveLoadingSlice.default
+    componentLeveLoading:commonSlice.componentLeveLoadingSlice.default,
+    addToCart:cartSlice.AddTocartSlice.default,
+    allCart:cartSlice.GetAllCartSlice.default
   },
 })
 

@@ -1,5 +1,5 @@
 import Footer from "../Footer/Footer";
-import Header from "../navbar/Navbar";
+import Header from "../Navbar/Navbar";
 
 interface HeaderLayoutProps {
     children: React.ReactElement

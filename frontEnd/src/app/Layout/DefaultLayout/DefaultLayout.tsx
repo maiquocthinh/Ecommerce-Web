@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Header from "../navbar/Navbar";
+import Header from "../Navbar/Navbar";
 import RightBar from "../RightBar/RightBar";
 import SlideBar from "../Sidebar/SideBar";
 import ModalMenu from "../../../Components/commonListing/ModalMenu/ModalMenu";

@@ -1,6 +1,7 @@
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import HeaderLayout from "../Layout/HeaderLayout/HeaderLayout";
 import Cart from "../Pages/CartPage";
+import Checkout from "../Pages/Checkout";
 import DetailProduct from "../Pages/DetailProduct";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
@@ -44,10 +45,16 @@ const publishRouter: RouteConfig[] = [
         path: "/login",
         element: Login,
         Layout: HeaderLayout,
-    },    {
+    },  
+    {
         path: "/register",
         element: Register,
         Layout: HeaderLayout,
+    },
+    {
+        path: "/checkout",
+        element: Checkout,
+        Layout: null,
     },
 ];
 

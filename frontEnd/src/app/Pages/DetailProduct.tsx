@@ -1,32 +1,37 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import Comments from "@/Components/Comments/Comments";
 import GenerralProductHeader from "@/Components/Header/GenerralProductHeader/GenerralProductHeader";
+import PageLoader from "@/Components/PageLoader/PageLoader";
 import Product from "@/Components/Product/Product";
 import Slide from "@/Components/Slide/Slide";
 import BoxProduct from "@/Components/commonListing/BoxProduct/BoxProduct";
+import ProductInfo from "@/Components/commonListing/DetailProductSlide/DetailProductSlide";
 import Incentives from "@/Components/commonListing/Incentives/Incentives";
 import InfoProduct from "@/Components/commonListing/InfoProduct/InfoProduct";
-import Pay from "@/Components/commonListing/Pay/Pay";
-import ProductInfo from "@/Components/commonListing/DetailProductSlide/DetailProductSlide";
 import Reviews from "@/Components/commonListing/Reviews/Reviews";
 import Star from "@/Components/commonListing/Star/Start";
-import { getProductById } from "../action/action";
 import { ProductType } from "@/common/product";
+import { FaCartPlus } from "@react-icons/all-files/fa/FaCartPlus";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
-import PageLoader from "@/Components/PageLoader/PageLoader";
+import { getProductById } from "../action/action";
+import { addToCart, getAllCart } from "../action/CartActon";
 
 const DetailProduct = () => {
     const dispatch = useDispatch<any>();
     const productData = useSelector((state: any) => state.allproduct.data as ProductType[])
     const productDetail = useSelector((state: any) => state.product.data[0] as ProductType)
     const pageLevelLoading = useSelector((sate: any) => sate.pageLevelLoading.pageLevelLoading)
+    const allCart = useSelector((sate: any) => sate.allCart.data)
     const params = useParams();
     useEffect(() => {
         dispatch(setPageLevelLoading(true))
         dispatch(getProductById(params?.productId || 1));
     }, [dispatch])
+    const handlegetAllCart = () => {
+        dispatch(getAllCart(1))
+    }
     useEffect(() => {
         if (productDetail && productData) dispatch(setPageLevelLoading(false))
     })
@@ -35,6 +40,19 @@ const DetailProduct = () => {
             <PageLoader pageLevelLoading={pageLevelLoading} />
         );
     }
+    const handleAddCart = () => {
+        dispatch(addToCart({
+            customer_id: 1,
+            quantity: 1,
+            products_versions_id: productDetail.id
+        }))
+        handlegetAllCart
+    }
+    useEffect(() => {
+        if (allCart) {
+            localStorage.setItem("cart", JSON.stringify(allCart));
+        }
+    }, [allCart])
     return (
         productDetail && (
             <div className="flex flex-col gap-2 mb-8">
@@ -60,7 +78,13 @@ const DetailProduct = () => {
                             <h1>Chọn màu để xem giá và chi nhánh có hàng</h1>
                             <BoxProduct data={productDetail.listColorProduct} />
                         </div>
-                        <Pay />
+                        <div className="flex gap-2 items-center text-center mt-4">
+                            <button className="flex-1 bg-custom-primary py-2 rounded-borderContnet text-white text-xl font-bold cursor-pointer">Mua ngay</button>
+                            <div onClick={handleAddCart} className="flex flex-col gap-1 items-center text-custom-primary px-2 py-2 border-[1px] border-custom-primary rounded-borderContnet cursor-pointer">
+                                <FaCartPlus />
+                                <span className="text-[8px] text-center font-bold">Thêm vào giỏ (+)</span>
+                            </div>
+                        </div>
                         <Incentives />
                     </div>
                 </div>
