@@ -46,13 +46,11 @@ const DetailProduct = () => {
             quantity: 1,
             products_versions_id: productDetail.id
         }))
-        handlegetAllCart
+        handlegetAllCart()
     }
-    useEffect(() => {
-        if (allCart) {
-            localStorage.setItem("cart", JSON.stringify(allCart));
-        }
-    }, [allCart])
+    if (allCart) {
+        localStorage.setItem("cart", JSON.stringify(allCart));
+    }
     return (
         productDetail && (
             <div className="flex flex-col gap-2 mb-8">

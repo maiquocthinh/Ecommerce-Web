@@ -43,7 +43,8 @@ const Navbar: React.FC<NavbarProps> = () => {
         {
             id: 2,
             Icon: <FaCar />,
-            title: "Tra cứu đơn hàng"
+            title: "Tra cứu đơn hàng",
+            link: "order"
         },
         {
             id: 3,

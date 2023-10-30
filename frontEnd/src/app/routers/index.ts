@@ -5,6 +5,7 @@ import Checkout from "../Pages/Checkout";
 import DetailProduct from "../Pages/DetailProduct";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
+import Order from "../Pages/Order";
 import ProductPage from "../Pages/Product";
 import Profile from "../Pages/Profile";
 import Register from "../Pages/Register";
@@ -54,6 +55,11 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/checkout",
         element: Checkout,
+        Layout: null,
+    },
+    {
+        path: "/order",
+        element: Order,
         Layout: null,
     },
 ];
