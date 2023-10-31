@@ -3,48 +3,60 @@ import { BiTable, BiUserPin } from "react-icons/Bi";
 import { FaJediOrder } from "react-icons/Fa";
 import { FiSettings, FiUsers, FiLogOut } from "react-icons/Fi";
 import { RxDashboard } from 'react-icons/rx';
+import { useNavigate } from "react-router-dom";
 
 type taskType = {
     id: string | number;
     Icon: React.ReactNode;
     label: string;
+    link: string
 };
 const AdminSidebar = () => {
     const [active, setActive] = useState<number | string>(1)
+    const router = useNavigate()
     const listTask: taskType[] = [
         {
             id: 1,
             Icon: <RxDashboard size={22} />,
-            label: "Dashboard"
+            label: "Dashboard",
+            link: "/admin/dashboard"
         },
         {
             id: 2,
             Icon: <BiTable size={22} />,
-            label: "Catalog"
+            label: "Catalog",
+            link: "/admin/catalog"
+
         },
         {
             id: 3,
             Icon: <FiUsers size={22} />,
-            label: "Custommers"
+            label: "customers",
+            link: "/admin/customers"
         },
         {
             id: 4,
             Icon: <FaJediOrder size={22} />,
-            label: "orders"
+            label: "orders",
+            link: "/admin/orders"
         },
         {
             id: 5,
             Icon: <BiUserPin size={22} />,
-            label: "our Staff"
+            label: "our Staff",
+            link: "/admin/staff"
         },
         {
             id: 6,
             Icon: <FiSettings size={22} />,
-            label: "Settings"
+            label: "Settings",
+            link: "/admin/setting"
+
         },
     ]
     const handleTask = (task: taskType) => {
         setActive(task.id);
+        router(task.link)
     };
     return (
         <div className="col-span-2 overflow-hidden left-0-0 top-0 bottom-0 p-4 bg-custom-admin_bg_content h-full text-custom-addmin_color">

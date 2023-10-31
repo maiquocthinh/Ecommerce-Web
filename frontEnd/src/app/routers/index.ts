@@ -12,6 +12,7 @@ import Profile from "../Pages/Profile";
 import Register from "../Pages/Register";
 import Customers from "../Pages/admin/Customers/Customers";
 import Dashboard from "../Pages/admin/Dashboard/Dashboard";
+import ALlStaff from "../Pages/admin/Staff/AllStaff";
 
 interface RouteConfig {
     path: string;
@@ -29,7 +30,7 @@ const publishRouter: RouteConfig[] = [
         path: "/:product",
         element: ProductPage,
         Layout: DefaultLayout,
-    },    
+    },
     {
         path: "/product/:productId",
         element: DetailProduct,
@@ -44,12 +45,12 @@ const publishRouter: RouteConfig[] = [
         path: "/cart",
         element: Cart,
         Layout: HeaderLayout,
-    },    
+    },
     {
         path: "/login",
         element: Login,
         Layout: HeaderLayout,
-    },  
+    },
     {
         path: "/register",
         element: Register,
@@ -75,9 +76,13 @@ const publishRouter: RouteConfig[] = [
         element: Customers,
         Layout: AdminLayout,
     },
+    {
+        path: "/admin/staff",
+        element: ALlStaff,
+        Layout: AdminLayout,
+    },
 ];
 
 const privateRouter: RouteConfig[] = [];
 
 export { privateRouter, publishRouter };
-
