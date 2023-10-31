@@ -10,6 +10,7 @@ import Order from "../Pages/Order";
 import ProductPage from "../Pages/Product";
 import Profile from "../Pages/Profile";
 import Register from "../Pages/Register";
+import Customers from "../Pages/admin/Customers/Customers";
 import Dashboard from "../Pages/admin/Dashboard/Dashboard";
 
 interface RouteConfig {
@@ -67,6 +68,11 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/admin/dashboard",
         element: Dashboard,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/customers",
+        element: Customers,
         Layout: AdminLayout,
     },
 ];
