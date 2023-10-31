@@ -11,7 +11,11 @@ export default {
           text_color: '#343a40',
           disable:"#707070",
           colorProduct:"#444444",
-          Shadow:"#9a0b16"
+          Shadow:"#9a0b16",
+          admin_bg_content:"#1f2937",
+          addmin_bg:"#111827",
+          addmin_color:"#9ea4b0",
+          addmin_Active__color:"#0d9e6d",
         },
       },
       height: {

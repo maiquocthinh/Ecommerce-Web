@@ -21,7 +21,9 @@ export const store = configureStore({
     pageLevelLoading:commonSlice.pageLevelLoading.default,
     componentLeveLoading:commonSlice.componentLeveLoadingSlice.default,
     addToCart:cartSlice.AddTocartSlice.default,
-    allCart:cartSlice.GetAllCartSlice.default
+    allCart:cartSlice.GetAllCartSlice.default,
+    profile:userSlice.profile.default,
+    showAdminSlide:commonSlice.showAdminSlide.default
   },
 })
 

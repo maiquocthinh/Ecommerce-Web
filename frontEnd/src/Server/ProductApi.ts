@@ -14,7 +14,7 @@ const handleGetDevices= () => {
     return axios.get(`/api/device`);
 };
 const handleGetProductById = (id:string|number) => {
-    return axios.get(`/api/product?id=${id}`);
+    return axios.get(`/api/products/${id}`);
 }
 export {
     handleGetAllProduct,

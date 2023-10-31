@@ -1,3 +1,4 @@
+import AdminLayout from "../Layout/AdminLayout/AdminLayout";
 import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import HeaderLayout from "../Layout/HeaderLayout/HeaderLayout";
 import Cart from "../Pages/CartPage";
@@ -9,6 +10,7 @@ import Order from "../Pages/Order";
 import ProductPage from "../Pages/Product";
 import Profile from "../Pages/Profile";
 import Register from "../Pages/Register";
+import Dashboard from "../Pages/admin/Dashboard/Dashboard";
 
 interface RouteConfig {
     path: string;
@@ -61,6 +63,11 @@ const publishRouter: RouteConfig[] = [
         path: "/order",
         element: Order,
         Layout: null,
+    },
+    {
+        path: "/admin/dashboard",
+        element: Dashboard,
+        Layout: AdminLayout,
     },
 ];
 

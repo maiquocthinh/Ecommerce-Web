@@ -6,7 +6,7 @@ import { UserType } from '@/common';
 
 const initialState: UserType.AuthState = {
   isLoggedIn: false,
-  data: {id:"",token:""},
+  data: {accessTokenExpiredIn:"",accessToken:""},
   loading: false,
   error: null,
 };
@@ -44,7 +44,6 @@ const authSlice = createSlice({
       })
       .addCase(logout, (state) => { // Thêm action cho logout
         state.isLoggedIn = false;
-        state.data = { token: '' ,id:""};
         state.loading = false;
         state.error = null;
       });

@@ -11,9 +11,11 @@ import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingS
 import ComponentLevelLoader from "@/Components/Loader/componentlevel";
 const isRegistered = false;
 const initialFormData = {
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    password: "",
+    phoneNumber: "",
+    password: ""
 };
 
 const Register = () => {
@@ -26,8 +28,8 @@ const Register = () => {
     const navigate = useNavigate();
     const isFormValid = () => {
         return formData &&
-            formData.name &&
-            formData.name.trim() !== "" &&
+            formData.firstName &&
+            formData.lastName.trim() !== "" &&
             formData.email &&
             formData.email.trim() !== "" &&
             formData.password &&
@@ -46,9 +48,10 @@ const Register = () => {
             });
             setFormData(initialFormData);
         }
+        dispatch(setComponentLevelLoading(false))
     }
     useEffect(() => {
-        if (data.token !== "") {
+        if (data.accessToken !== "") {
             toast.success("đăng kí thành công", {
                 position: toast.POSITION.TOP_RIGHT,
             });

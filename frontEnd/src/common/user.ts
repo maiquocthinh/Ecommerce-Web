@@ -1,7 +1,9 @@
 export  interface UserRegisterType {
-  // name:string,
   email:string,
   password:string,
+  phoneNumber:String,
+  firstName:string,
+  lastName:string
 }
 export  interface userLoginType {
   email:string,
@@ -18,7 +20,7 @@ export  interface UserType {
 }
 export interface AuthState {
   isLoggedIn: boolean;
-  data: {id?:string|number,token:string} ; 
+  data: {accessTokenExpiredIn:string,accessToken:string} ; 
   loading: boolean;
   error: string | null;
 }

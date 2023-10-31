@@ -57,10 +57,17 @@ export const dataDropdown = [
 ]
 export const registrationFormControls = [
     {
-        id: "name",
+        id: "firstName",
         type: "text",
-        placeholder: "Enter your name",
-        label: "Name",
+        placeholder: "Enter your firstName",
+        label: "firstName",
+        componentType: "input",
+    },
+    {
+        id: "lastName",
+        type: "text",
+        placeholder: "Enter your lastName",
+        label: "lastName",
         componentType: "input",
     },
     {
@@ -75,6 +82,13 @@ export const registrationFormControls = [
         type: "password",
         placeholder: "Enter your password",
         label: "Password",
+        componentType: "input",
+    },
+    {
+        id: "phoneNumber",
+        type: "text",
+        placeholder: "Enter your phoneNumber",
+        label: "phoneNumber",
         componentType: "input",
     }
 ];

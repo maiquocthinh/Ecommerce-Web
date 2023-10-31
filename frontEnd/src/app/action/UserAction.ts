@@ -28,3 +28,15 @@ export const register = createAsyncThunk(
 );
 
 export const logout = createAction('user/logout');
+export const getProfile = createAsyncThunk(
+    "getProfile/getProfile",
+    async () => {
+        try {
+            const response = await userApi.handleGetProfile(); 
+            let data = response.data;
+            return data ; 
+        } catch (error) {
+            throw error;
+        }
+    }
+);

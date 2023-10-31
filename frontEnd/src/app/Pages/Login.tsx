@@ -49,24 +49,14 @@ export default function Login() {
     }
     useEffect(() => {
         if (isLoggedIn) {
-            Cookies.set("token", data.token);
-            localStorage.setItem("user", JSON.stringify(formData));
+            Cookies.set("token", data.accessToken);
+            Cookies.set("accessTokenExpiredIn", data.accessTokenExpiredIn)
             toast.success("đăng nhập thành công", {
                 position: toast.POSITION.TOP_RIGHT,
             });
             dispatch(setComponentLevelLoading(false))
         }
     }, [isLoggedIn, data])
-    useEffect(() => {
-        if (data) {
-            const userInfoString = localStorage.getItem("userInfo");
-            if (userInfoString) {
-                const userInfo = JSON.parse(userInfoString);
-                setFormData(userInfo)
-                localStorage.clear()
-            }
-        }
-    }, [data])
     useEffect(() => {
         if (err !== null && componentLeveLoading) {
             toast.error("tài khoản không tồn tại", {
