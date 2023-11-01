@@ -10,6 +10,9 @@ import Order from "../Pages/Order";
 import ProductPage from "../Pages/Product";
 import Profile from "../Pages/Profile";
 import Register from "../Pages/Register";
+import Categories from "../Pages/admin/Catalog/Categories/Categories";
+import ProductVersion from "../Pages/admin/Catalog/ProductVersion/ProductVersion";
+import Products from "../Pages/admin/Catalog/Products/Products";
 import Customers from "../Pages/admin/Customers/Customers";
 import Dashboard from "../Pages/admin/Dashboard/Dashboard";
 import Orders from "../Pages/admin/Orders/Orders";
@@ -85,6 +88,21 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/admin/orders",
         element: Orders,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/catalog/products",
+        element: Products,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/catalog/product-version",
+        element: ProductVersion,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/catalog/categories",
+        element: Categories,
         Layout: AdminLayout,
     },
 ];

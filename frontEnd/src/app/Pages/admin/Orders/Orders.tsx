@@ -6,7 +6,7 @@ const Orders = () => {
     return (
         <div className="flex flex-col p-4">
             <h1 className="my-6 text-lg font-bold text-gray-700 dark:text-gray-300">
-                ALl Staff
+                Orders
             </h1>
             <div className="rounded-lg  min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
                 <div className="p-4">
