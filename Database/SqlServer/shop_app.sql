@@ -52,6 +52,7 @@ CREATE TABLE [products]
     [id]            INT CONSTRAINT PK_Products PRIMARY KEY NOT NULL IDENTITY (1, 1),
     [name]          NVARCHAR(255)   NOT NULL,
     [description]   NVARCHAR(1000)  NOT NULL,
+    [image_url]     VARCHAR(500)    NOT NULL,
     [warranty]      NVARCHAR(255)   NOT NULL,
     [reviews_score] DECIMAL(3, 2)   NOT NULL CHECK ([reviews_score] >= 0.00 AND [reviews_score] <= 5.00),
     [viewable]      BIT             NOT NULL DEFAULT 0,

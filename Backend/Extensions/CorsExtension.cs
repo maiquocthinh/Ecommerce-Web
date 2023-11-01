@@ -9,9 +9,9 @@ public static class CorsExtension
         {
             var allowedOrigins = configuration.GetSection("CorsPolicy:AllowedOrigins").Get<string[]>() ??
                                  Array.Empty<string>();
-            var allowedMethods = configuration.GetValue<string[]>("CorsPolicy:AllowedMethods") ??
+            var allowedMethods = configuration.GetSection("CorsPolicy:AllowedMethods").Get<string[]>() ??
                                  Array.Empty<string>();
-            var allowedHeaders = configuration.GetValue<string[]>("CorsPolicy:AllowedHeaders") ??
+            var allowedHeaders = configuration.GetSection("CorsPolicy:AllowedHeaders").Get<string[]>() ??
                                  Array.Empty<string>();
 
             corsPolicyBuilder.WithOrigins(allowedOrigins)

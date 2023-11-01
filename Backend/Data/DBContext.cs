@@ -1,5 +1,7 @@
 ﻿using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 
 namespace Backend.Data;
 
@@ -457,6 +459,10 @@ public partial class DBContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.ImageUrl)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasColumnName("image_url");
             entity.Property(e => e.Description)
                 .HasMaxLength(1000)
                 .HasColumnName("description");
@@ -515,9 +521,6 @@ public partial class DBContext : DbContext
                 .HasColumnName("name");
             entity.Property(e => e.Price).HasColumnName("price");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
-            entity.Property(e => e.Specifications)
-                .HasMaxLength(1000)
-                .HasColumnName("specifications");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -526,7 +529,13 @@ public partial class DBContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.ProductVersions)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProductVersion_Product");
+            .HasConstraintName("FK_ProductVersion_Product");
+
+            entity.OwnsOne(e => e.Specifications, builder =>
+            {
+                builder.ToJson("specifications");
+            });
+
         });
 
         modelBuilder.Entity<RefreshToken>(entity =>

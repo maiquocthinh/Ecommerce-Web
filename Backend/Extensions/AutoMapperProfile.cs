@@ -15,5 +15,7 @@ public class AutoMapperProfile : Profile
             .ForMember(dest => dest.Districts, otp => otp.MapFrom(src => src.Address.Districts))
             .ForMember(dest => dest.Province, otp => otp.MapFrom(src => src.Address.Province));
         CreateMap<ShippingAddressCreateDto, Address>();
+        CreateMap<Specifications, SpecificationsOfLaptop>();
+        CreateMap<Specifications, SpecificationsOfSmartPhone>();
     }
 }

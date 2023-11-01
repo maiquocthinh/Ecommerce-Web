@@ -11,6 +11,8 @@ public partial class Product
 
     public string Description { get; set; } = null!;
 
+    public string ImageUrl { get; set; } = null!;
+
     public string Warranty { get; set; } = null!;
 
     public decimal ReviewsScore { get; set; }

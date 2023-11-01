@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Backend.DTOs;
 
 namespace Backend.Models;
 
@@ -15,7 +14,7 @@ public partial class ProductVersion
 
     public string Color { get; set; } = null!;
 
-    public string Specifications { get; set; } = null!;
+    public Specifications Specifications { get; set; } = null!;
 
     public int Price { get; set; }
 

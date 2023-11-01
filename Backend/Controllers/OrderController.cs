@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Backend.Controllers;
 
 [Authorize]
-[Authorize]
 [Route("api/orders")]
 public class OrderController : BaseController
 {
