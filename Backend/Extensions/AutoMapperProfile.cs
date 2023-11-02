@@ -17,5 +17,8 @@ public class AutoMapperProfile : Profile
         CreateMap<ShippingAddressCreateDto, Address>();
         CreateMap<Specifications, SpecificationsOfLaptop>();
         CreateMap<Specifications, SpecificationsOfSmartPhone>();
+        CreateMap<Category, CategoryDto>();
+        CreateMap<Brand, BrandDto>();
+        CreateMap<Need, NeedDto>();
     }
 }

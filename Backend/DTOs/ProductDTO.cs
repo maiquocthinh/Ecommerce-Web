@@ -22,6 +22,7 @@ public class ProductShortInfoDto
     public short DiscountPercent { get; set; }
     public decimal ReviewsScore { get; set; }
     public bool IsOutOfStock { get; set; }
+    public ProductCatalogs Catalogs { get; set; }
 }
 
 public class ProductDetailDto
@@ -33,7 +34,7 @@ public class ProductDetailDto
     public decimal ReviewsScore { get; set; }
     public string Warranty { get; set; }
     public IEnumerable<ProductVersionDetail> ProductVersions { get; set; }
-
+    public ProductCatalogs Catalogs { get; set; }
 }
 
 // Subclass
@@ -68,6 +69,13 @@ public class ProductVersionDetail
     public int Price { get; set; }
 
     public bool IsOutOfStock { get; set; }
+}
+
+public class ProductCatalogs
+{
+    public int CategoryId { get; set; }
+    public int? NeedId { get; set; }
+    public int BrandId { get; set; }
 }
 
 // Other

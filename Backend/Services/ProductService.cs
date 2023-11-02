@@ -48,8 +48,15 @@ public class ProductService : IProductService
             Price = GetDiscount(p) == null ? GetProductVersionWithMinPrice(p)!.Price : (int)Math.Round((decimal)(GetProductVersionWithMinPrice(p)!.Price * (1 - GetDiscount(p).DiscountPercent))!),
             DiscountPercent = (short)(GetDiscount(p) == null ? 0 : GetDiscount(p).DiscountPercent * 100),
             ReviewsScore = p.ReviewsScore,
-            IsOutOfStock = !p.ProductVersions.Any(pv => pv.Inventory > 0)
+            IsOutOfStock = !p.ProductVersions.Any(pv => pv.Inventory > 0),
+            Catalogs = new ProductCatalogs
+            {
+                CategoryId = p.CategoryId,
+                BrandId = p.BrandId,
+                NeedId = p.NeedId,
+            }
         });
+
     }
 
     public async Task<object> GetProductDetailInfo(int productId)
@@ -77,6 +84,12 @@ public class ProductService : IProductService
                 Price = (int)(Discount is null ? pv.Price : Discount.DiscountPercent * pv.Price),
                 IsOutOfStock = pv.Inventory <= 0,
             }),
+            Catalogs = new ProductCatalogs
+            {
+                CategoryId = product.CategoryId,
+                BrandId = product.BrandId,
+                NeedId = product.NeedId,
+            }
         };
     }
 
