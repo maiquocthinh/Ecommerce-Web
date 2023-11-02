@@ -38,6 +38,4 @@ public partial class Product
     public virtual Need? Need { get; set; }
     
     public virtual ICollection<ProductVersion> ProductVersions { get; set; } = new List<ProductVersion>();
-
-    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }

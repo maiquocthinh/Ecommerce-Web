@@ -577,10 +577,9 @@ public partial class DBContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.CustomerId).HasColumnName("customer_id");
-            entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.ProductVersionId).HasColumnName("product_version_id");
             entity.Property(e => e.Score)
-                .HasColumnType("decimal(3, 2)")
+                .HasColumnType("tinyint")
                 .HasColumnName("score");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
@@ -591,11 +590,6 @@ public partial class DBContext : DbContext
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Review_Customer");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Reviews)
-                .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Review_Product");
 
             entity.HasOne(d => d.ProductVersion).WithMany(p => p.Reviews)
                 .HasForeignKey(d => d.ProductVersionId)

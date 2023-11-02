@@ -208,13 +208,11 @@ CREATE TABLE [reviews]
 (
     [id]                 INT CONSTRAINT PK_Reviews PRIMARY KEY NOT NULL IDENTITY (1, 1),
     [content]            NVARCHAR(500)   NOT NULL,
-    [product_id]         INT             NOT NULL,
     [product_version_id] INT             NOT NULL,
     [customer_id]        INT             NOT NULL,
-    [score]              DECIMAL(3, 2)   NOT NULL,
+    [score]              TINYINT         NOT NULL,
     [updated_at]         DATETIME        NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     [created_at]         DATETIME        NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    CONSTRAINT FK_Review_Product FOREIGN KEY ([product_id]) REFERENCES [products] ([id]),
     CONSTRAINT FK_Review_ProductVersion FOREIGN KEY ([product_version_id]) REFERENCES [product_versions] ([id]),
     CONSTRAINT FK_Review_Customer FOREIGN KEY ([customer_id]) REFERENCES [customers] ([id]),
 );
