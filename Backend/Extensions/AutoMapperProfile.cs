@@ -20,5 +20,7 @@ public class AutoMapperProfile : Profile
         CreateMap<Category, CategoryDto>();
         CreateMap<Brand, BrandDto>();
         CreateMap<Need, NeedDto>();
+        CreateMap<ProductCreateInputDto, Product>();
+        CreateMap<ProductVersionCreateInputDto, ProductVersion>();
     }
 }

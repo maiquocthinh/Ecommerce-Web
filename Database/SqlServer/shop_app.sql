@@ -443,3 +443,23 @@ BEGIN
         END
     END
 END;
+
+
+-- Kiểm tra xem có product_version thì mới cho update viewable = true
+CREATE OR ALTER TRIGGER trg_CheckViewableOnProductUpdate
+ON products
+AFTER UPDATE
+AS
+BEGIN
+    IF EXISTS (SELECT id FROM inserted WHERE inserted.viewable = 1)
+    AND NOT EXISTS (
+        SELECT p.id
+        FROM products p
+        JOIN product_versions pv ON p.id = pv.product_id
+        WHERE p.id IN (SELECT id FROM inserted WHERE inserted.viewable = 1)
+    )
+    BEGIN
+        RAISERROR('Không thể đặt "viewable" thành true khi chưa có phiên bản sản phẩm tương ứng.', 16, 1);
+        ROLLBACK;
+    END
+END;

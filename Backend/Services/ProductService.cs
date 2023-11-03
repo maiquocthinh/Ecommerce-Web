@@ -1,9 +1,16 @@
+using AutoMapper;
 using Backend.Common.Exceptions;
 using Backend.DTOs;
+using Backend.Infrastructure.Utils;
 using Backend.Models;
+using Backend.Repositories;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
+using Castle.Core.Resource;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Drawing;
+using System.Net;
 
 namespace Backend.Services;
 
@@ -16,11 +23,13 @@ public class ProductSortedBy
 
 public class ProductService : IProductService
 {
+    private readonly IMapper _mapper;
     private readonly IProductRepository _productRepository;
     private readonly IProductVersionRepository _productVersionRepository;
 
-    public ProductService(IProductRepository productRepository, IProductVersionRepository productVersionRepository)
+    public ProductService(IMapper mapper, IProductRepository productRepository, IProductVersionRepository productVersionRepository)
     {
+        _mapper = mapper;
         _productRepository = productRepository;
         _productVersionRepository = productVersionRepository;
     }
@@ -59,7 +68,7 @@ public class ProductService : IProductService
 
     }
 
-    public async Task<object> GetProductDetailInfo(int productId)
+    public async Task<ProductDetailDto> GetProductDetailInfo(int productId)
     {
         var product = (await _productRepository.Where(p => p.Id == productId && p.Viewable == true && p.ProductVersions.Count > 0)).FirstOrDefault();
         if (product is null) throw new NotFoundException("Product not found!");
@@ -91,6 +100,82 @@ public class ProductService : IProductService
                 NeedId = product.NeedId,
             }
         };
+    }
+
+
+    public async Task<IQueryable<Product>> GetListProducts(ProductFilterExtendInputDto filter)
+    {
+        return await _productRepository.FilteredProducts(filter);
+    }
+
+    public async Task<Product> CreateProduct(ProductCreateInputDto createInputDto)
+    {
+        var product = await _productRepository.Add(_mapper.Map<Product>(createInputDto));
+        return product;
+    }
+
+    public async Task<Product> UpdateProduct(int id, ProductUpdateInputDto updateInputDto)
+    {
+        var product = await _productRepository.GetById(id);
+        if (product == null) throw new NotFoundException("Product not found.");
+
+        if (updateInputDto.Name != null) product.Name = updateInputDto.Name;
+        if (updateInputDto.Description != null) product.Description = updateInputDto.Description;
+        if (updateInputDto.ImageUrl != null) product.ImageUrl = updateInputDto.ImageUrl;
+        if (updateInputDto.Warranty != null) product.Warranty = updateInputDto.Warranty;
+        if (updateInputDto.CategoryId != null) product.CategoryId = (int)updateInputDto.CategoryId;
+        if (updateInputDto.BrandId != null) product.BrandId = (int)updateInputDto.BrandId;
+        if (updateInputDto.NeedId != null) product.NeedId = updateInputDto.NeedId;
+        if (updateInputDto.Viewable != null) product.Viewable = (bool)updateInputDto.Viewable;
+
+        try
+        {
+            await _productRepository.Update(product);
+        }
+        catch (DbUpdateException e)
+        {
+            if (e.InnerException is SqlException sqlException)
+                foreach (SqlError error in sqlException.Errors)
+                    if (error.Number == 50000)
+                        throw new BadRequestException(error.Message);
+        }
+
+        return product;
+    }
+
+
+    public async Task<bool> DeleteProduct(int id)
+    {
+        await _productRepository.Remove(id);
+        return true;
+    }
+
+    public async Task<ProductVersion> CreateProductVersion(ProductVersionCreateInputDto createInputDto)
+    {
+        var productVersion = await _productVersionRepository.Add(_mapper.Map<ProductVersion>(createInputDto));
+        return productVersion;
+    }
+
+    public async Task<ProductVersion> UpdateProductVersion(int id, ProductVersionUpdateInputDto updateInputDto)
+    {
+        var productVersion = await _productVersionRepository.GetById(id);
+        if (productVersion == null) throw new NotFoundException("Product version not found.");
+
+        if (updateInputDto.Name != null) productVersion.Name = updateInputDto.Name;
+        if (updateInputDto.ImageUrl != null) productVersion.ImageUrl = updateInputDto.ImageUrl;
+        if (updateInputDto.Color != null) productVersion.Color = updateInputDto.Color;
+        if (updateInputDto.Specifications != null) productVersion.Specifications = updateInputDto.Specifications;
+        if (updateInputDto.Price != null) productVersion.Price = (int)updateInputDto.Price;
+
+        await _productVersionRepository.Update(productVersion);
+
+        return productVersion;
+    }
+
+    public async Task<bool> DeleteProductVersion(int id)
+    {
+        await _productVersionRepository.Remove(id);
+        return true;
     }
 
 }

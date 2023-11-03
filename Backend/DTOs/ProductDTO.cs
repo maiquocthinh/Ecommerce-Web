@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Backend.DTOs;
 
@@ -10,6 +11,92 @@ public class ProductFilterInputDto
     public string? SortedBy { get; set; }
 }
 
+public class ProductFilterExtendInputDto: ProductFilterInputDto
+{
+    public ProductFiltersExtend? Filters { get; set; }
+}
+
+public class ProductCreateInputDto
+{
+    [Required(ErrorMessage = "Name is required")]
+    public string Name { get; set; }
+
+    [Required(ErrorMessage = "Description is required")]
+    public string Description { get; set; }
+    
+    [Required(ErrorMessage = "ImageUrl is required")]
+    [Url(ErrorMessage = "Invalid URL")]
+    public string ImageUrl { get; set; }
+    
+    [Required(ErrorMessage = "Warranty is required")]
+    public string Warranty { get; set; }
+
+    [Required(ErrorMessage = "CategoryId is required")]
+    public int CategoryId { get; set; }
+
+    [Required(ErrorMessage = "BrandId is required")]
+    public int BrandId { get; set; }
+
+    public int? NeedId { get; set; }
+    
+    //public bool? Viewable { get; set; }
+}
+
+public class ProductUpdateInputDto
+{
+    public string? Name { get; set; }
+
+    public string? Description { get; set; }
+
+    [Url(ErrorMessage = "Invalid URL")]
+    public string? ImageUrl { get; set; }
+
+    public string? Warranty { get; set; }
+
+    public int? CategoryId { get; set; }
+
+    public int? BrandId { get; set; }
+
+    public int? NeedId { get; set; }
+
+    public bool? Viewable { get; set; }
+}
+
+public class ProductVersionCreateInputDto
+{
+    [Required(ErrorMessage = "ProductId is required")]
+    public int ProductId { get; set; }
+
+    [Required(ErrorMessage = "Name is required")]
+    public string Name { get; set; } = null!;
+
+    [Required(ErrorMessage = "ImageUrl is required")]
+    [Url(ErrorMessage = "Invalid URL")]
+    public string ImageUrl { get; set; } = null!;
+
+    [Required(ErrorMessage = "Color is required")]
+    public string Color { get; set; } = null!;
+
+    [Required(ErrorMessage = "Specifications is required")]
+    public Specifications Specifications { get; set; } = null!;
+
+    [Required(ErrorMessage = "Price is required")]
+    public int Price { get; set; }
+}
+
+public class ProductVersionUpdateInputDto
+{
+    public string? Name { get; set; } = null!;
+
+    [Url(ErrorMessage = "Invalid URL")]
+    public string? ImageUrl { get; set; } = null!;
+
+    public string? Color { get; set; } = null!;
+
+    public Specifications? Specifications { get; set; } = null!;
+
+    public int? Price { get; set; }
+}
 
 // Output Dto
 public class ProductShortInfoDto
@@ -44,6 +131,13 @@ public class ProductFilters
     public int? BrandId { get; set; }
     public int? NeedId { get; set; }
     public PriceRange? PriceRange { get; set; }
+}
+
+
+public class ProductFiltersExtend: ProductFilters
+{
+    public bool? Viewable { get; set; }
+    public bool? OutOfStock { get; set; }
 }
 
 public class PriceRange

@@ -3,9 +3,7 @@ using Backend.DTOs;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Backend.Services;
-using Google.Apis.Gmail.v1.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
 
 namespace Backend.Repositories;
 
@@ -97,4 +95,55 @@ public class ProductRepository : SqlServerRepository<Product>, IProductRepositor
 
         return query;
     }
+
+    public async Task<IQueryable<Product>> FilteredProducts(ProductFilterExtendInputDto filter)
+    {
+        var query = _dbSet.OrderByDescending(p => p.CreatedAt).AsQueryable();
+
+        if (!string.IsNullOrEmpty(filter.Keyword))
+        {
+            query = query.Where(p => p.Name.Contains(filter.Keyword));
+        }
+
+        if (filter.Filters != null)
+        {
+            if (filter.Filters.CategoryId.HasValue)
+            {
+                query = query.Where(p => p.CategoryId == filter.Filters.CategoryId);
+            }
+
+            if (filter.Filters.BrandId.HasValue)
+            {
+                query = query.Where(p => p.BrandId == filter.Filters.BrandId);
+            }
+
+            if (filter.Filters.NeedId.HasValue)
+            {
+                query = query.Where(p => p.NeedId == filter.Filters.NeedId);
+            }
+
+            if (filter.Filters.PriceRange != null)
+            {
+                query = query.Where(p => p.ProductVersions.Any(pv =>
+                    pv.Price >= filter.Filters.PriceRange.MinPrice &&
+                    pv.Price <= filter.Filters.PriceRange.MaxPrice)
+                );
+            }
+
+            if (filter.Filters.Viewable != null)
+            {
+                query = query.Where(p => p.Viewable == filter.Filters.Viewable);
+            }
+
+
+            if (filter.Filters.OutOfStock != null)
+            {
+                query = query.Where(p => (p.ProductVersions.Any(pv => pv.Inventory > 0) != filter.Filters.OutOfStock));
+            }
+        }
+
+
+        return query;
+    }
+
 }

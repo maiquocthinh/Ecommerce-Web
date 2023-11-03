@@ -1,6 +1,8 @@
 using System.Net;
 using Backend.Common.Exceptions;
 using Backend.Data;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Middlewares;
 

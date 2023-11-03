@@ -450,7 +450,10 @@ public partial class DBContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Products");
 
-            entity.ToTable("products");
+            entity.ToTable("products", tb =>
+            {
+                tb.HasTrigger("trg_CheckViewableOnProductUpdate");
+            });
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BrandId).HasColumnName("brand_id");
