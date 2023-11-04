@@ -463,3 +463,31 @@ BEGIN
         ROLLBACK;
     END
 END;
+
+-- check xem tại 1 thời điểm có 2 discount cho 1 product không 
+CREATE OR ALTER TRIGGER trg_CheckConcurrentDiscountsForProduct
+ON discounts
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    DECLARE @ID INT
+    DECLARE @ProductID INT
+    DECLARE @StartDatetime DATETIME
+    DECLARE @EndDatetime DATETIME
+
+    SELECT @ID = id, @ProductID = product_id, @StartDatetime = start_date, @EndDatetime = end_date
+    FROM inserted
+
+    IF EXISTS (
+        SELECT 1
+        FROM discounts
+        WHERE product_id = @ProductID
+        AND ((@StartDatetime BETWEEN start_date AND end_date) OR (@EndDatetime BETWEEN start_date AND end_date))
+        AND id <> @ID
+    )
+    BEGIN
+        RAISERROR('Không thể có hai giảm giá cùng lúc cho cùng một sản phẩm tại cùng một thời điểm.', 16, 1);
+        ROLLBACK;
+    END
+END;
+

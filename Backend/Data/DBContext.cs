@@ -211,7 +211,10 @@ public partial class DBContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Discounts");
 
-            entity.ToTable("discounts");
+            entity.ToTable("discounts", tb =>
+            {
+                tb.HasTrigger("trg_CheckConcurrentDiscountsForProduct");
+            });
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Active)

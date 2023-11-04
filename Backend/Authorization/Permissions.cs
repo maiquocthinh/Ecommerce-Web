@@ -10,4 +10,8 @@ public class Permissions
     public const string CreateProductVersion = "CPV";
     public const string UpdateProductVersion = "UPV";
     public const string DeleteProductVersion = "DPV";
+    public const string ViewDiscount = "VD";
+    public const string CreateDiscount = "CD";
+    public const string UpdateDiscount = "UD";
+    public const string DeleteDiscount = "DD";
 }

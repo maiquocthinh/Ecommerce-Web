@@ -22,5 +22,10 @@ public class AutoMapperProfile : Profile
         CreateMap<Need, NeedDto>();
         CreateMap<ProductCreateInputDto, Product>();
         CreateMap<ProductVersionCreateInputDto, ProductVersion>();
+        CreateMap<Discount, DiscountDTO>()
+            .ForMember(dest => dest.ProductName, otp => otp.MapFrom(src => src.Product.Name))
+            .ForMember(dest => dest.IsExpired, otp => otp.MapFrom(src => src.EndDate < DateTime.Now));
+        CreateMap<DiscountCreateInputDto, Discount>();
+
     }
 }
