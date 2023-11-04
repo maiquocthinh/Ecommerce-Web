@@ -45,9 +45,42 @@ public class ShippingAddressCreateDto
     public bool? IsDefault { get; set; }
 }
 
+public class AddressCreateInputDto
+{
+    public string SpecificAddress { get; set; } = null!;
+
+    public string Wards { get; set; } = null!;
+
+    public string Districts { get; set; } = null!;
+
+    public string Province { get; set; } = null!;
+}
+
+public class AddressUpdateInputDto
+{
+    public string? SpecificAddress { get; set; } = null!;
+
+    public string? Wards { get; set; } = null!;
+
+    public string? Districts { get; set; } = null!;
+
+    public string? Province { get; set; } = null!;
+}
+
 // Output dtos
 
 public class ShippingAddressDto : ShippingAddressCreateDto
 {
     public long Id { get; set; }
+}
+
+public class AddressDto
+{
+    public string SpecificAddress { get; set; } = null!;
+
+    public string Wards { get; set; } = null!;
+
+    public string Districts { get; set; } = null!;
+
+    public string Province { get; set; } = null!;
 }

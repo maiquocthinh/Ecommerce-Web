@@ -26,6 +26,15 @@ public class AutoMapperProfile : Profile
             .ForMember(dest => dest.ProductName, otp => otp.MapFrom(src => src.Product.Name))
             .ForMember(dest => dest.IsExpired, otp => otp.MapFrom(src => src.EndDate < DateTime.Now));
         CreateMap<DiscountCreateInputDto, Discount>();
-
+        CreateMap<AddressCreateInputDto, Address>();
+        CreateMap<Employee, EmployeeShortDto>();
+        CreateMap<Employee, EmployeeDetailDto>()
+            .ForMember(dest => dest.Address, otp => otp.MapFrom(src => new AddressDto
+            {
+                SpecificAddress = src.Address.SpecificAddress,
+                Wards = src.Address.Wards,
+                Districts = src.Address.Districts,
+                Province = src.Address.Province,
+            }));
     }
 }

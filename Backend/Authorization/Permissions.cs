@@ -14,4 +14,8 @@ public class Permissions
     public const string CreateDiscount = "CD";
     public const string UpdateDiscount = "UD";
     public const string DeleteDiscount = "DD";
+    public const string ViewEmployee = "VE";
+    public const string CreateEmployee = "CE";
+    public const string UpdateEmployee = "UE";
+    public const string DeleteEmployee = "DE";
 }
