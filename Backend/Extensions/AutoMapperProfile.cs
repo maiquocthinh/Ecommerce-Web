@@ -36,5 +36,11 @@ public class AutoMapperProfile : Profile
                 Districts = src.Address.Districts,
                 Province = src.Address.Province,
             }));
+        CreateMap<Customer, CustomerShortDto>();
+        CreateMap<Customer, CustomerDetailDto>();
+        CreateMap<CustomerCreateInputDto, Customer>()
+             .ForMember(dest => dest.HashedPassword, otp => otp.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
+        CreateMap<CustomerUpdateInputDto, Customer>()
+             .ForMember(dest => dest.HashedPassword, otp => otp.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
     }
 }

@@ -18,4 +18,8 @@ public class Permissions
     public const string CreateEmployee = "CE";
     public const string UpdateEmployee = "UE";
     public const string DeleteEmployee = "DE";
+    public const string ViewCustomer = "VC";
+    public const string CreateCustomer = "CC";
+    public const string UpdateCustomer = "UC";
+    public const string DeleteCustomer = "DC";
 }

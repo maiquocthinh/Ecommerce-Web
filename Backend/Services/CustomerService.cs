@@ -5,10 +5,12 @@ using Backend.DTOs;
 using Backend.Infrastructure.Jwt;
 using Backend.Infrastructure.Utils;
 using Backend.Models;
+using Backend.Repositories;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace Backend.Services;
 
@@ -147,5 +149,61 @@ public class CustomerService : ICustomerService
                     if (error.Number == 50000)
                         throw new BadRequestException(error.Message);
         }
+    }
+
+    public async Task<IQueryable<CustomerShortDto>> FilteredCustomer(CustomerFilterDto filterDto)
+    {
+        return (await _customerRepository.FilteredCustomer(filterDto)).Select(c => _mapper.Map<CustomerShortDto>(c));
+    }
+
+    public async Task<CustomerDetailDto> GetCustomerById(int customerId)
+    {
+        var customer = await _customerRepository.GetById(customerId);
+        if (customer == null) throw new NotFoundException("Customer is not found.");
+
+        return _mapper.Map<CustomerDetailDto>(customer);
+    }
+
+    public async Task<CustomerDetailDto> CreateCustomer(CustomerCreateInputDto createInputDto)
+    {
+        // check email, phone is already exist
+        {
+            var customerOld = await _customerRepository.GetByEmail(createInputDto.Email);
+            if (customerOld != null) throw new ConflictException("Email is already use by another customer");
+        }
+        {
+            var customerOld = await _customerRepository.GetByPhone(createInputDto.PhoneNumber);
+            if (customerOld != null) throw new ConflictException("PhoneNumber is already use by another customer");
+        }
+
+        // create new customer
+        var customer = await _customerRepository.Add(_mapper.Map<Customer>(createInputDto));
+
+        return _mapper.Map<CustomerDetailDto>(customer);
+    }
+
+    public async Task<CustomerDetailDto> UpdateCustomer(int customerId, CustomerUpdateInputDto updateInputDto)
+    {
+        var customer = await _customerRepository.GetById(customerId);
+        if (customer == null) throw new NotFoundException("Customer is not found.");
+
+        if (updateInputDto.FirstName != null) customer.FirstName = updateInputDto.FirstName;
+        if (updateInputDto.LastName != null) customer.LastName = updateInputDto.LastName;
+        if (updateInputDto.Gender != null) customer.Gender = (bool)updateInputDto.Gender;
+        if (updateInputDto.DayOfBirth != null) customer.DayOfBirth = (DateTime)updateInputDto.DayOfBirth;
+        if (updateInputDto.Email != null) customer.Email = updateInputDto.Email;
+        if (updateInputDto.PhoneNumber != null) customer.PhoneNumber = updateInputDto.PhoneNumber;
+        if (updateInputDto.Password != null) customer.HashedPassword = BCrypt.Net.BCrypt.HashPassword(updateInputDto.Password);
+        if (updateInputDto.AvatarUrl != null) customer.AvatarUrl = updateInputDto.AvatarUrl;
+
+        await _customerRepository.Update(customer);
+
+        return _mapper.Map<CustomerDetailDto>(customer);
+
+    }
+
+    public async Task<bool> DeleteCustomer(int customerId)
+    {
+        return await _customerRepository.Remove(customerId);
     }
 }
