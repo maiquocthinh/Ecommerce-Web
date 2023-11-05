@@ -491,3 +491,24 @@ BEGIN
     END
 END;
 
+-- set remaining = quantity & cộng inventory của product_version
+CREATE OR ALTER TRIGGER trg_SetRemainingAndInventoryOnInsert
+ON import_shipments
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @productVersionId INT;
+    DECLARE @importedQuantity INT;
+
+    SELECT @productVersionId = i.product_version_id, @importedQuantity = i.quantity
+    FROM inserted AS i;
+
+    UPDATE import_shipments
+    SET remaining = @importedQuantity
+    FROM import_shipments
+    INNER JOIN inserted AS i ON import_shipments.id = i.id;
+
+    UPDATE product_versions
+    SET inventory = inventory + @importedQuantity
+    WHERE id = @productVersionId;
+END;

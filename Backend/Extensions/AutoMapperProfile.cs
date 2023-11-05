@@ -56,6 +56,23 @@ public class AutoMapperProfile : Profile
             }));
         CreateMap<Role, RoleDto>()
             .ForMember(dest => dest.Permissions, otp => otp.MapFrom(src => src.PermissionList));
+        CreateMap<Import, ImportDto>()
+            .ForMember(dest => dest.Employee, otp => otp.MapFrom(src => $"{src.Employee.LastName} {src.Employee.FirstName}"))
+            .ForMember(dest => dest.Supplier, otp => otp.MapFrom(src => src.Supplier.Name))
+            .ForMember(dest => dest.TotalAmount, otp => otp.MapFrom(src => src.ImportShipments.Sum(ishp => ishp.Cost)));
+        CreateMap<Import, ImportDetailDto>()
+            .ForMember(dest => dest.Employee, otp => otp.MapFrom(src => $"{src.Employee.LastName} {src.Employee.FirstName}"))
+            .ForMember(dest => dest.Supplier, otp => otp.MapFrom(src => src.Supplier.Name))
+            .ForMember(dest => dest.TotalAmount, otp => otp.MapFrom(src => src.ImportShipments.Sum(ishp => ishp.Cost)))
+            .ForMember(dest => dest.ImportShipments, otp => otp.MapFrom(src => src.ImportShipments.Select(ishp => new ImportShipmentDto
+            {
+                Id = ishp.Id,
+                ProductVersionName = ishp.ProductVersion.Name, 
+                Cost = ishp.Cost,
+                Quantity = ishp.Quantity,
+            })));
+        CreateMap<ImportShipment, ImportShipmentDto>()
+            .ForMember(dest => dest.ProductVersionName, otp => otp.MapFrom(src => src.ProductVersion.Name));
 
     }
 }

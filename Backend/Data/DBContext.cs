@@ -325,7 +325,10 @@ public partial class DBContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_ImportShipments");
 
-            entity.ToTable("import_shipments");
+            entity.ToTable("import_shipments", tb =>
+            {
+                tb.HasTrigger("trg_SetRemainingAndInventoryOnInsert");
+            });
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Cost).HasColumnName("cost");

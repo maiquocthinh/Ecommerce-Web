@@ -37,4 +37,8 @@ public class Permissions
     public const string CreateRole = "CR";
     public const string UpdateRole = "UR";
     public const string DeleteRole = "DR";
+
+    public const string ViewInventory = "VI";
+    public const string ViewImport = "VImp";
+    public const string CreateImport = "CImp";
 }
