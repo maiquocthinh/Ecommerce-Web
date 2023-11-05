@@ -1,18 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isLoading: null, // Sử dụng null thay vì false
+    componentLevelLoading: {
+        loading: false,
+        id: "",
+    },
 };
 
-const componentLevelLoadingSlice = createSlice({
-  name: 'componentLevelLoading',
-  initialState,
-  reducers: {
-    setComponentLevelLoading: (state, action) => {
-      state.isLoading = action.payload;
+const componentLeveLoadingSlice = createSlice({
+    name: "componentLevelLoading",
+    initialState,
+    reducers: {
+        setComponentLevelLoading: (state, action) => {
+            state.componentLevelLoading = action.payload;
+        },
     },
-  },
 });
 
-export const { setComponentLevelLoading } = componentLevelLoadingSlice.actions;
-export default componentLevelLoadingSlice.reducer;
+export const { setComponentLevelLoading } = componentLeveLoadingSlice.actions;
+export default componentLeveLoadingSlice.reducer;

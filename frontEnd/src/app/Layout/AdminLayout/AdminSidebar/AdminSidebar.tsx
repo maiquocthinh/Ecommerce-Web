@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BiTable, BiUserPin } from "react-icons/Bi";
-import { FaJediOrder } from "react-icons/Fa";
+import { FaJediOrder } from "react-icons/fa";
 import { FiSettings, FiUsers, FiLogOut } from "react-icons/Fi";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";

@@ -1,12 +1,22 @@
-
+import Cookies from "js-cookie";
 import axios from "../utils/instance";
-const handleAddToCart = (formData:any) => {
-    return axios.post(`/api/cart`,formData);
+const handleAddToCart = (formData: any) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+
+    return axios.post(`/api/cart`, formData, { headers });
 };
-const handleAllCart = (userId:number) => {
-    return axios.get(`/api/cart`);
+const handleAllCart = () => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    return axios.get(`/api/cart`, { headers });
 };
-export {
-    handleAddToCart,
-    handleAllCart
-}
+const handleDeleteCart = (id: number | string) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    return axios.delete(`/api/cart/${id}`, { headers });
+};
+export { handleAddToCart, handleAllCart, handleDeleteCart };

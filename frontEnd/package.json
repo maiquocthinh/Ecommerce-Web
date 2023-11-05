@@ -13,6 +13,7 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
     "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@tippyjs/react": "^4.2.6",

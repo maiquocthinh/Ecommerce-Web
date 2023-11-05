@@ -1,62 +1,120 @@
 import Comments from "@/Components/Comments/Comments";
 import GenerralProductHeader from "@/Components/Header/GenerralProductHeader/GenerralProductHeader";
+import Notification from "@/Components/PageLoader/Notification";
 import PageLoader from "@/Components/PageLoader/PageLoader";
-import Product from "@/Components/Product/Product";
+import ProductInfo from "@/Components/Slide/DetailProductSlide/DetailProductSlide";
 import Slide from "@/Components/Slide/Slide";
-import BoxProduct from "@/Components/commonListing/BoxProduct/BoxProduct";
-import ProductInfo from "@/Components/commonListing/DetailProductSlide/DetailProductSlide";
+import BoxColor from "@/Components/commonListing/DetailBox/BoxColor/BoxProduct";
+import BoxProduct from "@/Components/commonListing/DetailBox/BoxProduct/BoxProduct";
 import Incentives from "@/Components/commonListing/Incentives/Incentives";
 import InfoProduct from "@/Components/commonListing/InfoProduct/InfoProduct";
-import Reviews from "@/Components/commonListing/Reviews/Reviews";
 import Star from "@/Components/commonListing/Star/Start";
+import Product from "@/Components/productListing/Product/Product";
+import Reviews from "@/Components/productListing/Reviews/Reviews";
 import { ProductType } from "@/common/product";
-import { FaCartPlus } from "@react-icons/all-files/fa/FaCartPlus";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { FaCartPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
-import { getProductById } from "../action/action";
 import { addToCart, getAllCart } from "../action/CartActon";
-
+import { getAllProduct, getProductById } from "../action/product";
+import CartModal from "@/Components/Modal/CartModal/CartModal";
+import { setshowCart } from "../Slices/common/showCartSlice";
 const DetailProduct = () => {
+    const [listImg, setListImg] = useState<any>([
+        {
+            imageUrl: "",
+        },
+    ]);
+    const [productVersion, setProductVersion] = useState<number | string>("");
     const dispatch = useDispatch<any>();
-    const productData = useSelector((state: any) => state.allproduct.data as ProductType[])
-    const productDetail = useSelector((state: any) => state.product.data[0] as ProductType)
-    const pageLevelLoading = useSelector((sate: any) => sate.pageLevelLoading.pageLevelLoading)
-    const allCart = useSelector((sate: any) => sate.allCart.data)
+    const productSlimiler = useSelector((state: any) => state.allproduct.data);
+    const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+    const checkAddCart = useSelector((state: any) => state.addToCart.data);
+    const allCart = useSelector((sate: any) => sate.allCart.data);
+    const route = useNavigate();
     const params = useParams();
+    const productDetail = useSelector(
+        (state: any) => state.productDetail.data as ProductType
+    );
+    const pageLevelLoading = useSelector(
+        (sate: any) => sate.pageLevelLoading.pageLevelLoading
+    );
+    const handleAllCart = () => {
+        dispatch(getAllCart());
+    };
+
     useEffect(() => {
-        dispatch(setPageLevelLoading(true))
+        dispatch(setPageLevelLoading(true));
         dispatch(getProductById(params?.productId || 1));
-    }, [dispatch])
-    const handlegetAllCart = () => {
-        dispatch(getAllCart(1))
-    }
+        dispatch(setPageLevelLoading(true));
+        handleAllCart();
+    }, [dispatch, params]);
     useEffect(() => {
-        if (productDetail && productData) dispatch(setPageLevelLoading(false))
-    })
+        localStorage.setItem("cart", JSON.stringify(allCart.items));
+    }, [allCart]);
+    useEffect(() => {
+        if (productDetail?.catalogs?.categoryId) {
+            dispatch(
+                getAllProduct({
+                    Filters: {
+                        CategoryId: productDetail?.catalogs?.categoryId,
+                    },
+                })
+            );
+        }
+    }, [dispatch, productDetail]);
+    useEffect(() => {
+        if (productDetail) dispatch(setPageLevelLoading(false));
+    });
+    useEffect(() => {
+        if (productDetail?.productVersions) {
+            const listImg = productDetail.productVersions
+                .filter((productVersion) => productVersion.imageUrl)
+                .map((productVersion) => ({
+                    imageUrl: productVersion.imageUrl,
+                }));
+            listImg.push({ imageUrl: productDetail.imageUrl });
+            setListImg(listImg);
+        }
+    }, [productDetail]);
     if (pageLevelLoading) {
-        return (
-            <PageLoader pageLevelLoading={pageLevelLoading} />
-        );
+        return <PageLoader pageLevelLoading={pageLevelLoading} />;
     }
     const handleAddCart = () => {
-        dispatch(addToCart({
-            customer_id: 1,
-            quantity: 1,
-            products_versions_id: productDetail.id
-        }))
-        handlegetAllCart()
-    }
-    if (allCart) {
-        localStorage.setItem("cart", JSON.stringify(allCart));
-    }
+        if (!isLoggedIn) {
+            toast.error("đăng nhập để tiếp tục");
+            route("/login");
+        }
+        dispatch(
+            addToCart({ productVersionId: productVersion, quantity: 1 })
+        ).then((response: any) => {
+            if (response.payload.success) {
+                toast.success("thêm sản phẩm thành công");
+                dispatch(setshowCart(true));
+            } else {
+                toast.error("thêm sản phẩm thất bài");
+            }
+            return dispatch(getAllCart());
+        });
+    };
+    const handleGetProductVersion = (productId: number | string) => {
+        setProductVersion(productId);
+    };
     return (
         productDetail && (
             <div className="flex flex-col gap-2 mb-8">
                 <header className="flex items-center gap-2 pb-2 mb-3 border-b-[2px]">
                     <h1 className="font-bold text-lg">{productDetail.name}</h1>
-                    <Star numberStar={5} />
+                    <Star
+                        numberStar={
+                            productDetail.reviewsScore
+                                ? Number(productDetail.reviewsScore)
+                                : 5
+                        }
+                    />
                     <div>
                         <button className="text-custom-primary border-[1px] border-custom-primary p-1 text-sm cursor-pointer rounded-sm">
                             (+) So sánh
@@ -66,39 +124,72 @@ const DetailProduct = () => {
                 <div className="flex">
                     <div className="w-[60%] ">
                         <div className=" max-h-[400px]">
-                            <Slide data={productDetail.listImg} ItemSlide={ProductInfo} />
+                            <Slide data={listImg} ItemSlide={ProductInfo} />
                         </div>
                         <InfoProduct />
                     </div>
-                    <div className="ml-4 w-[40%]">
-                        <BoxProduct data={productDetail.listTypeProduct} />
-                        <div className="flex flex-col gap-2 mt-4 font-bold">
-                            <h1>Chọn màu để xem giá và chi nhánh có hàng</h1>
-                            <BoxProduct data={productDetail.listColorProduct} />
-                        </div>
-                        <div className="flex gap-2 items-center text-center mt-4">
-                            <button className="flex-1 bg-custom-primary py-2 rounded-borderContnet text-white text-xl font-bold cursor-pointer">Mua ngay</button>
-                            <div onClick={handleAddCart} className="flex flex-col gap-1 items-center text-custom-primary px-2 py-2 border-[1px] border-custom-primary rounded-borderContnet cursor-pointer">
-                                <FaCartPlus />
-                                <span className="text-[8px] text-center font-bold">Thêm vào giỏ (+)</span>
+                    {productDetail?.productVersions && (
+                        <div className="ml-4 w-[40%]">
+                            <BoxProduct
+                                data={productDetail?.productVersions}
+                                handleGetProductVersion={
+                                    handleGetProductVersion
+                                }
+                            />
+                            <div className="flex flex-col gap-2 mt-4 font-bold">
+                                <h1>
+                                    Chọn màu để xem giá và chi nhánh có hàng
+                                </h1>
+                                <BoxColor
+                                    data={productDetail?.productVersions}
+                                />
                             </div>
+                            <div className="flex gap-2 items-center text-center mt-4">
+                                <button className="flex-1 bg-custom-primary py-2 rounded-borderContnet text-white text-xl font-bold cursor-pointer">
+                                    Mua ngay
+                                </button>
+                                <div
+                                    onClick={handleAddCart}
+                                    className="flex flex-col gap-1 items-center text-custom-primary px-2 py-2 border-[1px] border-custom-primary rounded-borderContnet cursor-pointer"
+                                >
+                                    <FaCartPlus />
+                                    <span className="text-[8px] text-center font-bold">
+                                        Thêm vào giỏ (+)
+                                    </span>
+                                </div>
+                            </div>
+                            <Incentives />
                         </div>
-                        <Incentives />
-                    </div>
+                    )}
                 </div>
-                <div>
-                    <GenerralProductHeader heading="sản phẩm liên quan" />
-                    <div className=" grid grid-cols-1 sm:grid-cols-4 md:grid-cols-10 gap-2">
-                        {productData?.length > 0 && productData.map((product, index) => (
-                            <Product data={product} key={index} col={2} />
-                        ))}
+
+                {productSlimiler?.list && (
+                    <div className="flex flex-col gap-2 p-2">
+                        <GenerralProductHeader heading="sản phẩm liên quan" />
+                        <Slide
+                            data={productSlimiler.list}
+                            ItemSlide={Product}
+                            numberSlide={5}
+                        />
                     </div>
-                </div>
-                <Reviews />
+                )}
+
+                <Reviews data={productDetail} />
                 <Comments />
+                <CartModal />
+                <Notification />
+                {/* <CenterModal
+                    data={
+                        <div className="flex flex-col gap-2 p-2 justify-center">
+                            <span className="font-medium text-xl text-slate-700 text-center w-full">
+                                Vui lòng đăng nhập để tiếp tục !
+                            </span>
+                        </div>
+                    }
+                /> */}
             </div>
         )
     );
-}
+};
 
 export default DetailProduct;

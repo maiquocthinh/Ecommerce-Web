@@ -13,7 +13,6 @@ const Star: React.FC<StarProps> = ({ numberStar }) => {
                     <FaStar />
                 </li>
             ))}
-            <li>{`(${numberStar})`}</li>
         </ul>
     );
 };

@@ -1,5 +1,5 @@
 import Slider from "react-slick";
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect } from "react";
 import NextBtn from "./NextBtn";
 import PreBtn from "./PreBtn";
 import { ProductType } from "../../common/product";
@@ -7,11 +7,16 @@ import { PosterType } from "../../common/Poster";
 
 interface SlideProps {
     data: ProductType[] | PosterType[] | any;
-    numberSlide?: number,
-    ItemSlide: any,
-    slideDescription?: boolean
+    numberSlide?: number;
+    ItemSlide: any;
+    slideDescription?: boolean;
 }
-const Slide: React.FC<SlideProps> = ({ data, numberSlide, ItemSlide, slideDescription }) => {
+const Slide: React.FC<SlideProps> = ({
+    data,
+    numberSlide,
+    ItemSlide,
+    slideDescription,
+}) => {
     const sliderRef = useRef<Slider | null>(null);
     const [currentSlide, setCurrentSlide] = useState<number>(0);
     const handleNextClick = () => {
@@ -26,8 +31,8 @@ const Slide: React.FC<SlideProps> = ({ data, numberSlide, ItemSlide, slideDescri
         }
     };
     const handleSetSlider = (index: number) => {
-        sliderRef.current?.slickGoTo(index)
-    }
+        sliderRef.current?.slickGoTo(index);
+    };
     var settings = {
         infinite: true,
         speed: 200,
@@ -43,28 +48,39 @@ const Slide: React.FC<SlideProps> = ({ data, numberSlide, ItemSlide, slideDescri
     };
     return (
         <div>
-            <Slider {...settings} ref={sliderRef} className="group cursor-pointer">
-                {data?.length > 0 && data.map((item: any, index: number) => (
-                    <ItemSlide key={index} data={item} />
-                ))}
+            <Slider
+                {...settings}
+                ref={sliderRef}
+                className="group cursor-pointer"
+            >
+                {data?.length > 0 &&
+                    data.map((item: any, index: number) => (
+                        <ItemSlide key={index} data={item} />
+                    ))}
             </Slider>
-            {
-                data?.length > 0 && slideDescription &&
+            {data?.length > 0 && slideDescription && (
                 <div className="flex justify-between items-center">
                     {data.map((item: any, index: number) => {
-                        if (item.title) {
+                        if (item.label) {
                             return (
-                                <span className={`w-full text-center py-4 cursor-pointer hover:bg-backgroundHover ${currentSlide === index ? "border-b-4 border-custom-primary transition-border hover:border-red-500" : ""}`} key={index}
-                                    onClick={() => handleSetSlider(index)}>{item.title}</span>
-                            )
+                                <span
+                                    className={`w-full text-center py-4 cursor-pointer hover:bg-backgroundHover ${
+                                        currentSlide === index
+                                            ? "border-b-4 border-custom-primary transition-border hover:border-red-500"
+                                            : ""
+                                    }`}
+                                    key={index}
+                                    onClick={() => handleSetSlider(index)}
+                                >
+                                    {item.label}
+                                </span>
+                            );
                         }
-                    }
-
-                    )}
+                    })}
                 </div>
-            }
+            )}
         </div>
     );
-}
+};
 
 export default Slide;

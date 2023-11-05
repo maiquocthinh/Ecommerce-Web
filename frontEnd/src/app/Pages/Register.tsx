@@ -15,15 +15,22 @@ const initialFormData = {
     lastName: "",
     email: "",
     phoneNumber: "",
-    password: ""
+    password: "",
 };
 
 const Register = () => {
-    const [formData, setFormData] = useState<typeof initialFormData>(initialFormData);
-    const dispatch = useDispatch<any>()
-    const data = useSelector((state: { auth: UserType.AuthState }) => state.auth.data)
-    const err = useSelector((state: { auth: UserType.AuthState }) => state.auth.error)
-    const componentLeveLoading = useSelector((state: any) => state.componentLeveLoading.isLoading)
+    const [formData, setFormData] =
+        useState<typeof initialFormData>(initialFormData);
+    const dispatch = useDispatch<any>();
+    const data = useSelector(
+        (state: { auth: UserType.AuthState }) => state.auth.data
+    );
+    const err = useSelector(
+        (state: { auth: UserType.AuthState }) => state.auth.error
+    );
+    const componentLeveLoading = useSelector(
+        (state: any) => state.componentLeveLoading.isLoading
+    );
 
     const navigate = useNavigate();
     const isFormValid = () => {
@@ -36,39 +43,39 @@ const Register = () => {
             formData.password.trim() !== ""
             ? true
             : false;
-    }
+    };
     const handleRegisterOnSubmit = () => {
         if (isFormValid()) {
-            dispatch(setComponentLevelLoading(true))
-            dispatch(register(formData))
+            dispatch(setComponentLevelLoading(true));
+            dispatch(register(formData));
         } else {
-            dispatch(setComponentLevelLoading(false))
+            dispatch(setComponentLevelLoading(false));
             toast.error("không hợp lệ", {
                 position: toast.POSITION.TOP_RIGHT,
             });
             setFormData(initialFormData);
         }
-        dispatch(setComponentLevelLoading(false))
-    }
+        dispatch(setComponentLevelLoading(false));
+    };
     useEffect(() => {
         if (data.accessToken !== "") {
             toast.success("đăng kí thành công", {
                 position: toast.POSITION.TOP_RIGHT,
             });
-            localStorage.setItem("userInfo", JSON.stringify(formData))
+            localStorage.setItem("userInfo", JSON.stringify(formData));
             setFormData(initialFormData);
             setTimeout(() => {
                 navigate("/login");
             }, 1000);
         }
         if (err) {
-            dispatch(setComponentLevelLoading(false))
+            dispatch(setComponentLevelLoading(false));
             toast.error("lỗi hệ thống, vui lòng quay lại sau vài phút", {
                 position: toast.POSITION.TOP_RIGHT,
             });
             setFormData(initialFormData);
         }
-    }, [data, err])
+    }, [data, err]);
     return (
         <div className="relative">
             <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-8 mr-auto xl:px-5 lg:flex-row">
@@ -80,7 +87,11 @@ const Register = () => {
                                     ? "Registration Successfull !"
                                     : "Sign up for an account"}
                             </p>
-                            <img src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png" className="h-[160px] mt-2 object-cover object-center" alt="" />
+                            <img
+                                src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png"
+                                className="h-[160px] mt-2 object-cover object-center"
+                                alt=""
+                            />
                             {isRegistered ? (
                                 <button
                                     className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
@@ -94,7 +105,7 @@ const Register = () => {
                                     {registrationFormControls.map(
                                         (controlItem) =>
                                             controlItem.componentType ===
-                                                "input" ? (
+                                            "input" ? (
                                                 <InputForm
                                                     key={controlItem.id}
                                                     type={controlItem.type}
@@ -102,7 +113,9 @@ const Register = () => {
                                                         controlItem.placeholder
                                                     }
                                                     lable={controlItem.label}
-                                                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                                    onChange={(
+                                                        event: ChangeEvent<HTMLInputElement>
+                                                    ) => {
                                                         setFormData({
                                                             ...formData,
                                                             [controlItem.id]:
@@ -110,7 +123,11 @@ const Register = () => {
                                                                     .value,
                                                         });
                                                     }}
-                                                    value={formData[controlItem.id as keyof typeof formData]}
+                                                    value={
+                                                        formData[
+                                                            controlItem.id as keyof typeof formData
+                                                        ]
+                                                    }
                                                 />
                                             ) : null
                                     )}
@@ -120,10 +137,15 @@ const Register = () => {
                    text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
                    "
                                     >
-                                        {
-                                            componentLeveLoading ? <ComponentLevelLoader loading={componentLeveLoading} color="#fff" text="registing" /> : "register"
-                                        }
-
+                                        {componentLeveLoading ? (
+                                            <ComponentLevelLoader
+                                                loading={componentLeveLoading}
+                                                color="#fff"
+                                                text="registing"
+                                            />
+                                        ) : (
+                                            "register"
+                                        )}
                                     </button>
                                 </div>
                             )}
@@ -142,6 +164,6 @@ const Register = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Register;

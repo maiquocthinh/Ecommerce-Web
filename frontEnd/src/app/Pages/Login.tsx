@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../action/UserAction";
 import { UserType } from "@/common";
 import { toast } from "react-toastify";
-import Notification from "@/Components/Notification";
+import Notification from "@/Components/PageLoader/Notification";
 import ComponentLevelLoader from "@/Components/Loader/componentlevel";
 import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
 const initialFormdata = {
@@ -16,29 +16,39 @@ const initialFormdata = {
 };
 
 export default function Login() {
-    const [formData, setFormData] = useState<UserType.userLoginType>(initialFormdata);
-    const navigate = useNavigate()
+    const [formData, setFormData] =
+        useState<UserType.userLoginType>(initialFormdata);
+    const navigate = useNavigate();
     const dispatch = useDispatch<any>();
-    const data = useSelector((state: { auth: UserType.AuthState }) => state.auth.data)
-    const err = useSelector((state: { auth: UserType.AuthState }) => state.auth.error)
-    const isLoggedIn = useSelector((state: { auth: UserType.AuthState }) => state.auth.isLoggedIn)
-    const componentLeveLoading = useSelector((state: any) => state.componentLeveLoading.isLoading)
-    const route = useNavigate()
+    const data = useSelector(
+        (state: { auth: UserType.AuthState }) => state.auth.data
+    );
+    const err = useSelector(
+        (state: { auth: UserType.AuthState }) => state.auth.error
+    );
+    const isLoggedIn = useSelector(
+        (state: { auth: UserType.AuthState }) => state.auth.isLoggedIn
+    );
+    const componentLeveLoading = useSelector(
+        (state: any) => state.componentLeveLoading.isLoading
+    );
+    const route = useNavigate();
     const handleLogin = () => {
         if (isValidForm()) {
-            dispatch(setComponentLevelLoading(true))
-            dispatch(login(formData))
+            dispatch(setComponentLevelLoading(true));
+            dispatch(login(formData));
         } else {
             toast.error("vui lòng nhập đầy đủ thông tin", {
                 position: toast.POSITION.TOP_RIGHT,
             });
         }
-    }
+    };
     const isValidForm = () => {
         return formData &&
             formData.email &&
             formData.email.trim() !== "" &&
-            formData.email.toLowerCase()
+            formData.email
+                .toLowerCase()
                 .match(
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                 ) &&
@@ -46,23 +56,23 @@ export default function Login() {
             formData.password.trim() !== ""
             ? true
             : false;
-    }
+    };
     useEffect(() => {
         if (isLoggedIn) {
             Cookies.set("token", data.accessToken);
-            Cookies.set("accessTokenExpiredIn", data.accessTokenExpiredIn)
+            Cookies.set("accessTokenExpiredIn", data.accessTokenExpiredIn);
             toast.success("đăng nhập thành công", {
                 position: toast.POSITION.TOP_RIGHT,
             });
-            dispatch(setComponentLevelLoading(false))
+            dispatch(setComponentLevelLoading(false));
         }
-    }, [isLoggedIn, data])
+    }, [isLoggedIn, data]);
     useEffect(() => {
         if (err !== null && componentLeveLoading) {
             toast.error("tài khoản không tồn tại", {
                 position: toast.POSITION.TOP_RIGHT,
-            })
-            dispatch(setComponentLevelLoading(false))
+            });
+            dispatch(setComponentLevelLoading(false));
         }
         if (isLoggedIn) route("/");
     }, [isLoggedIn, err]);
@@ -75,7 +85,11 @@ export default function Login() {
                             <p className="w-full text-4xl font-medium text-center font-serif">
                                 Login
                             </p>
-                            <img src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png" className="h-[160px] mt-2 object-cover object-center" alt="" />
+                            <img
+                                src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png"
+                                className="h-[160px] mt-2 object-cover object-center"
+                                alt=""
+                            />
                             <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
                                 {loginFormControls.map((controlItem) =>
                                     controlItem.componentType === "input" ? (
@@ -86,8 +100,14 @@ export default function Login() {
                                                 controlItem.placeholder
                                             }
                                             lable={controlItem.label}
-                                            value={formData[controlItem.id as keyof typeof formData]}
-                                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                            value={
+                                                formData[
+                                                    controlItem.id as keyof typeof formData
+                                                ]
+                                            }
+                                            onChange={(
+                                                event: ChangeEvent<HTMLInputElement>
+                                            ) => {
                                                 setFormData({
                                                     ...formData,
                                                     [controlItem.id]:
@@ -104,17 +124,15 @@ export default function Login() {
                      text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
                      "
                                 >
-
-                                    {componentLeveLoading
-                                        ? (
-                                            <ComponentLevelLoader
-                                                text={"loging"}
-                                                color={"#ffffff"}
-                                                loading={componentLeveLoading}
-                                            />
-                                        ) : (
-                                            "login"
-                                        )}
+                                    {componentLeveLoading ? (
+                                        <ComponentLevelLoader
+                                            text={"loging"}
+                                            color={"#ffffff"}
+                                            loading={componentLeveLoading}
+                                        />
+                                    ) : (
+                                        "login"
+                                    )}
                                 </button>
                                 <div className="flex gap-2 text-sm mt-4 text-center justify-center">
                                     <span>You don't have account ? </span>

@@ -1,30 +1,29 @@
-import { ProductType } from "../../../common/product";
 // reducer.js
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllProduct } from "../../action/product";
+import { deleteCart } from "@/app/action/CartActon";
 
-const PosterSaleSlice = createSlice({
-    name: "products",
+const deleteCartSlice = createSlice({
+    name: "delete-cart",
     initialState: {
-        data: [],
+        data: {},
         isLoading: false,
         error: null as string | null,
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getAllProduct.pending, (state) => {
+            .addCase(deleteCart.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(getAllProduct.fulfilled, (state, action) => {
+            .addCase(deleteCart.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.data = action.payload;
             })
-            .addCase(getAllProduct.rejected, (state, action) => {
+            .addCase(deleteCart.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.error.message || null;
             });
     },
 });
 
-export default PosterSaleSlice.reducer;
+export default deleteCartSlice.reducer;

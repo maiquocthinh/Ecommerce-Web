@@ -1,12 +1,9 @@
-import { useState } from "react"
+import { useState } from "react";
 import Header from "../Navbar/Navbar";
-import RightBar from "../RightBar/RightBar";
-import SlideBar from "../Sidebar/SideBar";
-import ModalMenu from "../../../Components/commonListing/ModalMenu/ModalMenu";
 import Footer from "../Footer/Footer";
 
 interface DefaultLayoutProps {
-    children: React.ReactElement
+    children: React.ReactElement;
 }
 const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
     return (
@@ -18,6 +15,6 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
             <Footer />
         </div>
     );
-}
+};
 
 export default DefaultLayout;

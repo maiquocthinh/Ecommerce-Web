@@ -1,20 +1,38 @@
-export  interface ProductType {
-    id: number;
+export interface productVersion {
+    id: number | string;
+    imageUrl: string;
+    color: string;
+    isOutOfStock: boolean;
     name: string;
-    price: number;
-    sale?:number;
-    src:string;
-    listColorProduct:{
-      title: string;
-      price: string;
-      src: string;
-    }[],
-    listTypeProduct:{
-      title: string;
-      price: string;
-    }[],
-    listImg:{
-      src:string;
-      title:string;
-    }[]
-  }
+    originPrice: string;
+    price: string;
+}
+export interface ProductType {
+    id: number | string;
+    imageUrl: string;
+    name: string;
+    price: string | number;
+    originPrice: string | number;
+    discountPercent: string | number;
+    reviewsScore: number;
+    isOutOfStock: boolean;
+    catalogs: {
+        categoryId: string | number;
+    };
+    productVersions?: productVersion[];
+}
+export interface paramsProductType {
+    Keyword?: string;
+    pageIndex?: string;
+    pageSize?: string;
+    SortedBy?: string;
+    Filters?: {
+        BrandId?: string | number;
+        NeedId?: string | number;
+        CategoryId?: string | number;
+        PriceRange?: {
+            MinPrice?: string;
+            MaxPrice?: string;
+        };
+    };
+}

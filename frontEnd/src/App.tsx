@@ -1,11 +1,8 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { publishRouter, privateRouter } from "./app/routers";
+import { Fragment } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import DefaultLayout from "./app/Layout/DefaultLayout/DefaultLayout";
-import { Fragment, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import "./global.css"
-import generatePathArray from "./utils/Pathname";
-import { setPathArray } from "./app/Slices/common/pathSlice";
+import { publishRouter } from "./app/routers";
+import "./global.css";
 function App() {
     // const dispatch = useDispatch();
     // useEffect(() => {

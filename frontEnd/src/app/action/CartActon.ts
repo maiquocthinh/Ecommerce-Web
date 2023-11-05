@@ -1,12 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import * as CartApi from "@/Server/CartApi"
+import * as CartApi from "@/Server/CartApi";
 export const addToCart = createAsyncThunk(
     "addToCart/addToCart",
-    async (formdata:any) => {
+    async (formdata: {
+        productVersionId: string | number;
+        quantity: number;
+    }) => {
         try {
-            const response = await CartApi.handleAddToCart(formdata); 
-            let data = response.data;
-            return data ; 
+            const response = await CartApi.handleAddToCart(formdata);
+            let data = response;
+            return data;
         } catch (error) {
             throw error;
         }
@@ -14,14 +17,25 @@ export const addToCart = createAsyncThunk(
 );
 export const getAllCart = createAsyncThunk(
     "getAllCart/getAllCart",
-    async (userID:number) => {
+    async () => {
         try {
-            const response = await CartApi.handleAllCart(userID); 
+            const response = await CartApi.handleAllCart();
             let data = response.data;
-            return data ; 
+            return data;
         } catch (error) {
             throw error;
         }
     }
 );
-
+export const deleteCart = createAsyncThunk(
+    "deleteCart/deleteCart",
+    async (id: number | string) => {
+        try {
+            const response = await CartApi.handleDeleteCart(id);
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
