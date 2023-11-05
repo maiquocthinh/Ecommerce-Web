@@ -39,3 +39,15 @@ export const deleteCart = createAsyncThunk(
         }
     }
 );
+export const updateCart = createAsyncThunk(
+    "updateCart/updateCart",
+    async (formdata: { id: number | string; quantity: number | string }) => {
+        try {
+            const response = await CartApi.handleUpdateCart(formdata);
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);

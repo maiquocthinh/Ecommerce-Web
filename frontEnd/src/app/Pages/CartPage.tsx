@@ -5,9 +5,8 @@ const CartPage = () => {
     return (
         <div className="">
             <Cart />
-            {/* <EmptyCart /> */}
         </div>
     );
-}
+};
 
 export default CartPage;

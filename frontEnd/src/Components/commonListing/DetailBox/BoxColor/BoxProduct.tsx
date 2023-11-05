@@ -6,7 +6,7 @@ interface BoxColorProps {
     data: productVersion[];
 }
 const BoxColor: React.FC<BoxColorProps> = ({ data }) => {
-    const [active, setActive] = useState(data[0].id);
+    const [active, setActive] = useState<string | number>("");
     const handlerActive = (id: string | number) => {
         setActive(id);
     };

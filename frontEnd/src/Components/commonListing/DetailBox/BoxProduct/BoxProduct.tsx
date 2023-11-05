@@ -10,7 +10,7 @@ const BoxProduct: React.FC<BoxProductProps> = ({
     data,
     handleGetProductVersion,
 }) => {
-    const [active, setActive] = useState(data[0].id);
+    const [active, setActive] = useState<string | number>("");
     const handlerActive = (id: string | number) => {
         setActive(id);
         handleGetProductVersion(id);

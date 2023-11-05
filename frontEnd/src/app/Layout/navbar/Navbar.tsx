@@ -22,9 +22,11 @@ const Navbar: React.FC<NavbarProps> = () => {
     const [isResults, setIsResults] = useState<boolean>(false);
     const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
+    const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+    const allCart = useSelector((sate: any) => sate.allCart.data);
     const route = useNavigate();
     const dispatch = useDispatch();
-    const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+
     const handleLogout = () => {
         dispatch(logout());
         Cookies.remove("token");
@@ -37,7 +39,9 @@ const Navbar: React.FC<NavbarProps> = () => {
         } else {
             dispatch(setIsLoggedIn(false));
         }
-    }, [isLoggedIn, dispatch]);
+        if (allCart?.items)
+            localStorage.setItem("cart", JSON.stringify(allCart.items));
+    }, [isLoggedIn, dispatch, allCart]);
     const navListing = [
         {
             id: 1,

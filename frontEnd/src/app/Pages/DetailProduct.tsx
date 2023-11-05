@@ -1,5 +1,6 @@
 import Comments from "@/Components/Comments/Comments";
 import GenerralProductHeader from "@/Components/Header/GenerralProductHeader/GenerralProductHeader";
+import CartModal from "@/Components/Modal/CartModal/CartModal";
 import Notification from "@/Components/PageLoader/Notification";
 import PageLoader from "@/Components/PageLoader/PageLoader";
 import ProductInfo from "@/Components/Slide/DetailProductSlide/DetailProductSlide";
@@ -18,39 +19,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
+import { setshowCart } from "../Slices/common/showCartSlice";
 import { addToCart, getAllCart } from "../action/CartActon";
 import { getAllProduct, getProductById } from "../action/product";
-import CartModal from "@/Components/Modal/CartModal/CartModal";
-import { setshowCart } from "../Slices/common/showCartSlice";
 const DetailProduct = () => {
     const [listImg, setListImg] = useState<any>([
         {
             imageUrl: "",
         },
     ]);
+    const productDetail = useSelector(
+        (state: any) => state.productDetail.data as ProductType
+    );
     const [productVersion, setProductVersion] = useState<number | string>("");
     const dispatch = useDispatch<any>();
     const productSlimiler = useSelector((state: any) => state.allproduct.data);
     const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-    const checkAddCart = useSelector((state: any) => state.addToCart.data);
     const allCart = useSelector((sate: any) => sate.allCart.data);
     const route = useNavigate();
     const params = useParams();
-    const productDetail = useSelector(
-        (state: any) => state.productDetail.data as ProductType
-    );
     const pageLevelLoading = useSelector(
         (sate: any) => sate.pageLevelLoading.pageLevelLoading
     );
-    const handleAllCart = () => {
-        dispatch(getAllCart());
-    };
-
     useEffect(() => {
         dispatch(setPageLevelLoading(true));
         dispatch(getProductById(params?.productId || 1));
         dispatch(setPageLevelLoading(true));
-        handleAllCart();
+        dispatch(getAllCart());
     }, [dispatch, params]);
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(allCart.items));
@@ -88,17 +83,21 @@ const DetailProduct = () => {
             toast.error("đăng nhập để tiếp tục");
             route("/login");
         }
-        dispatch(
-            addToCart({ productVersionId: productVersion, quantity: 1 })
-        ).then((response: any) => {
-            if (response.payload.success) {
-                toast.success("thêm sản phẩm thành công");
-                dispatch(setshowCart(true));
-            } else {
-                toast.error("thêm sản phẩm thất bài");
-            }
-            return dispatch(getAllCart());
-        });
+        if (productVersion !== "") {
+            dispatch(
+                addToCart({ productVersionId: productVersion, quantity: 1 })
+            ).then((response: any) => {
+                if (response.payload.success) {
+                    toast.success("thêm sản phẩm thành công");
+                    dispatch(setshowCart(true));
+                } else {
+                    toast.error("thêm sản phẩm thất bài");
+                }
+                return dispatch(getAllCart());
+            });
+        } else {
+            toast.error("vui lòng chọn sản phẩm mong muốn");
+        }
     };
     const handleGetProductVersion = (productId: number | string) => {
         setProductVersion(productId);

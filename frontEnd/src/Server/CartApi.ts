@@ -19,4 +19,14 @@ const handleDeleteCart = (id: number | string) => {
     };
     return axios.delete(`/api/cart/${id}`, { headers });
 };
-export { handleAddToCart, handleAllCart, handleDeleteCart };
+const handleUpdateCart = (formData: {
+    id: number | string;
+    quantity: number | string;
+}) => {
+    const { id, quantity } = formData;
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    return axios.patch(`/api/cart/${id}`, { quantity: quantity }, { headers });
+};
+export { handleAddToCart, handleAllCart, handleDeleteCart, handleUpdateCart };

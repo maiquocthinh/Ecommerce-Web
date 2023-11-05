@@ -1,14 +1,13 @@
+import ComponentLevelLoader from "@/Components/Loader/componentlevel";
+import { setComponentLevelLoading } from "@/app/Slices/common/componentLeveLoadingSlice";
 import { setshowCart } from "@/app/Slices/common/showCartSlice";
+import { deleteCart, getAllCart } from "@/app/action/CartActon";
 import { CartType } from "@/common/Cart";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import CommonModal from "../ComonModal/ComonModal";
-import { deleteCart, getAllCart } from "@/app/action/CartActon";
 import { toast } from "react-toastify";
-import { setComponentLevelLoading } from "@/app/Slices/common/componentLeveLoadingSlice";
-import ComponentLevelLoader from "@/Components/Loader/componentlevel";
-import { Type } from "node_modules/react-toastify/dist/utils";
+import CommonModal from "../ComonModal/ComonModal";
 const CartModal = () => {
     const [cartItems, setCartItems] = useState([]);
     const showCart = useSelector((state: any) => state.showCart.showCart);
@@ -160,7 +159,7 @@ const CartModal = () => {
                     </ul>
                 ) : (
                     <div className="flex h-full justify-center items-center text-center text-xl">
-                        <h1 className="">empty cart</h1>
+                        <h1 className="">Giỏ hàng trống</h1>
                     </div>
                 )
             }
@@ -169,33 +168,32 @@ const CartModal = () => {
                     <button
                         type="button"
                         className="mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-sm font-medium uppercase tracking-wide"
-                        // onClick={() => {
-                        //     setShowCartModal(false);
-                        //     router.push("/cart");
-                        // }}
+                        onClick={() => {
+                            handleShowCart();
+                            router("/cart");
+                        }}
                     >
-                        Go To Cart
+                        đi tới giỏ hàng
                     </button>
                     <button
                         disabled={cartItems?.length < 1}
                         type="button"
                         onClick={() => {
+                            handleShowCart();
                             router("/checkout");
-                            // setShowCartModal(false);
                         }}
                         className="disabled:opacity-50 mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-sm font-medium uppercase tracking-wide"
                     >
-                        checkout
+                        đi tới thanh toán
                     </button>
                     <div
                         onClick={() => {
-                            // setShowCartModal(false);
-                            router("/product/listing/all-products");
+                            handleShowCart();
                         }}
                         className="mt-6 flex justify-center text-center text-sm text-gray-600 cursor-pointer"
                     >
                         <button className="font-medium text-gray mr-2">
-                            continue shopping
+                            tiếp tục mua sắm
                         </button>
                         <span aria-hidden="true">&rarr;</span>
                     </div>
