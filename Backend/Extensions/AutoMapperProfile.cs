@@ -45,5 +45,14 @@ public class AutoMapperProfile : Profile
         CreateMap<CategoryCreateInputDto, Category>();
         CreateMap<BrandCreateInputDto, Brand>();
         CreateMap<NeedCreateInputDto, Need>();
+        CreateMap<Supplier, SupplierDto>();
+        CreateMap<Supplier, SupplierDetailDto>()
+            .ForMember(dest => dest.Address, otp => otp.MapFrom(src => new AddressDto
+            {
+                SpecificAddress = src.Address.SpecificAddress,
+                Wards = src.Address.Wards,
+                Districts = src.Address.Districts,
+                Province = src.Address.Province,
+            }));
     }
 }
