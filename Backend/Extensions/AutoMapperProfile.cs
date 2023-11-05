@@ -42,5 +42,8 @@ public class AutoMapperProfile : Profile
              .ForMember(dest => dest.HashedPassword, otp => otp.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
         CreateMap<CustomerUpdateInputDto, Customer>()
              .ForMember(dest => dest.HashedPassword, otp => otp.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
+        CreateMap<CategoryCreateInputDto, Category>();
+        CreateMap<BrandCreateInputDto, Brand>();
+        CreateMap<NeedCreateInputDto, Need>();
     }
 }

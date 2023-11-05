@@ -23,10 +23,47 @@ public class CategoryService : ICategoryService
         _categoryRepository = categoryRepository;
     }
 
+
     public async Task<IEnumerable<CategoryDto>> GetAllCategory()
     {
         var categories = await _categoryRepository.GetAll();
 
         return categories.Select(c => _mapper.Map<CategoryDto>(c));
+    }
+
+    public async Task<IQueryable<CategoryDto>> FilteredCategory(CategoryFilterDto filterDto)
+    {
+        return (await _categoryRepository.FilteredCategory(filterDto)).Select(c => _mapper.Map<CategoryDto>(c));
+    }
+
+    public async Task<CategoryDto> CreateCategory(CategoryCreateInputDto createInputDto)
+    {
+        var category = await _categoryRepository.Add(_mapper.Map<Category>(createInputDto));
+        return _mapper.Map<CategoryDto>(category);
+    }
+
+    public async Task<bool> DeleteCategory(int id)
+    {
+        return await _categoryRepository.Remove(id);
+    }
+
+    public async Task<CategoryDto> GetCategory(int id)
+    {
+        var category = await _categoryRepository.GetById(id);
+        if (category == null) throw new NotFoundException("Category not found");
+        return _mapper.Map<CategoryDto>(category);
+    }
+
+    public async Task<CategoryDto> UpdateCategory(int id, CategoryUpdateInputDto updateInputDto)
+    {
+        var category = await _categoryRepository.GetById(id);
+        if (category == null) throw new NotFoundException("Category not found");
+
+        if(updateInputDto.Name != null) category.Name = updateInputDto.Name;
+        if (updateInputDto.Description != null) category.Description = updateInputDto.Description;
+
+        await _categoryRepository.Update(category);
+
+        return _mapper.Map<CategoryDto>(category);
     }
 }
