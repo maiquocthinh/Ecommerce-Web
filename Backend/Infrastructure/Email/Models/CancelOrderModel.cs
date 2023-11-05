@@ -2,7 +2,7 @@ using Backend.DTOs;
 
 namespace Backend.Infrastructure.Email.Models;
 
-public class CustomerCancelOrderModel
+public class CancelOrderModel
 {
     public required string CustomerFirstname { get; set; }
     public required int OrderId { get; set; }

@@ -5,4 +5,5 @@ namespace Backend.Repositories.Interfaces;
 
 public interface IOrderRepository : IRepository<Order>
 {
+    IQueryable<Order> GetQueryable();
 }

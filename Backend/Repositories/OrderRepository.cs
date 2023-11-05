@@ -15,7 +15,17 @@ public static class OrderStatus
 
 public class OrderRepository : SqlServerRepository<Order>, IOrderRepository
 {
+    private readonly DBContext _context;
+    private readonly DbSet<Order> _dbSet;
+
     public OrderRepository(DBContext context) : base(context)
     {
+        _context = context;
+        _dbSet = _context.Set<Order>();
+    }
+
+    public IQueryable<Order> GetQueryable()
+    {
+        return _dbSet.AsQueryable();
     }
 }
