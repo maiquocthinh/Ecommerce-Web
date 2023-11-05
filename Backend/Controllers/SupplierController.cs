@@ -1,4 +1,6 @@
-﻿using Backend.DTOs;
+﻿using Backend.Authorization;
+using Backend.Authorization.PolicyProvider;
+using Backend.DTOs;
 using Backend.Services;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +18,7 @@ public class SupplierController: BaseController
         _supplierService = supplierService;
     }
 
+    [PermissionAuthorize(Permissions.ViewSupplier)]
     [HttpGet]
     public async Task<ActionResult<object>> GetAllSupplier([FromQuery] SupplierFilterDto filterDto, [FromQuery] PagingDTO pagingDto)
     {
@@ -24,6 +27,7 @@ public class SupplierController: BaseController
     }
 
 
+    [PermissionAuthorize(Permissions.ViewSupplier)]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<object>> GetSupplier([FromRoute] int id)
     {
@@ -32,6 +36,7 @@ public class SupplierController: BaseController
     }
 
 
+    [PermissionAuthorize(Permissions.CreateSupplier)]
     [HttpPost]
     public async Task<ActionResult<object>> CreateSupplier([FromBody] SupplierCreateInputDto createInputDto)
     {
@@ -40,6 +45,7 @@ public class SupplierController: BaseController
     }
 
 
+    [PermissionAuthorize(Permissions.UpdateSupplier)]
     [HttpPatch("{id:int}")]
     public async Task<ActionResult<object>> UpdateSupplier([FromRoute] int id, [FromBody] SupplierUpdateInputDto updateInputDto)
     {
@@ -48,6 +54,7 @@ public class SupplierController: BaseController
     }
 
 
+    [PermissionAuthorize(Permissions.DeleteSupplier)]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<object>> DeleteCategory([FromRoute] int id)
     {

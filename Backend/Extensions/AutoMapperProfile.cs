@@ -54,5 +54,8 @@ public class AutoMapperProfile : Profile
                 Districts = src.Address.Districts,
                 Province = src.Address.Province,
             }));
+        CreateMap<Role, RoleDto>()
+            .ForMember(dest => dest.Permissions, otp => otp.MapFrom(src => src.PermissionList));
+
     }
 }
