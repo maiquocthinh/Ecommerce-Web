@@ -17,9 +17,11 @@ import Notification from "@/Components/PageLoader/Notification";
 import { logout } from "@/app/action/UserAction";
 import SearchModal from "@/Components/Modal/SearchModal";
 import { setIsLoggedIn } from "@/app/Slices/user/auth";
+import { BiUserCircle } from "react-icons/Bi";
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
     const [isResults, setIsResults] = useState<boolean>(false);
+    const [userName, setUserName] = useState("");
     const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
     const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
@@ -41,6 +43,15 @@ const Navbar: React.FC<NavbarProps> = () => {
         }
         if (allCart?.items)
             localStorage.setItem("cart", JSON.stringify(allCart.items));
+        const email = localStorage.getItem("userName") || "";
+        if (email !== "") {
+            const atIndex = email.indexOf("@");
+            if (atIndex !== -1) {
+                setUserName(email.slice(0, atIndex));
+            } else {
+                setUserName("account");
+            }
+        }
     }, [isLoggedIn, dispatch, allCart]);
     const navListing = [
         {
@@ -52,7 +63,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             id: 2,
             Icon: <FaCar />,
             title: "Tra cứu đơn hàng",
-            link: "order",
+            link: "profile/order",
         },
         {
             id: 3,
@@ -71,10 +82,9 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <div className="hidden md:block">
                         <Link to="/">
                             <img
-                                src="https://cdn.cellphones.com.vn/media/logo/logo-cps-full-2.png"
+                                src="https://o.remove.bg/downloads/38d0b572-192a-426a-aa12-c34f0a90a28a/OIG-removebg-preview.png"
                                 alt="avata"
-                                height={30}
-                                width={160}
+                                className="w-24 object-cover"
                             />
                         </Link>
                     </div>
@@ -124,15 +134,15 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <div className="flex gap-2">
                         {isLoggedIn === true ? (
                             <div
-                                onClick={handleLogout}
+                                onClick={() => route("/profile/home")}
                                 className={`cursor-pointer`}
                             >
                                 <div
                                     className={`flex items-center cursor-pointer text-white hover:invert transition-all duration-200 ease-linear`}
                                 >
-                                    <FiLogOut />
+                                    <BiUserCircle size={28} />
                                     <span className="ml-2 text-sm font-bold">
-                                        {capitalizeFirstLetter("đăng xuất")}
+                                        {userName}
                                     </span>
                                 </div>
                             </div>

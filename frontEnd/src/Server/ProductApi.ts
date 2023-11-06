@@ -12,7 +12,28 @@ const handleGetAllProduct = (param: paramsProductType) => {
         }`
     );
 };
+const handleGetLaptopProduct = (param: paramsProductType) => {
+    let { pageIndex, pageSize } = param;
+    if (!pageIndex) pageIndex = "1";
+    if (!pageSize) pageSize = "10";
+    return axios.get(
+        `/api/products?pageSize=${pageSize}?pageIndex=${pageIndex}&Filters.CategoryId=3&SortedBy=new`
+    );
+};
+const handleGetMobileProduct = (param: paramsProductType) => {
+    let { pageIndex, pageSize } = param;
+    if (!pageIndex) pageIndex = "1";
+    if (!pageSize) pageSize = "10";
+    return axios.get(
+        `/api/products?pageSize=${pageSize}?pageIndex=${pageIndex}&Filters.CategoryId=2&SortedBy=new`
+    );
+};
 const handleGetProductById = (id: string | number) => {
     return axios.get(`/api/products/${id}`);
 };
-export { handleGetAllProduct, handleGetProductById };
+export {
+    handleGetAllProduct,
+    handleGetProductById,
+    handleGetLaptopProduct,
+    handleGetMobileProduct,
+};

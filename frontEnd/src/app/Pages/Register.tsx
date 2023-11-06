@@ -28,8 +28,8 @@ const Register = () => {
     const err = useSelector(
         (state: { auth: UserType.AuthState }) => state.auth.error
     );
-    const componentLeveLoading = useSelector(
-        (state: any) => state.componentLeveLoading.isLoading
+    const componentLoading = useSelector(
+        (state: any) => state.componentLoading.componentLevelLoading
     );
 
     const navigate = useNavigate();
@@ -46,16 +46,16 @@ const Register = () => {
     };
     const handleRegisterOnSubmit = () => {
         if (isFormValid()) {
-            dispatch(setComponentLevelLoading(true));
+            dispatch(setComponentLevelLoading({ loading: true, id: "" }));
             dispatch(register(formData));
         } else {
-            dispatch(setComponentLevelLoading(false));
+            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
             toast.error("không hợp lệ", {
                 position: toast.POSITION.TOP_RIGHT,
             });
             setFormData(initialFormData);
         }
-        dispatch(setComponentLevelLoading(false));
+        dispatch(setComponentLevelLoading({ loading: false, id: "" }));
     };
     useEffect(() => {
         if (data.accessToken !== "") {
@@ -69,7 +69,7 @@ const Register = () => {
             }, 1000);
         }
         if (err) {
-            dispatch(setComponentLevelLoading(false));
+            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
             toast.error("lỗi hệ thống, vui lòng quay lại sau vài phút", {
                 position: toast.POSITION.TOP_RIGHT,
             });
@@ -137,9 +137,12 @@ const Register = () => {
                    text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
                    "
                                     >
-                                        {componentLeveLoading ? (
+                                        {componentLoading.loading === true ? (
                                             <ComponentLevelLoader
-                                                loading={componentLeveLoading}
+                                                loading={
+                                                    componentLoading.loading ===
+                                                    true
+                                                }
                                                 color="#fff"
                                                 text="registing"
                                             />

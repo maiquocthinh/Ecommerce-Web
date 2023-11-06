@@ -9,7 +9,11 @@ import { listProduct, posterData } from "@/utils/Data";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
-import { getAllProduct } from "../action/product";
+import {
+    getAllProduct,
+    getLaptopProduct,
+    getMobileProduct,
+} from "../action/product";
 import Slide from "@/Components/Slide/Slide";
 import Poster from "@/Components/Slide/Poster/Poster";
 import HotSale from "@/Components/productListing/HotSale/HotSale";
@@ -27,6 +31,8 @@ const Home: React.FC<HomeProps> = () => {
         labtopSale: [] as ProductType.ProductType[],
     });
     const productdata = useSelector((state: any) => state.allproduct.data);
+    const laptopProduct = useSelector((state: any) => state.laptopProduct.data);
+    const mobileProduct = useSelector((state: any) => state.mobileProduct.data);
     const pageLevelLoading = useSelector(
         (sate: any) => sate.pageLevelLoading.pageLevelLoading
     );
@@ -71,7 +77,9 @@ const Home: React.FC<HomeProps> = () => {
     }, [productdata]);
     useEffect(() => {
         dispatch(setPageLevelLoading(true));
-        dispatch(getAllProduct({ pageSize: "40", pageIndex: "1" }));
+        dispatch(getAllProduct({ pageSize: "10", pageIndex: "1" }));
+        dispatch(getLaptopProduct({ pageSize: "10", pageIndex: "1" }));
+        dispatch(getMobileProduct({ pageSize: "10", pageIndex: "1" }));
     }, [dispatch]);
     useEffect(() => {
         if (productdata?.list) {
@@ -111,8 +119,8 @@ const Home: React.FC<HomeProps> = () => {
                     <HotSale
                         data={
                             changedDataSale === "mobile"
-                                ? data.mobile
-                                : data.labtop
+                                ? mobileProduct?.list
+                                : laptopProduct?.list
                         }
                         handleChangeData={handleChangeDatasale}
                     />
@@ -121,16 +129,38 @@ const Home: React.FC<HomeProps> = () => {
             <div>
                 <HeaderProduct
                     listProduct={listProduct}
+                    heading="sản phẩm mới nhất"
+                />
+                <div className="grid grid-cols-10 gap-2">
+                    {productdata?.list?.length &&
+                        productdata?.list.map(
+                            (product: ProductType.ProductType) => (
+                                <Product data={product} col={2} />
+                            )
+                        )}
+                </div>
+            </div>
+            <div>
+                <HeaderProduct
+                    listProduct={listProduct}
                     heading="LAPTOP THOẠI NỔI BẬT NHẤT"
                 />
-                <Slide ItemSlide={Product} data={data.labtop} numberSlide={5} />
+                <Slide
+                    ItemSlide={Product}
+                    data={laptopProduct?.list}
+                    numberSlide={5}
+                />
             </div>
             <div>
                 <HeaderProduct
                     listProduct={listProduct}
                     heading="ĐIỆN THOẠI NỔI BẬT NHẤT"
                 />
-                <Slide ItemSlide={Product} data={data.mobile} numberSlide={4} />
+                <Slide
+                    ItemSlide={Product}
+                    data={mobileProduct?.list}
+                    numberSlide={5}
+                />
             </div>
             <div>
                 <HeaderProduct

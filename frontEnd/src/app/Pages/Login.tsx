@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Notification from "@/Components/PageLoader/Notification";
 import ComponentLevelLoader from "@/Components/Loader/componentlevel";
 import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
+import { setIsLoggedIn } from "../Slices/user/auth";
 const initialFormdata = {
     email: "",
     password: "",
@@ -29,13 +30,13 @@ export default function Login() {
     const isLoggedIn = useSelector(
         (state: { auth: UserType.AuthState }) => state.auth.isLoggedIn
     );
-    const componentLeveLoading = useSelector(
-        (state: any) => state.componentLeveLoading.isLoading
+    const componentLoading = useSelector(
+        (state: any) => state.componentLoading.componentLevelLoading
     );
     const route = useNavigate();
     const handleLogin = () => {
         if (isValidForm()) {
-            dispatch(setComponentLevelLoading(true));
+            dispatch(setComponentLevelLoading({ loading: true, id: "" }));
             dispatch(login(formData));
         } else {
             toast.error("vui lòng nhập đầy đủ thông tin", {
@@ -61,21 +62,23 @@ export default function Login() {
         if (isLoggedIn) {
             Cookies.set("token", data.accessToken);
             Cookies.set("accessTokenExpiredIn", data.accessTokenExpiredIn);
+            localStorage.setItem("userName", formData.email);
             toast.success("đăng nhập thành công", {
                 position: toast.POSITION.TOP_RIGHT,
             });
-            dispatch(setComponentLevelLoading(false));
+            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
         }
-    }, [isLoggedIn, data]);
+    }, [isLoggedIn, data, dispatch]);
     useEffect(() => {
-        if (err !== null && componentLeveLoading) {
+        if (err !== null) {
             toast.error("tài khoản không tồn tại", {
                 position: toast.POSITION.TOP_RIGHT,
             });
-            dispatch(setComponentLevelLoading(false));
+            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
         }
         if (isLoggedIn) route("/");
-    }, [isLoggedIn, err]);
+    }, [isLoggedIn, err, dispatch]);
+
     return (
         <div className="relative">
             <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mr-auto xl:px-5 lg:flex-row">
@@ -118,17 +121,17 @@ export default function Login() {
                                     ) : null
                                 )}
                                 <button
-                                    disabled={componentLeveLoading}
+                                    disabled={componentLoading.loading === true}
                                     onClick={handleLogin}
                                     className="disabled:opacity-50 inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
                      text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
                      "
                                 >
-                                    {componentLeveLoading ? (
+                                    {componentLoading.loading === true ? (
                                         <ComponentLevelLoader
                                             text={"loging"}
                                             color={"#ffffff"}
-                                            loading={componentLeveLoading}
+                                            loading={componentLoading.loading}
                                         />
                                     ) : (
                                         "login"

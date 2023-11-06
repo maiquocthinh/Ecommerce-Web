@@ -9,7 +9,7 @@ const Poster: React.FC<PosterProps> = ({ data }) => {
             <img
                 src={data.imageUrl}
                 alt="slide"
-                className="w-full h-80 object-cover rounded-t-borderContnet"
+                className="w-full h-80 object-left-top rounded-t-borderContnet"
             />
         </div>
     );

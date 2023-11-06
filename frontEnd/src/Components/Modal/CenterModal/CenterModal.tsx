@@ -1,13 +1,59 @@
+import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment } from "react";
+import { AiOutlineClose } from "react-icons/ai";
+
 interface CenterModalProps {
-    data: React.ReactElement;
+    modalTitle?: React.ReactElement;
+    mainContent: React.ReactElement;
+    showButtons?: boolean;
+    buttonComponent?: React.ReactElement;
+    show: boolean;
+    setShow: (show: boolean) => void;
+    showModalTitle?: boolean;
 }
-const CenterModal: React.FC<CenterModalProps> = ({ data }) => {
+
+const CenterModal: React.FC<CenterModalProps> = ({
+    modalTitle,
+    mainContent,
+    showButtons,
+    buttonComponent,
+    show,
+    setShow,
+    showModalTitle,
+}) => {
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-slate-300 opacity-80">
-            <div className="w-80 h-80 bg-white shadow-custom border">
-                {data}
-            </div>
-        </div>
+        <Transition.Root show={show} as={Fragment}>
+            <Dialog
+                as="div"
+                className="fixed inset-0 flex items-center justify-center"
+                onClose={setShow}
+            >
+                <Transition.Child
+                    as={Fragment}
+                    enter="ease-in-out duration-900"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="ease-in-out duration-500"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                >
+                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </Transition.Child>
+                <div className="max-w-2xl w-full p-4 z-20 relative">
+                    <div className="bg-white p-2 shadow-xl rounded-md">
+                        {showModalTitle ? (
+                            <div className="flex items-center justify-center">
+                                {modalTitle}
+                            </div>
+                        ) : null}
+                        <div className="mt-8">{mainContent}</div>
+                        {showButtons ? (
+                            <div className="mt-4">{buttonComponent}</div>
+                        ) : null}
+                    </div>
+                </div>
+            </Dialog>
+        </Transition.Root>
     );
 };
 

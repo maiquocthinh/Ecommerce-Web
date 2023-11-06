@@ -6,16 +6,23 @@ interface InputFormProp {
     value: string | number;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     type: string;
+    name?: string;
 }
-const InputForm: React.FC<InputFormProp> = ({ lable, placeholder, value = "", onChange, type = "text" }) => {
-
+const InputForm: React.FC<InputFormProp> = ({
+    lable,
+    name,
+    placeholder,
+    value = "",
+    onChange,
+    type = "text",
+}) => {
     return (
         <div>
             <p className="bg-white absolute pt-0 pr-2 pb-0 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600">
                 {lable}
             </p>
             <input
-
+                name={name}
                 placeholder={placeholder}
                 type={type || "text"}
                 value={value}
@@ -24,6 +31,6 @@ const InputForm: React.FC<InputFormProp> = ({ lable, placeholder, value = "", on
             />
         </div>
     );
-}
+};
 
 export default InputForm;

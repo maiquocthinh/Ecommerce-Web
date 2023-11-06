@@ -13,6 +13,30 @@ export const getAllProduct = createAsyncThunk(
         }
     }
 );
+export const getLaptopProduct = createAsyncThunk(
+    "getLaptopProduct/getLaptopProduct",
+    async (data: paramsProductType) => {
+        try {
+            const response = await productApi.handleGetLaptopProduct(data);
+            let products = response.data; // Gửi yêu cầu API
+            return products;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+export const getMobileProduct = createAsyncThunk(
+    "getMobileProduct/getMobileProduct",
+    async (data: paramsProductType) => {
+        try {
+            const response = await productApi.handleGetMobileProduct(data);
+            let products = response.data; // Gửi yêu cầu API
+            return products;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
 export const getProductById = createAsyncThunk(
     "getProductById/getProductById",
     async (id: string | number) => {

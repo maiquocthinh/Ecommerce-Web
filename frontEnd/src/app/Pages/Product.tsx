@@ -40,6 +40,7 @@ const ProductPage = () => {
                 {branch?.length > 0 &&
                     branch.map((item, index) => (
                         <img
+                            alt=""
                             src={item.src}
                             key={index}
                             className="w-[10%] p-1 border-[1px] mx-1 cursor-pointer"

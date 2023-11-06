@@ -66,9 +66,9 @@ const publishRouter: RouteConfig[] = [
         Layout: null,
     },
     {
-        path: "/order",
+        path: "/profile/order",
         element: Order,
-        Layout: null,
+        Layout: HeaderLayout,
     },
     {
         path: "/admin/dashboard",

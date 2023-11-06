@@ -111,22 +111,22 @@ export const loginFormControls = [
 export const posterData = [
     {
         imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2F64535ffa71d471f2af949fec7afe5548.jpg-1699041556962-suul1k2g18?alt=media&token=21867e92-f0ab-4496-9b50-8e95cf451fb4",
+            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2F_3df774a6-1486-41e5-9b66-a67c979651cf%20(1).jpg-1699277321253-di13e0di4h?alt=media&token=b802d602-22a1-4bf4-8d93-ecf168bea6b0",
         label: "mua sắm 24/24",
     },
     {
         imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2FPremium%20Photo%20_%20Digital%20marketing%20concept%2C%20shopping%20online%20on%20mobile%20application%2C%20web%20banner%20background%2C%203d%20rendering.jpg-1699041673536-lk4bzc9936?alt=media&token=59429524-ee4e-44fd-9e46-58fa00d8d0e2",
+            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2F_438182cd-ee83-49d6-809f-95b951b22716%20(1).jpg-1699277397331-0yvmj8xhwn?alt=media&token=e4982d03-7a53-4d79-8c5e-666536d7de86",
         label: "miễn phí vận chuyển",
     },
     {
         imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2FPremium%20Photo%20_%20Delivery%20service%20on%20mobile%20application%20transportation%20delivery%20by%20truck%203d%20rendering.jpg-1699041795028-di8yuy6tdm?alt=media&token=5ae879d3-3813-4beb-9746-2d9bd558cca5",
+            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2F_2f83e5d7-9757-49c0-b465-d25e94013996%20(1).jpg-1699277399874-cyyawdk6uq?alt=media&token=0846dff1-3a59-4f09-a230-0f3c9c6a9966",
         label: "giao hàng tận nơi",
     },
     {
         imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2FPremium%20Photo%20_%20Open%20laptop%20store%20with%20icon%20buy%2C%20payment%20and%20business%20marketing_.jpg-1699041920909-hsy5syvtnd?alt=media&token=eda1a114-0b91-4de7-b96e-48f452b2e848",
+            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2F_c7c9222c-2df0-472d-88f7-ca9eed2b65b3%20(1).jpg-1699277446270-kvb6zuzle8?alt=media&token=a0c8db17-2dc3-4915-b8ce-7f6156b3e3c1",
         label: "giao hàng 24h",
     },
 ];
