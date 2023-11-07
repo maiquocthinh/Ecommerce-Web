@@ -7,6 +7,7 @@ import * as commonSlice from "./Slices/common";
 import * as cartSlice from "./Slices/cart";
 import * as addresSlice from "./Slices/address";
 import * as OrderSlice from "./Slices/order";
+import * as checkoutSlice from "./Slices/checkout";
 export const store = configureStore({
     reducer: {
         modal: modalReducer,
@@ -30,6 +31,8 @@ export const store = configureStore({
         deleteAddressData: addresSlice.deleteAddressSlice.default,
         addToAddressData: addresSlice.addToAddressSlice.default,
         allOrder: OrderSlice.getAllOrderSlice.default,
+        cancelOrder: OrderSlice.cancelOrderSlice.default,
+        checkoutWithCartData: checkoutSlice.checkoutWithCartSlice.default,
     },
 });
 

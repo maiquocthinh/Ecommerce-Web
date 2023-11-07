@@ -13,3 +13,15 @@ export const getAllOrder = createAsyncThunk(
         }
     }
 );
+export const cancelOrder = createAsyncThunk(
+    "cancelOrder/getAllOrder",
+    async (orderId: number) => {
+        try {
+            const response = await orderApi.handleCancelOrder(orderId);
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);

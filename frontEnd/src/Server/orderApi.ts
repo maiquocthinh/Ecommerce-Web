@@ -6,4 +6,7 @@ const headers = {
 const handleGetAllOrder = () => {
     return axios.get(`/api/orders`, { headers });
 };
-export { handleGetAllOrder };
+const handleCancelOrder = (orderId: number) => {
+    return axios.get(`/api/orders/cancel/${orderId}`, { headers });
+};
+export { handleGetAllOrder, handleCancelOrder };

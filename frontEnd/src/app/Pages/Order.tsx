@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllOrder } from "../action/Order";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
 import PageLoader from "@/Components/PageLoader/PageLoader";
+import { FcCancel } from "react-icons/fc";
+import { BsCartCheck } from "react-icons/bs";
+import Notification from "@/Components/PageLoader/Notification";
 const Order = () => {
     const [isOrderDetail, setIsOrderDetail] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
@@ -61,7 +64,7 @@ const Order = () => {
                     <div className="flex-1 mx-auto px-2">
                         <div className="mt-4 w-full">
                             <div className="flex w-full flex-col items-center justify-between space-y-2 sm:flex-row sm:space-y-0">
-                                <form className="relative flex w-full max-w-2xl items-center">
+                                <div className="relative flex w-full max-w-2xl items-center">
                                     <BiSearchAlt className="absolute left-2 block h-5 w-5 text-gray-400" />
                                     <input
                                         type="name"
@@ -73,7 +76,7 @@ const Order = () => {
                                         className="h-12 border-b w-full border-b-gray-400 bg-transparent py-4 pl-12 text-sm outline-none"
                                         placeholder="tìm kiếm bằng tên hàng"
                                     />
-                                </form>
+                                </div>
                                 {isSearch ? (
                                     <button
                                         onClick={() => {
@@ -121,20 +124,6 @@ const Order = () => {
 
                                         <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
                                             giá
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="float-right mt-1 h-4 w-4"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-                                                />
-                                            </svg>
                                         </td>
 
                                         <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
@@ -390,6 +379,7 @@ const Order = () => {
                     )}
                 </div>
             </div>
+            <Notification />
         </div>
     );
 };

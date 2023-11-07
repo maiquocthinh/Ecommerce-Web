@@ -1,20 +1,40 @@
-import { useNavigate } from "react-router-dom";
+import Notification from "@/Components/PageLoader/Notification";
+import { CartType } from "@/common/Cart";
 import { GrDeliver } from "@react-icons/all-files/gr/GrDeliver";
 import { useEffect, useState } from "react";
-import { CartType } from "@/common/Cart";
-import { AiOutlineCheck, AiOutlineCreditCard } from "react-icons/ai";
-import { MdKeyboardArrowRight, MdOutlineAlternateEmail } from "react-icons/md";
-import { BiSolidUserDetail } from "react-icons/Bi";
+import { AiOutlineCheck } from "react-icons/ai";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { CheckOutWidthCart } from "../action/checkout";
+import { getAllCart } from "../action/CartActon";
+import { getAllAddresses } from "../action/address";
+import { addressType } from "@/common/Address";
 const Checkout = () => {
-    const [cartItems, setCartItems] = useState<CartType[]>();
+    const [cartItems, setCartItems] = useState<CartType[]>([]);
+    const [addressDefault, setAddressDefault] = useState<addressType>();
     const [totalPrice, setTotalPrice] = useState<number>(0);
+    const allAddresses = useSelector(
+        (state: any) => state.allAddresses.data as addressType[]
+    );
+    const dispatch = useDispatch<any>();
     const route = useNavigate();
     useEffect(() => {
         const cartItemsLocal = localStorage.getItem("cart");
         if (typeof cartItemsLocal === "string") {
             setCartItems(JSON.parse(cartItemsLocal));
         }
-    }, []);
+        dispatch(getAllAddresses());
+    }, [dispatch]);
+    useEffect(() => {
+        if (allAddresses) {
+            const addressDefault = allAddresses.filter(
+                (address) => address.isDefault
+            );
+            setAddressDefault(addressDefault[0]);
+        }
+    }, [allAddresses, addressDefault]);
     useEffect(() => {
         let subPrice = 0;
         if (cartItems) {
@@ -24,6 +44,31 @@ const Checkout = () => {
         }
         setTotalPrice(subPrice);
     }, [cartItems]);
+    const handleCheckout = () => {
+        const listIdCart: number[] = [];
+        cartItems.forEach((cartItem: CartType) => {
+            listIdCart.push(Number(cartItem.id));
+        });
+        if (listIdCart.length > 0) {
+            dispatch(CheckOutWidthCart(listIdCart)).then((response: any) => {
+                if (response.payload.success) {
+                    toast.success(
+                        "đặt hàng thành công. chúc bạn có 1 trãi nghiệm tuyệt vời"
+                    );
+                    dispatch(getAllCart());
+                    setTimeout(() => {
+                        route("/profile/order");
+                    }, 2000);
+                } else {
+                    toast.error(
+                        "đặt hàng thất bại. vui lòng quay lại sau vài phút!"
+                    );
+                }
+            });
+        } else {
+            toast.error("vui lòng chọn sản phẩm để đặt hàng");
+        }
+    };
     return (
         <div className="flex flex-col">
             <div className="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
@@ -76,7 +121,10 @@ const Checkout = () => {
                     <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
                         {cartItems?.length &&
                             cartItems.map((cart) => (
-                                <div className="flex flex-col rounded-lg bg-white sm:flex-row">
+                                <div
+                                    key={cart.id}
+                                    className="flex flex-col rounded-lg bg-white sm:flex-row"
+                                >
                                     <img
                                         className="m-2 h-24 w-28 rounded-md border object-contain"
                                         src={cart.image}
@@ -98,209 +146,131 @@ const Checkout = () => {
                                 </div>
                             ))}
                     </div>
-
-                    <p className="mt-8 text-lg font-medium">
-                        Phương thức vận chuyển
-                    </p>
-                    <form className="mt-5 grid gap-6">
-                        <div className="relative">
-                            <input
-                                className="peer hidden"
-                                id="radio_1"
-                                type="radio"
-                                name="radio"
-                                checked
-                            />
-                            <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
-                            <label
-                                className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
-                                htmlFor="radio_1"
-                            >
-                                <div className="flex gap-4 items-center">
-                                    <GrDeliver className="text-2xl" />
-                                    <div className="flex-1">
-                                        <span className="mt-2 font-semibold">
-                                            Chuyển phát nhanh
-                                        </span>
-                                        <p className="text-slate-500 text-sm leading-6">
-                                            Giao hàng: 24h
-                                        </p>
-                                    </div>
-                                </div>
-                            </label>
+                    {addressDefault && (
+                        <div className="flex flex-col gap-2 text-lg font-normal text-slate-500 mt-2 p-2">
+                            <h2 className="uppercase text-black font-medium">
+                                địa chỉ nhận hàng
+                            </h2>
+                            <span>Phường : {addressDefault.wards}</span>
+                            <span>huyện : {addressDefault.districts}</span>
+                            <span>tỉnh : {addressDefault.province}</span>
+                            <span>
+                                địa chỉ cụ thể :{addressDefault.specificAddress}
+                            </span>
+                            <span>
+                                số điện thoại: {addressDefault.phoneNumber}
+                            </span>
                         </div>
-                        <div className="relative">
-                            <input
-                                className="peer hidden"
-                                id="radio_2"
-                                type="radio"
-                                name="radio"
-                                checked
-                            />
-                            <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
-                            <label
-                                className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
-                                htmlFor="radio_2"
-                            >
-                                <div className="flex gap-4 items-center">
-                                    <GrDeliver className="text-2xl" />
-                                    <div className="flex-1">
-                                        <span className="mt-2 font-semibold">
-                                            Giao hàng phổ thông
-                                        </span>
-                                        <p className="text-slate-500 text-sm leading-6">
-                                            Giao hàng: 4-6 ngày
-                                        </p>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-                    </form>
+                    )}
                 </div>
                 <div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
-                    <p className="text-xl font-medium">Chi tiết thanh toán</p>
-                    <p className="text-gray-400">
-                        Hoàn tất đơn đặt hàng của bạn bằng cách cung cấp chi
-                        tiết thanh toán của bạn.
-                    </p>
-                    <div className="">
-                        <label
-                            htmlFor="email"
-                            className="mt-4 mb-2 block text-sm font-medium"
-                        >
-                            Email
-                        </label>
-                        <div className="relative">
-                            <input
-                                type="text"
-                                id="email"
-                                name="email"
-                                className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                placeholder="your.email@gmail.com"
-                            />
-                            <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                                <MdOutlineAlternateEmail className="h-4 w-4 text-gray-400" />
-                            </div>
-                        </div>
-                        <label
-                            htmlFor="card-holder"
-                            className="mt-4 mb-2 block text-sm font-medium"
-                        >
-                            Tên chủ thẻ
-                        </label>
-                        <div className="relative">
-                            <input
-                                type="text"
-                                id="card-holder"
-                                name="card-holder"
-                                className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                placeholder="Your full name here"
-                            />
-                            <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                                <BiSolidUserDetail className="h-4 w-4 text-gray-400" />
-                            </div>
-                        </div>
-                        <label
-                            htmlFor="card-no"
-                            className="mt-4 mb-2 block text-sm font-medium"
-                        >
-                            chi tiêt thẻ
-                        </label>
-                        <div className="flex">
-                            <div className="relative w-7/12 flex-shrink-0">
-                                <input
-                                    type="text"
-                                    id="card-no"
-                                    name="card-no"
-                                    className="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                    placeholder="xxxx-xxxx-xxxx-xxxx"
-                                />
-                                <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                                    <AiOutlineCreditCard className="h-4 w-4 text-gray-400" />
-                                </div>
-                            </div>
-                            <input
-                                type="text"
-                                name="credit-expiry"
-                                className="w-full rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                placeholder="MM/YY"
-                            />
-                            <input
-                                type="text"
-                                name="credit-cvc"
-                                className="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                placeholder="CVC"
-                            />
-                        </div>
-                        <label
-                            htmlFor="billing-address"
-                            className="mt-4 mb-2 block text-sm font-medium"
-                        >
-                            Địa chỉ thanh toán
-                        </label>
-                        <div className="flex flex-col sm:flex-row">
-                            <div className="relative flex-shrink-0 sm:w-7/12">
-                                <input
-                                    type="text"
-                                    id="billing-address"
-                                    name="billing-address"
-                                    className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                    placeholder="địa chỉ nhà"
-                                />
-                                <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                                    <img
-                                        className="h-4 w-4 object-contain"
-                                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/1200px-Flag_of_Vietnam.svg.png"
-                                        alt=""
+                    <div className="flex flex-col">
+                        <div className="mb-6">
+                            <p className="mt-8 text-lg font-medium">
+                                Phương thức vận chuyển
+                            </p>
+                            <form className="mt-5 grid gap-6">
+                                <div className="relative">
+                                    <input
+                                        className="peer hidden"
+                                        id="radio_1"
+                                        type="radio"
+                                        name="radio"
+                                        checked
                                     />
+                                    <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+                                    <label
+                                        className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                                        htmlFor="radio_1"
+                                    >
+                                        <div className="flex gap-4 items-center">
+                                            <GrDeliver className="text-2xl" />
+                                            <div className="flex-1">
+                                                <span className="mt-2 font-semibold">
+                                                    Chuyển phát nhanh
+                                                </span>
+                                                <p className="text-slate-500 text-sm leading-6">
+                                                    Giao hàng: 24h
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div className="relative">
+                                    <input
+                                        className="peer hidden"
+                                        id="radio_2"
+                                        type="radio"
+                                        name="radio"
+                                        checked
+                                    />
+                                    <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+                                    <label
+                                        className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                                        htmlFor="radio_2"
+                                    >
+                                        <div className="flex gap-4 items-center">
+                                            <GrDeliver className="text-2xl" />
+                                            <div className="flex-1">
+                                                <span className="mt-2 font-semibold">
+                                                    Giao hàng phổ thông
+                                                </span>
+                                                <p className="text-slate-500 text-sm leading-6">
+                                                    Giao hàng: 4-6 ngày
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <p className="text-xl font-medium">
+                                Chi tiết thanh toán
+                            </p>
+                            <p className="text-gray-400">
+                                Hoàn tất đơn đặt hàng của bạn bằng cách cung cấp
+                                chi tiết thanh toán của bạn.
+                            </p>
+                        </div>
+                        <div>
+                            <div className="mt-6 border-t border-b py-2">
+                                <div className="flex items-center justify-between">
+                                    <p className="text-sm font-medium text-gray-900">
+                                        tổng tiền
+                                    </p>
+                                    <p className="font-semibold text-gray-900">
+                                        {totalPrice}đ
+                                    </p>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <p className="text-sm font-medium text-gray-900">
+                                        Shipping
+                                    </p>
+                                    <p className="font-semibold text-gray-900">
+                                        100000
+                                    </p>
                                 </div>
                             </div>
-                            <select
-                                name="billing-state"
-                                className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                            >
-                                <option value="State">city</option>
-                            </select>
-                            <input
-                                type="text"
-                                name="billing-zip"
-                                className="flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none sm:w-1/6 focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                placeholder="ZIP"
-                            />
-                        </div>
-
-                        <div className="mt-6 border-t border-b py-2">
-                            <div className="flex items-center justify-between">
+                            <div className="mt-6 flex items-center justify-between">
                                 <p className="text-sm font-medium text-gray-900">
-                                    tổng tiền
+                                    Total
                                 </p>
-                                <p className="font-semibold text-gray-900">
-                                    {totalPrice}đ
+                                <p className="text-2xl font-semibold text-gray-900">
+                                    {totalPrice + 100000}đ
                                 </p>
                             </div>
-                            <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium text-gray-900">
-                                    Shipping
-                                </p>
-                                <p className="font-semibold text-gray-900">
-                                    100000
-                                </p>
-                            </div>
-                        </div>
-                        <div className="mt-6 flex items-center justify-between">
-                            <p className="text-sm font-medium text-gray-900">
-                                Total
-                            </p>
-                            <p className="text-2xl font-semibold text-gray-900">
-                                {totalPrice + 100000}đ
-                            </p>
                         </div>
                     </div>
-                    <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">
-                        Place Order
+                    <button
+                        onClick={handleCheckout}
+                        className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
+                    >
+                        Đặt hàng
                     </button>
                 </div>
             </div>
+            <Notification />
         </div>
     );
 };
