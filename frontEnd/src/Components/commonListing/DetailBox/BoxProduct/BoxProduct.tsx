@@ -4,16 +4,19 @@ import Tippy from "@tippyjs/react";
 import { useState } from "react";
 interface BoxProductProps {
     data: productVersion[];
-    handleGetProductVersion: (id: number | string) => void;
+    handleGetProductVersion: (data: productVersion) => void;
 }
 const BoxProduct: React.FC<BoxProductProps> = ({
     data,
     handleGetProductVersion,
 }) => {
     const [active, setActive] = useState<string | number>("");
-    const handlerActive = (id: string | number) => {
+    const handlerActive = (
+        id: string | number,
+        productVersion: productVersion
+    ) => {
         setActive(id);
-        handleGetProductVersion(id);
+        handleGetProductVersion(productVersion);
     };
     return (
         <div className="flex gap-2">
@@ -26,7 +29,7 @@ const BoxProduct: React.FC<BoxProductProps> = ({
                         delay={200}
                     >
                         <div
-                            onClick={() => handlerActive(item.id)}
+                            onClick={() => handlerActive(item.id, item)}
                             className={`relative p-2 flex gap-2 mr-1 mt-1 items-center  border-[1px] justify-center rounded-borderContnet h-auto cursor-pointer ${
                                 active === item.id
                                     ? "border-custom-primary relative"

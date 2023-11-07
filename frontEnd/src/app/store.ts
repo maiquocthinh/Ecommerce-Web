@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import modalReducer from "../Components/commonListing/ModalMenu/modalSlice";
+import modalReducer from "./Slices/common/modalSlice";
 import pathSlice from "./Slices/common/pathSlice";
 import * as SlicesApi from "./Slices/product";
 import * as userSlice from "./Slices/user";
@@ -8,6 +8,8 @@ import * as cartSlice from "./Slices/cart";
 import * as addresSlice from "./Slices/address";
 import * as OrderSlice from "./Slices/order";
 import * as checkoutSlice from "./Slices/checkout";
+import * as catalogsSlice from "./Slices/catalogs";
+import * as reviewsSlice from "./Slices/review";
 export const store = configureStore({
     reducer: {
         modal: modalReducer,
@@ -16,6 +18,7 @@ export const store = configureStore({
         mobileProduct: SlicesApi.MobileProductSlice.default,
         laptopProduct: SlicesApi.LabtopProductsSlice.default,
         productDetail: SlicesApi.ProductByIdSlice.default,
+        searchProductData: SlicesApi.searchProductSlice.default,
         auth: userSlice.auth.default,
         pageLevelLoading: commonSlice.pageLevelLoading.default,
         componentLoading: commonSlice.componentLevelLoading.default,
@@ -33,6 +36,15 @@ export const store = configureStore({
         allOrder: OrderSlice.getAllOrderSlice.default,
         cancelOrder: OrderSlice.cancelOrderSlice.default,
         checkoutWithCartData: checkoutSlice.checkoutWithCartSlice.default,
+        checkoutWithAuthenticationData:
+            checkoutSlice.checkoutWithAuthenticationSlice.default,
+        branchData: catalogsSlice.getAllBrandsSlice.default,
+        categoriesData: catalogsSlice.getAllCategoriesSlice.default,
+        needsData: catalogsSlice.getAllNeedsSlice.default,
+        registerData: userSlice.registerSlice.default,
+        resetPassword: userSlice.resetPasswordSlice.default,
+        createReview: reviewsSlice.createReviewSlice.default,
+        allReview: reviewsSlice.getAllReviewSlice.default,
     },
 });
 

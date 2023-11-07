@@ -5,15 +5,16 @@ export default function Notification() {
     return (
         <ToastContainer
             position="top-right"
-            autoClose={4000}
+            autoClose={2000}
             hideProgressBar={false}
             newestOnTop={false}
-            closeOnClick
+            closeOnClick={true}
             pauseOnFocusLoss
             draggable
             pauseOnHover
             theme="light"
             rtl={false}
+            limit={3}
         />
     );
 }

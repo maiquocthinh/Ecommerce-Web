@@ -9,13 +9,22 @@ const handleCheckOutWidthCart = (cartItemsIds: number[]) => {
 const handleCheckOutWidthProduct = (cartItemsIds: number[]) => {
     return axios.post(`/api/checkout/product`, cartItemsIds, { headers });
 };
-const handleCheckOutWidthproductWithAuthentication = (
-    cartItemsIds: number[]
+const handleCheckoutWidthproductWithAuthentication = (
+    items: {
+        productVersionId: number;
+        quantity: number;
+    }[]
 ) => {
-    return axios.post(`/api/checkout/cart`, cartItemsIds, { headers });
+    return axios.post(
+        `/api/checkout/product-with-authentication`,
+        { items },
+        {
+            headers,
+        }
+    );
 };
 export {
     handleCheckOutWidthCart,
     handleCheckOutWidthProduct,
-    handleCheckOutWidthproductWithAuthentication,
+    handleCheckoutWidthproductWithAuthentication,
 };

@@ -14,3 +14,23 @@ export const CheckOutWidthCart = createAsyncThunk(
         }
     }
 );
+export const checkoutWidthproductWithAuthentication = createAsyncThunk(
+    "checkoutWidthproductWithAuthentication/checkoutWidthproductWithAuthentication",
+    async (
+        productItems: {
+            productVersionId: number;
+            quantity: number;
+        }[]
+    ) => {
+        try {
+            const response =
+                await checkoutApi.handleCheckoutWidthproductWithAuthentication(
+                    productItems
+                );
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);

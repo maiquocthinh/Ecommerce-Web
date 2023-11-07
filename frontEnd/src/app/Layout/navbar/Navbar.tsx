@@ -1,40 +1,51 @@
-import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
-import {
-    FaCar,
-    FaUser,
-    FaSearch,
-    FaCartPlus,
-    FaBars,
-    FaPhone,
-} from "react-icons/fa";
-import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
-import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut";
-import { Fragment, useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import Notification from "@/Components/PageLoader/Notification";
-import { logout } from "@/app/action/UserAction";
 import SearchModal from "@/Components/Modal/SearchModal";
+import Notification from "@/Components/PageLoader/Notification";
 import { setIsLoggedIn } from "@/app/Slices/user/auth";
+import { logout } from "@/app/action/UserAction";
+import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
+import Cookies from "js-cookie";
+import { Fragment, useEffect, useState } from "react";
 import { BiUserCircle } from "react-icons/Bi";
+import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
+import {
+    FaBars,
+    FaCar,
+    FaCartPlus,
+    FaPhone,
+    FaSearch,
+    FaUser,
+} from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "@/assets/imgs/logo.png";
+import { searchProduct } from "@/app/action/product";
+import { ProductType } from "@/common/product";
+import useDebounce from "@/app/hook/useDebounce";
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
-    const [isResults, setIsResults] = useState<boolean>(false);
     const [userName, setUserName] = useState("");
+    const [reslutSearch, setReslutSearch] = useState<ProductType[]>([]);
     const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
     const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
     const allCart = useSelector((sate: any) => sate.allCart.data);
+    const searchProductData = useSelector(
+        (sate: any) => sate.searchProductData.data
+    );
     const route = useNavigate();
-    const dispatch = useDispatch();
-
-    const handleLogout = () => {
-        dispatch(logout());
-        Cookies.remove("token");
-        localStorage.clear();
-        route("/");
-    };
+    const debounce = useDebounce(searchValue, 1000);
+    const dispatch = useDispatch<any>();
+    useEffect(() => {
+        if (debounce.trim() !== "") {
+            dispatch(searchProduct(debounce));
+        }
+    }, [dispatch, debounce]);
+    useEffect(() => {
+        if (searchProductData?.list?.length) {
+            setReslutSearch(searchProductData?.list);
+            setShowSearchModal(true);
+        }
+    }, [searchProductData]);
     useEffect(() => {
         if (Cookies.get("token") !== undefined) {
             dispatch(setIsLoggedIn(true));
@@ -73,7 +84,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         },
     ];
     return (
-        <div className="w-full h-header bg-primary border-border border-b fixed z-10">
+        <div className="w-full h-header bg-primary border-border border-b fixed z-20">
             <div className="md:container md:mx-auto mx-4 sm:mx-8 xl:w-3/4 h-full">
                 <div className="flex justify-between items-center gap-4 h-full">
                     <div className="md:hidden cursor-pointer text-white">
@@ -82,13 +93,19 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <div className="hidden md:block">
                         <Link to="/">
                             <img
-                                src="https://o.remove.bg/downloads/38d0b572-192a-426a-aa12-c34f0a90a28a/OIG-removebg-preview.png"
+                                src={logo}
                                 alt="avata"
                                 className="w-24 object-cover"
                             />
                         </Link>
                     </div>
-                    <div className="relative w-80 flex items-center justify-start">
+                    <div
+                        className={`relative w-80 flex items-center justify-start ${
+                            showSearchModal && searchValue.trim() !== ""
+                                ? "border rounded-t-borderContnet"
+                                : ""
+                        }`}
+                    >
                         <div className=" bg-white rounded-l-search px-3 border-r-2 cursor-pointer text-black">
                             <FaSearch className="h-10" />
                         </div>
@@ -102,13 +119,25 @@ const Navbar: React.FC<NavbarProps> = () => {
                         {showSearchModal && (
                             <Fragment>
                                 <div className="absolute right-4 cursor-pointer top-1/2 -translate-y-1/2 text-sm text-red-500">
-                                    {isResults ? (
-                                        <AiOutlineClose />
-                                    ) : (
-                                        <AiOutlineLoading3Quarters className="animate-spin" />
-                                    )}
+                                    {searchValue ? (
+                                        reslutSearch ? (
+                                            <button
+                                                onClick={() => {
+                                                    setSearchValue("");
+                                                    setShowSearchModal(false);
+                                                }}
+                                            >
+                                                <AiOutlineClose />
+                                            </button>
+                                        ) : (
+                                            <AiOutlineLoading3Quarters className="animate-spin" />
+                                        )
+                                    ) : null}
                                 </div>
-                                <SearchModal />
+                                {reslutSearch?.length &&
+                                searchValue.trim() !== "" ? (
+                                    <SearchModal data={reslutSearch} />
+                                ) : null}
                             </Fragment>
                         )}
                     </div>

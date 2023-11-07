@@ -47,6 +47,7 @@ const Profile = () => {
             setShowUpdateAddress(true);
         }
     };
+
     return (
         profile &&
         allAddresses && (

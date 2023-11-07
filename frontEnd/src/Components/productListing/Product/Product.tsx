@@ -31,12 +31,7 @@ const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
                 <div className="flex justify-start gap-4 my-4">
                     {data.discountPercent ? (
                         <span className="font-bold text-custom-primary">
-                            {Math.floor(
-                                (Number(data.price) *
-                                    Number(data.discountPercent)) /
-                                    100
-                            )}
-                            đ
+                            {data.price}đ
                         </span>
                     ) : null}
                     <span
@@ -48,13 +43,13 @@ const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
                                 : "none",
                         }}
                     >
-                        {data.price}đ
+                        {data.originPrice}đ
                     </span>
                 </div>
                 {data.discountPercent ? (
                     <div className="absolute top-0 -left-1 bg_img ">
                         <span className="text-white text-xs font-semibold mb-2 block w-80 h-full pl-1 py-2">
-                            Giảm {Number(data.discountPercent) * 100}%
+                            Giảm {Number(data.discountPercent)}%
                         </span>
                     </div>
                 ) : null}

@@ -1,15 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
-import { registrationFormControls } from "@/utils/Data";
 import InputForm from "@/Components/FormData/InputForm/InputForm";
-import OptionForm from "@/Components/FormData/OptionForm/OptionForm";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { register } from "../action/UserAction";
-import { toast } from "react-toastify";
-import { UserType } from "@/common";
-import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
 import ComponentLevelLoader from "@/Components/Loader/componentlevel";
-const isRegistered = false;
+import { UserType } from "@/common";
+import { ChangeEvent, useEffect, useState } from "react";
+import { BiLockAlt, BiUserPin } from "react-icons/Bi";
+import { AiOutlineMail } from "react-icons/ai";
+import { BsPhoneFlip } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
+import { registerAction } from "../action/UserAction";
 const initialFormData = {
     firstName: "",
     lastName: "",
@@ -22,16 +22,13 @@ const Register = () => {
     const [formData, setFormData] =
         useState<typeof initialFormData>(initialFormData);
     const dispatch = useDispatch<any>();
-    const data = useSelector(
-        (state: { auth: UserType.AuthState }) => state.auth.data
-    );
     const err = useSelector(
         (state: { auth: UserType.AuthState }) => state.auth.error
     );
     const componentLoading = useSelector(
         (state: any) => state.componentLoading.componentLevelLoading
     );
-
+    const registerData = useSelector((state: any) => state.registerData.data);
     const navigate = useNavigate();
     const isFormValid = () => {
         return formData &&
@@ -47,121 +44,137 @@ const Register = () => {
     const handleRegisterOnSubmit = () => {
         if (isFormValid()) {
             dispatch(setComponentLevelLoading({ loading: true, id: "" }));
-            dispatch(register(formData));
+            dispatch(registerAction(formData)).then((response: any) => {
+                if (!response.payload) {
+                    dispatch(
+                        dispatch(
+                            setComponentLevelLoading({ loading: false, id: "" })
+                        )
+                    );
+                    toast.error("vui lòng điền đủ thông tin", {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                } else if (response.payload.success) {
+                    dispatch(
+                        setComponentLevelLoading({ loading: false, id: "" })
+                    );
+                    toast.success("đăng kí thành công", {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                    setFormData(initialFormData);
+                    setTimeout(() => {
+                        navigate("/login");
+                    }, 1000);
+                }
+            });
         } else {
             dispatch(setComponentLevelLoading({ loading: false, id: "" }));
-            toast.error("không hợp lệ", {
+            toast.error("vui lòng nhập đầy đủ thông tin", {
                 position: toast.POSITION.TOP_RIGHT,
             });
             setFormData(initialFormData);
         }
-        dispatch(setComponentLevelLoading({ loading: false, id: "" }));
     };
-    useEffect(() => {
-        if (data.accessToken !== "") {
-            toast.success("đăng kí thành công", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-            localStorage.setItem("userInfo", JSON.stringify(formData));
-            setFormData(initialFormData);
-            setTimeout(() => {
-                navigate("/login");
-            }, 1000);
-        }
-        if (err) {
-            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
-            toast.error("lỗi hệ thống, vui lòng quay lại sau vài phút", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-            setFormData(initialFormData);
-        }
-    }, [data, err]);
+    //     if (data.accessToken !== "") {
+
+    //     }
+    //     if (err) {
+    //         dispatch(setComponentLevelLoading({ loading: false, id: "" }));
+    //         toast.error("lỗi hệ thống, vui lòng quay lại sau vài phút", {
+    //             position: toast.POSITION.TOP_RIGHT,
+    //         });
+    //         setFormData(initialFormData);
+    //     }
+    // }, [data, err]);
+    const handleOnchange = (e: ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
     return (
-        <div className="relative">
-            <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-8 mr-auto xl:px-5 lg:flex-row">
-                <div className="flex min-h-[90vh]  flex-col justify-center items-center w-full pr-10 pl-10 lg:flex-row">
-                    <div className="w-full md:min-w-[600px] mt-10 mr-0 mb-0 ml-0 relative max-w-2xl lg:mt-0 lg:w-5/12">
-                        <div className="flex  flex-col items-center justify-start pt-10 pr-10 pb-10 pl-10 bg-white shadow-2xl rounded-xl relative z-10">
-                            <p className="w-full text-3xl font-medium text-center font-serif">
-                                {isRegistered
-                                    ? "Registration Successfull !"
-                                    : "Sign up for an account"}
-                            </p>
-                            <img
-                                src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png"
-                                className="h-[160px] mt-2 object-cover object-center"
-                                alt=""
+        <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-8 mr-auto xl:px-5 lg:flex-row">
+            <div className="flex flex-col justify-center items-center w-full pr-10 pl-10 lg:flex-row">
+                <div className="flex  flex-col items-center justify-start py-4 px-8 bg-white shadow-2xl rounded-xl">
+                    <p className="w-full text-3xl font-medium text-center font-serif">
+                        register
+                    </p>
+                    <img
+                        src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png"
+                        className="h-[100px] mt-2 object-cover object-center"
+                        alt=""
+                    />
+                    <div className="my-4 flex flex-col gap-6">
+                        <div className="flex gap-2 items-center">
+                            <InputForm
+                                type="text"
+                                placeholder="nhập firstName"
+                                name="firstName"
+                                lable="firstName"
+                                onChange={handleOnchange}
+                                value={formData.firstName}
+                                Icon={<BiUserPin size={20} />}
                             />
-                            {isRegistered ? (
-                                <button
-                                    className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
-                text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
-                "
-                                >
-                                    Login
-                                </button>
-                            ) : (
-                                <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
-                                    {registrationFormControls.map(
-                                        (controlItem) =>
-                                            controlItem.componentType ===
-                                            "input" ? (
-                                                <InputForm
-                                                    key={controlItem.id}
-                                                    type={controlItem.type}
-                                                    placeholder={
-                                                        controlItem.placeholder
-                                                    }
-                                                    lable={controlItem.label}
-                                                    onChange={(
-                                                        event: ChangeEvent<HTMLInputElement>
-                                                    ) => {
-                                                        setFormData({
-                                                            ...formData,
-                                                            [controlItem.id]:
-                                                                event.target
-                                                                    .value,
-                                                        });
-                                                    }}
-                                                    value={
-                                                        formData[
-                                                            controlItem.id as keyof typeof formData
-                                                        ]
-                                                    }
-                                                />
-                                            ) : null
-                                    )}
-                                    <button
-                                        onClick={handleRegisterOnSubmit}
-                                        className=" disabled:opacity-50 inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
+                            <InputForm
+                                type="text"
+                                placeholder="nhập lastName"
+                                lable="lastName"
+                                name="lastName"
+                                onChange={handleOnchange}
+                                value={formData.lastName}
+                                Icon={<BiUserPin size={20} />}
+                            />
+                        </div>
+                        <InputForm
+                            type="text"
+                            placeholder="nhập email"
+                            lable="email"
+                            name="email"
+                            onChange={handleOnchange}
+                            value={formData.email}
+                            Icon={<AiOutlineMail size={20} />}
+                        />
+                        <InputForm
+                            type="password"
+                            placeholder="nhập password"
+                            lable="password"
+                            name="password"
+                            onChange={handleOnchange}
+                            value={formData.password}
+                            Icon={<BiLockAlt size={20} />}
+                        />
+                        <InputForm
+                            type="text"
+                            placeholder="nhập phoneNumber"
+                            lable="phoneNumber"
+                            name="phoneNumber"
+                            onChange={handleOnchange}
+                            value={formData.phoneNumber}
+                            Icon={<BsPhoneFlip size={20} />}
+                        />
+                    </div>
+                    <button
+                        disabled={componentLoading.loading}
+                        onClick={handleRegisterOnSubmit}
+                        className="rounded-sm disabled:opacity-50 inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
                    text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
                    "
-                                    >
-                                        {componentLoading.loading === true ? (
-                                            <ComponentLevelLoader
-                                                loading={
-                                                    componentLoading.loading ===
-                                                    true
-                                                }
-                                                color="#fff"
-                                                text="registing"
-                                            />
-                                        ) : (
-                                            "register"
-                                        )}
-                                    </button>
-                                </div>
-                            )}
-                            <div className="flex gap-2 text-sm mt-4">
-                                <span>You have account ? </span>
-                                <nav
-                                    onClick={() => navigate("/login")}
-                                    className="text-red-500 underline cursor-pointer"
-                                >
-                                    Login
-                                </nav>
-                            </div>
-                        </div>
+                    >
+                        {componentLoading.loading === true ? (
+                            <ComponentLevelLoader
+                                loading={componentLoading.loading === true}
+                                color="#fff"
+                                text="registing"
+                            />
+                        ) : (
+                            "register"
+                        )}
+                    </button>
+                    <div className="flex gap-2 text-sm mt-4">
+                        <span>You have account ? </span>
+                        <nav
+                            onClick={() => navigate("/login")}
+                            className="text-red-500 underline cursor-pointer"
+                        >
+                            Login
+                        </nav>
                     </div>
                 </div>
             </div>

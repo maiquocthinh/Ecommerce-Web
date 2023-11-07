@@ -1,9 +1,11 @@
 import HeaderProduct from "@/Components/Header/HeaderProduct/HeaderProduct";
 import PageLoader from "@/Components/PageLoader/PageLoader";
+import Poster from "@/Components/Slide/Poster/Poster";
+import Slide from "@/Components/Slide/Slide";
+import HotSale from "@/Components/productListing/HotSale/HotSale";
 import Product from "@/Components/productListing/Product/Product";
-import ModalMenu from "@/Components/commonListing/ModalMenu/ModalMenu";
-import { selectShowModal } from "@/Components/commonListing/ModalMenu/modalSlice";
 import SlideBar from "@/app/Layout/Sidebar/SideBar";
+import { selectShowModal } from "@/app/Slices/common/modalSlice";
 import { ProductType } from "@/common";
 import { listProduct, posterData } from "@/utils/Data";
 import { useEffect, useState } from "react";
@@ -14,9 +16,6 @@ import {
     getLaptopProduct,
     getMobileProduct,
 } from "../action/product";
-import Slide from "@/Components/Slide/Slide";
-import Poster from "@/Components/Slide/Poster/Poster";
-import HotSale from "@/Components/productListing/HotSale/HotSale";
 
 interface HomeProps {}
 
@@ -33,6 +32,7 @@ const Home: React.FC<HomeProps> = () => {
     const productdata = useSelector((state: any) => state.allproduct.data);
     const laptopProduct = useSelector((state: any) => state.laptopProduct.data);
     const mobileProduct = useSelector((state: any) => state.mobileProduct.data);
+
     const pageLevelLoading = useSelector(
         (sate: any) => sate.pageLevelLoading.pageLevelLoading
     );
@@ -108,11 +108,6 @@ const Home: React.FC<HomeProps> = () => {
                         />
                     )}
                 </div>
-                {showModal && (
-                    <div className="col-span-10 absolute z-20 left-modal left-1/6 right-0 bg-white overflow-hidden rounded-r-borderContnet">
-                        <ModalMenu />
-                    </div>
-                )}
             </div>
             <div className="bg-backgroundSale rounded-borderContnet p-3">
                 {data ? (
@@ -134,9 +129,10 @@ const Home: React.FC<HomeProps> = () => {
                 <div className="grid grid-cols-10 gap-2">
                     {productdata?.list?.length &&
                         productdata?.list.map(
-                            (product: ProductType.ProductType) => (
-                                <Product data={product} col={2} />
-                            )
+                            (
+                                product: ProductType.ProductType,
+                                index: number
+                            ) => <Product data={product} col={2} key={index} />
                         )}
                 </div>
             </div>

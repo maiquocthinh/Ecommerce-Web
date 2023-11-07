@@ -1,39 +1,23 @@
-import { FaChevronDown } from "@react-icons/all-files/fa/FaChevronDown";
 import Filter from "@/Components/Filter/Filter";
-import HeaderProduct from "@/Components/Header/HeaderProduct/HeaderProduct";
+import Sort from "@/Components/Filter/Sort/Sort";
 import OrderMobile from "@/Components/commonListing/OrderMobile/OrderMobile";
 import Product from "@/Components/productListing/Product/Product";
-import Sort from "@/Components/Filter/Sort/Sort";
-import Comments from "@/Components/Comments/Comments";
 import { ProductType } from "@/common/product";
-import { useSelector } from "react-redux";
-import Slide from "@/Components/Slide/Slide";
-import HotSale from "@/Components/productListing/HotSale/HotSale";
-import { useState } from "react";
 import { branch } from "@/utils/Data";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getAllBrands } from "../action/catalogs";
 const ProductPage = () => {
-    const [changedDataSale, setChangedDataSale] = useState("mobile");
+    const param = useParams();
     const productdata = useSelector(
         (state: any) => state.allproduct.data as ProductType[]
     );
-    const laptopProduct = useSelector(
-        (state: any) => state.laptopProduct.data as ProductType[]
-    );
-    const tabletProduct = useSelector(
-        (state: any) => state.tabletProduct.data as ProductType[]
-    );
-    const saleProductMobile = useSelector(
-        (sate: any) => sate.saleProduct.data.mobile as ProductType[]
-    );
-    const saleProductTablet = useSelector(
-        (sate: any) => sate.saleProduct.data.tablet as ProductType[]
-    );
-    const saleProductAccessories = useSelector(
-        (sate: any) => sate.saleProduct.data.accessories as ProductType[]
-    );
-    const handleChangeDatasale = (link: string) => {
-        setChangedDataSale(link);
-    };
+    const allBrands = useSelector((state: any) => state.allBrands.data);
+    const dispatch = useDispatch<any>();
+    useEffect(() => {
+        dispatch(getAllBrands());
+    }, [dispatch]);
     return (
         <div className="mt-4">
             <div className="flex items-center flex-wrap">
@@ -49,7 +33,7 @@ const ProductPage = () => {
             </div>
             <OrderMobile />
             <div className="bg-backgroundSale rounded-borderContnet p-3 mt-4">
-                {saleProductTablet && (
+                {/* {saleProductTablet && (
                     <HotSale
                         data={
                             changedDataSale === "mobile"
@@ -60,7 +44,7 @@ const ProductPage = () => {
                         }
                         handleChangeData={handleChangeDatasale}
                     />
-                )}
+                )} */}
             </div>
             <Filter />
             <Sort />
@@ -77,7 +61,6 @@ const ProductPage = () => {
                     Xem thêm 20 sản phẩm
                 </button>
             </div>
-            <Comments />
         </div>
     );
 };

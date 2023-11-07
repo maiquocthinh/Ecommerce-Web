@@ -28,6 +28,13 @@ const handleGetMobileProduct = (param: paramsProductType) => {
         `/api/products?pageSize=${pageSize}?pageIndex=${pageIndex}&Filters.CategoryId=2&SortedBy=new`
     );
 };
+const handleSearchProduct = (Keyword: string) => {
+    const pageIndex = "1";
+    const pageSize = "10";
+    return axios.get(
+        `/api/products?pageSize=${pageSize}?pageIndex=${pageIndex}&Keyword=${Keyword}`
+    );
+};
 const handleGetProductById = (id: string | number) => {
     return axios.get(`/api/products/${id}`);
 };
@@ -36,4 +43,5 @@ export {
     handleGetProductById,
     handleGetLaptopProduct,
     handleGetMobileProduct,
+    handleSearchProduct,
 };

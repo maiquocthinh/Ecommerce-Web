@@ -1,16 +1,15 @@
-import Cookies from "js-cookie";
-import { useEffect, useState, ChangeEvent } from "react";
-import { loginFormControls } from "@/utils/Data";
 import InputForm from "@/Components/FormData/InputForm/InputForm";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../action/UserAction";
-import { UserType } from "@/common";
-import { toast } from "react-toastify";
-import Notification from "@/Components/PageLoader/Notification";
 import ComponentLevelLoader from "@/Components/Loader/componentlevel";
+import Notification from "@/Components/PageLoader/Notification";
+import { UserType } from "@/common";
+import { loginFormControls } from "@/utils/Data";
+import Cookies from "js-cookie";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
-import { setIsLoggedIn } from "../Slices/user/auth";
+import { login } from "../action/UserAction";
 const initialFormdata = {
     email: "",
     password: "",
@@ -144,6 +143,15 @@ export default function Login() {
                                         className="text-red-500 underline cursor-pointer"
                                     >
                                         register
+                                    </nav>
+                                    <span>or</span>
+                                    <nav
+                                        onClick={() =>
+                                            navigate("/reset-password")
+                                        }
+                                        className="text-red-500 underline cursor-pointer"
+                                    >
+                                        forgot password
                                     </nav>
                                 </div>
                             </div>

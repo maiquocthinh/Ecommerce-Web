@@ -10,6 +10,7 @@ import Order from "../Pages/Order";
 import ProductPage from "../Pages/Product";
 import Profile from "../Pages/Profile";
 import Register from "../Pages/Register";
+import ResetPassword from "../Pages/ResetPassword";
 import Categories from "../Pages/admin/Catalog/Categories/Categories";
 import ProductVersion from "../Pages/admin/Catalog/ProductVersion/ProductVersion";
 import Products from "../Pages/admin/Catalog/Products/Products";
@@ -31,7 +32,7 @@ const publishRouter: RouteConfig[] = [
         Layout: DefaultLayout,
     },
     {
-        path: "/:product",
+        path: "/product/:id/:name",
         element: ProductPage,
         Layout: DefaultLayout,
     },
@@ -58,6 +59,11 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/register",
         element: Register,
+        Layout: HeaderLayout,
+    },
+    {
+        path: "/reset-password",
+        element: ResetPassword,
         Layout: HeaderLayout,
     },
     {

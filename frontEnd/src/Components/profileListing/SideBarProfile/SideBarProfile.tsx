@@ -1,4 +1,6 @@
+import { logout } from "@/app/action/UserAction";
 import { BsGear } from "@react-icons/all-files/bs/BsGear";
+import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import {
     FaArrowCircleRight,
@@ -8,6 +10,7 @@ import {
     FaMedal,
     FaShieldAlt,
 } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const Greneral = [
@@ -43,6 +46,8 @@ const Greneral = [
     },
 ];
 const SideBarProfile = () => {
+    const dispatch = useDispatch();
+    const route = useNavigate();
     const path = useLocation();
     const [isActive, setIsActive] = useState(path.pathname);
     const router = useNavigate();
@@ -53,6 +58,12 @@ const SideBarProfile = () => {
     useEffect(() => {
         if (isActive === path.pathname) setIsActive(path.pathname);
     }, [path, isActive]);
+    const handleLogout = () => {
+        dispatch(logout());
+        Cookies.remove("token");
+        localStorage.clear();
+        route("/");
+    };
     return (
         <div className="fixed flex flex-col gap-1 w-max h-full">
             <div
@@ -92,7 +103,10 @@ const SideBarProfile = () => {
             <div>
                 <h1 className="px-2">Others</h1>
                 <div className="flex gap-3 flex-col">
-                    <div className="p-2 gap-2 flex items-center cursor-pointer hover:text-custom-primary border-transparent text-[#4a4a4a] text-xl border hover:border-custom-primary rounded-borderContnet hover:bg-custom-primary hover:bg-opacity-[.1]">
+                    <div
+                        onClick={handleLogout}
+                        className="p-2 gap-2 flex items-center cursor-pointer hover:text-custom-primary border-transparent text-[#4a4a4a] text-xl border hover:border-custom-primary rounded-borderContnet hover:bg-custom-primary hover:bg-opacity-[.1]"
+                    >
                         <FaArrowCircleRight />
                         <span className="text-[16px]">Đăng xuất</span>
                     </div>

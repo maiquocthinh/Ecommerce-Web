@@ -49,3 +49,15 @@ export const getProductById = createAsyncThunk(
         }
     }
 );
+export const searchProduct = createAsyncThunk(
+    "searchProduct/searchProduct",
+    async (keyword: string) => {
+        try {
+            const response = await productApi.handleSearchProduct(keyword);
+            let products = response.data;
+            return products;
+        } catch (error) {
+            throw error;
+        }
+    }
+);

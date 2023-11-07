@@ -1,9 +1,9 @@
 export interface UserRegisterType {
-    email: string;
-    password: string;
-    phoneNumber: String;
     firstName: string;
     lastName: string;
+    email: string;
+    phoneNumber: String;
+    password: string;
 }
 export interface userLoginType {
     email: string;

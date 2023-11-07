@@ -32,7 +32,6 @@ const CartModal = () => {
                 console.error("Lỗi trong quá trình phân tích JSON:", error);
             }
         }
-        console.log("all cart", allCart);
     }, [allCart]);
     const handleShowCart = () => {
         dispatch(setshowCart(!showCart));
@@ -64,8 +63,8 @@ const CartModal = () => {
             setShow={handleShowCart}
             showModalTitle={true}
             modalTitle={
-                <div className="flex justify-center w-full">
-                    <h1 className="w-full text-center font-bold text-lg">
+                <div className="flex justify-center w-full mt-4">
+                    <h1 className="w-full text-center font-bold text-2xl">
                         sản phẩm trong giỏ hàng
                     </h1>
                 </div>
@@ -141,15 +140,15 @@ const CartModal = () => {
                                             componentLoading.id ===
                                                 cartItem.id ? (
                                                 <ComponentLevelLoader
-                                                    text={"Removing"}
-                                                    color={"yellow"}
+                                                    text={"ĐANG XÓA"}
+                                                    color={"black"}
                                                     loading={
                                                         componentLoading &&
                                                         componentLoading.loading
                                                     }
                                                 />
                                             ) : (
-                                                "Remove"
+                                                "XÓA"
                                             )}
                                         </button>
                                     </div>

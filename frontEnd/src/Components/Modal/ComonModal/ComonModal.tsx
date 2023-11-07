@@ -6,7 +6,7 @@ interface CommonModalProps {
     showButtons: boolean;
     buttonComponent?: React.ReactElement;
     show: boolean;
-    setShow?: any;
+    setShow: (show: boolean) => void;
     showModalTitle?: boolean;
 }
 const CommonModal: React.FC<CommonModalProps> = ({
