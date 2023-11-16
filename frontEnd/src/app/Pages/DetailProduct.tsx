@@ -4,15 +4,14 @@ import CartModal from "@/Components/Modal/CartModal/CartModal";
 import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import Notification from "@/Components/PageLoader/Notification";
 import PageLoader from "@/Components/PageLoader/PageLoader";
+import Reviews from "@/Components/Reviews/Reviews";
 import ProductInfo from "@/Components/Slide/DetailProductSlide/DetailProductSlide";
 import Slide from "@/Components/Slide/Slide";
-import BoxColor from "@/Components/commonListing/DetailBox/BoxColor/BoxProduct";
 import BoxProduct from "@/Components/commonListing/DetailBox/BoxProduct/BoxProduct";
 import Incentives from "@/Components/commonListing/Incentives/Incentives";
 import InfoProduct from "@/Components/commonListing/InfoProduct/InfoProduct";
 import Star from "@/Components/commonListing/Star/Start";
 import Product from "@/Components/productListing/Product/Product";
-import Reviews from "@/Components/Reviews/Reviews";
 import { ProductType, productVersion } from "@/common/product";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -184,14 +183,6 @@ const DetailProduct = () => {
                                     handleGetProductVersion
                                 }
                             />
-                            <div className="flex flex-col gap-2 mt-4 font-bold">
-                                <h1>
-                                    Chọn màu để xem giá và chi nhánh có hàng
-                                </h1>
-                                <BoxColor
-                                    data={productDetail?.productVersions}
-                                />
-                            </div>
                             <div className="flex gap-2 items-center text-center mt-4">
                                 <button
                                     onClick={handleByProduct}

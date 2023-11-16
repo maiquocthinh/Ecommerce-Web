@@ -27,12 +27,13 @@ export interface paramsProductType {
     pageSize?: string;
     SortedBy?: string;
     Filters?: {
+        IsOutOfStock?: boolean;
         BrandId?: string | number;
         NeedId?: string | number;
         CategoryId?: string | number;
         PriceRange?: {
-            MinPrice?: string;
-            MaxPrice?: string;
+            MinPrice?: number;
+            MaxPrice?: number;
         };
     };
 }

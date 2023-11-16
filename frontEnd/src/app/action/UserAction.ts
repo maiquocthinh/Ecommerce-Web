@@ -28,9 +28,13 @@ export const registerAction = createAsyncThunk(
 );
 export const resetPassword = createAsyncThunk(
     "resetPassword/resetPassword",
-    async (email: string) => {
+    async (dataReset: {
+        email?: string;
+        token?: string;
+        password?: string;
+    }) => {
         try {
-            const response = await userApi.handleResetPassword(email);
+            const response = await userApi.handleResetPassword(dataReset);
             let data = response;
             return data;
         } catch (error) {

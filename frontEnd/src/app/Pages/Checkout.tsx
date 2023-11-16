@@ -11,6 +11,8 @@ import { CheckOutWidthCart } from "../action/checkout";
 import { getAllCart } from "../action/CartActon";
 import { getAllAddresses } from "../action/address";
 import { addressType } from "@/common/Address";
+import ComponentLevelLoader from "@/Components/Loader/componentlevel";
+import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
 const Checkout = () => {
     const [cartItems, setCartItems] = useState<CartType[]>([]);
     const [addressDefault, setAddressDefault] = useState<addressType>();
@@ -18,8 +20,12 @@ const Checkout = () => {
     const allAddresses = useSelector(
         (state: any) => state.allAddresses.data as addressType[]
     );
+    const componentLoading = useSelector(
+        (state: any) => state.componentLoading.componentLevelLoading
+    );
     const dispatch = useDispatch<any>();
     const route = useNavigate();
+
     useEffect(() => {
         const cartItemsLocal = localStorage.getItem("cart");
         if (typeof cartItemsLocal === "string") {
@@ -45,6 +51,7 @@ const Checkout = () => {
         setTotalPrice(subPrice);
     }, [cartItems]);
     const handleCheckout = () => {
+        dispatch(setComponentLevelLoading({ loading: true, id: "" }));
         const listIdCart: number[] = [];
         cartItems.forEach((cartItem: CartType) => {
             listIdCart.push(Number(cartItem.id));
@@ -52,6 +59,10 @@ const Checkout = () => {
         if (listIdCart.length > 0) {
             dispatch(CheckOutWidthCart(listIdCart)).then((response: any) => {
                 if (response.payload.success) {
+                    dispatch(
+                        setComponentLevelLoading({ loading: false, id: "" })
+                    );
+
                     toast.success(
                         "đặt hàng thành công. chúc bạn có 1 trãi nghiệm tuyệt vời"
                     );
@@ -60,12 +71,16 @@ const Checkout = () => {
                         route("/profile/order");
                     }, 2000);
                 } else {
+                    dispatch(
+                        setComponentLevelLoading({ loading: false, id: "" })
+                    );
                     toast.error(
                         "đặt hàng thất bại. vui lòng quay lại sau vài phút!"
                     );
                 }
             });
         } else {
+            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
             toast.error("vui lòng chọn sản phẩm để đặt hàng");
         }
     };
@@ -264,9 +279,17 @@ const Checkout = () => {
                     </div>
                     <button
                         onClick={handleCheckout}
-                        className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
+                        className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white text-center flex justify-center"
                     >
-                        Đặt hàng
+                        {componentLoading.loading === true ? (
+                            <ComponentLevelLoader
+                                text={"đang đặt hàng"}
+                                color={"#ffffff"}
+                                loading={componentLoading.loading}
+                            />
+                        ) : (
+                            "đặt hàng"
+                        )}
                     </button>
                 </div>
             </div>

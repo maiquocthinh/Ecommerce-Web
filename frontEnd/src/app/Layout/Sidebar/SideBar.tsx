@@ -32,9 +32,9 @@ const SlideBar: React.FC<SideBarProps> = () => {
                     <div
                         onClick={() =>
                             router(
-                                `/product/${data?.id}/${
-                                    data?.name || data?.title
-                                }`
+                                `/product/${
+                                    data?.title ? "need" : "category"
+                                }/${data?.name || data?.title}/${data?.id}`
                             )
                         }
                         key={index}

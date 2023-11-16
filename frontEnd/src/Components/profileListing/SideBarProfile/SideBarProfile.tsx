@@ -1,17 +1,9 @@
 import { logout } from "@/app/action/UserAction";
-import { BsGear } from "@react-icons/all-files/bs/BsGear";
 import Cookies from "js-cookie";
-import { useState, useEffect } from "react";
-import {
-    FaArrowCircleRight,
-    FaGifts,
-    FaHistory,
-    FaHouseDamage,
-    FaMedal,
-    FaShieldAlt,
-} from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaArrowCircleRight, FaHistory, FaHouseDamage } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Greneral = [
     {
@@ -25,24 +17,6 @@ const Greneral = [
         icon: <FaHistory />,
         title: "Lịch sử mua hàng",
         link: "/profile/order",
-    },
-    {
-        id: 3,
-        icon: <FaGifts />,
-        title: "Ưu đãi của bạn",
-        link: "/profile/l",
-    },
-    {
-        id: 4,
-        icon: <FaMedal />,
-        title: "Hạng thành viên",
-        link: "/profile/l",
-    },
-    {
-        id: 5,
-        icon: <FaShieldAlt />,
-        title: "Bảo hành",
-        link: "/profile/h",
     },
 ];
 const SideBarProfile = () => {

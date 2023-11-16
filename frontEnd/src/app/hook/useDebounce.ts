@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-function useDebounce(value: string, delay: number) {
+function useDebounce(value: string | {}, delay: number) {
     const [debounceValue, setDebounceValue] = useState(value);
     useEffect(() => {
         const handler = setTimeout(() => {

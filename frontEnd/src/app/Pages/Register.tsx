@@ -45,6 +45,7 @@ const Register = () => {
         if (isFormValid()) {
             dispatch(setComponentLevelLoading({ loading: true, id: "" }));
             dispatch(registerAction(formData)).then((response: any) => {
+                console.log(response);
                 if (!response.payload) {
                     dispatch(
                         dispatch(

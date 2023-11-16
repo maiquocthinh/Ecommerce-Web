@@ -66,11 +66,6 @@ const Navbar: React.FC<NavbarProps> = () => {
     }, [isLoggedIn, dispatch, allCart]);
     const navListing = [
         {
-            id: 1,
-            Icon: <FaPhone />,
-            title: "gọi mua hàng",
-        },
-        {
             id: 2,
             Icon: <FaCar />,
             title: "Tra cứu đơn hàng",
@@ -84,7 +79,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         },
     ];
     return (
-        <div className="w-full h-header bg-primary border-border border-b fixed z-20">
+        <div className="w-full h-header bg-primary border-border border-b fixed z-10">
             <div className="md:container md:mx-auto mx-4 sm:mx-8 xl:w-3/4 h-full">
                 <div className="flex justify-between items-center gap-4 h-full">
                     <div className="md:hidden cursor-pointer text-white">
@@ -142,6 +137,15 @@ const Navbar: React.FC<NavbarProps> = () => {
                         )}
                     </div>
                     <div className="md:flex gap-4 hidden">
+                        <a
+                            href="https://www.facebook.com/dinhnguyenminhhoang"
+                            className={`flex items-center cursor-pointer text-white hover:invert transition-all duration-200 ease-linear`}
+                        >
+                            <FaPhone />
+                            <span className="ml-2 text-sm font-bold">
+                                {capitalizeFirstLetter("liên hệ hỗ trợ")}
+                            </span>
+                        </a>
                         {navListing?.length > 0 &&
                             navListing.map((item) => (
                                 <div

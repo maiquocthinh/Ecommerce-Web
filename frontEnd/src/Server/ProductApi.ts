@@ -9,7 +9,20 @@ const handleGetAllProduct = (param: paramsProductType) => {
             Filters?.CategoryId
                 ? `&Filters.CategoryId=${Filters?.CategoryId}`
                 : "&"
-        }`
+        }${Filters?.NeedId ? `&Filters.NeedId=${Filters?.NeedId}` : "&"}
+        ${Filters?.BrandId ? `&Filters.BrandId=${Filters?.BrandId}` : "&"}
+        ${!Filters?.IsOutOfStock ? `&Filters.IsOutOfStock=false` : "&"}
+        ${
+            Filters?.PriceRange?.MinPrice
+                ? `&Filters.PriceRange.MinPrice=${Filters?.PriceRange?.MinPrice}`
+                : "&"
+        }
+        ${
+            Filters?.PriceRange?.MaxPrice
+                ? `&Filters.PriceRange.MaxPrice=${Filters?.PriceRange?.MaxPrice}`
+                : "&"
+        }
+        `
     );
 };
 const handleGetLaptopProduct = (param: paramsProductType) => {

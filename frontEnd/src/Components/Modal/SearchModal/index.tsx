@@ -32,16 +32,16 @@ const SearchModal: React.FC<SearchModalProps> = ({ data }) => {
                                     {product.price < product.originPrice ? (
                                         <div className="flex gap-2">
                                             <p className="mt-1 text-sm text-gray-400 font-medium line-through">
-                                                ${product.originPrice}
+                                                {product.originPrice}đ
                                             </p>
                                             <p className="mt-1 text-sm text-red-500 font-medium">
-                                                ${product.price}
+                                                {product.price}đ
                                             </p>
                                         </div>
                                     ) : (
                                         <div className="flex gap-2">
                                             <p className="mt-1 text-sm text-black font-medium">
-                                                ${product.originPrice}
+                                                {product.originPrice}đ
                                             </p>
                                         </div>
                                     )}

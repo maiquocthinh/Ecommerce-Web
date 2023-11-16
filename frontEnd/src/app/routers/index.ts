@@ -32,7 +32,7 @@ const publishRouter: RouteConfig[] = [
         Layout: DefaultLayout,
     },
     {
-        path: "/product/:id/:name",
+        path: "/product/:type/:name/:id",
         element: ProductPage,
         Layout: DefaultLayout,
     },
@@ -63,6 +63,11 @@ const publishRouter: RouteConfig[] = [
     },
     {
         path: "/reset-password",
+        element: ResetPassword,
+        Layout: HeaderLayout,
+    },
+    {
+        path: "/reset-password/:token",
         element: ResetPassword,
         Layout: HeaderLayout,
     },

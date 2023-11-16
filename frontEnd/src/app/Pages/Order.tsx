@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import { BiReset, BiSearchAlt } from "react-icons/Bi";
 import { CiFilter } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllOrder } from "../action/Order";
+import { cancelOrder, getAllOrder } from "../action/Order";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
 import PageLoader from "@/Components/PageLoader/PageLoader";
 import { FcCancel } from "react-icons/fc";
 import { BsCartCheck } from "react-icons/bs";
 import Notification from "@/Components/PageLoader/Notification";
+import { AiOutlineDelete } from "react-icons/ai";
+import { MdOutlineCancel } from "react-icons/md";
 const Order = () => {
     const [isOrderDetail, setIsOrderDetail] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
@@ -46,6 +48,9 @@ const Order = () => {
             dispatch(setPageLevelLoading(false));
         }
     }, [allOrder, dispatch]);
+    const handleCancelOrderView = (id: number) => {
+        dispatch(cancelOrder(id)).then(() => dispatch(getAllOrder()));
+    };
     if (pageLevelLoading) {
         return <PageLoader pageLevelLoading={pageLevelLoading} />;
     }
@@ -128,6 +133,9 @@ const Order = () => {
 
                                         <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
                                             trạng thái
+                                        </td>
+                                        <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
+                                            action
                                         </td>
                                     </tr>
                                 </thead>
@@ -265,13 +273,29 @@ const Order = () => {
                                                           {order.orderStatus}
                                                       </span>
                                                   </td>
+                                                  <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
+                                                      {order.orderStatus ===
+                                                      "processing" ? (
+                                                          <div
+                                                              onClick={() =>
+                                                                  handleCancelOrderView(
+                                                                      order.orderId
+                                                                  )
+                                                              }
+                                                              className="flex gap-1 items-center text-custom-Colorprimary"
+                                                          >
+                                                              <MdOutlineCancel />
+                                                              <span>hủy</span>
+                                                          </div>
+                                                      ) : null}
+                                                  </td>
                                               </tr>
                                           ))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    {isOrderDetail && (
+                    {/* {isOrderDetail && (
                         <div>
                             <div className="relative my-10 flex h-full flex-col overflow-hidden rounded-2xl bg-white text-gray-600 shadow-lg ring-1 ring-gray-200">
                                 <div className="border-b p-6">
@@ -376,7 +400,7 @@ const Order = () => {
                                 </div>
                             </div>
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
             <Notification />

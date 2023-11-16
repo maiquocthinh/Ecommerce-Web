@@ -21,7 +21,6 @@ interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
     const dispatch = useDispatch<any>();
-    const showModal = useSelector(selectShowModal);
     const [changedDataSale, setChangedDataSale] = useState("mobile");
     const [data, setData] = useState({
         labtop: [] as ProductType.ProductType[],
@@ -158,19 +157,6 @@ const Home: React.FC<HomeProps> = () => {
                     numberSlide={5}
                 />
             </div>
-            <div>
-                <HeaderProduct
-                    listProduct={listProduct}
-                    heading="SẢN PHẨM ĐANG GIẢM GIÁ"
-                />
-                <Slide ItemSlide={Product} data={data.mobile} numberSlide={4} />
-            </div>
-            {/* <div>
-                <Banner data={credit} heading="ƯU ĐÃI THANH TOÁN" />
-            </div>
-            <div>
-                <Banner data={branch} heading="CHUYÊN TRANG THƯƠNG HIỆU" />
-            </div> */}
         </div>
     );
 };

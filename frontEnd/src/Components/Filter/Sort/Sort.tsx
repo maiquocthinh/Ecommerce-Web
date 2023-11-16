@@ -2,8 +2,6 @@ import { FaLongArrowAltDown } from "@react-icons/all-files/fa/FaLongArrowAltDown
 import { FaLongArrowAltUp } from "@react-icons/all-files/fa/FaLongArrowAltUp";
 import { FaPercentage } from "@react-icons/all-files/fa/FaPercentage";
 import { FaEye } from "@react-icons/all-files/fa/FaEye";
-import ItemIcon from "../../commonListing/OptionItem/ItemIcon";
-
 const Sort = () => {
     const select = [
         {
@@ -30,8 +28,16 @@ const Sort = () => {
             </span>
             <div className=" flex gap-2  flex-wrap  items-center">
                 {select?.length > 0 &&
-                    select.map((item, index) => (
-                        <ItemIcon data={item} key={index} />
+                    select.map((data, index) => (
+                        <div
+                            key={index}
+                            className="flex items-center p-2 border-[1px] cursor-pointer rounded-borderContnet text-[#444444] bg-[#f3f4f6] hover:text-custom-primary hover:border-custom-primary"
+                        >
+                            {data.icon}
+                            <span className="ml-1 text-sm font-normal ">
+                                {data.title}
+                            </span>
+                        </div>
                     ))}
             </div>
         </div>

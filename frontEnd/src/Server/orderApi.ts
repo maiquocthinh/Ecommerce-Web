@@ -7,6 +7,8 @@ const handleGetAllOrder = () => {
     return axios.get(`/api/orders`, { headers });
 };
 const handleCancelOrder = (orderId: number) => {
-    return axios.get(`/api/orders/cancel/${orderId}`, { headers });
+    return axios.post(`/api/orders/cancel/${orderId}`, null, {
+        headers: headers,
+    });
 };
 export { handleGetAllOrder, handleCancelOrder };
