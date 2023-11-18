@@ -7,6 +7,7 @@ export interface productVersion {
     originPrice: string;
     price: string;
 }
+
 export interface ProductType {
     id: number | string;
     imageUrl: string;
@@ -20,6 +21,39 @@ export interface ProductType {
         categoryId: string | number;
     };
     productVersions?: productVersion[];
+}
+export interface productCreateOptionsType {
+    name: string;
+    description: string;
+    imageUrl: string;
+    warranty: string;
+    categoryId: number;
+    brandId: number;
+    needId: number;
+}
+export interface cretaeProductVersionType {
+    productId: number;
+    name: string;
+    imageUrl: string;
+    color: string;
+    specifications: {
+        os?: string;
+        cpu?: string;
+        gpu?: string;
+        ram?: string;
+        storage?: string;
+        display?: string;
+        webcam?: string;
+        connectivityPorts?: string;
+        wirelessConnectivity?: string;
+        weight?: string;
+        battery?: string;
+        releaseYear?: number;
+        rearCamera?: string;
+        frontCamera?: string;
+        batteryCapacity?: string;
+    };
+    price: number;
 }
 export interface paramsProductType {
     Keyword?: string;

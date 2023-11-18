@@ -76,9 +76,6 @@ const Home: React.FC<HomeProps> = () => {
     }, [productdata]);
     useEffect(() => {
         dispatch(setPageLevelLoading(true));
-        dispatch(getAllProduct({ pageSize: "10", pageIndex: "1" }));
-        dispatch(getLaptopProduct({ pageSize: "10", pageIndex: "1" }));
-        dispatch(getMobileProduct({ pageSize: "10", pageIndex: "1" }));
     }, [dispatch]);
     useEffect(() => {
         if (productdata?.list) {

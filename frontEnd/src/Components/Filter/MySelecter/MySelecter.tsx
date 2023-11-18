@@ -25,7 +25,7 @@ const MySelecter: React.FC<MySelecterProps> = ({
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [active, setActive] = useState<boolean>(false);
     const handleShowDropdown = () => {
-        setShowDropdown(true);
+        setShowDropdown(!showDropdown);
         setActive(true);
     };
     const handleAddNewOption = (

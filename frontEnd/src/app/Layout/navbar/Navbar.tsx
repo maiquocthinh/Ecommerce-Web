@@ -18,9 +18,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/imgs/logo.png";
-import { searchProduct } from "@/app/action/product";
+import {
+    getAllProduct,
+    getLaptopProduct,
+    getMobileProduct,
+    searchProduct,
+} from "@/app/action/product";
 import { ProductType } from "@/common/product";
 import useDebounce from "@/app/hook/useDebounce";
+import { getAllCategories, getAllNeeds } from "@/app/action/catalogs";
+import { jwtDecode } from "jwt-decode";
+
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
     const [userName, setUserName] = useState("");
@@ -32,9 +40,17 @@ const Navbar: React.FC<NavbarProps> = () => {
     const searchProductData = useSelector(
         (sate: any) => sate.searchProductData.data
     );
+
     const route = useNavigate();
-    const debounce = useDebounce(searchValue, 1000);
+    const debounce = useDebounce(searchValue, 1000) as string;
     const dispatch = useDispatch<any>();
+    useEffect(() => {
+        dispatch(getAllProduct({ pageSize: "10", pageIndex: "1" }));
+        dispatch(getLaptopProduct({ pageSize: "10", pageIndex: "1" }));
+        dispatch(getMobileProduct({ pageSize: "10", pageIndex: "1" }));
+        dispatch(getAllNeeds());
+        dispatch(getAllCategories());
+    }, [dispatch]);
     useEffect(() => {
         if (debounce.trim() !== "") {
             dispatch(searchProduct(debounce));
@@ -48,20 +64,39 @@ const Navbar: React.FC<NavbarProps> = () => {
     }, [searchProductData]);
     useEffect(() => {
         if (Cookies.get("token") !== undefined) {
+            const decodedValue = jwtDecode(Cookies.get("token") as string) as {
+                family_name?: string;
+                given_name?: string;
+            };
+            if (
+                decodedValue &&
+                decodedValue.family_name &&
+                decodedValue.given_name
+            ) {
+                const userName = `${decodedValue?.family_name} ${decodedValue?.given_name}`;
+                localStorage.setItem("userName", userName);
+                setUserName(userName);
+            }
             dispatch(setIsLoggedIn(true));
         } else {
+            Cookies.remove("token");
+            Cookies.remove("accessTokenExpiredIn");
             dispatch(setIsLoggedIn(false));
         }
         if (allCart?.items)
             localStorage.setItem("cart", JSON.stringify(allCart.items));
-        const email = localStorage.getItem("userName") || "";
-        if (email !== "") {
-            const atIndex = email.indexOf("@");
-            if (atIndex !== -1) {
-                setUserName(email.slice(0, atIndex));
-            } else {
-                setUserName("account");
-            }
+        const accessTokenExpiredIn = Cookies.get(
+            "accessTokenExpiredIn"
+        ) as string;
+        const expirationTime = new Date(accessTokenExpiredIn);
+        expirationTime.setDate(expirationTime.getDate() + 2);
+        const currentTime = new Date();
+        const isAccessTokenExpired = expirationTime < currentTime;
+        if (isAccessTokenExpired) {
+            dispatch(logout());
+            Cookies.remove("token");
+            localStorage.clear();
+            route("/");
         }
     }, [isLoggedIn, dispatch, allCart]);
     const navListing = [

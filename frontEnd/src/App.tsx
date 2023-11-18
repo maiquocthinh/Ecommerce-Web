@@ -2,14 +2,19 @@ import { Fragment } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import DefaultLayout from "./app/Layout/DefaultLayout/DefaultLayout";
 import { publishRouter } from "./app/routers";
+import { useEffect } from "react";
 import "./global.css";
 function App() {
-    // const dispatch = useDispatch();
-    // useEffect(() => {
-    //     const pathname = location.pathname;
-    //     const pathArray = generatePathArray(pathname);
-    //     dispatch(setPathArray(pathArray));
-    // }, [location, dispatch]);
+    useEffect(() => {
+        // if (
+        //     user !== null &&
+        //     user &&
+        //     Object.keys(user).length > 0 &&
+        //     user?.role !== "admin" &&
+        //     protectedAdminRoutes.indexOf(pathName) > -1
+        // )
+        //     router.push("/unauthorized-page");
+    }, []);
     return (
         <Router>
             <div>

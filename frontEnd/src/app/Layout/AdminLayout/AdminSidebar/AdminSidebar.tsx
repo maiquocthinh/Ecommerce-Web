@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { BiTable, BiUserPin } from "react-icons/Bi";
 import { FaJediOrder } from "react-icons/fa";
 import { FiSettings, FiUsers, FiLogOut } from "react-icons/Fi";
-import { MdOutlineExpandMore } from "react-icons/md";
+import {
+    MdOutlineExpandMore,
+    MdOutlineProductionQuantityLimits,
+} from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 type taskType = {
@@ -18,7 +22,14 @@ const AdminSidebar = () => {
     const [active, setActive] = useState<number | string>(1);
     const [showMore, setShowMore] = useState<number | string>("");
     const router = useNavigate();
+    const adminRole = useSelector((state: any) => state.adminRole.data);
     const listTask: taskType[] = [
+        {
+            id: 6,
+            Icon: <MdOutlineProductionQuantityLimits size={22} />,
+            label: "products management",
+            link: "/admin/products",
+        },
         {
             id: 1,
             Icon: <RxDashboard size={22} />,
@@ -67,7 +78,7 @@ const AdminSidebar = () => {
             link: "/admin/staff",
         },
         {
-            id: 6,
+            id: 7,
             Icon: <FiSettings size={22} />,
             label: "Settings",
             link: "/admin/setting",
@@ -101,10 +112,9 @@ const AdminSidebar = () => {
                         {listTask.map((task) => {
                             if (!task.more) {
                                 return (
-                                    <div>
+                                    <div key={task.id}>
                                         <div
                                             onClick={() => handleTask(task)}
-                                            key={task.id}
                                             className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${
                                                 active === task.id
                                                     ? "text-custom-addmin_Active__color"
@@ -118,7 +128,10 @@ const AdminSidebar = () => {
                                 );
                             } else if (task.more && task.listMore) {
                                 return (
-                                    <div className="flex flex-col gap-2">
+                                    <div
+                                        key={task.id}
+                                        className="flex flex-col gap-2"
+                                    >
                                         <div>
                                             <div
                                                 onClick={() =>
@@ -159,7 +172,7 @@ const AdminSidebar = () => {
                                         )}
                                     </div>
                                 );
-                            }
+                            } else return null;
                         })}
                     </div>
                 </div>

@@ -15,11 +15,6 @@ const SlideBar: React.FC<SideBarProps> = () => {
     const categoriesData = useSelector(
         (state: any) => state.categoriesData.data as categoryType[]
     );
-    const dispatch = useDispatch<any>();
-    useEffect(() => {
-        dispatch(getAllNeeds());
-        dispatch(getAllCategories());
-    }, [dispatch]);
     useEffect(() => {
         if (categoriesData.length > 0 && needsData.length > 0) {
             setListData([...categoriesData, ...needsData]);

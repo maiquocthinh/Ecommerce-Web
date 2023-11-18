@@ -17,6 +17,7 @@ import Products from "../Pages/admin/Catalog/Products/Products";
 import Customers from "../Pages/admin/Customers/Customers";
 import Dashboard from "../Pages/admin/Dashboard/Dashboard";
 import Orders from "../Pages/admin/Orders/Orders";
+import ProductsManager from "../Pages/admin/ProductsManager/ProductsManager";
 import ALlStaff from "../Pages/admin/Staff/AllStaff";
 
 interface RouteConfig {
@@ -82,6 +83,11 @@ const publishRouter: RouteConfig[] = [
         Layout: HeaderLayout,
     },
     {
+        path: "/admin/login",
+        element: Login,
+        Layout: null,
+    },
+    {
         path: "/admin/dashboard",
         element: Dashboard,
         Layout: AdminLayout,
@@ -114,6 +120,11 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/admin/catalog/categories",
         element: Categories,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/products",
+        element: ProductsManager,
         Layout: AdminLayout,
     },
 ];

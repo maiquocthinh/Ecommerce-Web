@@ -6,10 +6,13 @@ import { loginFormControls } from "@/utils/Data";
 import Cookies from "js-cookie";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
 import { login } from "../action/UserAction";
+import { AdminLogin } from "../action/adminAction/adminEmployees";
+import { jwtDecode } from "jwt-decode";
+import { setRoleAdmin } from "../Slices/common/adminRole";
 const initialFormdata = {
     email: "",
     password: "",
@@ -23,20 +26,30 @@ export default function Login() {
     const data = useSelector(
         (state: { auth: UserType.AuthState }) => state.auth.data
     );
+    const adminAuthData = useSelector((state: any) => state.authAmin.data);
     const err = useSelector(
         (state: { auth: UserType.AuthState }) => state.auth.error
     );
+    const errAdmin = useSelector((state: any) => state.authAmin.error);
     const isLoggedIn = useSelector(
         (state: { auth: UserType.AuthState }) => state.auth.isLoggedIn
+    );
+    const isLoggedInAdmin = useSelector(
+        (state: any) => state.authAmin.isLoggedInAdmin
     );
     const componentLoading = useSelector(
         (state: any) => state.componentLoading.componentLevelLoading
     );
     const route = useNavigate();
+    const pathname = window.location.pathname;
     const handleLogin = () => {
         if (isValidForm()) {
             dispatch(setComponentLevelLoading({ loading: true, id: "" }));
-            dispatch(login(formData));
+            if (pathname.includes("/admin")) {
+                dispatch(AdminLogin(formData));
+            } else {
+                dispatch(login(formData));
+            }
         } else {
             toast.error("vui lòng nhập đầy đủ thông tin", {
                 position: toast.POSITION.TOP_RIGHT,
@@ -61,13 +74,28 @@ export default function Login() {
         if (isLoggedIn) {
             Cookies.set("token", data.accessToken);
             Cookies.set("accessTokenExpiredIn", data.accessTokenExpiredIn);
-            localStorage.setItem("userName", formData.email);
             toast.success("đăng nhập thành công", {
                 position: toast.POSITION.TOP_RIGHT,
             });
             dispatch(setComponentLevelLoading({ loading: false, id: "" }));
         }
-    }, [isLoggedIn, data, dispatch]);
+        if (isLoggedInAdmin) {
+            Cookies.set("AdminToken", adminAuthData.data.accessToken);
+            const decodedValue = jwtDecode(adminAuthData.data.accessToken) as {
+                permissions: {}[];
+            };
+            dispatch(setRoleAdmin(decodedValue.permissions));
+            // Cookies.set(
+            //     "refreshTokenExpiredIn",
+            //     adminAuthData.refreshTokenExpiredIn
+            // );
+            // Cookies.set("refreshToken", adminAuthData.refreshToken);
+            toast.success("đăng nhập thành công", {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
+        }
+    }, [isLoggedIn, data, dispatch, isLoggedInAdmin, adminAuthData]);
     useEffect(() => {
         if (err !== null) {
             toast.error("tài khoản không tồn tại", {
@@ -75,9 +103,15 @@ export default function Login() {
             });
             dispatch(setComponentLevelLoading({ loading: false, id: "" }));
         }
+        if (errAdmin !== null) {
+            toast.error("tài khoản không tồn tại", {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
+        }
         if (isLoggedIn) route("/");
-    }, [isLoggedIn, err, dispatch]);
-
+        if (isLoggedInAdmin) route("/admin/dashboard");
+    }, [isLoggedIn, err, dispatch, isLoggedInAdmin, errAdmin]);
     return (
         <div className="relative">
             <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mr-auto xl:px-5 lg:flex-row">
@@ -136,24 +170,28 @@ export default function Login() {
                                         "login"
                                     )}
                                 </button>
-                                <div className="flex gap-2 text-sm mt-4 text-center justify-center">
-                                    <span>You don't have account ? </span>
-                                    <nav
-                                        onClick={() => navigate("/register")}
-                                        className="text-red-500 underline cursor-pointer"
-                                    >
-                                        register
-                                    </nav>
-                                    <span>or</span>
-                                    <nav
-                                        onClick={() =>
-                                            navigate("/reset-password")
-                                        }
-                                        className="text-red-500 underline cursor-pointer"
-                                    >
-                                        forgot password
-                                    </nav>
-                                </div>
+                                {!pathname.includes("/admin") ? (
+                                    <div className="flex gap-2 text-sm mt-4 text-center justify-center">
+                                        <span>You don't have account ? </span>
+                                        <nav
+                                            onClick={() =>
+                                                navigate("/register")
+                                            }
+                                            className="text-red-500 underline cursor-pointer"
+                                        >
+                                            register
+                                        </nav>
+                                        <span>or</span>
+                                        <nav
+                                            onClick={() =>
+                                                navigate("/reset-password")
+                                            }
+                                            className="text-red-500 underline cursor-pointer"
+                                        >
+                                            forgot password
+                                        </nav>
+                                    </div>
+                                ) : null}
                             </div>
                         </div>
                     </div>

@@ -10,6 +10,8 @@ import * as OrderSlice from "./Slices/order";
 import * as checkoutSlice from "./Slices/checkout";
 import * as catalogsSlice from "./Slices/catalogs";
 import * as reviewsSlice from "./Slices/review";
+import * as adminEmployeesSlice from "./Slices/admin";
+import * as adminProductSlice from "./Slices/admin/AdminProduct";
 export const store = configureStore({
     reducer: {
         modal: modalReducer,
@@ -45,6 +47,11 @@ export const store = configureStore({
         resetPassword: userSlice.resetPasswordSlice.default,
         createReview: reviewsSlice.createReviewSlice.default,
         allReview: reviewsSlice.getAllReviewSlice.default,
+        //admin
+        authAmin: adminEmployeesSlice.AdminLoginSlice.default,
+        adminRole: commonSlice.adminRole.default,
+        //admin product
+        adminAllProduct: adminProductSlice.AdminGetAllProduct.default,
     },
 });
 
