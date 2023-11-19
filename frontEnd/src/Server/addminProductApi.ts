@@ -5,6 +5,7 @@ import {
 import Cookies from "js-cookie";
 import axios from "../utils/instance";
 import { getProductType } from "@/common/getAllType";
+import { addProductType } from "@/common/adminType/AdminProduct";
 const headers = {
     Authorization: `Bearer ${Cookies.get("AdminToken")}`,
 };
@@ -52,14 +53,12 @@ const handleGetAllProducts = (formData: getProductType) => {
 const handGetProduct = () => {
     return axios.post(`/api/products/get`, { headers });
 };
-const handleCreateProduct = (formData: productCreateOptionsType) => {
+const handleCreateProduct = (formData: addProductType) => {
     return axios.post(`/api/products/create`, formData, { headers });
 };
-const handleUpdateProduct = (
-    formData: productCreateOptionsType,
-    productId: number
-) => {
-    return axios.patch(`/api/products/update/${productId}`, formData, {
+const handleUpdateProduct = (formData: addProductType) => {
+    const { id } = formData;
+    return axios.patch(`/api/products/update/${id}`, formData, {
         headers,
     });
 };

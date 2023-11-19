@@ -10,6 +10,8 @@ interface CenterModalProps {
     show: boolean;
     setShow: (show: boolean) => void;
     showModalTitle?: boolean;
+    bgAll?: string;
+    isBorder?: boolean;
 }
 
 const CenterModal: React.FC<CenterModalProps> = ({
@@ -20,6 +22,8 @@ const CenterModal: React.FC<CenterModalProps> = ({
     show,
     setShow,
     showModalTitle,
+    bgAll,
+    isBorder = true,
 }) => {
     return (
         <Transition.Root show={show} as={Fragment}>
@@ -37,10 +41,20 @@ const CenterModal: React.FC<CenterModalProps> = ({
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                    <div
+                        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                        onClick={() => setShow(false)}
+                    />
                 </Transition.Child>
-                <div className="max-w-2xl w-full p-4 z-20 relative">
-                    <div className="bg-white p-2 shadow-xl rounded-md">
+                <div
+                    className={`${
+                        isBorder ? "max-w-2xl w-full p-4 z-20 relative" : ""
+                    }`}
+                >
+                    <div
+                        className="p-2 shadow-xl rounded-md"
+                        style={{ backgroundColor: bgAll ? "#111827" : "#fff" }}
+                    >
                         {showModalTitle ? (
                             <div className="flex items-center justify-center">
                                 {modalTitle}

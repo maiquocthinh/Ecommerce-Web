@@ -52,6 +52,9 @@ export const store = configureStore({
         adminRole: commonSlice.adminRole.default,
         //admin product
         adminAllProduct: adminProductSlice.AdminGetAllProduct.default,
+        adminCreateProductData: adminProductSlice.AdminCreateNewProduct.default,
+        adminDeleteProductData: adminProductSlice.AdminDeleteProduct.default,
+        adminUpdateProductData: adminProductSlice.AdminUpdateProduct.default,
     },
 });
 

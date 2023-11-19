@@ -1,5 +1,5 @@
 export interface AdminProductType {
-    id: number;
+    id?: number;
     name: string;
     imageUrl: string;
     description: string;
@@ -11,4 +11,14 @@ export interface AdminProductType {
     warranty?: string;
     createdAt: string;
     updatedAt: string;
+}
+export interface addProductType {
+    id?: number;
+    name: string;
+    description: string;
+    imageUrl: string;
+    warranty: string;
+    categoryId: number;
+    brandId: number;
+    needId?: number;
 }

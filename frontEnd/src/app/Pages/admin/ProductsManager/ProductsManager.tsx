@@ -1,15 +1,29 @@
-import { BiBookBookmark } from "react-icons/Bi";
+import Notification from "@/Components/PageLoader/Notification";
+import Paginations from "@/Components/Paginations/Paginations";
+import {
+    adminAllProduct,
+    adminDeleteProduct,
+} from "@/app/action/adminAction/adminProduct";
+import {
+    AdminProductType,
+    addProductType,
+} from "@/common/adminType/AdminProduct";
+import { pagingType } from "@/common/paging";
+import Tippy from "@tippyjs/react";
+import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { CiExport, CiImport } from "react-icons/ci";
-import { FcNext, FcPrevious } from "react-icons/fc";
+import { CiBookmarkPlus, CiEdit, CiExport, CiImport } from "react-icons/ci";
 import { LiaSearchPlusSolid } from "react-icons/lia";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { adminAllProduct } from "@/app/action/adminAction/adminProduct";
-import Paginations from "@/Components/Paginations/Paginations";
-import { pagingType } from "@/common/paging";
-import { AdminProductType } from "@/common/adminType/AdminProduct";
+import { toast } from "react-toastify";
+import AddAndUpdateProduct from "./addAndUpdateProduct";
+import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
+import { MdClear, MdOutlineDeleteOutline } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import DetailProduct from "./detailProduct";
+
 const ProductsManager = () => {
+    const router = useNavigate();
     const dispatch = useDispatch<any>();
     const adminAllProductData = useSelector(
         (state: any) =>
@@ -17,15 +31,29 @@ const ProductsManager = () => {
                 data: { list: AdminProductType[]; paging: pagingType };
             }
     );
+    const adminDeleteProductData = useSelector(
+        (state: any) =>
+            state.adminDeleteProductData.data as { success: boolean }
+    );
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalPage: 1,
-        pageSize: 2,
+        pageSize: 6,
     });
     const [allProduct, setAllProduct] = useState<AdminProductType[]>([]);
+    const [searchValue, setSearchValue] = useState("");
     const [zoomImg, setZoomImg] = useState<string>("");
+    const [isNewProduct, setIsNewProduct] = useState<boolean>(false);
+    const [isUpdateProduct, setIsUpdateProduct] = useState<boolean>(false);
+    const [modalDelete, setIsModaleDelete] = useState<boolean>(false);
+    const [idProductDelete, setIdProductDelete] = useState<number>(0);
+    const [showModalDetail, setShowModalDetail] = useState<boolean>(false);
+    const [detailProduct, setDetailProduct] = useState<AdminProductType>();
+    const [productUpdate, setProductUpdate] = useState<AdminProductType>();
+    const [confirmationDelete, setConfirmationDelete] =
+        useState<boolean>(false);
     useEffect(() => {
-        dispatch(adminAllProduct({ pageSize: 2, pageIndex: 1 }));
+        dispatch(adminAllProduct({ pageSize: 6, pageIndex: 1 }));
     }, [dispatch]);
     useEffect(() => {
         if (adminAllProductData && adminAllProductData?.data?.paging) {
@@ -41,7 +69,17 @@ const ProductsManager = () => {
     }, [adminAllProductData]);
     const handlePageChange = (newPage: number, oldPage: number) => {
         if (newPage > 0 && oldPage > 0) {
-            dispatch(adminAllProduct({ pageSize: 2, pageIndex: newPage }));
+            if (searchValue.trim() !== "") {
+                dispatch(
+                    adminAllProduct({
+                        pageSize: 6,
+                        pageIndex: newPage,
+                        Keyword: searchValue,
+                    })
+                );
+            } else {
+                dispatch(adminAllProduct({ pageSize: 6, pageIndex: newPage }));
+            }
         }
     };
     const handleZoomImg = (img: string) => {
@@ -60,6 +98,63 @@ const ProductsManager = () => {
             () => clearTimeout(checkImg);
         }
     }, [zoomImg]);
+    const handleSearchProduct = () => {
+        if (searchValue.trim() !== "") {
+            dispatch(
+                adminAllProduct({
+                    pageSize: 6,
+                    pageIndex: pagination.currentPage,
+                    Keyword: searchValue,
+                })
+            );
+        } else {
+            toast.error("vui lòng nhập tên điện thoại cần tìm");
+        }
+    };
+    const handleResetSearchProduct = () => {
+        dispatch(
+            adminAllProduct({
+                pageSize: 6,
+                pageIndex: pagination.currentPage,
+            })
+        );
+        setSearchValue("");
+    };
+    const handleResetProductDetailAndShowDetail = (show: boolean) => {
+        setShowModalDetail(show);
+        if (show === false) {
+            setDetailProduct(undefined);
+        }
+    };
+    const handleConfirmDeleteProduct = (id: number) => {
+        setIsModaleDelete(true);
+        setIdProductDelete(id);
+    };
+    useEffect(() => {
+        if (confirmationDelete && idProductDelete > 0) {
+            dispatch(adminDeleteProduct(idProductDelete)).then((res: any) => {
+                if (res.payload?.success) {
+                    toast.success(
+                        "xóa sản phẩm thành công! vui lòng kiểm tra lại dánh sách sản phẩm"
+                    );
+                    setConfirmationDelete(false);
+                    setIdProductDelete(0);
+                    dispatch(
+                        adminAllProduct({
+                            pageSize: 6,
+                            pageIndex: pagination.currentPage,
+                        })
+                    );
+                } else {
+                    toast.success(
+                        "xóa sản phẩm thất bại! vui lòng kiểm tra lại dánh sách sản phẩm"
+                    );
+                    setConfirmationDelete(false);
+                    setIdProductDelete(0);
+                }
+            });
+        }
+    }, [confirmationDelete, idProductDelete]);
     return (
         <div className="flex flex-col p-4">
             <h1 className="my-6 text-lg font-bold text-gray-700 dark:text-gray-300">
@@ -72,15 +167,20 @@ const ProductsManager = () => {
                             <div className="lg:flex md:flex flex-grow-0">
                                 <div className="flex">
                                     <div className="lg:flex-1 md:flex-1 mr-3 sm:flex-none">
-                                        <button className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 dark:text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none">
-                                            <CiExport size={22} />
+                                        <button
+                                            onClick={() =>
+                                                setIsNewProduct(true)
+                                            }
+                                            className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 dark:text-gray-300 cursor-pointer h-10 min-w-[120px] rounded-md focus:outline-none"
+                                        >
+                                            <CiBookmarkPlus size={22} />
                                             <span className="text-xs">
-                                                Export
+                                                Thêm mới (+)
                                             </span>
                                         </button>
                                     </div>
                                     <div className="lg:flex-1 md:flex-1 mr-3 sm:flex-none">
-                                        <button className="border flex gap-1 justify-center items-center h-10 w-20 hover:text-yellow-400 border-gray-300 dark:text-gray-300 cursor-pointer py-2 hover:border-yellow-400 rounded-md focus:outline-none">
+                                        <button className="border flex gap-1 justify-center items-center h-10 min-w-[120px] hover:text-yellow-400 border-gray-300 dark:text-gray-300 cursor-pointer py-2 hover:border-yellow-400 rounded-md focus:outline-none">
                                             <CiImport size={22} />
                                             <span className="text-xs">
                                                 Import
@@ -101,18 +201,18 @@ const ProductsManager = () => {
                                 className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md bg-gray-100 focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 dark:focus:border-gray-500 dark:bg-gray-700"
                                 type="search"
                                 name="search"
-                                placeholder="Search by name/email/phone"
+                                placeholder="tìm kím theo tên sản phẩm"
+                                value={searchValue}
+                                onChange={(e) => {
+                                    setSearchValue(e.target.value);
+                                }}
                             />
-                            <button
-                                type="submit"
-                                className="absolute right-0 top-0 mt-5 mr-1"
-                            ></button>
                         </div>
                         <div className="flex items-center gap-2 flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
                             <div className="w-full mx-1">
                                 <button
                                     className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600 h-12 w-full"
-                                    type="submit"
+                                    onClick={handleSearchProduct}
                                 >
                                     Filter
                                 </button>
@@ -120,7 +220,7 @@ const ProductsManager = () => {
                             <div className="w-full mx-1">
                                 <button
                                     className="align-bottom  leading-5 transition-colors duration-150 font-medium  text-gray-600  dark:text-gray-400 focus:outline-none rounded-lg border bg-gray-200 border-gray-200  w-full mr-3 flex items-center justify-center cursor-pointer h-12 px-4 md:py-1 py-2  text-sm dark:bg-gray-700"
-                                    type="reset"
+                                    onClick={handleResetSearchProduct}
                                 >
                                     <span className="text-black dark:text-gray-200">
                                         Reset
@@ -131,117 +231,238 @@ const ProductsManager = () => {
                     </div>
                 </div>
             </div>
-            <div style={{ overflowY: "auto" }}>
-                <table className="w-full whitespace-nowrap">
-                    <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
-                        <tr>
-                            <td className="px-4 py-2">ID</td>
-                            <td className="px-4 py-2">NAME</td>
-                            <td className="px-4 py-2">IMAGE</td>
-                            <td className="px-4 py-2">DESCRIPTION</td>
-                            <td className="px-4 py-2">REVIEWSCORE</td>
-                            <td className="px-4 py-2">CATALOGS</td>
-                            <td className="px-4 py-2">WARRANTY</td>
-                            <td className="px-4 py-2 text-right">ACTION</td>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
-                        {allProduct?.length > 0 &&
-                            allProduct.map((product) => (
-                                <tr
-                                    className="bg-custom-addmin_bg"
-                                    key={product.id}
-                                >
-                                    <td className="px-4 py-2 ">
-                                        <span className="font-semibold uppercase text-xs">
-                                            {product.id}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <span className="text-sm">
-                                            {product.name}
-                                        </span>
-                                    </td>
-                                    <td
-                                        className={`px-4 py-2 cursor-pointer ${
-                                            zoomImg === product.imageUrl
-                                                ? "fixed top-0 left-0 w-full h-full bg-slate-950 flex justify-center items-center z-30"
-                                                : null
-                                        }`}
-                                        onClick={() =>
-                                            handleZoomImg(product.imageUrl)
-                                        }
+            {allProduct?.length ? (
+                <div style={{ overflowY: "auto" }}>
+                    <table className="w-full whitespace-nowrap">
+                        <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+                            <tr>
+                                <td className="px-4 py-2">ID</td>
+                                <td className="px-4 py-2">NAME</td>
+                                <td className="px-4 py-2">IMAGE</td>
+                                <td className="px-4 py-2">DESCRIPTION</td>
+                                <td className="px-4 py-2">REVIEWSCORE</td>
+                                <td className="px-4 py-2">CATALOGS</td>
+                                <td className="px-4 py-2">WARRANTY</td>
+                                <td className="px-4 py-2 text-right">ACTION</td>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
+                            {allProduct?.length > 0 &&
+                                allProduct.map((product) => (
+                                    <tr
+                                        className="bg-custom-addmin_bg"
+                                        key={product.id}
                                     >
-                                        <img
-                                            src={product.imageUrl}
-                                            alt=""
-                                            className={`w-[30px] h-[30px] object-contain ${
-                                                zoomImg ? "w-full h-full" : null
+                                        <td className="px-4 py-2 ">
+                                            <span className="font-semibold uppercase text-xs">
+                                                {product.id}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <span className="text-sm">
+                                                {product.name}
+                                            </span>
+                                        </td>
+                                        <td
+                                            className={`px-4 py-2 cursor-pointer ${
+                                                zoomImg === product.imageUrl
+                                                    ? "fixed top-0 left-0 w-full h-full bg-slate-950 flex justify-center items-center z-30"
+                                                    : null
                                             }`}
-                                        />
-                                    </td>
-                                    <td
-                                        className="px-4 py-2"
-                                        style={{
-                                            maxWidth: "200px",
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                        }}
-                                    >
-                                        <span className="text-sm">
-                                            {product.description}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2 ">
-                                        <span className="text-sm">
-                                            {product.reviewsScore}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2 ">
-                                        <span className="text-sm">
-                                            {`categoryId :${
-                                                product.categoryId || 0
-                                            } -brandId :${
-                                                product.brandId || 0
-                                            }`}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2 ">
-                                        <span className="text-sm">
-                                            {product.warranty}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2 ">
-                                        <div className="flex justify-end">
-                                            <div className="flex justify-between items-center gap-2">
-                                                <button>
-                                                    <BiBookBookmark size={22} />
-                                                </button>
-                                                <button>
-                                                    <LiaSearchPlusSolid
-                                                        size={22}
-                                                    />
-                                                </button>
-                                                <button>
-                                                    <AiOutlineDelete
-                                                        size={22}
-                                                    />
-                                                </button>
+                                            onClick={() =>
+                                                handleZoomImg(product.imageUrl)
+                                            }
+                                        >
+                                            <img
+                                                src={product.imageUrl}
+                                                alt=""
+                                                className={`w-[30px] h-[30px] object-contain ${
+                                                    zoomImg
+                                                        ? "w-full h-full"
+                                                        : null
+                                                }`}
+                                            />
+                                        </td>
+                                        <td
+                                            className="px-4 py-2"
+                                            style={{
+                                                maxWidth: "200px",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                            }}
+                                        >
+                                            <span className="text-sm">
+                                                {product.description}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2 ">
+                                            <span className="text-sm">
+                                                {product.reviewsScore}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2 ">
+                                            <span className="text-sm">
+                                                {`categoryId :${
+                                                    product.categoryId || 0
+                                                } -brandId :${
+                                                    product.brandId || 0
+                                                }`}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2 ">
+                                            <span className="text-sm">
+                                                {product.warranty}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2 ">
+                                            <div className="flex justify-end">
+                                                <div className="flex justify-between items-center gap-2">
+                                                    <Tippy
+                                                        content="chỉnh sửa"
+                                                        placement="bottom"
+                                                        delay={100}
+                                                        className="border text-custom-Colorprimary border-custom-Colorprimary rounded-md px-1"
+                                                    >
+                                                        <button
+                                                            onClick={() => {
+                                                                setIsUpdateProduct(
+                                                                    true
+                                                                );
+                                                                setIsNewProduct(
+                                                                    false
+                                                                );
+                                                                setProductUpdate(
+                                                                    product
+                                                                );
+                                                            }}
+                                                            className="hover:text-custom-Colorprimary transition-all"
+                                                        >
+                                                            <CiEdit size={22} />
+                                                        </button>
+                                                    </Tippy>
+                                                    <Tippy
+                                                        content="chi tiết"
+                                                        placement="bottom"
+                                                        delay={100}
+                                                        className="border text-custom-Colorprimary border-custom-Colorprimary rounded-md px-1"
+                                                    >
+                                                        <button
+                                                            onClick={() => {
+                                                                setDetailProduct(
+                                                                    product
+                                                                );
+                                                                setShowModalDetail(
+                                                                    true
+                                                                );
+                                                            }}
+                                                        >
+                                                            <LiaSearchPlusSolid
+                                                                size={22}
+                                                            />
+                                                        </button>
+                                                    </Tippy>
+                                                    <Tippy
+                                                        content="xóa"
+                                                        placement="bottom"
+                                                        delay={100}
+                                                        className="border text-custom-Colorprimary border-custom-Colorprimary rounded-md px-1"
+                                                    >
+                                                        <button
+                                                            onClick={() =>
+                                                                handleConfirmDeleteProduct(
+                                                                    product.id ||
+                                                                        0
+                                                                )
+                                                            }
+                                                            className="hover:text-custom-bg_button"
+                                                        >
+                                                            <AiOutlineDelete
+                                                                size={22}
+                                                            />
+                                                        </button>
+                                                    </Tippy>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                    </tbody>
-                </table>
-                {pagination && adminAllProductData?.data?.paging && (
-                    <Paginations
-                        handlePageChange={handlePageChange}
-                        pagination={pagination}
-                        paging={adminAllProductData.data.paging}
-                    />
-                )}
-            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                    </table>
+                    {pagination && adminAllProductData?.data?.paging && (
+                        <Paginations
+                            handlePageChange={handlePageChange}
+                            pagination={pagination}
+                            paging={adminAllProductData.data.paging}
+                        />
+                    )}
+                </div>
+            ) : (
+                <div className="flex justify-center items-center w-full font-bold text-white text-2xl">
+                    không có sản phẩm nào hợp lệ
+                </div>
+            )}
+            {isNewProduct && !isUpdateProduct && (
+                <AddAndUpdateProduct
+                    isNewProduct={isNewProduct}
+                    setIsNewProduct={setIsNewProduct}
+                />
+            )}
+            {isUpdateProduct && !isNewProduct && (
+                <AddAndUpdateProduct
+                    isNewProduct={isUpdateProduct}
+                    setIsNewProduct={setIsUpdateProduct}
+                    isUpdateProduct={true}
+                    productInfor={productUpdate as addProductType}
+                />
+            )}
+            {detailProduct && showModalDetail && (
+                <DetailProduct
+                    productInfor={detailProduct}
+                    showModalDetail={showModalDetail}
+                    setShowModalDetail={handleResetProductDetailAndShowDetail}
+                />
+            )}
+            <CenterModal
+                show={modalDelete}
+                setShow={setIsModaleDelete}
+                isBorder={false}
+                bgAll="h"
+                mainContent={
+                    <div className="relative w-full h-full md:h-auto m-auto">
+                        <div className="relative p-4 text-center rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                            <button
+                                className="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                onClick={() => setIsModaleDelete(false)}
+                            >
+                                <MdClear />
+                                <span className="sr-only">Close modal</span>
+                            </button>
+                            <MdOutlineDeleteOutline className="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" />
+                            <p className="mb-4 text-gray-500 dark:text-gray-300">
+                                Bạn có chắc muốn xóa sản phẩm này không ?
+                            </p>
+                            <div className="flex justify-center items-center space-x-4">
+                                <button
+                                    onClick={() => setIsModaleDelete(false)}
+                                    className="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                                >
+                                    đóng
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setIsModaleDelete(false);
+                                        setConfirmationDelete(true);
+                                    }}
+                                    className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                                >
+                                    xác nhận
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            />
+            <Notification />
         </div>
     );
 };
