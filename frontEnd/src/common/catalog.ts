@@ -19,3 +19,21 @@ export interface categoryType {
     updatedAt: string;
     createdAt: string;
 }
+interface CommonFields {
+    name: string;
+}
+
+interface CategoryType extends CommonFields {
+    otherCategoryField: string;
+}
+
+interface NeedType extends CommonFields {
+    otherNeedField: string;
+}
+
+interface BrandType {
+    title: string;
+    otherBrandField: string;
+}
+
+export type CombinedType = CategoryType | NeedType | BrandType;

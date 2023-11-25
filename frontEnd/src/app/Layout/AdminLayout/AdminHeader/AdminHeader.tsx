@@ -1,12 +1,13 @@
 import { setshowAdminSlide } from "@/app/Slices/common/showAdminSlide";
-import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { getListRoles } from "@/app/action/adminAction/adminRoles";
 import {
     getAllBrands,
     getAllCategories,
     getAllNeeds,
 } from "@/app/action/catalogs";
+import { useEffect } from "react";
+import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
 const AdminHeader = () => {
     const showAdminSlide = useSelector(
         (state: any) => state.showAdminSlide.showAdminSlide
@@ -14,8 +15,9 @@ const AdminHeader = () => {
     const dispatch = useDispatch<any>();
     useEffect(() => {
         dispatch(getAllCategories());
-        dispatch(getAllBrands());
+        dispatch(getAllBrands(""));
         dispatch(getAllNeeds());
+        dispatch(getListRoles({ pageIndex: 1, pageSize: 100 }));
     }, [dispatch]);
     return (
         <div className="bg-custom-admin_bg_content">

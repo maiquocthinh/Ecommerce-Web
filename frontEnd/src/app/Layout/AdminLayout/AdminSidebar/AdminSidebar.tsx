@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BiTable, BiUserPin } from "react-icons/Bi";
-import { FaJediOrder } from "react-icons/fa";
+import { FaHouseUser, FaJediOrder } from "react-icons/fa";
 import { FiSettings, FiUsers, FiLogOut } from "react-icons/Fi";
 import {
     MdOutlineExpandMore,
@@ -25,16 +25,22 @@ const AdminSidebar = () => {
     const adminRole = useSelector((state: any) => state.adminRole.data);
     const listTask: taskType[] = [
         {
-            id: 6,
-            Icon: <MdOutlineProductionQuantityLimits size={22} />,
-            label: "products management",
-            link: "/admin/products",
-        },
-        {
             id: 1,
             Icon: <RxDashboard size={22} />,
             label: "Dashboard",
             link: "/admin/dashboard",
+        },
+        {
+            id: 7,
+            Icon: <FaHouseUser size={22} />,
+            label: "Empoyees",
+            link: "/admin/employees",
+        },
+        {
+            id: 6,
+            Icon: <MdOutlineProductionQuantityLimits size={22} />,
+            label: "products management",
+            link: "/admin/products",
         },
         {
             id: 2,
@@ -44,18 +50,18 @@ const AdminSidebar = () => {
             listMore: [
                 {
                     id: 1,
-                    link: "/admin/catalog/products",
-                    label: "Product",
+                    link: "/admin/catalog/categories",
+                    label: "categories",
                 },
                 {
                     id: 2,
-                    link: "/admin/catalog/product-version",
-                    label: "Product version",
+                    link: "/admin/catalog/brands",
+                    label: "brands",
                 },
                 {
                     id: 3,
-                    link: "/admin/catalog/categories",
-                    label: "categories",
+                    link: "/admin/catalog/needs",
+                    label: "needs",
                 },
             ],
         },

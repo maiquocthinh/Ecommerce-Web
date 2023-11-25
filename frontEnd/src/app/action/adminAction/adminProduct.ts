@@ -1,8 +1,7 @@
+import { addProductType } from "@/common/adminType/AdminProduct";
 import { getProductType } from "@/common/getAllType";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as addminProductApi from "../../../Server/addminProductApi";
-import { addProductType } from "@/common/adminType/AdminProduct";
-import { productCreateOptionsType } from "@/common/product";
 export const adminAllProduct = createAsyncThunk(
     "adminAllProduct/adminAllProduct",
     async (formData: getProductType) => {

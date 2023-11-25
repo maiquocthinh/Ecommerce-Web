@@ -1,4 +1,5 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import thunk from "redux-thunk";
 import modalReducer from "./Slices/common/modalSlice";
 import pathSlice from "./Slices/common/pathSlice";
 import * as SlicesApi from "./Slices/product";
@@ -12,6 +13,10 @@ import * as catalogsSlice from "./Slices/catalogs";
 import * as reviewsSlice from "./Slices/review";
 import * as adminEmployeesSlice from "./Slices/admin";
 import * as adminProductSlice from "./Slices/admin/AdminProduct";
+import * as adminEmployeestSlice from "./Slices/admin/AdminEmployees";
+import * as adminbrandsSlice from "./Slices/admin/catalogs/brands";
+import * as adminCategoriesSlice from "./Slices/admin/catalogs/categories";
+import * as AdminRolesSlice from "./Slices/admin/AdminRoles";
 export const store = configureStore({
     reducer: {
         modal: modalReducer,
@@ -24,28 +29,35 @@ export const store = configureStore({
         auth: userSlice.auth.default,
         pageLevelLoading: commonSlice.pageLevelLoading.default,
         componentLoading: commonSlice.componentLevelLoading.default,
-        addToCart: cartSlice.AddTocartSlice.default,
-        allCart: cartSlice.GetAllCartSlice.default,
         profile: userSlice.profile.default,
         showAdminSlide: commonSlice.showAdminSlide.default,
+        //cart
+        addToCart: cartSlice.AddTocartSlice.default,
+        allCart: cartSlice.GetAllCartSlice.default,
         showCart: commonSlice.showCartSlice.default,
         deleteCart: cartSlice.deleteCartSlice.default,
+        //address
         allAddresses: addresSlice.getAllAddresses.default,
         updateAddressData: addresSlice.updateAddressSlice.default,
         updateDefaultAddress: addresSlice.updateDefaultAddressSlice.default,
         deleteAddressData: addresSlice.deleteAddressSlice.default,
         addToAddressData: addresSlice.addToAddressSlice.default,
+        //order
         allOrder: OrderSlice.getAllOrderSlice.default,
         cancelOrder: OrderSlice.cancelOrderSlice.default,
+        //checkout
         checkoutWithCartData: checkoutSlice.checkoutWithCartSlice.default,
         checkoutWithAuthenticationData:
             checkoutSlice.checkoutWithAuthenticationSlice.default,
+        //catalog
         branchData: catalogsSlice.getAllBrandsSlice.default,
         categoriesData: catalogsSlice.getAllCategoriesSlice.default,
         needsData: catalogsSlice.getAllNeedsSlice.default,
+        //register
         registerData: userSlice.registerSlice.default,
         resetPassword: userSlice.resetPasswordSlice.default,
         createReview: reviewsSlice.createReviewSlice.default,
+        //review
         allReview: reviewsSlice.getAllReviewSlice.default,
         //admin
         authAmin: adminEmployeesSlice.AdminLoginSlice.default,
@@ -55,9 +67,27 @@ export const store = configureStore({
         adminCreateProductData: adminProductSlice.AdminCreateNewProduct.default,
         adminDeleteProductData: adminProductSlice.AdminDeleteProduct.default,
         adminUpdateProductData: adminProductSlice.AdminUpdateProduct.default,
+        //admin employee
+        adminGetAllEmployeesData:
+            adminEmployeestSlice.AdminGetAllEmployees.default,
+        adminCreateEmployeeData:
+            adminEmployeestSlice.AdminCreateEmployee.default,
+        adminUpdateEmployeeData:
+            adminEmployeestSlice.AdminUpdateEmployee.default,
+        adminDeleteEmployeeData:
+            adminEmployeestSlice.AdminDeleteEmployee.default,
+        adminGetEmployeeByIdData:
+            adminEmployeestSlice.AdminGetEmployeeId.default,
+        //admin brand
+        adminbrandsData: adminbrandsSlice.AdminGetBransByParams.default,
+        // admin category
+        adminCategoriesData:
+            adminCategoriesSlice.AdminGetCategoriesByParams.default,
+        //admin roles
+        listRolesAdmin: AdminRolesSlice.AdminGetListRolesSlice.default,
     },
+    middleware: [thunk],
 });
-
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<

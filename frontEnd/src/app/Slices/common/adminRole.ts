@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     data: [],
+    allRoles: [],
 };
 
 const adminRole = createSlice({
@@ -9,11 +10,13 @@ const adminRole = createSlice({
     initialState,
     reducers: {
         setRoleAdmin: (state, action) => {
-            console.log("setRoleAdmin", action.payload);
             state.data = action.payload;
+        },
+        setAllRole: (state, action) => {
+            state.allRoles = action.payload;
         },
     },
 });
 
-export const { setRoleAdmin } = adminRole.actions;
+export const { setRoleAdmin, setAllRole } = adminRole.actions;
 export default adminRole.reducer;

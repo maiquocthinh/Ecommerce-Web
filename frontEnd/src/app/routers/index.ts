@@ -11,11 +11,12 @@ import ProductPage from "../Pages/Product";
 import Profile from "../Pages/Profile";
 import Register from "../Pages/Register";
 import ResetPassword from "../Pages/ResetPassword";
+import Brands from "../Pages/admin/Catalog/Brands/Brands";
 import Categories from "../Pages/admin/Catalog/Categories/Categories";
-import ProductVersion from "../Pages/admin/Catalog/ProductVersion/ProductVersion";
-import Products from "../Pages/admin/Catalog/Products/Products";
+import Needs from "../Pages/admin/Catalog/Needs/Needs";
 import Customers from "../Pages/admin/Customers/Customers";
 import Dashboard from "../Pages/admin/Dashboard/Dashboard";
+import Employees from "../Pages/admin/Employees/Employees";
 import Orders from "../Pages/admin/Orders/Orders";
 import ProductsManager from "../Pages/admin/ProductsManager/ProductsManager";
 import ALlStaff from "../Pages/admin/Staff/AllStaff";
@@ -108,23 +109,28 @@ const publishRouter: RouteConfig[] = [
         Layout: AdminLayout,
     },
     {
-        path: "/admin/catalog/products",
-        element: Products,
-        Layout: AdminLayout,
-    },
-    {
-        path: "/admin/catalog/product-version",
-        element: ProductVersion,
-        Layout: AdminLayout,
-    },
-    {
         path: "/admin/catalog/categories",
         element: Categories,
         Layout: AdminLayout,
     },
     {
+        path: "/admin/catalog/brands",
+        element: Brands,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/catalog/needs",
+        element: Needs,
+        Layout: AdminLayout,
+    },
+    {
         path: "/admin/products",
         element: ProductsManager,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/employees",
+        element: Employees,
         Layout: AdminLayout,
     },
 ];

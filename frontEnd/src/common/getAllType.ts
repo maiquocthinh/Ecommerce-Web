@@ -16,3 +16,14 @@ interface FiltersType {
         MaxPrice?: number;
     };
 }
+export interface getEmployeesType {
+    Keyword?: string;
+    RoleId?: number;
+    pageIndex: number;
+    pageSize: number;
+}
+export interface defautlParametersGet {
+    pageIndex: number;
+    pageSize: number;
+    name?: string;
+}

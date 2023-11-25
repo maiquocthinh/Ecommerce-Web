@@ -1,4 +1,5 @@
-import axios from "axios";
+import { defautlParametersGet } from "@/common/getAllType";
+import axios from "../utils/instance";
 import Cookies from "js-cookie";
 const headers = {
     Authorization: `Bearer ${Cookies.get("token")}`,
@@ -24,13 +25,18 @@ const handleUpdateCategory = (
 const handleDeleteCategory = (id: number) => {
     return axios.delete(`/api/categories/${id}`, { headers });
 };
-const handleGetAllCategories = () => {
-    return axios.get(`/api/categories`, { headers });
+const handleGetCategoriesByParam = (formData: defautlParametersGet) => {
+    const { name, pageIndex, pageSize } = formData;
+    const params =
+        name?.trim() !== ""
+            ? { CategoryName: name, pageIndex, pageSize }
+            : { pageIndex, pageSize };
+    return axios.get(`/api/categories`, { params, headers });
 };
 export {
     handleCreateCategory,
     handleGetCategory,
     handleUpdateCategory,
     handleDeleteCategory,
-    handleGetAllCategories,
+    handleGetCategoriesByParam,
 };

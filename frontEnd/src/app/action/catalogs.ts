@@ -14,9 +14,9 @@ export const getAllNeeds = createAsyncThunk(
 );
 export const getAllBrands = createAsyncThunk(
     "getAllBrands/getAllBrands",
-    async () => {
+    async (BrandName?: string) => {
         try {
-            const response = await reviewApi.handleGetAllBrands();
+            const response = await reviewApi.handleGetAllBrands(BrandName);
             let products = response.data;
             return products;
         } catch (error) {

@@ -1,13 +1,20 @@
 import axios from "axios";
+
 const instance = axios.create({
     baseURL: "http://shop-ttlhg.somee.com",
-    // baseURL: "https://6bc6-2402-800-bbbb-7d-b983-d718-3c5b-a3c0.ngrok-free.app",
-    // withCredentials: true,
-    // headers: { "ngrok-skip-browser-warning": "69420" },
+    validateStatus: function (status) {
+        return status >= 200 && status < 500;
+    },
 });
 
-instance.interceptors.response.use((response) => {
-    return response.data;
-});
+// Interceptor cho response thành công
+instance.interceptors.response.use(
+    (response) => {
+        return response.data;
+    },
+    (error) => {
+        return error.response.data;
+    }
+);
 
 export default instance;
