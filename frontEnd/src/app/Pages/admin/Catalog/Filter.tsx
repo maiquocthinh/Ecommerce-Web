@@ -4,11 +4,13 @@ interface FilterProps {
     setSearchValue: (value: string) => void;
     searchValue: string;
     handleSearchBrand: () => void;
+    handleReset: () => void;
 }
 const Filter: React.FC<FilterProps> = ({
     searchValue,
     setSearchValue,
     handleSearchBrand,
+    handleReset,
 }) => {
     return (
         <div className="rounded-lg  min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 rounded-t-lg rounded-0 mb-4">
@@ -85,7 +87,7 @@ const Filter: React.FC<FilterProps> = ({
                         <div className="w-full mx-1">
                             <button
                                 className="align-bottom  leading-5 transition-colors duration-150 font-medium  text-gray-600 dark:text-gray-400 focus:outline-none rounded-lg border bg-gray-200 border-gray-200 w-full mr-3 flex items-center justify-center cursor-pointer h-12 px-4 md:py-1 py-2 text-sm dark:bg-gray-700"
-                                type="reset"
+                                onClick={handleReset}
                             >
                                 <span className="text-black dark:text-gray-200">
                                     Reset

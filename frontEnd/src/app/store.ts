@@ -79,7 +79,7 @@ export const store = configureStore({
         adminGetEmployeeByIdData:
             adminEmployeestSlice.AdminGetEmployeeId.default,
         //admin brand
-        adminbrandsData: adminbrandsSlice.AdminGetBransByParams.default,
+        adminBrandsData: adminbrandsSlice.AdminGetBransByParams.default,
         // admin category
         adminCategoriesData:
             adminCategoriesSlice.AdminGetCategoriesByParams.default,
