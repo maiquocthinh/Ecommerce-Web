@@ -3,13 +3,13 @@ import React from "react";
 interface FilterProps {
     setSearchValue: (value: string) => void;
     searchValue: string;
-    handleSearchBrand: () => void;
+    handleSearch: () => void;
     handleReset: () => void;
 }
 const Filter: React.FC<FilterProps> = ({
     searchValue,
     setSearchValue,
-    handleSearchBrand,
+    handleSearch,
     handleReset,
 }) => {
     return (
@@ -79,7 +79,7 @@ const Filter: React.FC<FilterProps> = ({
                         <div className="w-full mx-1">
                             <button
                                 className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white border border-transparent active:bg-emerald-600 hover:bg-emerald-600 h-12 w-full bg-emerald-700"
-                                onClick={() => handleSearchBrand()}
+                                onClick={() => handleSearch()}
                             >
                                 Filter
                             </button>

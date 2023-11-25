@@ -13,14 +13,12 @@ const handleCreateCategory = (formData: {
 const handleGetCategory = (id: number) => {
     return axios.get(`/api/categories/${id}`, { headers });
 };
-const handleUpdateCategory = (
-    formData: {
-        name: string;
-        description: string;
-    },
-    id: number
-) => {
-    return axios.patch(`/api/categories/${id}`, formData, { headers });
+const handleUpdateCategory = (formData: {
+    name: string;
+    description: string;
+    id: number;
+}) => {
+    return axios.patch(`/api/categories/${formData.id}`, formData, { headers });
 };
 const handleDeleteCategory = (id: number) => {
     return axios.delete(`/api/categories/${id}`, { headers });

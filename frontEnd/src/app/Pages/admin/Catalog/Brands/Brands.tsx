@@ -181,7 +181,7 @@ const Brands = () => {
             <Filter
                 setSearchValue={setSearchValue}
                 searchValue={searchValue}
-                handleSearchBrand={handleSearchBrand}
+                handleSearch={handleSearchBrand}
                 handleReset={handleResetBrands}
             />
             {adminBrandsData?.data?.list.length ? (
