@@ -21,6 +21,7 @@ import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import { MdClear, MdOutlineDeleteOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import DetailProduct from "./detailProduct";
+import { BsCloudArrowDown } from "react-icons/bs";
 
 const ProductsManager = () => {
     const router = useNavigate();
@@ -195,35 +196,88 @@ const ProductsManager = () => {
             </div>
             <div className="rounded-lg shadow-xs  dark:bg-gray-800 mb-5">
                 <div className="p-4">
-                    <div className="py-3 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
-                        <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
-                            <input
-                                className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md bg-gray-100 focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 dark:focus:border-gray-500 dark:bg-gray-700"
-                                type="search"
-                                name="search"
-                                placeholder="tìm kím theo tên sản phẩm"
-                                value={searchValue}
-                                onChange={(e) => {
-                                    setSearchValue(e.target.value);
-                                }}
-                            />
-                        </div>
-                        <div className="flex items-center gap-2 flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
-                            <div className="w-full mx-1">
-                                <button
-                                    className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600 h-12 w-full"
-                                    onClick={handleSearchProduct}
-                                >
-                                    Filter
-                                </button>
+                    <div className="flex flex-col gap-2">
+                        <div className="py-3 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
+                            <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+                                <input
+                                    className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md bg-gray-100 focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 dark:focus:border-gray-500 dark:bg-gray-700"
+                                    type="search"
+                                    name="search"
+                                    placeholder="tìm kím theo tên sản phẩm"
+                                    value={searchValue}
+                                    onChange={(e) => {
+                                        setSearchValue(e.target.value);
+                                    }}
+                                />
                             </div>
-                            <div className="w-full mx-1">
+                            <div className="flex items-center gap-2 flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+                                <div className="w-full mx-1">
+                                    <button
+                                        className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600 h-12 w-full"
+                                        onClick={handleSearchProduct}
+                                    >
+                                        Filter
+                                    </button>
+                                </div>
+                                <div className="w-full mx-1">
+                                    <button
+                                        className="align-bottom  leading-5 transition-colors duration-150 font-medium  text-gray-600  dark:text-gray-400 focus:outline-none rounded-lg border bg-gray-200 border-gray-200  w-full mr-3 flex items-center justify-center cursor-pointer h-12 px-4 md:py-1 py-2  text-sm dark:bg-gray-700"
+                                        onClick={handleResetSearchProduct}
+                                    >
+                                        <span className="text-black dark:text-gray-200">
+                                            Reset
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="grid gap-4 lg:gap-4 xl:gap-6 md:gap-2 md:grid-cols-5 py-2">
+                            <div>
+                                <select className="block w-full h-12 border bg-gray-100 px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none dark:focus:border-gray-500 dark:bg-gray-700 leading-5">
+                                    <option value="Status">Status</option>
+                                    <option value="Delivered">Delivered</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Processing">
+                                        Processing
+                                    </option>
+                                    <option value="Cancel">Cancel</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select className="block w-full h-12 border bg-gray-100 px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none dark:focus:border-gray-500 dark:bg-gray-700 leading-5">
+                                    <option value="Order limits">
+                                        Order limits
+                                    </option>
+                                    <option value="5">
+                                        Last 5 days orders
+                                    </option>
+                                    <option value="7">
+                                        Last 7 days orders
+                                    </option>
+                                    <option value="15">
+                                        Last 15 days orders
+                                    </option>
+                                    <option value="30">
+                                        Last 30 days orders
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
+                                <select className="block w-full h-12 border bg-gray-100 px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none dark:focus:border-gray-500 dark:bg-gray-700 leading-5">
+                                    <option value="Method">Method</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Card">Card</option>
+                                    <option value="Credit">Credit</option>
+                                </select>
+                            </div>
+                            <div>
                                 <button
-                                    className="align-bottom  leading-5 transition-colors duration-150 font-medium  text-gray-600  dark:text-gray-400 focus:outline-none rounded-lg border bg-gray-200 border-gray-200  w-full mr-3 flex items-center justify-center cursor-pointer h-12 px-4 md:py-1 py-2  text-sm dark:bg-gray-700"
-                                    onClick={handleResetSearchProduct}
+                                    type="button"
+                                    className="false flex items-center justify-center text-sm leading-5 h-12 w-full text-center transition-colors duration-150 font-medium px-6 py-2 rounded-md text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600"
                                 >
-                                    <span className="text-black dark:text-gray-200">
-                                        Reset
+                                    Download All Orders
+                                    <span className="ml-2 text-base">
+                                        <BsCloudArrowDown size={22} />
                                     </span>
                                 </button>
                             </div>

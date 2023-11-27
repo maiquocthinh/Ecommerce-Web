@@ -1,4 +1,4 @@
-import SelecterLab from "@/Components/FormData/SelecterLab/SelecterLab";
+import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
 import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import { setComponentLevelLoading } from "@/app/Slices/common/componentLeveLoadingSlice";
 import {

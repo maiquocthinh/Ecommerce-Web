@@ -6,6 +6,7 @@ interface SelecterLabProps {
     handleGetOptionBySelect: (option: any, typeId: string) => void;
     typeId: string;
     defaultValue?: number;
+    isMulti?: boolean;
 }
 
 const SelecterLab: React.FC<SelecterLabProps> = ({
@@ -13,6 +14,7 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
     handleGetOptionBySelect,
     typeId,
     defaultValue,
+    isMulti,
 }) => {
     const [selectedOption, setSelectedOption] = useState<any>(null);
 
@@ -24,7 +26,8 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
         control: (provided: any, state: any) => ({
             ...provided,
             borderRadius: 8,
-            height: "48px",
+            height: isMulti ? "auto" : "48px",
+            minHeight: "48px",
             borderColor: state.isFocused ? "#4c9aff" : "#d1d5db",
             boxShadow: state.isFocused ? "0 0 0 1px #4c9aff" : "none",
         }),
@@ -52,8 +55,9 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
         }
     }, [selectedOption]);
     return (
-        <div className="">
+        <div className="h-full">
             <Select
+                isMulti={isMulti ? true : false}
                 onChange={setSelectedOption}
                 options={options}
                 getOptionLabel={getOptionLabel}

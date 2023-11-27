@@ -16,6 +16,7 @@ import * as adminProductSlice from "./Slices/admin/AdminProduct";
 import * as adminEmployeestSlice from "./Slices/admin/AdminEmployees";
 import * as adminbrandsSlice from "./Slices/admin/catalogs/brands";
 import * as adminCategoriesSlice from "./Slices/admin/catalogs/categories";
+import * as adminNeedsSlice from "./Slices/admin/catalogs/needs";
 import * as AdminRolesSlice from "./Slices/admin/AdminRoles";
 export const store = configureStore({
     reducer: {
@@ -83,8 +84,13 @@ export const store = configureStore({
         // admin category
         adminCategoriesData:
             adminCategoriesSlice.AdminGetCategoriesByParams.default,
+        //admin need
+        adminNeedsData: adminNeedsSlice.AdminGetNeedsByParams.default,
+
         //admin roles
         listRolesAdmin: AdminRolesSlice.AdminGetListRolesSlice.default,
+        listPermissionsAdmin:
+            AdminRolesSlice.AdminGetListPermissionsSlice.default,
     },
     middleware: [thunk],
 });

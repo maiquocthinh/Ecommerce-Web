@@ -19,6 +19,7 @@ import Dashboard from "../Pages/admin/Dashboard/Dashboard";
 import Employees from "../Pages/admin/Employees/Employees";
 import Orders from "../Pages/admin/Orders/Orders";
 import ProductsManager from "../Pages/admin/ProductsManager/ProductsManager";
+import RoleManager from "../Pages/admin/RoleManager/RoleManager";
 import ALlStaff from "../Pages/admin/Staff/AllStaff";
 
 interface RouteConfig {
@@ -131,6 +132,11 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/admin/employees",
         element: Employees,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/role",
+        element: RoleManager,
         Layout: AdminLayout,
     },
 ];

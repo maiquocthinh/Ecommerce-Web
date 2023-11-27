@@ -68,8 +68,8 @@ const AdminSidebar = () => {
         {
             id: 3,
             Icon: <FiUsers size={22} />,
-            label: "customers",
-            link: "/admin/customers",
+            label: "role management",
+            link: "/admin/role",
         },
         {
             id: 4,

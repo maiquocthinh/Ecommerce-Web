@@ -12,4 +12,21 @@ const handleGetListRole = (formData: defautlParametersGet) => {
             : { pageIndex, pageSize };
     return axios.get(`/api/roles`, { params, headers });
 };
-export { handleGetListRole };
+const handleCreateRole = (formData: {
+    name: string;
+    permissions: string[];
+}) => {
+    return axios.post(`/api/roles`, formData, { headers });
+};
+const handleGetRole = (id: number) => {
+    return axios.get(`/api/roles/${id}`, { headers });
+};
+const handleGetAllPermissions = () => {
+    return axios.get(`/api/roles/all-permissions`, { headers });
+};
+export {
+    handleGetListRole,
+    handleCreateRole,
+    handleGetRole,
+    handleGetAllPermissions,
+};
