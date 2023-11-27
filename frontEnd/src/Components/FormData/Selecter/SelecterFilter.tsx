@@ -25,30 +25,28 @@ const SelecterFilter: React.FC<SelecterFilterProps> = ({
     const customStyles = {
         control: (provided: any, state: any) => ({
             ...provided,
-            borderRadius: 8,
-            height: isMulti ? "auto" : "48px",
-            minHeight: "48px",
-            borderColor: state.isFocused ? "#4c9aff" : "#d1d5db",
-            boxShadow: state.isFocused ? "0 0 0 1px #4c9aff" : "none",
+            width: "100%",
+            border: "1px solid #ccc",
+            backgroundColor: state.isFocused
+                ? "rgb(55, 65, 81)"
+                : " rgb(55, 65, 81)",
+            fontSize: "14px",
+            outline: "none",
+            borderRadius: "4px",
         }),
         option: (provided: any, state: any) => ({
             ...provided,
-            backgroundColor: state.isFocused ? "#4c9aff" : "white",
-            color: state.isFocused ? "white" : "#333",
-        }),
-        input: (provided: any) => ({
-            ...provided,
-            color: "#333",
-        }),
-        placeholder: (provided: any) => ({
-            ...provided,
-            color: "#999",
+            backgroundColor: state.isSelected ? "#007BFF" : "#fff",
+            color: state.isSelected ? "#fff" : "#333",
+            padding: "8px 12px",
+            fontSize: "14px",
         }),
         singleValue: (provided: any) => ({
             ...provided,
-            color: "#333",
+            color: "#fff",
         }),
     };
+
     useEffect(() => {
         if (selectedOption) {
             handleGetOptionBySelect(selectedOption, typeId);

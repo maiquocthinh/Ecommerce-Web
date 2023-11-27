@@ -1,3 +1,5 @@
+import SelecterFilter from "@/Components/FormData/Selecter/SelecterFilter";
+import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import Notification from "@/Components/PageLoader/Notification";
 import Paginations from "@/Components/Paginations/Paginations";
 import {
@@ -5,26 +7,29 @@ import {
     adminDeleteProduct,
 } from "@/app/action/adminAction/adminProduct";
 import {
+    getAllBrands,
+    getAllCategories,
+    getAllNeeds,
+} from "@/app/action/catalogs";
+import {
     AdminProductType,
     addProductType,
 } from "@/common/adminType/AdminProduct";
+import { filterTypeAdmin } from "@/common/filter";
 import { pagingType } from "@/common/paging";
 import Tippy from "@tippyjs/react";
 import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { CiBookmarkPlus, CiEdit, CiExport, CiImport } from "react-icons/ci";
+import { CiBookmarkPlus, CiEdit, CiFilter, CiImport } from "react-icons/ci";
 import { LiaSearchPlusSolid } from "react-icons/lia";
+import { MdClear, MdOutlineDeleteOutline } from "react-icons/md";
+import { RxReset } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import AddAndUpdateProduct from "./addAndUpdateProduct";
-import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
-import { MdClear, MdOutlineDeleteOutline } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import DetailProduct from "./detailProduct";
-import { BsCloudArrowDown } from "react-icons/bs";
-
+import { FiltersType } from "@/common/getAllType";
 const ProductsManager = () => {
-    const router = useNavigate();
     const dispatch = useDispatch<any>();
     const adminAllProductData = useSelector(
         (state: any) =>
@@ -32,15 +37,17 @@ const ProductsManager = () => {
                 data: { list: AdminProductType[]; paging: pagingType };
             }
     );
-    const adminDeleteProductData = useSelector(
-        (state: any) =>
-            state.adminDeleteProductData.data as { success: boolean }
+    const branchData = useSelector((state: any) => state.branchData.data);
+    const categoriesData = useSelector(
+        (state: any) => state.categoriesData.data
     );
+    const needsData = useSelector((state: any) => state.needsData.data);
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalPage: 1,
         pageSize: 6,
     });
+    const [listFilter, setListFilter] = useState<FiltersType>();
     const [allProduct, setAllProduct] = useState<AdminProductType[]>([]);
     const [searchValue, setSearchValue] = useState("");
     const [zoomImg, setZoomImg] = useState<string>("");
@@ -55,6 +62,9 @@ const ProductsManager = () => {
         useState<boolean>(false);
     useEffect(() => {
         dispatch(adminAllProduct({ pageSize: 6, pageIndex: 1 }));
+        dispatch(getAllBrands());
+        dispatch(getAllNeeds());
+        dispatch(getAllCategories());
     }, [dispatch]);
     useEffect(() => {
         if (adminAllProductData && adminAllProductData?.data?.paging) {
@@ -120,6 +130,7 @@ const ProductsManager = () => {
             })
         );
         setSearchValue("");
+        setListFilter(undefined);
     };
     const handleResetProductDetailAndShowDetail = (show: boolean) => {
         setShowModalDetail(show);
@@ -156,6 +167,26 @@ const ProductsManager = () => {
             });
         }
     }, [confirmationDelete, idProductDelete]);
+    const handleGetOptionBySelect = (option: any, typeId: string) => {
+        if (
+            typeId === "CategoryId" ||
+            typeId === "NeedId" ||
+            typeId === "BrandId"
+        ) {
+            setListFilter({ ...listFilter, [typeId]: option.id });
+        } else if (typeId === "Viewable" || typeId === "OutOfStock") {
+            setListFilter({ ...listFilter, [typeId]: option.value });
+        }
+    };
+    const handleFilterProduct = () => {
+        dispatch(
+            adminAllProduct({
+                pageSize: pagination.pageSize,
+                pageIndex: 1,
+                Filters: { ...listFilter },
+            })
+        );
+    };
     return (
         <div className="flex flex-col p-4">
             <h1 className="my-6 text-lg font-bold text-gray-700 dark:text-gray-300">
@@ -216,7 +247,7 @@ const ProductsManager = () => {
                                         className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600 h-12 w-full"
                                         onClick={handleSearchProduct}
                                     >
-                                        Filter
+                                        tìm kiếm
                                     </button>
                                 </div>
                                 <div className="w-full mx-1">
@@ -233,53 +264,95 @@ const ProductsManager = () => {
                         </div>
                         <div className="grid gap-4 lg:gap-4 xl:gap-6 md:gap-2 md:grid-cols-5 py-2">
                             <div>
-                                <select className="block w-full h-12 border bg-gray-100 px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none dark:focus:border-gray-500 dark:bg-gray-700 leading-5">
-                                    <option value="Status">Status</option>
-                                    <option value="Delivered">Delivered</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Processing">
-                                        Processing
-                                    </option>
-                                    <option value="Cancel">Cancel</option>
-                                </select>
+                                <SelecterFilter
+                                    handleGetOptionBySelect={
+                                        handleGetOptionBySelect
+                                    }
+                                    options={[
+                                        {
+                                            name: "có thể xem",
+                                            value: true,
+                                        },
+                                        {
+                                            name: "không thể xem",
+                                            value: false,
+                                        },
+                                    ]}
+                                    typeId="Viewable"
+                                />
                             </div>
                             <div>
-                                <select className="block w-full h-12 border bg-gray-100 px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none dark:focus:border-gray-500 dark:bg-gray-700 leading-5">
-                                    <option value="Order limits">
-                                        Order limits
-                                    </option>
-                                    <option value="5">
-                                        Last 5 days orders
-                                    </option>
-                                    <option value="7">
-                                        Last 7 days orders
-                                    </option>
-                                    <option value="15">
-                                        Last 15 days orders
-                                    </option>
-                                    <option value="30">
-                                        Last 30 days orders
-                                    </option>
-                                </select>
+                                <SelecterFilter
+                                    handleGetOptionBySelect={
+                                        handleGetOptionBySelect
+                                    }
+                                    options={[
+                                        {
+                                            name: "còn hàng",
+                                            value: true,
+                                        },
+                                        {
+                                            name: "hết hàng",
+                                            value: false,
+                                        },
+                                    ]}
+                                    typeId="OutOfStock"
+                                />
                             </div>
                             <div>
-                                <select className="block w-full h-12 border bg-gray-100 px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none dark:focus:border-gray-500 dark:bg-gray-700 leading-5">
-                                    <option value="Method">Method</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Card">Card</option>
-                                    <option value="Credit">Credit</option>
-                                </select>
+                                {categoriesData.length ? (
+                                    <SelecterFilter
+                                        handleGetOptionBySelect={
+                                            handleGetOptionBySelect
+                                        }
+                                        options={categoriesData}
+                                        typeId="CategoryId"
+                                    />
+                                ) : null}
                             </div>
                             <div>
+                                {branchData.length ? (
+                                    <SelecterFilter
+                                        handleGetOptionBySelect={
+                                            handleGetOptionBySelect
+                                        }
+                                        options={branchData}
+                                        typeId="BrandId"
+                                    />
+                                ) : null}
+                            </div>
+                            <div>
+                                {needsData.length ? (
+                                    <SelecterFilter
+                                        handleGetOptionBySelect={
+                                            handleGetOptionBySelect
+                                        }
+                                        options={needsData}
+                                        typeId="NeedId"
+                                    />
+                                ) : null}
+                            </div>
+                            <div className="flex gap-2">
                                 <button
-                                    type="button"
-                                    className="false flex items-center justify-center text-sm leading-5 h-12 w-full text-center transition-colors duration-150 font-medium px-6 py-2 rounded-md text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600"
+                                    onClick={handleFilterProduct}
+                                    className="flex items-center justify-center text-sm leading-5 h-12 w-full text-center transition-colors duration-150 font-medium px-6 py-2 rounded-md text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600"
                                 >
-                                    Download All Orders
+                                    Filter
                                     <span className="ml-2 text-base">
-                                        <BsCloudArrowDown size={22} />
+                                        <CiFilter size={22} />
                                     </span>
                                 </button>
+                                <div className="w-full mx-1">
+                                    <button
+                                        className="align-bottom  leading-5 transition-colors duration-150 font-medium  text-gray-600  dark:text-gray-400 focus:outline-none rounded-lg border bg-gray-200 border-gray-200  w-full mr-3 flex items-center justify-center cursor-pointer h-12 px-4 md:py-1 py-2  text-sm dark:bg-gray-700"
+                                        onClick={handleResetSearchProduct}
+                                    >
+                                        Reset
+                                        <span className="text-black dark:text-gray-200 ml-2">
+                                            <RxReset size={22} />
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

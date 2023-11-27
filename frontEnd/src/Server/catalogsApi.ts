@@ -9,7 +9,7 @@ const handleGetAllNeeds = () => {
     return axios.get(`/api/needs/all`, { headers });
 };
 //brands
-const handleGetAllBrands = (BrandName?: string) => {
+const handleGetAllBrands = () => {
     return axios.get(`/api/brands/all`, { headers });
 };
 //categories

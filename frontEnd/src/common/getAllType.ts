@@ -5,7 +5,7 @@ export interface getProductType {
     pageSize?: number;
     Filters?: FiltersType;
 }
-interface FiltersType {
+export interface FiltersType {
     Viewable?: boolean;
     OutOfStock?: boolean;
     CategoryId?: number;
