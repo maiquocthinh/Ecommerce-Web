@@ -1,20 +1,21 @@
+import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
 import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import Notification from "@/Components/PageLoader/Notification";
 import Paginations from "@/Components/Paginations/Paginations";
 import {
     adminCreateRole,
+    adminDeleteRole,
+    adminUpdateRole,
     getAllPermissions,
     getListRoles,
 } from "@/app/action/adminAction/adminRoles";
-import { brandType } from "@/common/catalog";
 import { pagingType } from "@/common/paging";
 import { useEffect, useState } from "react";
-import { CiExport } from "react-icons/ci";
+import { AiOutlineDelete } from "react-icons/ai";
+import { CiEdit, CiExport } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Filter from "../Catalog/Filter";
-import Table from "../Catalog/Table";
-import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
 const initFormData = {
     name: "",
     permissions: [] as string[],
@@ -24,15 +25,17 @@ const RoleManager = () => {
     const dispatch = useDispatch<any>();
     const listRolesAdmin = useSelector(
         (state: any) => state.listRolesAdmin.data
-    ) as { data: { list: brandType[]; paging: pagingType }; success: boolean };
+    ) as { data: { list: any; paging: pagingType }; success: boolean };
     const listPermissionsAdmin = useSelector(
         (state: any) => state.listPermissionsAdmin.data
     );
+    const adminRole = useSelector((state: any) => state.adminRole.data);
     const [searchValue, setSearchValue] = useState<string>("");
     const [permissions, setPermissions] = useState<{}[]>([{}]);
     const [isNewRole, setISNewRole] = useState<boolean>(false);
     const [formData, setFormData] = useState<typeof initFormData>(initFormData);
     const [isUpdateRole, setISUpdateRole] = useState<boolean>(false);
+    const [roleIdUpdateOrDelete, setRoleIdUpdateOrDelete] = useState<number>();
     const handleSearchRole = () => {
         if (searchValue.trim() !== "" && listRolesAdmin.data.paging.pageIndex) {
             dispatch(
@@ -97,9 +100,40 @@ const RoleManager = () => {
                         toast.success("tạo mới vài trò thành công!");
                         setFormData(initFormData);
                         setISNewRole(false);
+                        setRoleIdUpdateOrDelete(0);
                     } else {
                         toast.error(
                             `tạo mới vài trò thất bại! ${res.payload.message}`
+                        );
+                    }
+                } catch (error) {
+                    toast.error(
+                        `sảy ra lỗi ở máy chủ! vui lòng chở trong giây lát}`
+                    );
+                }
+            } else if (roleIdUpdateOrDelete && roleIdUpdateOrDelete > 0) {
+                const res = await dispatch(
+                    adminUpdateRole({
+                        ...formData,
+                        roleId: roleIdUpdateOrDelete,
+                    })
+                );
+                try {
+                    if (res.payload.success) {
+                        dispatch(
+                            getListRoles({
+                                pageIndex:
+                                    listRolesAdmin.data.paging.pageIndex || 1,
+                                pageSize:
+                                    listRolesAdmin.data.paging.pageSize || 6,
+                            })
+                        );
+                        toast.success("chỉnh sửa vài trò thành công!");
+                        setFormData(initFormData);
+                        setISNewRole(false);
+                    } else {
+                        toast.error(
+                            `chỉnh sửa vài trò thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -111,35 +145,34 @@ const RoleManager = () => {
         }
     };
     const handleDeleteRole = async (id: number) => {
-        // if (id > 0) {
-        //     const res = await dispatch(adminDeleteRoles(id));
-        //     try {
-        //         if (res.payload.success) {
-        //             toast.success("xóa vài trò thành công!");
-        //             dispatch(
-        //                 getListRoles({
-        //                     pageIndex:
-        //                         listRolesAdmin.data.paging.pageIndex || 1,
-        //                     pageSize: listRolesAdmin.data.paging.pageSize || 6,
-        //                     name: searchValue,
-        //                 })
-        //             );
-        //         } else {
-        //             toast.error(
-        //                 `tạo mới vài trò thất bại! ${res.payload.message}`
-        //             );
-        //         }
-        //     } catch (error) {
-        //         toast.error(
-        //             `sảy ra lỗi ở máy chủ! vui lòng chở trong giây lát}`
-        //         );
-        //     }
-        // }
+        if (id > 0) {
+            const res = await dispatch(adminDeleteRole(id));
+            try {
+                if (res.payload.success) {
+                    toast.success("xóa vài trò thành công!");
+                    dispatch(
+                        getListRoles({
+                            pageIndex:
+                                listRolesAdmin.data.paging.pageIndex || 1,
+                            pageSize: listRolesAdmin.data.paging.pageSize || 6,
+                            name: searchValue,
+                        })
+                    );
+                } else {
+                    toast.error(`xóa vài trò thất bại! ${res.payload.message}`);
+                }
+            } catch (error) {
+                toast.error(
+                    `sảy ra lỗi ở máy chủ! vui lòng chở trong giây lát}`
+                );
+            }
+        }
     };
     const handleEditRole = (role: any) => {
         setISNewRole(true);
         setISUpdateRole(true);
-        setFormData({ ...role });
+        setFormData({ name: role.name, permissions: role.permissions });
+        setRoleIdUpdateOrDelete(role.id);
     };
     const handleGetOptionBySelect = (option: any, typeId: string) => {
         const cpOption = [] as string[];
@@ -172,15 +205,90 @@ const RoleManager = () => {
                 searchValue={searchValue}
                 handleSearch={handleSearchRole}
                 handleReset={handleResetRoles}
+                placeholder="tìm kiếm theo tên role"
             />
             {listRolesAdmin?.data?.list.length ? (
                 <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
                     {listRolesAdmin.data.list ? (
-                        <Table
-                            data={listRolesAdmin.data.list}
-                            handleDelete={handleDeleteRole}
-                            handleEdit={handleEditRole}
-                        />
+                        <div className="w-full overflow-x-auto">
+                            <table className="w-full whitespace-nowrap">
+                                <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+                                    <tr>
+                                        <td className="px-4 py-2">ID</td>
+                                        <td className="px-4 py-2">NAME</td>
+                                        <td className="px-4 py-2">
+                                            LIST PERMISSIONS
+                                        </td>
+                                        <td className="px-4 py-2 text-right">
+                                            ACTIONS
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
+                                    {listRolesAdmin?.data?.list.length &&
+                                        listRolesAdmin?.data?.list.map(
+                                            (item: any) => (
+                                                <tr key={item.id}>
+                                                    <td className="px-4 py-2">
+                                                        <span className="text-sm">
+                                                            {item.id}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-4 py-2">
+                                                        <span className="text-sm font-semibold">
+                                                            {item.name}
+                                                        </span>
+                                                    </td>
+                                                    <td
+                                                        className="px-4 py-2 flex flex-wrap gap-1 leading-6 item-center"
+                                                        style={{
+                                                            maxWidth: "800px",
+                                                        }}
+                                                    >
+                                                        {item?.permissions.map(
+                                                            (
+                                                                permission: string
+                                                            ) => (
+                                                                <span className="text-sm font-semibold">
+                                                                    {` ${permission} -`}
+                                                                </span>
+                                                            )
+                                                        )}
+                                                    </td>
+                                                    <td className="px-4 py-2">
+                                                        <div className="flex justify-end text-right">
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleEditRole(
+                                                                        item
+                                                                    )
+                                                                }
+                                                                className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none"
+                                                            >
+                                                                <CiEdit
+                                                                    size={22}
+                                                                />
+                                                            </button>
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleDeleteRole(
+                                                                        item.id
+                                                                    )
+                                                                }
+                                                                className="p-2 cursor-pointer text-gray-400 hover:text-red-600 focus:outline-none"
+                                                            >
+                                                                <AiOutlineDelete
+                                                                    size={22}
+                                                                />
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        )}
+                                </tbody>
+                            </table>
+                        </div>
                     ) : null}
                     {listRolesAdmin?.data?.paging && (
                         <Paginations
@@ -206,15 +314,15 @@ const RoleManager = () => {
                 showModalTitle={true}
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
-                        Tạo Role mới
+                        {isUpdateRole ? "chỉnh sửa Role" : "Tạo Role mới"}
                     </h1>
                 }
                 bgAll="bg"
                 mainContent={
-                    <div className="flex justify-between items-start gap-4">
-                        <div className="w-1/2">
+                    <div className="flex flex-col justify-between items-start gap-4">
+                        <div className="w-full">
                             <p className="text-gray-300 text-sm text-start mb-1">
-                                mô tả :
+                                tên :
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"
@@ -227,12 +335,13 @@ const RoleManager = () => {
                                 placeholder="nhập tên vài trò"
                             />
                         </div>
-                        <div className="flex-1">
+                        <div className="w-full">
                             <p className="text-gray-300 text-sm text-start">
-                                chọn giới tính :
+                                chọn quyền hạng :
                             </p>
                             {permissions.length ? (
                                 <SelecterLab
+                                    valueUpdate={formData.permissions}
                                     isMulti
                                     options={permissions}
                                     handleGetOptionBySelect={
@@ -254,7 +363,15 @@ const RoleManager = () => {
                             {isUpdateRole ? "Chỉnh sửa" : "Tạo"}
                         </button>
                         <button
-                            onClick={() => setISNewRole(false)}
+                            onClick={() => {
+                                setISNewRole(false);
+                                if (
+                                    formData.name ||
+                                    formData.permissions.length
+                                ) {
+                                    setFormData(initFormData);
+                                }
+                            }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
                             đóng

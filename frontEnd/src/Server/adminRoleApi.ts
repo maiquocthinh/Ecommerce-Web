@@ -18,6 +18,16 @@ const handleCreateRole = (formData: {
 }) => {
     return axios.post(`/api/roles`, formData, { headers });
 };
+const handleUpadteRole = (formData: {
+    roleId: number;
+    name: string;
+    permissions: string[];
+}) => {
+    return axios.patch(`/api/roles/${formData.roleId}`, formData, { headers });
+};
+const handleDeleteRole = (roleId: number) => {
+    return axios.delete(`/api/roles/${roleId}`, { headers });
+};
 const handleGetRole = (id: number) => {
     return axios.get(`/api/roles/${id}`, { headers });
 };
@@ -29,4 +39,6 @@ export {
     handleCreateRole,
     handleGetRole,
     handleGetAllPermissions,
+    handleUpadteRole,
+    handleDeleteRole,
 };

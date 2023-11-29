@@ -2,7 +2,7 @@ import { discounttype } from "@/common/discount";
 import axios from "axios";
 import Cookies from "js-cookie";
 const headers = {
-    Authorization: `Bearer ${Cookies.get("token")}`,
+    Authorization: `Bearer ${Cookies.get("AdminToken")}`,
 };
 const handleGetAllDiscounts = () => {
     return axios.get(`/api/disscounts`, { headers });

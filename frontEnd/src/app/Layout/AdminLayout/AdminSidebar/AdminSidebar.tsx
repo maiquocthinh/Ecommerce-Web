@@ -84,7 +84,13 @@ const AdminSidebar = () => {
             link: "/admin/staff",
         },
         {
-            id: 7,
+            id: 9,
+            Icon: <BiUserPin size={22} />,
+            label: "supplier",
+            link: "/admin/supplier",
+        },
+        {
+            id: 8,
             Icon: <FiSettings size={22} />,
             label: "Settings",
             link: "/admin/setting",

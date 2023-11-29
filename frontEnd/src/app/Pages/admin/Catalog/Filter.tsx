@@ -5,12 +5,14 @@ interface FilterProps {
     searchValue: string;
     handleSearch: () => void;
     handleReset: () => void;
+    placeholder?: string;
 }
 const Filter: React.FC<FilterProps> = ({
     searchValue,
     setSearchValue,
     handleSearch,
     handleReset,
+    placeholder,
 }) => {
     return (
         <div className="rounded-lg  min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 rounded-t-lg rounded-0 mb-4">
@@ -23,7 +25,7 @@ const Filter: React.FC<FilterProps> = ({
                             name="search"
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
-                            placeholder="Search Product"
+                            placeholder={placeholder || "tìm kiếm"}
                         />
                         <button className="absolute right-0 top-0 mt-5 mr-1"></button>
                     </div>

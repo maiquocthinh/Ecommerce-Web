@@ -1,11 +1,8 @@
-import {
-    cretaeProductVersionType,
-    productCreateOptionsType,
-} from "@/common/product";
+import { addProductType } from "@/common/adminType/AdminProduct";
+import { getProductType } from "@/common/getAllType";
+import { cretaeProductVersionType } from "@/common/product";
 import Cookies from "js-cookie";
 import axios from "../utils/instance";
-import { getProductType } from "@/common/getAllType";
-import { addProductType } from "@/common/adminType/AdminProduct";
 const headers = {
     Authorization: `Bearer ${Cookies.get("AdminToken")}`,
 };
@@ -84,12 +81,12 @@ const handleDeleteProductVersion = (productVersionId: number) => {
     });
 };
 export {
-    handleGetAllProducts,
     handGetProduct,
-    handleCreateProduct,
-    handleUpdateProduct,
-    handleDeleteProduct,
     handleCreateNewProductVersion,
-    handleUpdateProductVersion,
+    handleCreateProduct,
+    handleDeleteProduct,
     handleDeleteProductVersion,
+    handleGetAllProducts,
+    handleUpdateProduct,
+    handleUpdateProductVersion,
 };

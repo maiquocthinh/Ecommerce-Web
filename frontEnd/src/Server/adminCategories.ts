@@ -2,7 +2,7 @@ import { defautlParametersGet } from "@/common/getAllType";
 import axios from "../utils/instance";
 import Cookies from "js-cookie";
 const headers = {
-    Authorization: `Bearer ${Cookies.get("token")}`,
+    Authorization: `Bearer ${Cookies.get("AdminToken")}`,
 };
 const handleCreateCategory = (formData: {
     name: string;

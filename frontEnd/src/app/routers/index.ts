@@ -23,6 +23,7 @@ import AdminDetailProduct from "../Pages/admin/ProductsManager/AdminProductVersi
 import ProductsManager from "../Pages/admin/ProductsManager/ProductsManager";
 import RoleManager from "../Pages/admin/RoleManager/RoleManager";
 import ALlStaff from "../Pages/admin/Staff/AllStaff";
+import Supplier from "../Pages/admin/Supplier/Supplier";
 
 interface RouteConfig {
     path: string;
@@ -144,6 +145,11 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/admin/role",
         element: RoleManager,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/supplier",
+        element: Supplier,
         Layout: AdminLayout,
     },
     {

@@ -48,7 +48,6 @@ const SelecterFilter: React.FC<SelecterFilterProps> = ({
         }),
         option: (provided: any, state: any) => ({
             ...provided,
-            backgroundColor: state.isSelected ? "#007BFF" : "#fff",
             color: state.isSelected ? "#fff" : "#333",
             padding: "8px 12px",
             fontSize: "14px",

@@ -1,2 +1,2 @@
-export * as AdminGetSupplierSlice from "./AdminGetSupplierSlice";
 export * as AdminGetListSupplierSlice from "./AdminGetListSupplierSlice";
+export * as AdminGetSupplierSlice from "./AdminGetSupplierSlice";

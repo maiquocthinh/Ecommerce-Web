@@ -2,7 +2,7 @@ import { supplierType } from "@/common/suppelier";
 import Cookies from "js-cookie";
 import axios from "../utils/instance";
 const headers = {
-    Authorization: `Bearer ${Cookies.get("token")}`,
+    Authorization: `Bearer ${Cookies.get("AdminToken")}`,
 };
 const handleGetAllSuppliers = () => {
     return axios.get(`/api/supplier`, { headers });

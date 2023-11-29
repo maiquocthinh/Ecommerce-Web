@@ -37,3 +37,31 @@ export const adminCreateRole = createAsyncThunk(
         }
     }
 );
+export const adminUpdateRole = createAsyncThunk(
+    "adminUpdateRole/adminUpdateRole",
+    async (formData: {
+        name: string;
+        permissions: string[];
+        roleId: number;
+    }) => {
+        try {
+            const response = await adminRolesApi.handleUpadteRole(formData);
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+export const adminDeleteRole = createAsyncThunk(
+    "adminDeleteRole/adminDeleteRole",
+    async (id: number) => {
+        try {
+            const response = await adminRolesApi.handleDeleteRole(id);
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);

@@ -2,7 +2,7 @@ import { defautlParametersGet } from "@/common/getAllType";
 import axios from "../utils/instance";
 import Cookies from "js-cookie";
 const headers = {
-    Authorization: `Bearer ${Cookies.get("token")}`,
+    Authorization: `Bearer ${Cookies.get("AdminToken")}`,
 };
 const handleCreateNeed = (formData: { title: string; description: string }) => {
     return axios.post(`/api/needs`, formData, { headers });

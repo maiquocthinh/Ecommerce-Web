@@ -1,8 +1,8 @@
 import { defautlParametersGet, supplierType } from "@/common/getAllType";
-import axios from "axios";
+import axios from "../utils/instance";
 import Cookies from "js-cookie";
 const headers = {
-    Authorization: `Bearer ${Cookies.get("token")}`,
+    Authorization: `Bearer ${Cookies.get("AdminToken")}`,
 };
 const handleGetAllSuppliers = (formData: defautlParametersGet) => {
     const { name, pageIndex, pageSize } = formData;
@@ -16,13 +16,13 @@ const handleCreateSupplier = (formData: supplierType) => {
     return axios.post(`/api/supplier`, formData, { headers });
 };
 const handleGetSupplier = (id: number) => {
-    return axios.get(`/api/supplier/{id}`, { headers });
+    return axios.get(`/api/supplier/${id}`, { headers });
 };
 const handleUpdateSupplier = (formData: supplierType) => {
     return axios.patch(`/api/supplier/${formData.id}`, formData, { headers });
 };
 const handleDeleteSupplier = (id: number) => {
-    return axios.delete(`/api/supplier/{id}`, { headers });
+    return axios.delete(`/api/supplier/${id}`, { headers });
 };
 
 export {

@@ -7,6 +7,7 @@ interface SelecterLabProps {
     typeId: string;
     defaultValue?: number;
     isMulti?: boolean;
+    valueUpdate?: string[];
 }
 
 const SelecterLab: React.FC<SelecterLabProps> = ({
@@ -15,6 +16,7 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
     typeId,
     defaultValue,
     isMulti,
+    valueUpdate,
 }) => {
     const [selectedOption, setSelectedOption] = useState<any>(null);
 
@@ -54,10 +56,20 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
             handleGetOptionBySelect(selectedOption, typeId);
         }
     }, [selectedOption]);
+    useEffect(() => {
+        let filteredOptions;
+        if (valueUpdate) {
+            filteredOptions = options.filter((option: any) =>
+                valueUpdate.includes(option.value as string)
+            );
+        }
+        setSelectedOption(filteredOptions);
+    }, []);
     return (
         <div className="h-full">
             <Select
                 isMulti={isMulti ? true : false}
+                value={selectedOption}
                 onChange={setSelectedOption}
                 options={options}
                 getOptionLabel={getOptionLabel}
