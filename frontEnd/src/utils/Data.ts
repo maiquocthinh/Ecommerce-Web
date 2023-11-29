@@ -130,3 +130,21 @@ export const posterData = [
         label: "giao hàng 24h",
     },
 ];
+export const orderAction = [
+    {
+        id: 1,
+        title: "processing",
+    },
+    {
+        id: 2,
+        title: "shipped",
+    },
+    {
+        id: 3,
+        title: "delivering",
+    },
+    {
+        id: 4,
+        title: "cancelled",
+    },
+];

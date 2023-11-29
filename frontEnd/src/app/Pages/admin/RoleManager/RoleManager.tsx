@@ -136,10 +136,10 @@ const RoleManager = () => {
         //     }
         // }
     };
-    const handleEditRole = (brand: any) => {
+    const handleEditRole = (role: any) => {
         setISNewRole(true);
-        // setISUpdateRole(true);
-        // setFormData({ ...brand });
+        setISUpdateRole(true);
+        setFormData({ ...role });
     };
     const handleGetOptionBySelect = (option: any, typeId: string) => {
         const cpOption = [] as string[];

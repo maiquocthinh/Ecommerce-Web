@@ -6,6 +6,7 @@ export interface orderType {
     shippingInfo: shippingInfoType;
 }
 export interface orderDetailsType {
+    imageUrl?: string;
     productVersionId: Number;
     productVersionName: string;
     quantity: number;

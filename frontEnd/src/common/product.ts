@@ -6,6 +6,7 @@ export interface productVersion {
     name: string;
     originPrice: string;
     price: string;
+    specifications?: {};
 }
 
 export interface ProductType {
@@ -32,10 +33,12 @@ export interface productCreateOptionsType {
     needId: number;
 }
 export interface cretaeProductVersionType {
+    productVersionId?: number;
     productId: number;
     name: string;
     imageUrl: string;
     color: string;
+    price: number;
     specifications: {
         os?: string;
         cpu?: string;
@@ -53,7 +56,6 @@ export interface cretaeProductVersionType {
         frontCamera?: string;
         batteryCapacity?: string;
     };
-    price: number;
 }
 export interface paramsProductType {
     Keyword?: string;

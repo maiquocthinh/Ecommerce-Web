@@ -18,6 +18,8 @@ import * as adminbrandsSlice from "./Slices/admin/catalogs/brands";
 import * as adminCategoriesSlice from "./Slices/admin/catalogs/categories";
 import * as adminNeedsSlice from "./Slices/admin/catalogs/needs";
 import * as AdminRolesSlice from "./Slices/admin/AdminRoles";
+import * as AdminOrderSlice from "./Slices/admin/AdminOrder";
+import * as AdminSupplierSlice from "./Slices/admin/AdminSupplier";
 export const store = configureStore({
     reducer: {
         modal: modalReducer,
@@ -91,6 +93,12 @@ export const store = configureStore({
         listRolesAdmin: AdminRolesSlice.AdminGetListRolesSlice.default,
         listPermissionsAdmin:
             AdminRolesSlice.AdminGetListPermissionsSlice.default,
+        //admin order
+        listOrderData: AdminOrderSlice.AdminGetListOrderSlice.default,
+        orderDetailData: AdminOrderSlice.AdminGetOrderDetailSlice.default,
+        // admin supplier
+        listSuplierData: AdminSupplierSlice.AdminGetListSupplierSlice.default,
+        suplierDetailData: AdminSupplierSlice.AdminGetSupplierSlice.default,
     },
     middleware: [thunk],
 });

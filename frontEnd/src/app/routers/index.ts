@@ -17,7 +17,9 @@ import Needs from "../Pages/admin/Catalog/Needs/Needs";
 import Customers from "../Pages/admin/Customers/Customers";
 import Dashboard from "../Pages/admin/Dashboard/Dashboard";
 import Employees from "../Pages/admin/Employees/Employees";
+import OrderDetail from "../Pages/admin/Orders/OrderDetail/OrderDetail";
 import Orders from "../Pages/admin/Orders/Orders";
+import AdminDetailProduct from "../Pages/admin/ProductsManager/AdminProductVersion/AdminProductVersion";
 import ProductsManager from "../Pages/admin/ProductsManager/ProductsManager";
 import RoleManager from "../Pages/admin/RoleManager/RoleManager";
 import ALlStaff from "../Pages/admin/Staff/AllStaff";
@@ -130,6 +132,11 @@ const publishRouter: RouteConfig[] = [
         Layout: AdminLayout,
     },
     {
+        path: "/admin/products-detail/:id",
+        element: AdminDetailProduct,
+        Layout: AdminLayout,
+    },
+    {
         path: "/admin/employees",
         element: Employees,
         Layout: AdminLayout,
@@ -138,6 +145,11 @@ const publishRouter: RouteConfig[] = [
         path: "/admin/role",
         element: RoleManager,
         Layout: AdminLayout,
+    },
+    {
+        path: "/admin/order-detail/:id",
+        element: OrderDetail,
+        Layout: null,
     },
 ];
 

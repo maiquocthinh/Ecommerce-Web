@@ -5,8 +5,11 @@ interface SelecterFilterProps {
     options: any;
     handleGetOptionBySelect: (option: any, typeId: string) => void;
     typeId: string;
-    defaultValue?: number;
+    defaultValue?: string;
     isMulti?: boolean;
+    isReset?: boolean;
+    h?: string;
+    setIsReset?: (value: boolean) => void;
 }
 
 const SelecterFilter: React.FC<SelecterFilterProps> = ({
@@ -15,18 +18,27 @@ const SelecterFilter: React.FC<SelecterFilterProps> = ({
     typeId,
     defaultValue,
     isMulti,
+    isReset,
+    setIsReset,
+    h,
 }) => {
     const [selectedOption, setSelectedOption] = useState<any>(null);
 
     const getOptionLabel = (option: any) => option.title || option.name;
-
+    useEffect(() => {
+        if (isReset && setIsReset) {
+            setSelectedOption("");
+            setIsReset(false);
+        }
+    }, [isReset]);
     const getOptionValue = (option: any) =>
         option.value || option.title || option.name;
     const customStyles = {
         control: (provided: any, state: any) => ({
             ...provided,
             width: "100%",
-            border: "1px solid #ccc",
+            height: h ? h : "auto",
+            border: "1px solid #4b5563",
             backgroundColor: state.isFocused
                 ? "rgb(55, 65, 81)"
                 : " rgb(55, 65, 81)",
@@ -45,6 +57,10 @@ const SelecterFilter: React.FC<SelecterFilterProps> = ({
             ...provided,
             color: "#fff",
         }),
+        placeholder: (provided: any) => ({
+            ...provided,
+            color: "white",
+        }),
     };
 
     useEffect(() => {
@@ -55,6 +71,8 @@ const SelecterFilter: React.FC<SelecterFilterProps> = ({
     return (
         <div className="h-full">
             <Select
+                value={selectedOption}
+                placeholder={defaultValue}
                 isMulti={isMulti ? true : false}
                 onChange={setSelectedOption}
                 options={options}

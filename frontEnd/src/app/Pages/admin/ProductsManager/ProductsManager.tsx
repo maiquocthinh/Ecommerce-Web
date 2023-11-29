@@ -15,7 +15,7 @@ import {
     AdminProductType,
     addProductType,
 } from "@/common/adminType/AdminProduct";
-import { filterTypeAdmin } from "@/common/filter";
+import { FiltersType } from "@/common/getAllType";
 import { pagingType } from "@/common/paging";
 import Tippy from "@tippyjs/react";
 import { useEffect, useState } from "react";
@@ -28,8 +28,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import AddAndUpdateProduct from "./addAndUpdateProduct";
 import DetailProduct from "./detailProduct";
-import { FiltersType } from "@/common/getAllType";
+import { useNavigate } from "react-router-dom";
 const ProductsManager = () => {
+    const router = useNavigate();
     const dispatch = useDispatch<any>();
     const adminAllProductData = useSelector(
         (state: any) =>
@@ -48,6 +49,7 @@ const ProductsManager = () => {
         pageSize: 6,
     });
     const [listFilter, setListFilter] = useState<FiltersType>();
+    const [isReset, setIsReset] = useState<boolean>(false);
     const [allProduct, setAllProduct] = useState<AdminProductType[]>([]);
     const [searchValue, setSearchValue] = useState("");
     const [zoomImg, setZoomImg] = useState<string>("");
@@ -123,6 +125,7 @@ const ProductsManager = () => {
         }
     };
     const handleResetSearchProduct = () => {
+        setIsReset(true);
         dispatch(
             adminAllProduct({
                 pageSize: 6,
@@ -265,6 +268,8 @@ const ProductsManager = () => {
                         <div className="grid gap-4 lg:gap-4 xl:gap-6 md:gap-2 md:grid-cols-5 py-2">
                             <div>
                                 <SelecterFilter
+                                    isReset={isReset}
+                                    setIsReset={setIsReset}
                                     handleGetOptionBySelect={
                                         handleGetOptionBySelect
                                     }
@@ -283,6 +288,8 @@ const ProductsManager = () => {
                             </div>
                             <div>
                                 <SelecterFilter
+                                    isReset={isReset}
+                                    setIsReset={setIsReset}
                                     handleGetOptionBySelect={
                                         handleGetOptionBySelect
                                     }
@@ -302,6 +309,8 @@ const ProductsManager = () => {
                             <div>
                                 {categoriesData.length ? (
                                     <SelecterFilter
+                                        isReset={isReset}
+                                        setIsReset={setIsReset}
                                         handleGetOptionBySelect={
                                             handleGetOptionBySelect
                                         }
@@ -313,6 +322,8 @@ const ProductsManager = () => {
                             <div>
                                 {branchData.length ? (
                                     <SelecterFilter
+                                        isReset={isReset}
+                                        setIsReset={setIsReset}
                                         handleGetOptionBySelect={
                                             handleGetOptionBySelect
                                         }
@@ -324,6 +335,8 @@ const ProductsManager = () => {
                             <div>
                                 {needsData.length ? (
                                     <SelecterFilter
+                                        isReset={isReset}
+                                        setIsReset={setIsReset}
                                         handleGetOptionBySelect={
                                             handleGetOptionBySelect
                                         }
@@ -475,11 +488,14 @@ const ProductsManager = () => {
                                                     >
                                                         <button
                                                             onClick={() => {
-                                                                setDetailProduct(
-                                                                    product
-                                                                );
-                                                                setShowModalDetail(
-                                                                    true
+                                                                // setDetailProduct(
+                                                                //     product
+                                                                // );
+                                                                // setShowModalDetail(
+                                                                //     true
+                                                                // );
+                                                                router(
+                                                                    `/admin/products-detail/${product.id}`
                                                                 );
                                                             }}
                                                         >

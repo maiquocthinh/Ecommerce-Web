@@ -60,7 +60,7 @@ const CenterModal: React.FC<CenterModalProps> = ({
                                 {modalTitle}
                             </div>
                         ) : null}
-                        <div className="mt-8">{mainContent}</div>
+                        <div className="mt-2">{mainContent}</div>
                         {showButtons ? (
                             <div className="mt-4">{buttonComponent}</div>
                         ) : null}

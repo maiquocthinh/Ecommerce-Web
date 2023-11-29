@@ -68,7 +68,7 @@ const handleDeleteProduct = (productId: number) => {
 const handleCreateNewProductVersion = (formData: cretaeProductVersionType) => {
     return axios.post(`/api/products/version/create`, formData, { headers });
 };
-const handleUpdateNewProductVersion = (
+const handleUpdateProductVersion = (
     formData: cretaeProductVersionType,
     productVersionId: number
 ) => {
@@ -90,6 +90,6 @@ export {
     handleUpdateProduct,
     handleDeleteProduct,
     handleCreateNewProductVersion,
-    handleUpdateNewProductVersion,
+    handleUpdateProductVersion,
     handleDeleteProductVersion,
 };

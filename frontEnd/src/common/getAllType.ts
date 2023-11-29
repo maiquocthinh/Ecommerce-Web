@@ -27,3 +27,23 @@ export interface defautlParametersGet {
     pageSize: number;
     name?: string;
 }
+export interface getOrderType {
+    CustomerName?: string;
+    Status?: string;
+    StartDate?: string;
+    EndDate?: string;
+    pageIndex: number;
+    pageSize: number;
+}
+export interface supplierType {
+    id?: number;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    address: {
+        specificAddress: string;
+        wards: string;
+        districts: string;
+        province: string;
+    };
+}
