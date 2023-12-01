@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { setIsLoggedInAdmin } from "./app/Slices/admin/AdminLoginSlice";
 import { useSelector } from "react-redux";
+import UnauthorizedPage from "./app/Pages/UnauthorizedPage";
 function App() {
     const isLoggedInAdmin = useSelector(
         (state: any) => state.authAmin.isLoggedInAdmin
@@ -56,7 +57,7 @@ function App() {
                             />
                         );
                     })}
-                    {isLoggedInAdmin
+                    {isLoggedInAdmin || Cookies.get("AdminToken")
                         ? privateRouter.map((route, index) => {
                               let Layout = DefaultLayout;
                               const Page = route.element;
@@ -78,6 +79,14 @@ function App() {
                               );
                           })
                         : null}
+                    <Route
+                        path="*"
+                        element={
+                            <>
+                                <UnauthorizedPage />
+                            </>
+                        }
+                    />
                 </Routes>
             </div>
         </Router>

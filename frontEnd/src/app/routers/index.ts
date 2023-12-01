@@ -11,6 +11,7 @@ import ProductPage from "../Pages/Product";
 import Profile from "../Pages/Profile";
 import Register from "../Pages/Register";
 import ResetPassword from "../Pages/ResetPassword";
+import UnauthorizedPage from "../Pages/UnauthorizedPage";
 import Brands from "../Pages/admin/Catalog/Brands/Brands";
 import Categories from "../Pages/admin/Catalog/Categories/Categories";
 import Needs from "../Pages/admin/Catalog/Needs/Needs";
@@ -90,6 +91,11 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/admin/login",
         element: Login,
+        Layout: null,
+    },
+    {
+        path: "/unauthorizedPage",
+        element: UnauthorizedPage,
         Layout: null,
     },
 ];
