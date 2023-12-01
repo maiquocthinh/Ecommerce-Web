@@ -20,7 +20,13 @@ import { pagingType } from "@/common/paging";
 import Tippy from "@tippyjs/react";
 import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { CiBookmarkPlus, CiEdit, CiFilter, CiImport } from "react-icons/ci";
+import {
+    CiBookmarkPlus,
+    CiDiscount1,
+    CiEdit,
+    CiFilter,
+    CiImport,
+} from "react-icons/ci";
 import { LiaSearchPlusSolid } from "react-icons/lia";
 import { MdClear, MdOutlineDeleteOutline } from "react-icons/md";
 import { RxReset } from "react-icons/rx";
@@ -29,6 +35,7 @@ import { toast } from "react-toastify";
 import AddAndUpdateProduct from "./addAndUpdateProduct";
 import DetailProduct from "./detailProduct";
 import { useNavigate } from "react-router-dom";
+import DiscountModal from "@/Components/Modal/DiscountModal/discountModal";
 const ProductsManager = () => {
     const router = useNavigate();
     const dispatch = useDispatch<any>();
@@ -57,7 +64,9 @@ const ProductsManager = () => {
     const [isUpdateProduct, setIsUpdateProduct] = useState<boolean>(false);
     const [modalDelete, setIsModaleDelete] = useState<boolean>(false);
     const [idProductDelete, setIdProductDelete] = useState<number>(0);
+    const [idProductDiscount, setIdProductDiscount] = useState<number>(0);
     const [showModalDetail, setShowModalDetail] = useState<boolean>(false);
+    const [isCreateDiscount, setIsCreateDiscount] = useState<boolean>(false);
     const [detailProduct, setDetailProduct] = useState<AdminProductType>();
     const [productUpdate, setProductUpdate] = useState<AdminProductType>();
     const [confirmationDelete, setConfirmationDelete] =
@@ -472,6 +481,29 @@ const ProductsManager = () => {
                                             <div className="flex justify-end">
                                                 <div className="flex justify-between items-center gap-2">
                                                     <Tippy
+                                                        content="giảm giá"
+                                                        placement="bottom"
+                                                        delay={100}
+                                                        className="border text-custom-Colorprimary border-custom-Colorprimary rounded-md px-1"
+                                                    >
+                                                        <button
+                                                            onClick={() => {
+                                                                setIsCreateDiscount(
+                                                                    true
+                                                                );
+                                                                setIdProductDiscount(
+                                                                    product?.id ||
+                                                                        0
+                                                                );
+                                                            }}
+                                                            className="hover:text-custom-bg_button"
+                                                        >
+                                                            <CiDiscount1
+                                                                size={22}
+                                                            />
+                                                        </button>
+                                                    </Tippy>
+                                                    <Tippy
                                                         content="chỉnh sửa"
                                                         placement="bottom"
                                                         delay={100}
@@ -502,12 +534,6 @@ const ProductsManager = () => {
                                                     >
                                                         <button
                                                             onClick={() => {
-                                                                // setDetailProduct(
-                                                                //     product
-                                                                // );
-                                                                // setShowModalDetail(
-                                                                //     true
-                                                                // );
                                                                 router(
                                                                     `/admin/products-detail/${product.id}`
                                                                 );
@@ -619,6 +645,15 @@ const ProductsManager = () => {
                     </div>
                 }
             />
+            {isCreateDiscount && pagination ? (
+                <DiscountModal
+                    show={isCreateDiscount}
+                    setShow={setIsCreateDiscount}
+                    pagin={adminAllProductData?.data?.paging}
+                    type="create"
+                    idProduct={idProductDiscount}
+                />
+            ) : null}
             <Notification />
         </div>
     );

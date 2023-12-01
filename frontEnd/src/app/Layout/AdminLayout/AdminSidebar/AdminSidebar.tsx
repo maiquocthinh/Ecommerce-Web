@@ -45,7 +45,24 @@ const AdminSidebar = () => {
             id: 3,
             Icon: <MdOutlineProductionQuantityLimits size={22} />,
             label: "products management",
-            link: "/admin/products",
+            more: <MdOutlineExpandMore size={22} />,
+            listMore: [
+                {
+                    id: 11,
+                    link: "/admin/products-manages/products",
+                    label: "products",
+                },
+                {
+                    id: 12,
+                    link: "/admin/products-manages/discounts",
+                    label: "discounts",
+                },
+                {
+                    id: 13,
+                    link: "/admin/products-manages/inventories",
+                    label: "inventories",
+                },
+            ],
         },
         {
             id: 4,
@@ -160,11 +177,7 @@ const AdminSidebar = () => {
                                 return (
                                     <div
                                         key={task.id}
-                                        className={`flex flex-col gap-2 ${
-                                            currentPathname.includes("catalog")
-                                                ? "text-custom-addmin_Active__color"
-                                                : ""
-                                        }`}
+                                        className={`flex flex-col gap-2`}
                                     >
                                         <div>
                                             <div

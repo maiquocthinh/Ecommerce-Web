@@ -20,8 +20,10 @@ import Dashboard from "../Pages/admin/Dashboard/Dashboard";
 import Employees from "../Pages/admin/Employees/Employees";
 import OrderDetail from "../Pages/admin/Orders/OrderDetail/OrderDetail";
 import Orders from "../Pages/admin/Orders/Orders";
-import AdminDetailProduct from "../Pages/admin/ProductsManager/AdminProductVersion/AdminProductVersion";
-import ProductsManager from "../Pages/admin/ProductsManager/ProductsManager";
+import Discounts from "../Pages/admin/ProductsManager/Discounts/Discounts";
+import Inventories from "../Pages/admin/ProductsManager/Inventories/Inventories";
+import AdminDetailProduct from "../Pages/admin/ProductsManager/Product/AdminProductVersion/AdminProductVersion";
+import ProductsManager from "../Pages/admin/ProductsManager/Product/ProductsManager";
 import RoleManager from "../Pages/admin/RoleManager/RoleManager";
 import ALlStaff from "../Pages/admin/Staff/AllStaff";
 import Supplier from "../Pages/admin/Supplier/Supplier";
@@ -127,8 +129,18 @@ const privateRouter: RouteConfig[] = [
         Layout: AdminLayout,
     },
     {
-        path: "/admin/products",
+        path: "/admin/products-manages/products",
         element: ProductsManager,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/products-manages/discounts",
+        element: Discounts,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/products-manages/inventories",
+        element: Inventories,
         Layout: AdminLayout,
     },
     {

@@ -6,9 +6,6 @@ import { getEmployeesType } from "@/common/getAllType";
 const createEmployeesParams = (
     formData: getEmployeesType
 ): Record<string, any> => {
-    const headers = {
-        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
-    };
     const queryParams: Record<string, any> = {};
 
     if (formData.Keyword) queryParams.Keyword = formData.Keyword;
@@ -21,15 +18,9 @@ const createEmployeesParams = (
     return queryParams;
 };
 const handleLoginAdmin = (formData: userLoginType) => {
-    const headers = {
-        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
-    };
     return axios.post(`/api/auth/employee/login`, formData);
 };
 const handleLogoutAdmin = (refreshTokenAdmin: string) => {
-    const headers = {
-        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
-    };
     return axios.delete("/api/auth/employee/logout", {
         data: { refreshToken: refreshTokenAdmin },
     });

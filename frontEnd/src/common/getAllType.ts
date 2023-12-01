@@ -47,3 +47,10 @@ export interface supplierType {
         province: string;
     };
 }
+export interface getDisscountType {
+    pageIndex: number;
+    pageSize: number;
+    Expired?: boolean;
+    Active?: boolean;
+    ProductName?: string;
+}
