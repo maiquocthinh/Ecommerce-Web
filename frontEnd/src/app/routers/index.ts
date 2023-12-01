@@ -92,19 +92,12 @@ const publishRouter: RouteConfig[] = [
         element: Login,
         Layout: null,
     },
+];
+
+const privateRouter: RouteConfig[] = [
     {
         path: "/admin/dashboard",
         element: Dashboard,
-        Layout: AdminLayout,
-    },
-    {
-        path: "/admin/customers",
-        element: Customers,
-        Layout: AdminLayout,
-    },
-    {
-        path: "/admin/staff",
-        element: ALlStaff,
         Layout: AdminLayout,
     },
     {
@@ -158,7 +151,5 @@ const publishRouter: RouteConfig[] = [
         Layout: null,
     },
 ];
-
-const privateRouter: RouteConfig[] = [];
 
 export { privateRouter, publishRouter };

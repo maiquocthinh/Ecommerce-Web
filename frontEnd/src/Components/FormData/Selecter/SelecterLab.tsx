@@ -8,6 +8,12 @@ interface SelecterLabProps {
     defaultValue?: number;
     isMulti?: boolean;
     valueUpdate?: string[];
+    valueUpdateOj?: {
+        brandId?: number;
+        categoryId?: number;
+        needId?: number;
+        roleId?: number;
+    };
 }
 
 const SelecterLab: React.FC<SelecterLabProps> = ({
@@ -17,9 +23,9 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
     defaultValue,
     isMulti,
     valueUpdate,
+    valueUpdateOj,
 }) => {
     const [selectedOption, setSelectedOption] = useState<any>(null);
-
     const getOptionLabel = (option: any) => option.title || option.name;
 
     const getOptionValue = (option: any) =>
@@ -60,10 +66,41 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
         let filteredOptions;
         if (valueUpdate) {
             filteredOptions = options.filter((option: any) =>
-                valueUpdate.includes(option.value as string)
+                valueUpdate.includes(
+                    (option?.value || option?.title || option?.name) as string
+                )
             );
         }
         setSelectedOption(filteredOptions);
+    }, []);
+    useEffect(() => {
+        if (valueUpdateOj) {
+            if (typeId === "brandId") {
+                let temp = options.filter(
+                    (option: any) =>
+                        Number(valueUpdateOj.brandId) === Number(option.id)
+                );
+                setSelectedOption(temp);
+            } else if (typeId === "categoryId") {
+                let temp = options.filter(
+                    (option: any) =>
+                        Number(valueUpdateOj.categoryId) === Number(option.id)
+                );
+                setSelectedOption(temp);
+            } else if (typeId === "needId") {
+                let temp = options.filter(
+                    (option: any) =>
+                        Number(valueUpdateOj.needId) === Number(option.id)
+                );
+                setSelectedOption(temp);
+            } else if (typeId === "roleId") {
+                let temp = options.filter(
+                    (option: any) =>
+                        Number(valueUpdateOj.roleId) === Number(option.id)
+                );
+                setSelectedOption(temp);
+            }
+        }
     }, []);
     return (
         <div className="h-full">

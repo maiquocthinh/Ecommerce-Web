@@ -5,6 +5,7 @@ import {
     createSupplier,
     deleteSupplier,
     getListSupplier,
+    getSupplier,
     updateSupplier,
 } from "@/app/action/adminAction/adminSupplier";
 import { supplierType } from "@/common/getAllType";
@@ -39,6 +40,9 @@ const Supplier = () => {
     const [isNewSupplier, setISNewSupplier] = useState<boolean>(false);
     const [formData, setFormData] = useState<supplierType>(initFormData);
     const [isUpdateSupplier, setISUpdateSupplier] = useState<boolean>(false);
+    const suplierDetailData = useSelector(
+        (state: any) => state.suplierDetailData.data
+    );
     const [paging, setPaging] = useState<pagingType>();
     const [dataSupplier, setDataSupplier] = useState<supplierType[]>();
     useEffect(() => {
@@ -180,11 +184,21 @@ const Supplier = () => {
             }
         }
     };
-    const handleEditSupplier = (supplier: supplierType) => {
-        // setISNewSupplier(true);
-        // setISUpdateSupplier(true);
-        // setFormData({ ...supplier });
-        console.log(dataSupplier);
+    const handleEditSupplier = async (supplier: supplierType) => {
+        if (supplier.id) {
+            const res = await dispatch(getSupplier(supplier.id));
+            try {
+                if (res.payload.success) {
+                    setISNewSupplier(true);
+                    setISUpdateSupplier(true);
+                    setFormData({ ...res.payload.data });
+                }
+            } catch (error) {
+                toast.error(
+                    `sảy ra lỗi ở máy chủ! vui lòng chở trong giây lát}`
+                );
+            }
+        }
     };
     return (
         <div className="flex flex-col p-4">
@@ -216,10 +230,8 @@ const Supplier = () => {
                             <tr>
                                 <td className="px-4 py-2">ID</td>
                                 <td className="px-4 py-2">NAME</td>
-                                <td className="px-4 py-2">IMAGE</td>
-                                <td className="px-4 py-2">COLOR</td>
-                                <td className="px-4 py-2">PRICE</td>
-                                <td className="px-4 py-2">SPECIFICATION</td>
+                                <td className="px-4 py-2">EMAIL</td>
+                                <td className="px-4 py-2">PHONENUMBER</td>
                                 <td className="px-4 py-2 text-right">ACTION</td>
                             </tr>
                         </thead>
@@ -247,12 +259,6 @@ const Supplier = () => {
                                                 {item.phoneNumber}
                                             </span>
                                         </td>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm font-semibold">
-                                                sdfsdf
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">fcdsf</td>
                                         <td className="px-4 py-2">
                                             <div className="flex justify-end text-right">
                                                 <button
@@ -305,7 +311,9 @@ const Supplier = () => {
                 showModalTitle={true}
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
-                        Tạo Supplier mới
+                        {isUpdateSupplier
+                            ? "chỉnh sửa nhà cung cấp"
+                            : "Tạo nhà cung cấp mới"}
                     </h1>
                 }
                 bgAll="bg"
@@ -436,7 +444,11 @@ const Supplier = () => {
                             {isUpdateSupplier ? "Chỉnh sửa" : "Tạo"}
                         </button>
                         <button
-                            onClick={() => setISNewSupplier(false)}
+                            onClick={() => {
+                                setISNewSupplier(false);
+                                setISUpdateSupplier(false);
+                                if (formData.email) setFormData(initFormData);
+                            }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
                             đóng

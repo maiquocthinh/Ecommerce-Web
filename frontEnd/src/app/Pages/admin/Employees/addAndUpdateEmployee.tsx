@@ -120,7 +120,9 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                     setFormData(initFormData);
                     setFormDataAddress(initFormDataAddress);
                     setIsNewEmployee(false);
-                    dispatch(adminAllEmployees({ pageIndex: 1, pageSize: 10 }));
+                    await dispatch(
+                        adminAllEmployees({ pageIndex: 1, pageSize: 10 })
+                    );
                 } else {
                     toast.error(
                         response.payload.message ||
@@ -137,7 +139,9 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                     setFormData(initFormData);
                     setFormDataAddress(initFormDataAddress);
                     setIsNewEmployee(false);
-                    dispatch(adminAllEmployees({ pageIndex: 1, pageSize: 10 }));
+                    await dispatch(
+                        adminAllEmployees({ pageIndex: 1, pageSize: 10 })
+                    );
                 } else {
                     toast.error(
                         response.payload.message ||
@@ -190,7 +194,9 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                     showModalTitle={true}
                     modalTitle={
                         <h1 className="font-bold text-2xl text-white select-none mt-2">
-                            Thêm sản phẩm mới
+                            {!employeeIdUpdate
+                                ? "Thêm sản phẩm mới"
+                                : "chỉnh sửa phẩm mới"}
                         </h1>
                     }
                     mainContent={
@@ -269,6 +275,11 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                                 handleGetOptionBySelect
                                             }
                                             typeId="gender"
+                                            valueUpdate={
+                                                formData.gender
+                                                    ? ["nam"]
+                                                    : ["nữ"]
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -359,6 +370,11 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                                     handleGetOptionBySelect
                                                 }
                                                 typeId="roleId"
+                                                valueUpdateOj={
+                                                    formData.roleId > 0
+                                                        ? formData
+                                                        : undefined
+                                                }
                                             />
                                         ) : null}
                                     </div>

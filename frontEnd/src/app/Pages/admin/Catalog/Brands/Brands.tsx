@@ -117,6 +117,7 @@ const Brands = () => {
                         toast.success("chỉnh sửa nhãn hàng thành công!");
                         setFormData(initFormData);
                         setISNewBrand(false);
+                        setISUpdateBrand(false);
                     } else {
                         toast.error(
                             `chỉnh sửa nhãn hàng thất bại! ${res.payload.message}`
@@ -183,6 +184,7 @@ const Brands = () => {
                 searchValue={searchValue}
                 handleSearch={handleSearchBrand}
                 handleReset={handleResetBrands}
+                placeholder="tìm kiếm theo nhãn hàng"
             />
             {adminBrandsData?.data?.list.length ? (
                 <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
@@ -217,7 +219,9 @@ const Brands = () => {
                 showModalTitle={true}
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
-                        Tạo Brand mới
+                        {isUpdateBrand
+                            ? "chỉnh sửa nhãn hàng"
+                            : "Tạo nhãn hàng mới"}
                     </h1>
                 }
                 bgAll="bg"
@@ -225,7 +229,7 @@ const Brands = () => {
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
                             <p className="text-gray-300 text-sm text-start mb-1">
-                                mô tả :
+                                tên :
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"
@@ -240,7 +244,7 @@ const Brands = () => {
                         </div>
                         <div className="flex-1">
                             <p className="text-gray-300 text-sm text-start mb-1">
-                                chọn nhà cung cấp :
+                                mô tả :
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"
@@ -265,7 +269,13 @@ const Brands = () => {
                             {isUpdateBrand ? "Chỉnh sửa" : "Tạo"}
                         </button>
                         <button
-                            onClick={() => setISNewBrand(false)}
+                            onClick={() => {
+                                setISNewBrand(false);
+                                setISUpdateBrand(false);
+                                if (formData.name) {
+                                    setFormData(initFormData);
+                                }
+                            }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
                             đóng

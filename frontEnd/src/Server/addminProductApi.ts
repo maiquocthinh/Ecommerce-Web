@@ -3,11 +3,11 @@ import { getProductType } from "@/common/getAllType";
 import { cretaeProductVersionType } from "@/common/product";
 import Cookies from "js-cookie";
 import axios from "../utils/instance";
-const headers = {
-    Authorization: `Bearer ${Cookies.get("AdminToken")}`,
-};
 
 const handleGetAllProducts = (formData: getProductType) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     const { Keyword, SortedBy, pageIndex, pageSize, Filters } = formData;
     const queryParams: any = {};
 
@@ -48,27 +48,45 @@ const handleGetAllProducts = (formData: getProductType) => {
     });
 };
 const handGetProduct = () => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     return axios.post(`/api/products/get`, { headers });
 };
 const handleCreateProduct = (formData: addProductType) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     return axios.post(`/api/products/create`, formData, { headers });
 };
 const handleUpdateProduct = (formData: addProductType) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     const { id } = formData;
     return axios.patch(`/api/products/update/${id}`, formData, {
         headers,
     });
 };
 const handleDeleteProduct = (productId: number) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     return axios.delete(`/api/products/delete/${productId}`, { headers });
 };
 const handleCreateNewProductVersion = (formData: cretaeProductVersionType) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     return axios.post(`/api/products/version/create`, formData, { headers });
 };
 const handleUpdateProductVersion = (
     formData: cretaeProductVersionType,
     productVersionId: number
 ) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     return axios.patch(
         `/api/products/version/update/${productVersionId}`,
         formData,
@@ -76,6 +94,9 @@ const handleUpdateProductVersion = (
     );
 };
 const handleDeleteProductVersion = (productVersionId: number) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     return axios.delete(`/api/products/version/delete/${productVersionId}`, {
         headers,
     });

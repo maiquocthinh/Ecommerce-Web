@@ -23,7 +23,6 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(AdminLogin.fulfilled, (state, action) => {
-                state.isLoggedInAdmin = true;
                 state.data = action.payload;
                 state.loading = false;
             })

@@ -15,6 +15,20 @@ export const AdminLogin = createAsyncThunk(
         }
     }
 );
+export const AdminLogout = createAsyncThunk(
+    "AdminLogout/AdminLogout",
+    async (refreshToken: string) => {
+        try {
+            const response = await adminEmployeesApi.handleLogoutAdmin(
+                refreshToken
+            );
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
 export const adminAllEmployees = createAsyncThunk(
     "adminAllEmployees/adminAllEmployees",
     async (formData: getEmployeesType) => {

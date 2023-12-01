@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import { AdminLogout } from "@/app/action/adminAction/adminEmployees";
+import Notification from "@/Components/PageLoader/Notification";
+import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
 import { BiTable, BiUserPin } from "react-icons/Bi";
 import { FaHouseUser, FaJediOrder } from "react-icons/fa";
 import { FiSettings, FiUsers, FiLogOut } from "react-icons/Fi";
@@ -7,9 +10,9 @@ import {
     MdOutlineProductionQuantityLimits,
 } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 type taskType = {
     id: string | number;
     Icon: React.ReactNode;
@@ -19,7 +22,9 @@ type taskType = {
     listMore?: { id: string | number; link: string; label: string }[];
 };
 const AdminSidebar = () => {
-    const [active, setActive] = useState<number | string>(1);
+    const dispatch = useDispatch<any>();
+    const currentPathname = window.location.pathname;
+    const [active, setActive] = useState<string>(currentPathname);
     const [showMore, setShowMore] = useState<number | string>("");
     const router = useNavigate();
     const adminRole = useSelector((state: any) => state.adminRole.data);
@@ -31,82 +36,92 @@ const AdminSidebar = () => {
             link: "/admin/dashboard",
         },
         {
-            id: 7,
+            id: 2,
             Icon: <FaHouseUser size={22} />,
-            label: "Empoyees",
+            label: "Emlpoyees management",
             link: "/admin/employees",
         },
         {
-            id: 6,
+            id: 3,
             Icon: <MdOutlineProductionQuantityLimits size={22} />,
             label: "products management",
             link: "/admin/products",
         },
         {
-            id: 2,
+            id: 4,
             Icon: <BiTable size={22} />,
             label: "Catalog",
             more: <MdOutlineExpandMore size={22} />,
             listMore: [
                 {
-                    id: 1,
+                    id: 5,
                     link: "/admin/catalog/categories",
                     label: "categories",
                 },
                 {
-                    id: 2,
+                    id: 6,
                     link: "/admin/catalog/brands",
                     label: "brands",
                 },
                 {
-                    id: 3,
+                    id: 7,
                     link: "/admin/catalog/needs",
                     label: "needs",
                 },
             ],
         },
         {
-            id: 3,
+            id: 8,
             Icon: <FiUsers size={22} />,
             label: "role management",
             link: "/admin/role",
         },
         {
-            id: 4,
-            Icon: <FaJediOrder size={22} />,
-            label: "orders",
+            id: 9,
+            Icon: <BiUserPin size={22} />,
+            label: "orders management",
             link: "/admin/orders",
         },
         {
-            id: 5,
+            id: 10,
             Icon: <BiUserPin size={22} />,
-            label: "our Staff",
-            link: "/admin/staff",
-        },
-        {
-            id: 9,
-            Icon: <BiUserPin size={22} />,
-            label: "supplier",
+            label: "supplier management",
             link: "/admin/supplier",
         },
-        {
-            id: 8,
-            Icon: <FiSettings size={22} />,
-            label: "Settings",
-            link: "/admin/setting",
-        },
     ];
+    useEffect(() => {
+        setActive(currentPathname);
+    }, [currentPathname]);
     const handleTask = (task: taskType) => {
-        setActive(task.id);
         setShowMore("");
         if (task.link) router(task.link);
     };
     const handleShowMore = (task: taskType) => {
-        setActive(task.id);
         if (showMore === "") {
             setShowMore(task.id);
         } else {
             setShowMore("");
+        }
+    };
+    const handleLogout = async () => {
+        const refreshTokenAdmin = Cookies.get("refreshTokenAdmin") as string;
+        if (refreshTokenAdmin) {
+            const res = await dispatch(AdminLogout(refreshTokenAdmin));
+            try {
+                if (res.payload.success) {
+                    toast.success("đăng xuất thành công");
+                    Cookies.remove("refreshTokenExpiredInAdmin");
+                    Cookies.remove("refreshTokenAdmin");
+                    Cookies.remove("accessTokenExpiredInAdmin");
+                    Cookies.remove("AdminToken");
+                    localStorage.clear();
+                    router("/");
+                } else {
+                    toast.error("đăng xuất thất bại");
+                }
+            } catch (error) {
+                toast.error("lỗi hệ thông vui lòng thử lại");
+            }
         }
     };
     return (
@@ -128,7 +143,10 @@ const AdminSidebar = () => {
                                         <div
                                             onClick={() => handleTask(task)}
                                             className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${
-                                                active === task.id
+                                                active ===
+                                                (task.listMore
+                                                    ? task.listMore[0]
+                                                    : task.link)
                                                     ? "text-custom-addmin_Active__color"
                                                     : "hover:text-white"
                                             }`}
@@ -142,7 +160,11 @@ const AdminSidebar = () => {
                                 return (
                                     <div
                                         key={task.id}
-                                        className="flex flex-col gap-2"
+                                        className={`flex flex-col gap-2 ${
+                                            currentPathname.includes("catalog")
+                                                ? "text-custom-addmin_Active__color"
+                                                : ""
+                                        }`}
                                     >
                                         <div>
                                             <div
@@ -163,16 +185,16 @@ const AdminSidebar = () => {
                                         </div>
                                         {showMore === task.id && (
                                             <div
-                                                className={`flex flex-col gap-2 bg-custom-addmin_bg p-2 rounded-md text-lg text-[#6b7280] transition-all ease-in-out duration-200 ${
-                                                    active === task.id
-                                                        ? "text-custom-addmin_Active__color"
-                                                        : "hover:text-white"
-                                                }`}
+                                                className={`flex flex-col gap-2 bg-custom-addmin_bg p-2 rounded-md text-lg text-[#6b7280] transition-all ease-in-out duration-200`}
                                             >
                                                 {task.listMore.map((item) => (
                                                     <span
                                                         key={item.id}
-                                                        className="hover:text-white cursor-pointer"
+                                                        className={`hover:text-white cursor-pointer ${
+                                                            active === item.link
+                                                                ? "text-custom-addmin_Active__color"
+                                                                : "hover:text-white"
+                                                        }`}
                                                         onClick={() =>
                                                             router(item.link)
                                                         }
@@ -189,10 +211,15 @@ const AdminSidebar = () => {
                     </div>
                 </div>
                 <div className="flex items-center  gap-3 justify-center w-full cursor-pointer text-center bg-[#0ea573] hover:bg-custom-addmin_Active__color rounded-lg py-3 text-white text-sm font-normal mb-8">
-                    <FiLogOut />
-                    <button className="border-none">Logout</button>
+                    <button
+                        onClick={handleLogout}
+                        className="border-none flex items-center gap-2"
+                    >
+                        <FiLogOut /> Logout
+                    </button>
                 </div>
             </div>
+            <Notification />
         </div>
     );
 };

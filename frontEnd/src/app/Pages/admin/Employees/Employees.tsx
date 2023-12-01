@@ -317,18 +317,6 @@ const Employees = () => {
                                                         </button>
                                                     </Tippy>
                                                     <Tippy
-                                                        content="chi tiết"
-                                                        placement="bottom"
-                                                        delay={100}
-                                                        className="border text-custom-Colorprimary border-custom-Colorprimary rounded-md px-1"
-                                                    >
-                                                        <button>
-                                                            <LiaSearchPlusSolid
-                                                                size={22}
-                                                            />
-                                                        </button>
-                                                    </Tippy>
-                                                    <Tippy
                                                         content="xóa"
                                                         placement="bottom"
                                                         delay={100}

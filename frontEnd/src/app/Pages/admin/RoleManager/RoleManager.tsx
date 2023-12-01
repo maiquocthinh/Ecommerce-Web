@@ -365,6 +365,7 @@ const RoleManager = () => {
                         <button
                             onClick={() => {
                                 setISNewRole(false);
+                                setISUpdateRole(false);
                                 if (
                                     formData.name ||
                                     formData.permissions.length

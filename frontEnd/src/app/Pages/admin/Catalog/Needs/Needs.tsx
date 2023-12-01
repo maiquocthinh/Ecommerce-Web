@@ -118,6 +118,7 @@ const Needs = () => {
                         toast.success("chỉnh sửa Nhu cầu thành công!");
                         setFormData(initFormData);
                         setISNewNeed(false);
+                        setISUpdateNeed(false);
                     } else {
                         toast.error(
                             `chỉnh sửa Nhu cầu thất bại! ${res.payload.message}`
@@ -184,6 +185,7 @@ const Needs = () => {
                 searchValue={searchValue}
                 handleSearch={handleSearchNeed}
                 handleReset={handleResetNeed}
+                placeholder="tìm kiếm theo nhu cầu"
             />
             {adminNeedsData?.data?.list.length ? (
                 <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
@@ -218,7 +220,7 @@ const Needs = () => {
                 showModalTitle={true}
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
-                        Tạo Need mới
+                        {isUpdateNeed ? "chỉnh sửa nhu cầu" : "Tạo nhu cầu mới"}
                     </h1>
                 }
                 bgAll="bg"
@@ -226,7 +228,7 @@ const Needs = () => {
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
                             <p className="text-gray-300 text-sm text-start mb-1">
-                                mô tả :
+                                tên :
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"
@@ -241,7 +243,7 @@ const Needs = () => {
                         </div>
                         <div className="flex-1">
                             <p className="text-gray-300 text-sm text-start mb-1">
-                                chọn nhà cung cấp :
+                                mô tả :
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"
@@ -251,7 +253,7 @@ const Needs = () => {
                                 onChange={(
                                     e: React.ChangeEvent<HTMLInputElement>
                                 ) => handleOnChange(e)}
-                                placeholder="nhập mô tả Nhu cầu"
+                                placeholder="mô tả"
                             />
                         </div>
                     </div>
@@ -266,7 +268,13 @@ const Needs = () => {
                             {isUpdateNeed ? "Chỉnh sửa" : "Tạo"}
                         </button>
                         <button
-                            onClick={() => setISNewNeed(false)}
+                            onClick={() => {
+                                setISNewNeed(false);
+                                setISUpdateNeed(false);
+                                if (formData.title) {
+                                    setFormData(initFormData);
+                                }
+                            }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
                             đóng

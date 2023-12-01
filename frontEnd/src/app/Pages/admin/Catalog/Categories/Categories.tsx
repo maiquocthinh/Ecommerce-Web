@@ -126,6 +126,7 @@ const Categories = () => {
                         toast.success("chỉnh sửa nhãn hàng thành công!");
                         setFormData(initFormData);
                         setISNewCategory(false);
+                        setISUpdateCategory(false);
                     } else {
                         toast.error(
                             `chỉnh sửa nhãn hàng thất bại! ${res.payload.message}`
@@ -193,6 +194,7 @@ const Categories = () => {
                 searchValue={searchValue}
                 handleSearch={handleSearchCategory}
                 handleReset={handleResetCategory}
+                placeholder="tìm kiếm theo danh mục"
             />
             {adminCategoriesData?.data?.list.length ? (
                 <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
@@ -229,7 +231,9 @@ const Categories = () => {
                 showModalTitle={true}
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
-                        Tạo Category mới
+                        {isUpdateCategory
+                            ? "chỉnh sửa danh mục"
+                            : "Tạo danh mục mới"}
                     </h1>
                 }
                 bgAll="bg"
@@ -237,7 +241,7 @@ const Categories = () => {
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
                             <p className="text-gray-300 text-sm text-start mb-1">
-                                mô tả :
+                                tên :
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"
@@ -252,7 +256,7 @@ const Categories = () => {
                         </div>
                         <div className="flex-1">
                             <p className="text-gray-300 text-sm text-start mb-1">
-                                chọn nhà cung cấp :
+                                mô tả :
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"
@@ -277,7 +281,13 @@ const Categories = () => {
                             {isUpdateCategory ? "Chỉnh sửa" : "Tạo"}
                         </button>
                         <button
-                            onClick={() => setISNewCategory(false)}
+                            onClick={() => {
+                                setISNewCategory(false);
+                                setISUpdateCategory(false);
+                                if (formData.name) {
+                                    setFormData(initFormData);
+                                }
+                            }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
                             đóng

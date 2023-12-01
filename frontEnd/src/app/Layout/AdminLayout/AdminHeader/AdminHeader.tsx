@@ -1,3 +1,4 @@
+import Notification from "@/Components/PageLoader/Notification";
 import { setshowAdminSlide } from "@/app/Slices/common/showAdminSlide";
 import { getListRoles } from "@/app/action/adminAction/adminRoles";
 import {
@@ -5,6 +6,7 @@ import {
     getAllCategories,
     getAllNeeds,
 } from "@/app/action/catalogs";
+import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,10 +17,11 @@ const AdminHeader = () => {
     const dispatch = useDispatch<any>();
     useEffect(() => {
         dispatch(getAllCategories());
-        dispatch(getAllBrands(""));
+        dispatch(getAllBrands());
         dispatch(getAllNeeds());
         dispatch(getListRoles({ pageIndex: 1, pageSize: 100 }));
     }, [dispatch]);
+    const adminRole = useSelector((state: any) => state.adminRole.data);
     return (
         <div className="bg-custom-admin_bg_content">
             <div
@@ -42,6 +45,7 @@ const AdminHeader = () => {
                     <span>A</span>
                 </button>
             </div>
+            <Notification />
         </div>
     );
 };

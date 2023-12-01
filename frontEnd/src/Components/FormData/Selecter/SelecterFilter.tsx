@@ -10,6 +10,7 @@ interface SelecterFilterProps {
     isReset?: boolean;
     h?: string;
     setIsReset?: (value: boolean) => void;
+    placeholder?: string;
 }
 
 const SelecterFilter: React.FC<SelecterFilterProps> = ({
@@ -20,6 +21,7 @@ const SelecterFilter: React.FC<SelecterFilterProps> = ({
     isMulti,
     isReset,
     setIsReset,
+    placeholder,
     h,
 }) => {
     const [selectedOption, setSelectedOption] = useState<any>(null);
@@ -71,7 +73,7 @@ const SelecterFilter: React.FC<SelecterFilterProps> = ({
         <div className="h-full">
             <Select
                 value={selectedOption}
-                placeholder={defaultValue}
+                placeholder={placeholder || "chọn để lọc"}
                 isMulti={isMulti ? true : false}
                 onChange={setSelectedOption}
                 options={options}

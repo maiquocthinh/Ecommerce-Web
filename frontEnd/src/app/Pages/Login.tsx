@@ -4,15 +4,16 @@ import Notification from "@/Components/PageLoader/Notification";
 import { UserType } from "@/common";
 import { loginFormControls } from "@/utils/Data";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { setIsLoggedInAdmin } from "../Slices/admin/AdminLoginSlice";
+import { setRoleAdmin } from "../Slices/common/adminRole";
 import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
 import { login } from "../action/UserAction";
 import { AdminLogin } from "../action/adminAction/adminEmployees";
-import { jwtDecode } from "jwt-decode";
-import { setRoleAdmin } from "../Slices/common/adminRole";
 const initialFormdata = {
     email: "",
     password: "",
@@ -30,23 +31,55 @@ export default function Login() {
     const err = useSelector(
         (state: { auth: UserType.AuthState }) => state.auth.error
     );
-    const errAdmin = useSelector((state: any) => state.authAmin.error);
     const isLoggedIn = useSelector(
         (state: { auth: UserType.AuthState }) => state.auth.isLoggedIn
-    );
-    const isLoggedInAdmin = useSelector(
-        (state: any) => state.authAmin.isLoggedInAdmin
     );
     const componentLoading = useSelector(
         (state: any) => state.componentLoading.componentLevelLoading
     );
     const route = useNavigate();
     const pathname = window.location.pathname;
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if (isValidForm()) {
             dispatch(setComponentLevelLoading({ loading: true, id: "" }));
             if (pathname.includes("/admin")) {
-                dispatch(AdminLogin(formData));
+                const res = await dispatch(AdminLogin(formData));
+                if (res.payload.success) {
+                    Cookies.set("AdminToken", res.payload?.data?.accessToken);
+                    const decodedValue = jwtDecode(
+                        res.payload.data?.accessToken
+                    ) as {
+                        permissions: {}[];
+                    };
+                    dispatch(setRoleAdmin(decodedValue.permissions));
+                    Cookies.set(
+                        "accessTokenExpiredInAdmin",
+                        res.payload?.data?.accessTokenExpiredIn
+                    );
+                    Cookies.set(
+                        "refreshTokenAdmin",
+                        res.payload?.data?.refreshToken
+                    );
+                    Cookies.set(
+                        "refreshTokenExpiredInAdmin",
+                        res.payload?.data?.refreshTokenExpiredIn
+                    );
+                    dispatch(
+                        setComponentLevelLoading({ loading: false, id: "" })
+                    );
+                    dispatch(setIsLoggedInAdmin(true));
+                    toast.success("đăng nhập thành công", {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                    route("/admin/dashboard");
+                } else {
+                    dispatch(
+                        setComponentLevelLoading({ loading: false, id: "" })
+                    );
+                    toast.error(
+                        `đăng nhập thất bại ${adminAuthData?.message || ""}`
+                    );
+                }
             } else {
                 dispatch(login(formData));
             }
@@ -79,23 +112,7 @@ export default function Login() {
             });
             dispatch(setComponentLevelLoading({ loading: false, id: "" }));
         }
-        if (isLoggedInAdmin) {
-            Cookies.set("AdminToken", adminAuthData.data.accessToken);
-            const decodedValue = jwtDecode(adminAuthData.data.accessToken) as {
-                permissions: {}[];
-            };
-            dispatch(setRoleAdmin(decodedValue.permissions));
-            // Cookies.set(
-            //     "refreshTokenExpiredIn",
-            //     adminAuthData.refreshTokenExpiredIn
-            // );
-            // Cookies.set("refreshToken", adminAuthData.refreshToken);
-            toast.success("đăng nhập thành công", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
-        }
-    }, [isLoggedIn, data, dispatch, isLoggedInAdmin, adminAuthData]);
+    }, [isLoggedIn, data, dispatch]);
     useEffect(() => {
         if (err !== null) {
             toast.error("tài khoản không tồn tại", {
@@ -103,15 +120,7 @@ export default function Login() {
             });
             dispatch(setComponentLevelLoading({ loading: false, id: "" }));
         }
-        if (errAdmin !== null) {
-            toast.error("tài khoản không tồn tại", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
-        }
-        if (isLoggedIn) route("/");
-        if (isLoggedInAdmin) route("/admin/dashboard");
-    }, [isLoggedIn, err, dispatch, isLoggedInAdmin, errAdmin]);
+    }, [isLoggedIn, err, dispatch]);
     return (
         <div className="relative">
             <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mr-auto xl:px-5 lg:flex-row">

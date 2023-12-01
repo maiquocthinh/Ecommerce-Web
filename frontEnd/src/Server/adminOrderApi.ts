@@ -1,11 +1,11 @@
 import { getOrderType } from "@/common/getAllType";
 import Cookies from "js-cookie";
 import axios from "../utils/instance";
-const headers = {
-    Authorization: `Bearer ${Cookies.get("AdminToken")}`,
-};
 
 const handleGetListOrder = (formData: getOrderType) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     const { pageIndex, pageSize, CustomerName, EndDate, StartDate, Status } =
         formData;
     const queryParams: any = {};
@@ -22,9 +22,15 @@ const handleGetListOrder = (formData: getOrderType) => {
     });
 };
 const handleGetOrderDetail = (orderId: number) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     return axios.get(`/api/orders/${orderId}`, { headers });
 };
 const handleUpdateStatus = (formData: { orderId: number; status: string }) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     const { orderId, status } = formData;
     return axios.post(`/api/orders/${orderId}`, { status }, { headers });
 };
@@ -32,6 +38,9 @@ const handleUpdateOrderDetail = (param: {
     orderDetailId: number;
     importShipmentId: number;
 }) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
     return axios.patch(
         `/api/order-detail/${param.orderDetailId}`,
         param.importShipmentId,

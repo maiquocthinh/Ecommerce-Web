@@ -284,6 +284,7 @@ const ProductsManager = () => {
                                         },
                                     ]}
                                     typeId="Viewable"
+                                    placeholder="lựa chọn hiển thị"
                                 />
                             </div>
                             <div>
@@ -296,14 +297,15 @@ const ProductsManager = () => {
                                     options={[
                                         {
                                             name: "còn hàng",
-                                            value: true,
+                                            value: false,
                                         },
                                         {
                                             name: "hết hàng",
-                                            value: false,
+                                            value: true,
                                         },
                                     ]}
                                     typeId="OutOfStock"
+                                    placeholder="hàng có sẳn"
                                 />
                             </div>
                             <div>
@@ -316,6 +318,7 @@ const ProductsManager = () => {
                                         }
                                         options={categoriesData}
                                         typeId="CategoryId"
+                                        placeholder="chọn danh mục"
                                     />
                                 ) : null}
                             </div>
@@ -329,6 +332,7 @@ const ProductsManager = () => {
                                         }
                                         options={branchData}
                                         typeId="BrandId"
+                                        placeholder="chọn nhãn hàng"
                                     />
                                 ) : null}
                             </div>
@@ -342,6 +346,7 @@ const ProductsManager = () => {
                                         }
                                         options={needsData}
                                         typeId="NeedId"
+                                        placeholder="chọn nhu cầu"
                                     />
                                 ) : null}
                             </div>
@@ -398,7 +403,14 @@ const ProductsManager = () => {
                                                 {product.id}
                                             </span>
                                         </td>
-                                        <td className="px-4 py-2">
+                                        <td
+                                            className="px-4 py-2"
+                                            style={{
+                                                maxWidth: "200px",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                            }}
+                                        >
                                             <span className="text-sm">
                                                 {product.name}
                                             </span>
@@ -446,6 +458,8 @@ const ProductsManager = () => {
                                                     product.categoryId || 0
                                                 } -brandId :${
                                                     product.brandId || 0
+                                                } -needId :${
+                                                    product.needId || 0
                                                 }`}
                                             </span>
                                         </td>

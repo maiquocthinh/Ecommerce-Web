@@ -144,6 +144,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                                 </p>
                                 {needsData?.length ? (
                                     <SelecterLab
+                                        valueUpdateOj={formData}
                                         options={needsData}
                                         handleGetOptionBySelect={
                                             handleGetOptionBySelect
@@ -177,6 +178,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                                 </p>
                                 {categoriesData?.length ? (
                                     <SelecterLab
+                                        valueUpdateOj={formData}
                                         options={categoriesData}
                                         handleGetOptionBySelect={
                                             handleGetOptionBySelect
@@ -209,6 +211,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                                 </p>
                                 {branchData?.length ? (
                                     <SelecterLab
+                                        valueUpdateOj={formData}
                                         options={branchData}
                                         handleGetOptionBySelect={
                                             handleGetOptionBySelect
