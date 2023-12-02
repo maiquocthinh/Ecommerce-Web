@@ -21,6 +21,7 @@ import Employees from "../Pages/admin/Employees/Employees";
 import OrderDetail from "../Pages/admin/Orders/OrderDetail/OrderDetail";
 import Orders from "../Pages/admin/Orders/Orders";
 import Discounts from "../Pages/admin/ProductsManager/Discounts/Discounts";
+import Imports from "../Pages/admin/ProductsManager/Imports/Imports";
 import Inventories from "../Pages/admin/ProductsManager/Inventories/Inventories";
 import AdminDetailProduct from "../Pages/admin/ProductsManager/Product/AdminProductVersion/AdminProductVersion";
 import ProductsManager from "../Pages/admin/ProductsManager/Product/ProductsManager";
@@ -141,6 +142,11 @@ const privateRouter: RouteConfig[] = [
     {
         path: "/admin/products-manages/inventories",
         element: Inventories,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/products-manages/imports",
+        element: Imports,
         Layout: AdminLayout,
     },
     {

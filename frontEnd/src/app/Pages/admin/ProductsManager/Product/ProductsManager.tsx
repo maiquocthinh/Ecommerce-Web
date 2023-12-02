@@ -35,7 +35,7 @@ import { toast } from "react-toastify";
 import AddAndUpdateProduct from "./addAndUpdateProduct";
 import DetailProduct from "./detailProduct";
 import { useNavigate } from "react-router-dom";
-import DiscountModal from "@/Components/Modal/DiscountModal/discountModal";
+import DiscountModal from "@/Components/Modal/DiscountModal/DiscountModal";
 const ProductsManager = () => {
     const router = useNavigate();
     const dispatch = useDispatch<any>();

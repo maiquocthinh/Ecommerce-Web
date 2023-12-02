@@ -200,7 +200,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
             showModalTitle
             modalTitle={
                 <h1 className="font-bold text-2xl text-white">
-                    chỉnh sửa giảm giá
+                    {type ? "Tạo mã giảm giá" : "chỉnh sửa giảm giá"}
                 </h1>
             }
             showButtons
@@ -210,7 +210,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                         onClick={handleAddNewOrUpdateDiscount}
                         className="px-4 py-2 border-b-4 border border-green-500 text-green-500 hover:text-white hover:bg-green-500 transition-all duration-200"
                     >
-                        Hoàn tất
+                        {type ? "Tạo mới" : "chỉnh sửa"}
                     </button>
 
                     <button

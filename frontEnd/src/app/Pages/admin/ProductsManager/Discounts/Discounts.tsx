@@ -12,7 +12,7 @@ import { pagingType } from "@/common/paging";
 import { adminDiscountType, discounttype } from "@/common/discount";
 import { getDisscountType } from "@/common/getAllType";
 import { toast } from "react-toastify";
-import DiscountModal from "@/Components/Modal/DiscountModal/discountModal";
+import DiscountModal from "@/Components/Modal/DiscountModal/DiscountModal";
 const Discounts = () => {
     const dispatch = useDispatch<any>();
     const allDiscountData = useSelector(
@@ -151,6 +151,7 @@ const Discounts = () => {
                                 <td className="px-4 py-2">SỐ LƯỢNG</td>
                                 <td className="px-4 py-2">NGÀY BẮT ĐẦU</td>
                                 <td className="px-4 py-2">NGÀY KẾT THÚC</td>
+                                <td className="px-4 py-2">trạng thái</td>
                                 <td className="px-4 py-2">
                                     PHẦN TRĂM GIẢM GIÁ
                                 </td>
@@ -190,6 +191,13 @@ const Discounts = () => {
                                                 100
                                             ).toFixed(2)}{" "}
                                             %
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <span className="text-sm font-semibold">
+                                                {item.active
+                                                    ? "hoạt động"
+                                                    : "không hoạt động"}
+                                            </span>
                                         </td>
                                         <td className="px-4 py-2">
                                             <div className="flex justify-end text-right">

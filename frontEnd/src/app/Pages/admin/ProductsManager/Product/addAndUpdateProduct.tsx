@@ -221,6 +221,36 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                                 ) : null}
                             </div>
                         </div>
+                        {isUpdateProduct ? (
+                            <div className="flex justify-between gap-4">
+                                <div className="flex-1">
+                                    <p className="text-gray-300 text-sm text-start">
+                                        hoạt động :
+                                    </p>
+                                    <SelecterLab
+                                        options={[
+                                            {
+                                                id: true,
+                                                title: "đang hoạt động",
+                                            },
+                                            {
+                                                id: false,
+                                                title: "ngừng hoạt động",
+                                            },
+                                        ]}
+                                        handleGetOptionBySelect={
+                                            handleGetOptionBySelect
+                                        }
+                                        typeId="viewable"
+                                        valueUpdate={
+                                            formData.viewable
+                                                ? ["đang hoạt động"]
+                                                : ["ngừng hoạt động"]
+                                        }
+                                    />
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             }

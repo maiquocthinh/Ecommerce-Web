@@ -1,35 +1,47 @@
 import { supplierType } from "@/common/suppelier";
 import Cookies from "js-cookie";
 import axios from "../utils/instance";
+import { InventoryType } from "@/common/getAllType";
+import { importShipmentsType } from "@/common/Inventory";
 
-const handleGetAllSuppliers = () => {
+const handleGetAllInventory = (formParam: InventoryType) => {
     const headers = {
         Authorization: `Bearer ${Cookies.get("AdminToken")}`,
     };
-    return axios.get(`/api/supplier`, { headers });
+    const { pageIndex, pageSize, IsOutOfStock, Keyword } = formParam;
+    const queryParams: any = {};
+    if (Keyword) queryParams.Keyword = Keyword;
+    if (IsOutOfStock) queryParams.IsOutOfStock = IsOutOfStock;
+    if (pageIndex !== undefined) queryParams.pageIndex = pageIndex;
+    if (pageSize !== undefined) queryParams.pageSize = pageSize;
+
+    return axios.get(`/api/inventory`, {
+        headers,
+        params: queryParams,
+    });
 };
-const handleGetSupplier = (id: number) => {
+
+const handleGetAllImports = (formParam: {
+    pageIndex: number;
+    pageSize: number;
+}) => {
     const headers = {
         Authorization: `Bearer ${Cookies.get("AdminToken")}`,
     };
-    return axios.get(`/api/supplier/${id}`, { headers });
+    const { pageIndex, pageSize } = formParam;
+    const queryParams: any = {};
+    if (pageIndex !== undefined) queryParams.pageIndex = pageIndex;
+    if (pageSize !== undefined) queryParams.pageSize = pageSize;
+
+    return axios.get(`/api/inventory/imports`, {
+        headers,
+        params: queryParams,
+    });
 };
-const handleCreateSupplier = (formData: supplierType) => {
+const handleCreateImport = (formData: importShipmentsType) => {
     const headers = {
         Authorization: `Bearer ${Cookies.get("AdminToken")}`,
     };
-    return axios.post(`/api/supplier`, formData, { headers });
+    return axios.post(`/api/inventory/imports`, formData, { headers });
 };
-const handleDeleteSupplier = (id: number) => {
-    const headers = {
-        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
-    };
-    return axios.delete(`/api/supplier/${id}`, { headers });
-};
-const handleUpdateSupplier = (formData: supplierType, id: number) => {
-    const headers = {
-        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
-    };
-    return axios.patch(`/api/supplier/${id}`, formData, { headers });
-};
-export {};
+export { handleGetAllInventory, handleGetAllImports, handleCreateImport };

@@ -182,6 +182,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             </span>
                         </a>
                         {navListing?.length > 0 &&
+                            isLoggedIn &&
                             navListing.map((item) => (
                                 <div
                                     className={`cursor-pointer`}

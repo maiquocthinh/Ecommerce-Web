@@ -21,4 +21,5 @@ export interface addProductType {
     categoryId: number;
     brandId: number;
     needId?: number;
+    viewable?: string;
 }

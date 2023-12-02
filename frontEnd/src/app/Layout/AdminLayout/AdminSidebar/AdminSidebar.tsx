@@ -62,6 +62,11 @@ const AdminSidebar = () => {
                     link: "/admin/products-manages/inventories",
                     label: "inventories",
                 },
+                {
+                    id: 14,
+                    link: "/admin/products-manages/imports",
+                    label: "imports",
+                },
             ],
         },
         {

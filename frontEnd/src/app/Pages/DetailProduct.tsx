@@ -56,7 +56,8 @@ const DetailProduct = () => {
         dispatch(getAllCart());
     }, [dispatch, params]);
     useEffect(() => {
-        localStorage.setItem("cart", JSON.stringify(allCart.items));
+        if (allCart?.items)
+            localStorage.setItem("cart", JSON.stringify(allCart.items));
     }, [allCart]);
     useEffect(() => {
         if (productDetail?.catalogs?.categoryId) {

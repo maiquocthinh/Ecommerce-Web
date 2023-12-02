@@ -21,6 +21,7 @@ import * as AdminRolesSlice from "./Slices/admin/AdminRoles";
 import * as AdminOrderSlice from "./Slices/admin/AdminOrder";
 import * as AdminSupplierSlice from "./Slices/admin/AdminSupplier";
 import * as adminDiscount from "./Slices/admin/adminDiscount";
+import * as adminInventory from "./Slices/admin/adminInventory";
 export const store = configureStore({
     reducer: {
         modal: modalReducer,
@@ -102,6 +103,9 @@ export const store = configureStore({
         suplierDetailData: AdminSupplierSlice.AdminGetSupplierSlice.default,
         //discount
         allDiscountData: adminDiscount.AdminGetAllDiscount.default,
+        //inventory
+        allInventory: adminInventory.AdminGetAllInventory.default,
+        allImports: adminInventory.AdminGetAllImports.default,
     },
     middleware: [thunk],
 });

@@ -54,3 +54,10 @@ export interface getDisscountType {
     Active?: boolean;
     ProductName?: string;
 }
+export interface InventoryType {
+    id?: number;
+    pageIndex: number;
+    pageSize: number;
+    IsOutOfStock?: boolean;
+    Keyword?: string;
+}
