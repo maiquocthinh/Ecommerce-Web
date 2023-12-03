@@ -3,7 +3,6 @@ using Backend.Models;
 
 namespace Backend.Repositories.Interfaces;
 
-public interface IRoleRepository : IRepository<Role>
+public interface IRoleRepository : IRepository<Role>, IRepositoryQueryable<Role>
 {
-    Task<IQueryable<Role>> FilteredRole(RoleFilterDto filterDto);
 }

@@ -8,7 +8,6 @@ using Backend.Models;
 using Backend.Repositories;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
-using Castle.Core.Resource;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -22,16 +21,18 @@ public class OrderService : IOrderService
     private readonly IOrderDetailRepository _orderDetailRepository;
     private readonly ICustomerRepository _customerRepository;
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IShippingAddressRepository _shippingAddressRepository;
     private readonly IRabbitMQService _rabbitMqService;
 
     public OrderService(IHttpContextAccessor httpContextAccessor, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository,
-        ICustomerRepository customerRepository, IEmployeeRepository employeeRepository,IRabbitMQService rabbitMqService)
+        ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IShippingAddressRepository shippingAddressRepository, IRabbitMQService rabbitMqService)
     {
         _httpContext = httpContextAccessor.HttpContext;
         _orderRepository = orderRepository;
         _orderDetailRepository = orderDetailRepository;
         _customerRepository = customerRepository;
         _employeeRepository = employeeRepository;
+        _shippingAddressRepository = shippingAddressRepository;
         _rabbitMqService = rabbitMqService;
     }
 
@@ -76,10 +77,12 @@ public class OrderService : IOrderService
                     RecipientName = o.RecipientName,
                     PhoneNumber = o.PhoneNumber,
                 },
-                OrderDetails = orderDetails.Select(od => new _OrderDetail
+                OrderDetails = orderDetails.Select(od => new __OrderDetail
                 {
+                    Id = (int)od.Id,
                     ProductVersionId = od.ProductVersionId,
                     ProductVersionName = od.ProductVersion.Name,
+                    ImageUrl = od.ProductVersion.ImageUrl,
                     Quantity = od.Quantity,
                     OriginPrice = od.OriginPrice,
                     Price = od.Price,
@@ -137,7 +140,35 @@ public class OrderService : IOrderService
         _rabbitMqService.PublishMessage(queueName: QueueNames.EmailQueue, message: emailMessageJson);
     }
 
-    public async Task<IQueryable<OrderInfoDto>> ListFilteredOrders(OrderFilterDto filterDto)
+    public async Task ChangeDeliveryAddressOfOrder(int orderId, int shippingAddressId)
+    {
+        int customerId = int.Parse(_httpContext?.User.Claims.FirstOrDefault(c => c.Type == AppClaimTypes.CustomerId)?.Value);
+        var customer = await _customerRepository.GetById(customerId);
+        if (customer is null) throw new NotFoundException("Customer not found.");
+
+        var order = await _orderRepository.GetById(orderId);
+        if (order is null || order.CustomerId != customerId) throw new NotFoundException("Order not found!");
+
+        var shippingInfo = await _shippingAddressRepository.GetById(shippingAddressId);
+        if (shippingInfo == null || shippingInfo.CustomerId != customerId) throw new NotFoundException("Shipping address not found.");
+        var address = shippingInfo.Address;
+
+        order.RecipientName = shippingInfo.RecipientName;
+        order.PhoneNumber = shippingInfo.PhoneNumber;
+        order.Address = $"{address.SpecificAddress}, {address.Wards}, {address.Districts}, {address.Province}";
+        try
+        {
+            await _orderRepository.Update(order);
+        }
+        catch (DbUpdateException e)
+        {
+            if (e.InnerException is SqlException sqlException)
+                foreach (SqlError error in sqlException.Errors)
+                    if (error.Number == 50000)
+                        throw new ConflictException(error.Message);
+        }
+    }
+    public async Task<IQueryable<OrderInfoDto>> GetListOrders(OrderFilterDto filterDto)
     {
         var query = _orderRepository.GetQueryable();
 
@@ -186,46 +217,60 @@ public class OrderService : IOrderService
         var order = await _orderRepository.GetById(orderId);
         if (order == null) throw new NotFoundException("Order not found");
 
-        switch (updateInputDto.Status) {
-            case OrderStatus.Cancelled:
-                order.Status = updateInputDto.Status;
-                order.EmployeeId = employeeId;
-                await _orderRepository.Update(order);
+        try
+        {
+            switch (updateInputDto.Status)
+            {
+                case OrderStatus.Cancelled:
+                    order.Status = updateInputDto.Status;
+                    order.EmployeeId = employeeId;
+                    await _orderRepository.Update(order);
 
-                if(order.Customer != null)
-                {
-                    // send email
-                    string emailMessageJson = JsonConvert.SerializeObject(new EmailMessage
+                    if (order.Customer != null)
                     {
-                        To = order.Customer.Email,
-                        Subject = "Order Cancellation Notifications",
-                        Model = new CancelOrderModel
+                        // send email
+                        string emailMessageJson = JsonConvert.SerializeObject(new EmailMessage
                         {
-                            CustomerFirstname = order.Customer.FirstName,
-                            OrderId = (int)order.Id,
-                            TotalPrice = order.TotalPrice,
-                            OrderDetails = order.OrderDetails.Select(od => new _OrderDetail
+                            To = order.Customer.Email,
+                            Subject = "Order Cancellation Notifications",
+                            Model = new CancelOrderModel
                             {
-                                ProductVersionId = od.ProductVersionId,
-                                ProductVersionName = od.ProductVersion.Name,
-                                Quantity = od.Quantity,
-                                OriginPrice = od.OriginPrice,
-                                Price = od.Price,
-                                TotalPrice = od.Price * od.Quantity,
-                            })
-                        },
-                        TemplateName = EmailTemplates.ShopCancelOrder
-                    });
+                                CustomerFirstname = order.Customer.FirstName,
+                                OrderId = (int)order.Id,
+                                TotalPrice = order.TotalPrice,
+                                OrderDetails = order.OrderDetails.Select(od => new _OrderDetail
+                                {
+                                    ProductVersionId = od.ProductVersionId,
+                                    ProductVersionName = od.ProductVersion.Name,
+                                    Quantity = od.Quantity,
+                                    OriginPrice = od.OriginPrice,
+                                    Price = od.Price,
+                                    TotalPrice = od.Price * od.Quantity,
+                                })
+                            },
+                            TemplateName = EmailTemplates.ShopCancelOrder
+                        });
 
-                    _rabbitMqService.PublishMessage(queueName: QueueNames.EmailQueue, message: emailMessageJson);
-                }
-                break;
-            case OrderStatus.Delivering:
-            case OrderStatus.Shipped:
-                order.Status = updateInputDto.Status;
-                order.EmployeeId = employeeId;
-                await _orderRepository.Update(order);
-                break;
+                        _rabbitMqService.PublishMessage(queueName: QueueNames.EmailQueue, message: emailMessageJson);
+                    }
+                    break;
+                case OrderStatus.Processing:
+                case OrderStatus.Delivering:
+                case OrderStatus.Shipped:
+                    order.Status = updateInputDto.Status;
+                    order.EmployeeId = employeeId;
+                    await _orderRepository.Update(order);
+                    break;
+                default:
+                    throw new BadRequestException("Order status invalid");
+            }
+        }
+        catch (DbUpdateException e)
+        {
+            if (e.InnerException is SqlException sqlException)
+                foreach (SqlError error in sqlException.Errors)
+                    if (error.Number == 50000)
+                        throw new ConflictException(error.Message);
         }
     }
 
@@ -255,10 +300,12 @@ public class OrderService : IOrderService
                 RecipientName = order.RecipientName,
                 PhoneNumber = order.PhoneNumber,
             },
-            OrderDetails = order.OrderDetails.Select(od => new _OrderDetail
+            OrderDetails = order.OrderDetails.Select(od => new __OrderDetail
             {
+                Id = (int)od.Id,
                 ProductVersionId = od.ProductVersionId,
                 ProductVersionName = od.ProductVersion.Name,
+                ImageUrl = od.ProductVersion.ImageUrl,
                 Quantity = od.Quantity,
                 OriginPrice = od.OriginPrice,
                 Price = od.Price,
@@ -266,4 +313,5 @@ public class OrderService : IOrderService
             })
         };
     }
+
 }

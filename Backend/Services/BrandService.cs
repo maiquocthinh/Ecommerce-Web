@@ -27,9 +27,16 @@ public class BrandService : IBrandService
         return brands.Select(b => _mapper.Map<BrandDto>(b));
     }
 
-    public async Task<IQueryable<BrandDto>> FilteredBrand(BrandFilterDto filterDto)
+    public async Task<IQueryable<BrandDto>> GetListBrand(BrandFilterDto filterDto)
     {
-        return (await _brandRepository.FilteredCategory(filterDto)).Select(b => _mapper.Map<BrandDto>(b));
+        var query = _brandRepository.GetQueryable().OrderByDescending(c => c.CreatedAt).AsQueryable();
+
+        if (filterDto.BrandName != null)
+        {
+            query = query.Where(b => b.Name.Contains(filterDto.BrandName));
+        }
+
+        return query.Select(b => _mapper.Map<BrandDto>(b));
     }
 
     public async Task<BrandDto> CreateBrand(BrandCreateInputDto createInputDto)

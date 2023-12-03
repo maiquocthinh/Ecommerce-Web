@@ -3,7 +3,6 @@ using Backend.Models;
 
 namespace Backend.Repositories.Interfaces;
 
-public interface IImportRepository : IRepository<Import>
+public interface IImportRepository : IRepository<Import>, IRepositoryQueryable<Import>
 {
-    Task<IQueryable<Import>> GetAllImport();
 }

@@ -4,9 +4,7 @@ using Backend.Services.Interfaces;
 using AutoMapper;
 using Backend.Models;
 using Backend.Common.Exceptions;
-using Microsoft.Extensions.Hosting;
 using Backend.Infrastructure.Jwt;
-using Backend.Repositories;
 
 namespace Backend.Services;
 
@@ -20,7 +18,7 @@ public class InventoryService : IInventoryService
     private readonly IProductVersionRepository _productVersionRepository;
     private readonly IEmployeeRepository _employeeRepository;
 
-    public InventoryService(IHttpContextAccessor httpContextAccessor, IMapper mapper, IImportRepository importRepository, 
+    public InventoryService(IHttpContextAccessor httpContextAccessor, IMapper mapper, IImportRepository importRepository,
         IImportShipmentRepository importShipmentRepository, IProductVersionRepository productVersionRepository, IEmployeeRepository employeeRepository)
     {
         _httpContext = httpContextAccessor.HttpContext;
@@ -31,27 +29,39 @@ public class InventoryService : IInventoryService
         _employeeRepository = employeeRepository;
     }
 
-    public async Task<IQueryable<InventoryDto>> GetAllInventory(InventoryFilterDto filterDto)
+    public async Task<IQueryable<InventoryDto>> GetListInventory(InventoryFilterDto filterDto)
     {
-        var query = await _productVersionRepository.GetAllProductVeersionIQueryable();
+        var query = _productVersionRepository.GetQueryable().OrderByDescending(pv => pv.CreatedAt).AsQueryable();
 
         if (filterDto.Keyword != null)
         {
             query = query.Where(pv => pv.Name.Contains(filterDto.Keyword));
         }
 
+        if (filterDto.IsOutOfStock != null)
+        {
+            if (filterDto.IsOutOfStock.Value)
+                query = query.Where(pv => pv.ImportShipments.Sum(ishp => ishp.Remaining) <= 0);
+            else
+                query = query.Where(pv => pv.ImportShipments.Sum(ishp => ishp.Remaining) > 0);
+        }
+
         return query.Select(pv => new InventoryDto
         {
+            ProductVersionId = pv.Id,
             ProductVersionName = pv.Name,
+            ImageUrl = pv.ImageUrl,
             Color = pv.Color,
-            Inventory = pv.ImportShipments.Sum(ishp => ishp.Quantity),
-            IsOutOfStock = pv.ImportShipments.Sum(ishp => ishp.Quantity) <= 0
+            Inventory = pv.ImportShipments.Sum(ishp => ishp.Remaining),
+            IsOutOfStock = pv.ImportShipments.Sum(ishp => ishp.Remaining) <= 0
         });
     }
 
-    public async Task<IQueryable<ImportDto>> GetAllImport()
+    public async Task<IQueryable<ImportDto>> GetListImport()
     {
-        return (await _importRepository.GetAllImport()).Select(i => _mapper.Map<ImportDto>(i));
+        var query = _importRepository.GetQueryable().OrderByDescending(i => i.CreatedAt).AsQueryable();
+
+        return query.Select(i => _mapper.Map<ImportDto>(i));
     }
 
     public async Task<ImportDetailDto> GetImportDetail(int id)
@@ -79,6 +89,7 @@ public class InventoryService : IInventoryService
             ImportId = import.Id,
             ProductVersionId = ishp.ProductVersionId,
             Quantity = ishp.Quantity,
+            Remaining = ishp.Quantity,
             Cost = ishp.Cost,
         }));
     }

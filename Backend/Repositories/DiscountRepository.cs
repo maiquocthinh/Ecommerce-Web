@@ -1,9 +1,7 @@
 using Backend.Data;
-using Backend.DTOs;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Backend.Repositories;
 
@@ -18,26 +16,8 @@ public class DiscountRepository : SqlServerRepository<Discount>, IDiscountReposi
         _dbSet = _context.Set<Discount>();
     }
 
-    public async Task<IQueryable<Discount>> GetFilterdDiscount(DiscountFilterDto filterDto)
+    public IQueryable<Discount> GetQueryable()
     {
-        var query = _dbSet.OrderByDescending(d => d.Id).AsQueryable();
-
-        if (filterDto.ProductName != null)
-        {
-            query = query.Where(d => d.Product.Name.Contains(filterDto.ProductName));
-        }
-
-        if (filterDto.Active != null)
-        {
-            query = query.Where(d => d.Active == filterDto.Active);
-        }
-
-        if (filterDto.Expired != null)
-        {
-            query = query.Where(d => d.EndDate < DateTime.Now);
-        }
-
-        return query;
+        return _dbSet.AsQueryable();
     }
-
 }

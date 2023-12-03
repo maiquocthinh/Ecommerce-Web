@@ -1,4 +1,5 @@
-﻿using Backend.DTOs;
+﻿using Backend.Data;
+using Backend.DTOs;
 using Backend.Models;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +19,12 @@ public class ReviewController : BaseController
         _reviewService = reviewService;
     }
 
-
+    [AllowAnonymous]
     [HttpGet("{productId:int}")]
-    public async Task<ActionResult<AllReviewOfProductDto>> GetReviewOfProduct([FromRoute] int productId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<AllReviewOfProductDto>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetReviewOfProduct([FromRoute] int productId)
     {
         var reviews = await _reviewService.GetReivewsOfProduct(productId);
 
@@ -30,7 +34,13 @@ public class ReviewController : BaseController
 
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult<ReviewOfProductDto>> PostReview(ReviewInputDto reviewInputDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<ReviewOfProductDto>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> PostReview(ReviewInputDto reviewInputDto)
     {
         var review = await _reviewService.PostReview(reviewInputDto);
 

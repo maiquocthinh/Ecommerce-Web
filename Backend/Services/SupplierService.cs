@@ -4,8 +4,6 @@ using Backend.Services.Interfaces;
 using AutoMapper;
 using Backend.Models;
 using Backend.Common.Exceptions;
-using Backend.Repositories;
-using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace Backend.Services;
 
@@ -25,12 +23,29 @@ public class SupplierService : ISupplierService
         _addressRepository = addressRepository;
     }
 
-    public async Task<IQueryable<SupplierDto>> FilteredSupplier(SupplierFilterDto filterDto)
+    public async Task<IEnumerable<SupplierTinyDto>> GetAllSupplier()
     {
-        return (await _supplierRepository.FilteredSupplier(filterDto)).Select(supplier => _mapper.Map<SupplierDto>(supplier));
+        var allSupplier = await _supplierRepository.GetAll();
+        return allSupplier.Select(s => _mapper.Map<SupplierTinyDto>(s));   
     }
 
-    public async Task<SupplierDto> CreateSupplier(SupplierCreateInputDto createInputDto)
+    public async Task<IQueryable<SupplierDto>> GetListSupplier(SupplierFilterDto filterDto)
+    {
+        var query = _supplierRepository.GetQueryable().OrderByDescending(s => s.CreatedAt).AsQueryable();
+
+        if (filterDto.Keyword != null)
+        {
+            query = query.Where(s =>
+                s.Name.Contains(filterDto.Keyword) ||
+                s.Email.Contains(filterDto.Keyword) ||
+                s.PhoneNumber.Contains(filterDto.Keyword)
+            );
+        }
+
+        return query.Select(supplier => _mapper.Map<SupplierDto>(supplier));
+    }
+
+    public async Task<SupplierDetailDto> CreateSupplier(SupplierCreateInputDto createInputDto)
     {
         // check email, phone is already exist
         {
@@ -55,14 +70,14 @@ public class SupplierService : ISupplierService
         return _mapper.Map<SupplierDetailDto>(supplier);
     }
 
-    public async Task<SupplierDto> GetSupplier(int id)
+    public async Task<SupplierDetailDto> GetSupplier(int id)
     {
         var supplier = await _supplierRepository.GetById(id);
         if (supplier == null) throw new NotFoundException("Supplier not found");
         return _mapper.Map<SupplierDetailDto>(supplier);
     }
 
-    public async Task<SupplierDto> UpdateSupplier(int id, SupplierUpdateInputDto updateInputDto)
+    public async Task<SupplierDetailDto> UpdateSupplier(int id, SupplierUpdateInputDto updateInputDto)
     {
         var supplier = await _supplierRepository.GetById(id);
         if (supplier == null) throw new NotFoundException("Supplier not found");

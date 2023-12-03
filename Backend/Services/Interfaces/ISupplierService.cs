@@ -5,9 +5,10 @@ namespace Backend.Services.Interfaces;
 
 public interface ISupplierService
 {
-    Task<IQueryable<SupplierDto>> FilteredSupplier(SupplierFilterDto filterDto);
-    Task<SupplierDto> GetSupplier(int id);
-    Task<SupplierDto> CreateSupplier(SupplierCreateInputDto createInputDto);
-    Task<SupplierDto> UpdateSupplier(int id, SupplierUpdateInputDto updateInputDto);
+    Task<IEnumerable<SupplierTinyDto>> GetAllSupplier();
+    Task<IQueryable<SupplierDto>> GetListSupplier(SupplierFilterDto filterDto);
+    Task<SupplierDetailDto> GetSupplier(int id);
+    Task<SupplierDetailDto> CreateSupplier(SupplierCreateInputDto createInputDto);
+    Task<SupplierDetailDto> UpdateSupplier(int id, SupplierUpdateInputDto updateInputDto);
     Task<bool> DeleteSupplier(int id);
 }

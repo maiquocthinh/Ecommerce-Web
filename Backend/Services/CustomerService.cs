@@ -5,12 +5,10 @@ using Backend.DTOs;
 using Backend.Infrastructure.Jwt;
 using Backend.Infrastructure.Utils;
 using Backend.Models;
-using Backend.Repositories;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace Backend.Services;
 
@@ -151,9 +149,21 @@ public class CustomerService : ICustomerService
         }
     }
 
-    public async Task<IQueryable<CustomerShortDto>> FilteredCustomer(CustomerFilterDto filterDto)
+    public async Task<IQueryable<CustomerShortDto>> GetListCustomer(CustomerFilterDto filterDto)
     {
-        return (await _customerRepository.FilteredCustomer(filterDto)).Select(c => _mapper.Map<CustomerShortDto>(c));
+        var query = _customerRepository.GetQueryable().OrderByDescending(c => c.CreatedAt).AsQueryable();
+
+        if (filterDto.Keyword != null)
+        {
+            query = query.Where(c =>
+                c.FirstName.Contains(filterDto.Keyword) ||
+                c.LastName.Contains(filterDto.Keyword) ||
+                c.Email.Contains(filterDto.Keyword) ||
+                c.PhoneNumber.Contains(filterDto.Keyword)
+            );
+        }
+
+        return query.Select(c => _mapper.Map<CustomerShortDto>(c));
     }
 
     public async Task<CustomerDetailDto> GetCustomerById(int customerId)

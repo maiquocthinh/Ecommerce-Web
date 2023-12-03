@@ -3,7 +3,6 @@ using Backend.Models;
 
 namespace Backend.Repositories.Interfaces;
 
-public interface INeedRepository : IRepository<Need>
+public interface INeedRepository : IRepository<Need>, IRepositoryQueryable<Need>
 {
-    Task<IQueryable<Need>> FilteredNeed(NeedFilterDto filterDto);
 }

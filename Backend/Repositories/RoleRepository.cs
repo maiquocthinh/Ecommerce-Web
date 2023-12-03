@@ -17,15 +17,8 @@ public class RoleRepository : SqlServerRepository<Role>, IRoleRepository
         _dbSet = _context.Set<Role>();
     }
 
-    public async Task<IQueryable<Role>> FilteredRole(RoleFilterDto filterDto)
+    public IQueryable<Role> GetQueryable()
     {
-        var query = _dbSet.OrderByDescending(r => r.CreatedAt).AsQueryable();
-
-        if (filterDto.RoleName != null)
-        {
-            query = query.Where(r => r.Name.Contains(filterDto.RoleName));
-        }
-
-        return query;
+        return _dbSet.AsQueryable();
     }
 }

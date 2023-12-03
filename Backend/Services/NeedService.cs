@@ -28,9 +28,16 @@ public class NeedService : INeedService
         return needs.Select(n => _mapper.Map<NeedDto>(n));
     }
 
-    public async Task<IQueryable<NeedDto>> FilteredNeed(NeedFilterDto filterDto)
+    public async Task<IQueryable<NeedDto>> GetListNeed(NeedFilterDto filterDto)
     {
-        return (await _needRepository.FilteredNeed(filterDto)).Select(n => _mapper.Map<NeedDto>(n));
+        var query = _needRepository.GetQueryable().OrderByDescending(c => c.CreatedAt).AsQueryable();
+
+        if (filterDto.NeedTitle != null)
+        {
+            query = query.Where(n => n.Title.Contains(filterDto.NeedTitle));
+        }
+
+        return query.Select(n => _mapper.Map<NeedDto>(n));
     }
 
     public async Task<NeedDto> CreateNeed(NeedCreateInputDto createInputDto)

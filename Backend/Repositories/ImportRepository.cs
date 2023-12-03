@@ -17,8 +17,8 @@ public class ImportRepository : SqlServerRepository<Import>, IImportRepository
         _dbSet = _context.Set<Import>();
     }
 
-    public async Task<IQueryable<Import>> GetAllImport()
+    public IQueryable<Import> GetQueryable()
     {
-        return _dbSet.OrderByDescending(i => i.CreatedAt).AsQueryable();
+        return _dbSet.AsQueryable();
     }
 }

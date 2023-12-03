@@ -16,8 +16,8 @@ public class ProductVersionRepository : SqlServerRepository<ProductVersion>, IPr
         _dbSet = _context.Set<ProductVersion>();
     }
 
-    public async Task<IQueryable<ProductVersion>> GetAllProductVeersionIQueryable()
+    public IQueryable<ProductVersion> GetQueryable()
     {
-        return _dbSet.OrderByDescending(pv => pv.CreatedAt).AsQueryable();
+        return _dbSet.AsQueryable();
     }
 }

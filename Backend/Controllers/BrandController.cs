@@ -1,6 +1,10 @@
-﻿using Backend.DTOs;
-using Backend.Services;
+﻿using Backend.Authorization;
+using Backend.Authorization.PolicyProvider;
+using Backend.Common.Pagging;
+using Backend.Data;
+using Backend.DTOs;
 using Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers;
@@ -17,8 +21,11 @@ public class BrandController : BaseController
         _brandService = brandService;
     }
 
+    [AllowAnonymous]
     [HttpGet("all")]
-    public async Task<ActionResult<IEnumerable<BrandDto>>> GetAllCategory()
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<IEnumerable<BrandDto>>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetAllCategory()
     {
         var brands = await _brandService.GetAllBrand();
 
@@ -26,14 +33,26 @@ public class BrandController : BaseController
     }
 
     [HttpGet]
-    public async Task<ActionResult<object>> GetFiltered([FromQuery] BrandFilterDto filterDto, [FromQuery] PagingDTO pagingDto)
+    [PermissionAuthorize(Permissions.ViewBrand)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<PagingListModel<BrandDto>>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetListBrand([FromQuery] BrandFilterDto filterDto, [FromQuery] PagingDTO pagingDto)
     {
-        var brandQuery = await _brandService.FilteredBrand(filterDto);
+        var brandQuery = await _brandService.GetListBrand(filterDto);
         return Ok(RenderSuccessResponse(data: RenderPagingListModel(source: brandQuery, pageIndex: pagingDto.pageIndex, pageSize: pagingDto.pageSize)));
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<object>> GetBrand([FromRoute] int id)
+    [PermissionAuthorize(Permissions.ViewBrand)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<BrandDto>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetBrand([FromRoute] int id)
     {
         var brand = await _brandService.GetBrand(id);
         return Ok(RenderSuccessResponse(data: brand));
@@ -41,7 +60,13 @@ public class BrandController : BaseController
 
 
     [HttpPost]
-    public async Task<ActionResult<object>> CreateBrand([FromBody] BrandCreateInputDto createInputDto)
+    [PermissionAuthorize(Permissions.CreateBrand)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<BrandDto>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> CreateBrand([FromBody] BrandCreateInputDto createInputDto)
     {
         var brand = await _brandService.CreateBrand(createInputDto);
         return Ok(RenderSuccessResponse(data: brand, message: "Create Brand success."));
@@ -49,7 +74,14 @@ public class BrandController : BaseController
 
 
     [HttpPatch("{id:int}")]
-    public async Task<ActionResult<object>> UpdateBrand([FromRoute] int id, [FromBody] BrandUpdateInputDto updateInputDto)
+    [PermissionAuthorize(Permissions.UpdateBrand)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<BrandDto>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<ActionResult<SuccessResponse<BrandDto>>> UpdateBrand([FromRoute] int id, [FromBody] BrandUpdateInputDto updateInputDto)
     {
         var brand = await _brandService.UpdateBrand(id, updateInputDto);
         return Ok(RenderSuccessResponse(data: brand, message: "Update Brand success."));
@@ -57,7 +89,13 @@ public class BrandController : BaseController
 
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<object>> DeleteBrand([FromRoute] int id)
+    [PermissionAuthorize(Permissions.DeleteBrand)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseWithoutData))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> DeleteBrand([FromRoute] int id)
     {
         await _brandService.DeleteBrand(id);
         return Ok(RenderSuccessResponseWithoutData(message: "Delete Brand success."));

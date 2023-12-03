@@ -1,5 +1,4 @@
-﻿using Backend.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Backend.DTOs;
 
@@ -40,6 +39,14 @@ public class SupplierUpdateInputDto
 
 
 //Output Dto
+
+public class SupplierTinyDto
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+}
+
 public class SupplierDto
 {
     public int Id { get; set; }

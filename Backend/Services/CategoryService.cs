@@ -1,7 +1,5 @@
 using Backend.Common.Exceptions;
 using Backend.DTOs;
-using Backend.Infrastructure.Jwt;
-using Backend.Repositories;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
@@ -31,9 +29,16 @@ public class CategoryService : ICategoryService
         return categories.Select(c => _mapper.Map<CategoryDto>(c));
     }
 
-    public async Task<IQueryable<CategoryDto>> FilteredCategory(CategoryFilterDto filterDto)
+    public async Task<IQueryable<CategoryDto>> GetListCategory(CategoryFilterDto filterDto)
     {
-        return (await _categoryRepository.FilteredCategory(filterDto)).Select(c => _mapper.Map<CategoryDto>(c));
+        var query = _categoryRepository.GetQueryable().OrderByDescending(c => c.CreatedAt).AsQueryable();
+
+        if (filterDto.CategoryName != null)
+        {
+            query = query.Where(c => c.Name.Contains(filterDto.CategoryName));
+        }
+
+        return query.Select(c => _mapper.Map<CategoryDto>(c));
     }
 
     public async Task<CategoryDto> CreateCategory(CategoryCreateInputDto createInputDto)

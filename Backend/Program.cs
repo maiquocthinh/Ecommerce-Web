@@ -36,7 +36,7 @@ builder.Services.AddDbContext<DBContext>(option =>
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddJwtConfiguration(builder.Configuration, builder.Environment);
 builder.Services.AddResponseCaching();
-builder.Services.AddIpRateLimit();
+builder.Services.AddIpRateLimit(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<JwtUtil>();

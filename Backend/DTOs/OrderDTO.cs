@@ -19,6 +19,13 @@ public class OrderUpdateInputDto
 {
     [Required(ErrorMessage = "Status is required")]
     public string Status { get; set; }
+}
+
+
+public class OrderUpdateShippingInfoInputDto
+{
+    [Required(ErrorMessage = "ShippingAddressId is required")]
+    public int ShippingAddressId { get; set; }
 
 }
 
@@ -31,7 +38,13 @@ public class OrderDetailUpdateInputDto
 // Output DTO
 public class OrderInfoDto: CheckoutSuccessDto
 {
-
+    public IEnumerable<__OrderDetail> OrderDetails { get; set; }
 }
 
 // Subclass
+public class __OrderDetail: _OrderDetail
+{
+    public int Id { get; set; }
+
+    public string ImageUrl { get; set; }
+}

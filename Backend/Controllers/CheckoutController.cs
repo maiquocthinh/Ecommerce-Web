@@ -21,7 +21,13 @@ public class CheckoutController : BaseController
 
     [Authorize]
     [HttpPost("cart")]
-    public async Task<ActionResult<SuccessResponse<CheckoutSuccessDto>>> CheckoutWithCartItems(
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<CheckoutSuccessDto>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> CheckoutWithCartItems(
         [FromBody] CheckoutWithCartItemsInputDto checkoutInput)
     {
         var result = await _checkoutService.CheckoutWithCartItems(checkoutInput);
@@ -31,7 +37,13 @@ public class CheckoutController : BaseController
 
     [AllowAnonymous]
     [HttpPost("product")]
-    public async Task<ActionResult<SuccessResponse<CheckoutSuccessDto>>> CheckoutWithProductAndQuantity(
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<CheckoutSuccessDto>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> CheckoutWithProductAndQuantity(
         [FromBody] CheckoutInputDto checkoutInput)
     {
         var result = await _checkoutService.CheckoutWithProducts(checkoutInput);
@@ -42,7 +54,13 @@ public class CheckoutController : BaseController
 
     [AllowAnonymous]
     [HttpPost("product-with-authentication")]
-    public async Task<ActionResult<SuccessResponse<CheckoutSuccessDto>>> CheckoutWithProductAndQuantityWithAuthen(
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<CheckoutSuccessDto>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> CheckoutWithProductAndQuantityWithAuthen(
         [FromBody] CheckoutWithProductsInputDto checkoutInput)
     {
         var result = await _checkoutService.CheckoutWithProductsAndAuthen(checkoutInput);

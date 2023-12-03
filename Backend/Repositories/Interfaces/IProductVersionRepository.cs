@@ -2,7 +2,6 @@ using Backend.Models;
 
 namespace Backend.Repositories.Interfaces;
 
-public interface IProductVersionRepository : IRepository<ProductVersion>
+public interface IProductVersionRepository : IRepository<ProductVersion>, IRepositoryQueryable<ProductVersion>
 {
-    Task<IQueryable<ProductVersion>> GetAllProductVeersionIQueryable();
 }

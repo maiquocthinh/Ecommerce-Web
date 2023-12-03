@@ -1,7 +1,10 @@
 ﻿using Backend.Authorization;
 using Backend.Authorization.PolicyProvider;
+using Backend.Common.Pagging;
+using Backend.Data;
 using Backend.DTOs;
 using Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers;
@@ -19,14 +22,22 @@ public class InventoryController : BaseController
 
     [PermissionAuthorize(Permissions.ViewInventory)]
     [HttpGet]
-    public async Task<ActionResult<object>> GetAllInverntory([FromQuery] InventoryFilterDto filterDto,[FromQuery] PagingDTO pagingDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<PagingListModel<InventoryDto>>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetListInventory([FromQuery] InventoryFilterDto filterDto,[FromQuery] PagingDTO pagingDto)
     {
-        var query = await _inventoryService.GetAllInventory(filterDto);
-        return Ok(RenderSuccessResponse(data: RenderPagingListModel(source: query, pageIndex: pagingDto.pageIndex, pageSize: pagingDto.pageSize)));
+        var inventoryQueryable = await _inventoryService.GetListInventory(filterDto);
+        return Ok(RenderSuccessResponse(data: RenderPagingListModel(source: inventoryQueryable, pageIndex: pagingDto.pageIndex, pageSize: pagingDto.pageSize)));
     }
 
+    [AllowAnonymous]
     [HttpGet("import-shipment/{productVersionId:int}")]
-    public async Task<ActionResult<object>> GetAllImport([FromRoute] int productVersionId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<IEnumerable<ImportShipmentDto>>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetAllImportShipmentOfProductVersion([FromRoute] int productVersionId)
     {
         var importShipments = await _inventoryService.GetAllImportShipmentOfProductVersion(productVersionId);
         return Ok(RenderSuccessResponse(data: importShipments));
@@ -34,15 +45,25 @@ public class InventoryController : BaseController
 
     [PermissionAuthorize(Permissions.ViewImport)]
     [HttpGet("imports")]
-    public async Task<ActionResult<object>> GetAllImport([FromQuery] PagingDTO pagingDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<PagingListModel<ImportDto>>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetListImport([FromQuery] PagingDTO pagingDto)
     {
-        var query = await _inventoryService.GetAllImport();
-        return Ok(RenderSuccessResponse(data: RenderPagingListModel(source: query, pageIndex: pagingDto.pageIndex, pageSize: pagingDto.pageSize)));
+        var importQueryable = await _inventoryService.GetListImport();
+        return Ok(RenderSuccessResponse(data: RenderPagingListModel(source: importQueryable, pageIndex: pagingDto.pageIndex, pageSize: pagingDto.pageSize)));
     }
 
     [PermissionAuthorize(Permissions.ViewImport)]
     [HttpGet("imports/{id:int}")]
-    public async Task<ActionResult<object>> GetImportDetail([FromRoute] int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<ImportDetailDto>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetImportDetail([FromRoute] int id)
     {
         var import = await _inventoryService.GetImportDetail(id);
         return Ok(RenderSuccessResponse(data:import));
@@ -50,7 +71,13 @@ public class InventoryController : BaseController
 
     [PermissionAuthorize(Permissions.CreateImport)]
     [HttpPost("imports")]
-    public async Task<ActionResult<object>> CreateImport([FromBody] ImportCreateInputDto createInputDto) 
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseWithoutData))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> CreateImport([FromBody] ImportCreateInputDto createInputDto) 
     {
         await _inventoryService.CreateImport(createInputDto);
         return Ok(RenderSuccessResponseWithoutData(message: "Create New Import success."));

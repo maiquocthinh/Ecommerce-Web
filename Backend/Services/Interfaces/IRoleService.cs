@@ -5,7 +5,8 @@ namespace Backend.Services.Interfaces;
 
 public interface IRoleService
 {
-    Task<IQueryable<RoleDto>> FilteredRole(RoleFilterDto filterDto);
+    Task<IEnumerable<RoleTinyDto>> GetAllRole();
+    Task<IQueryable<RoleDto>> GetListRole(RoleFilterDto filterDto);
     Task<RoleDto> GetRoleById(int id);
     Task<RoleDto> CreateRole(RoleCreateInputDto createInputDto);
     Task<RoleDto> UpdateRole(int id, RoleUpdateInputDto updateInputDto);

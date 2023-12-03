@@ -3,7 +3,6 @@ using Backend.Models;
 
 namespace Backend.Repositories.Interfaces;
 
-public interface IDiscountRepository : IRepository<Discount>
+public interface IDiscountRepository : IRepository<Discount>, IRepositoryQueryable<Discount>
 {
-    Task<IQueryable<Discount>> GetFilterdDiscount(DiscountFilterDto filterDto);
 }

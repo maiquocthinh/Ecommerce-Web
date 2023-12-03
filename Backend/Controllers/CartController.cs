@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Backend.Data;
 using Backend.DTOs;
 using Backend.Services.Interfaces;
@@ -19,30 +18,53 @@ public class CartController : BaseController
         _cartService = cartService;
     }
 
+    [Authorize]
     [HttpGet]
-    public async Task<ActionResult<SuccessResponse<CartDto>>> GetAllCartItems()
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<CartDto>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetAllCartItems()
     {
         var result = await _cartService.GetAllCartItems();
 
-        return Ok(RenderSuccessResponse<CartDto>(message: "Get cart success", data: result));
+        return Ok(RenderSuccessResponse(message: "Get cart success", data: result));
     }
 
+    [Authorize]
     [HttpPost]
-    public async Task<ActionResult<SuccessResponseWithoutData>> AddCartItem([FromBody] CartAddDto cartAddDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseWithoutData))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> AddCartItem([FromBody] CartAddDto cartAddDto)
     {
         await _cartService.CreateNewCartItem(cartAddDto);
         return Ok(RenderSuccessResponseWithoutData(message: "Add to cart success."));
     }
 
+    [Authorize]
     [HttpPatch("{id}")]
-    public async Task<ActionResult<SuccessResponseWithoutData>> UpdateCartItem([FromRoute] int id,[FromBody] CartUpdateDto cartUpdateDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseWithoutData))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> UpdateCartItem([FromRoute] int id,[FromBody] CartUpdateDto cartUpdateDto)
     {
         await _cartService.UpdateCartItem(id, cartUpdateDto);
         return Ok(RenderSuccessResponseWithoutData(message: "Update cart item success."));
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
-    public async Task<ActionResult<SuccessResponseWithoutData>> DeleteCartItem([FromRoute] int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseWithoutData))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> DeleteCartItem([FromRoute] int id)
     {
         await _cartService.DeleteCartItem(id);
         return Ok(RenderSuccessResponseWithoutData(message: "Delete cart item success."));

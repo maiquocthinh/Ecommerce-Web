@@ -17,15 +17,8 @@ public class NeedRepository : SqlServerRepository<Need>, INeedRepository
         _dbSet = _context.Set<Need>();
     }
 
-    public async Task<IQueryable<Need>> FilteredNeed(NeedFilterDto filterDto)
+    public IQueryable<Need> GetQueryable()
     {
-        var query = _dbSet.OrderByDescending(c => c.CreatedAt).AsQueryable();
-
-        if (filterDto.NeedTitle != null)
-        {
-            query = query.Where(n => n.Title.Contains(filterDto.NeedTitle));
-        }
-
-        return query;
+        return _dbSet.AsQueryable();
     }
 }

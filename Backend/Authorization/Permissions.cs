@@ -4,6 +4,21 @@ public class Permissions
 {
     public const string ResetPassword = "ResetPassword";
 
+    public const string ViewCategory = "VCg";
+    public const string CreateCategory = "CCg";
+    public const string UpdateCategory = "UCg";
+    public const string DeleteCategory = "DCg";
+
+    public const string ViewBrand = "VB";
+    public const string CreateBrand = "CB";
+    public const string UpdateBrand = "UB";
+    public const string DeleteBrand = "DB";
+
+    public const string ViewNeed = "VN";
+    public const string CreateNeed = "CN";
+    public const string UpdateNeed = "UN";
+    public const string DeleteNeed = "DN";
+
     public const string ViewProducts = "VP";
     public const string CreateProduct = "CP";
     public const string UpdateProduct = "UP";
@@ -32,6 +47,9 @@ public class Permissions
     public const string CreateSupplier = "CS";
     public const string UpdateSupplier = "US";
     public const string DeleteSupplier = "DS";
+
+    public const string ViewOrder = "VO";
+    public const string UpdateOrder = "UO";
 
     public const string ViewRole = "VR";
     public const string CreateRole = "CR";

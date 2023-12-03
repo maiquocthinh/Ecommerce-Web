@@ -5,7 +5,7 @@ namespace Backend.Services.Interfaces;
 
 public interface IProductService
 {
-    Task<IQueryable<ProductShortInfoDto>> FilterProduct(ProductFilterInputDto productFilterInputDto);
+    Task<IQueryable<ProductShortInfoDto>> GetListProductsInClient(ProductFilterInputDto productFilterInputDto);
     Task<ProductDetailDto> GetProductDetailInfo(int productId);
     Task<IQueryable<Product>> GetListProducts(ProductFilterExtendInputDto filter);
     Task<Product> CreateProduct(ProductCreateInputDto createInputDto);

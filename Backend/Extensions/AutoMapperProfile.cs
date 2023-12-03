@@ -45,6 +45,7 @@ public class AutoMapperProfile : Profile
         CreateMap<CategoryCreateInputDto, Category>();
         CreateMap<BrandCreateInputDto, Brand>();
         CreateMap<NeedCreateInputDto, Need>();
+        CreateMap<Supplier, SupplierTinyDto>();
         CreateMap<Supplier, SupplierDto>();
         CreateMap<Supplier, SupplierDetailDto>()
             .ForMember(dest => dest.Address, otp => otp.MapFrom(src => new AddressDto
@@ -54,7 +55,9 @@ public class AutoMapperProfile : Profile
                 Districts = src.Address.Districts,
                 Province = src.Address.Province,
             }));
-        CreateMap<Role, RoleDto>()
+        CreateMap<Role, RoleTinyDto>();
+        CreateMap<Role, RoleDto>();
+        CreateMap<Role, RoleDetailDto>()
             .ForMember(dest => dest.Permissions, otp => otp.MapFrom(src => src.PermissionList));
         CreateMap<Import, ImportDto>()
             .ForMember(dest => dest.Employee, otp => otp.MapFrom(src => $"{src.Employee.LastName} {src.Employee.FirstName}"))

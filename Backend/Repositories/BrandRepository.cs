@@ -17,15 +17,8 @@ public class BrandRepository : SqlServerRepository<Brand>, IBrandRepository
         _dbSet = _context.Set<Brand>();
     }
 
-    public async Task<IQueryable<Brand>> FilteredCategory(BrandFilterDto filterDto)
+    public IQueryable<Brand> GetQueryable()
     {
-        var query = _dbSet.OrderByDescending(c => c.CreatedAt).AsQueryable();
-
-        if (filterDto.BrandName != null)
-        {
-            query = query.Where(b => b.Name.Contains(filterDto.BrandName));
-        }
-
-        return query;
+        return _dbSet.AsQueryable();
     }
 }

@@ -7,6 +7,8 @@ namespace Backend.DTOs;
 public class InventoryFilterDto
 {
     public string? Keyword { get; set; }
+
+    public bool? IsOutOfStock { get; set; } = null!; 
 }
 
 public class ImportCreateInputDto
@@ -61,8 +63,15 @@ public class ImportDetailDto: ImportDto
 
 public class InventoryDto
 {
-    public string ProductVersionName { get; set; }    
+    public int ProductVersionId{ get; set; }
+
+    public string ProductVersionName { get; set; }
+    
+    public string ImageUrl { get; set; }
+    
     public int Inventory { get; set; } 
+    
     public string Color { get; set; }
+    
     public bool IsOutOfStock { get; set; }
 }

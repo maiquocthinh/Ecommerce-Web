@@ -368,20 +368,42 @@ BEGIN
     INNER JOIN inserted od ON pv.id = od.product_version_id;
 END;
 
--- Không cho cập nhật trạng thái đơn hàng khi đã hoặc đang giao
+-- Không cho cập nhật trạng thái đơn hàng ("hủy" hoặc "đang xử lý") khi đã hoặc đang giao
 -- Không cho cập nhật trạng thái đơn hàng khi đã hủy
 CREATE OR ALTER TRIGGER trg_PreventUpdateOrderStatus
 ON orders
 INSTEAD OF UPDATE
 AS
 BEGIN
-    -- Kiểm tra các dòng sẽ được cập nhật
-    IF EXISTS (SELECT 1 FROM inserted WHERE status IN ('shipped', 'delivering'))
+    IF EXISTS (
+        SELECT 1 
+        FROM inserted i 
+        INNER JOIN deleted d 
+        ON i.id = d.id 
+        WHERE d.status IN ('shipped', 'delivering')
+        AND i.status = 'cancelled'
+    )
     BEGIN
-        -- Không cho phép cập nhật trạng thái sang "shipped" hoặc "delivering"
-        RAISERROR('Không thể cập nhật trạng thái đơn hàng.', 16, 1);
+        RAISERROR('Không thể hủy đơn hàng khi đã hoặc đang giao.', 16, 1);
     END
-    ELSE IF EXISTS (SELECT 1 FROM inserted i INNER JOIN deleted d ON i.id = d.id WHERE d.status = 'cancelled')
+    ELSE IF EXISTS (
+        SELECT 1 
+        FROM inserted i 
+        INNER JOIN deleted d 
+        ON i.id = d.id 
+        WHERE d.status IN ('shipped', 'delivering')
+        AND i.status = 'processing'
+    )
+    BEGIN
+        RAISERROR('Không thể cập nhật trạng thái "đang xử lý" hàng khi đã hoặc đang giao.', 16, 1);
+    END
+    ELSE IF EXISTS (
+        SELECT 1 
+        FROM inserted i 
+        INNER JOIN deleted d 
+        ON i.id = d.id 
+        WHERE d.status = 'cancelled'
+    )
     BEGIN
         RAISERROR('Không thể cập nhật trạng thái cho đơn hàng đã hủy.', 16, 1);
     END

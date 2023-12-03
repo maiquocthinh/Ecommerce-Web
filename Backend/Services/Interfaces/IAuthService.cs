@@ -10,7 +10,7 @@ public interface IAuthService
     Task<AccessTokenDto> EmployeeRefreshAccessToken(RefreshTokenInputDto refreshTokenInputDto);
     Task<Customer> RegisterNewCustomer(CustomerRegisterDto customerRegisterDto);
     Task<AccessTokenDto> CustomerLogin(CustomerLoginDto customerLoginDto);
-    Task CustomerChangePassword(string? email, CustomerChangePasswordDto customerChangePasswordDto);
-    Task CustomerSendEmailReset(string email);
-    Task CustomerResetPassword(string? email, CustomerResetPasswordDto customerResetPasswordDto);
+    Task CustomerChangePassword(CustomerChangePasswordDto customerChangePasswordDto);
+    Task CustomerSendEmailReset(string? email);
+    Task CustomerResetPassword(CustomerResetPasswordDto customerResetPasswordDto);
 }

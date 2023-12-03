@@ -1,6 +1,5 @@
 using Backend.Common.Exceptions;
 using Backend.DTOs;
-using Backend.Infrastructure.Email;
 using Backend.Infrastructure.Email.Models;
 using Backend.Infrastructure.Email.Templates;
 using Backend.Infrastructure.Jwt;
@@ -9,11 +8,7 @@ using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System.Linq;
-using Castle.Core.Resource;
-using Backend.Repositories;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -70,7 +65,7 @@ public class CheckoutService : ICheckoutService
         // get Shipping Info
         var shippingInfo = customer.ShippingAddresses.FirstOrDefault(sa => sa.IsDefault == true);
         if (shippingInfo is null) throw new ConflictException("A minimum of 1 shipping address is required before placing an order");
-        var addresss = shippingInfo.Address;
+        var address = shippingInfo.Address;
 
         // create order
         var order = await _orderRepository.Add(new Order
@@ -78,7 +73,7 @@ public class CheckoutService : ICheckoutService
             CustomerId = customerId,
             RecipientName = shippingInfo.RecipientName,
             PhoneNumber = shippingInfo.PhoneNumber,
-            Address = $"{addresss.SpecificAddress}, {addresss.Wards}, {addresss.Districts}, {addresss.Province}",
+            Address = $"{address.SpecificAddress}, {address.Wards}, {address.Districts}, {address.Province}",
         });
         var orderDetails = cartItems.Select(c =>
         {

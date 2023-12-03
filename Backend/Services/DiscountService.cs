@@ -4,7 +4,6 @@ using Backend.Services.Interfaces;
 using AutoMapper;
 using Backend.Models;
 using Backend.Common.Exceptions;
-using Backend.Repositories;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,9 +43,24 @@ public class DiscountService : IDiscountService
         return await _discountRepository.Remove(discountId);
     }
 
-    public async Task<IQueryable<DiscountDTO>> FilterdDiscount(DiscountFilterDto filterDto)
+    public async Task<IQueryable<DiscountDTO>> GetListDiscount(DiscountFilterDto filterDto)
     {
-        var query = await _discountRepository.GetFilterdDiscount(filterDto);
+        var query = _discountRepository.GetQueryable().OrderByDescending(d => d.Id).AsQueryable();
+
+        if (filterDto.ProductName != null)
+        {
+            query = query.Where(d => d.Product.Name.Contains(filterDto.ProductName));
+        }
+
+        if (filterDto.Active != null)
+        {
+            query = query.Where(d => d.Active == filterDto.Active);
+        }
+
+        if (filterDto.Expired != null)
+        {
+            query = query.Where(d => d.EndDate < DateTime.Now);
+        }
 
         return query.Select(d=> _mapper.Map<DiscountDTO>(d));   
     }

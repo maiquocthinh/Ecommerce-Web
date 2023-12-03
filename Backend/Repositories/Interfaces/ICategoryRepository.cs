@@ -3,7 +3,6 @@ using Backend.Models;
 
 namespace Backend.Repositories.Interfaces;
 
-public interface ICategoryRepository : IRepository<Category>
+public interface ICategoryRepository : IRepository<Category>, IRepositoryQueryable<Category>
 {
-    Task<IQueryable<Category>> FilteredCategory(CategoryFilterDto filterDto);
 }

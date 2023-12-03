@@ -1,5 +1,4 @@
 using Backend.Data;
-using Backend.DTOs;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +16,8 @@ public class CategoryRepository : SqlServerRepository<Category>, ICategoryReposi
         _dbSet = _context.Set<Category>();
     }
 
-    public async Task<IQueryable<Category>> FilteredCategory(CategoryFilterDto filterDto)
+    public IQueryable<Category> GetQueryable()
     {
-        var query = _dbSet.OrderByDescending(c => c.CreatedAt).AsQueryable();
-
-        if(filterDto.CategoryName != null)
-        {
-            query = query.Where(c => c.Name.Contains(filterDto.CategoryName));
-        }
-
-        return query;
+        return _dbSet.AsQueryable();
     }
 }

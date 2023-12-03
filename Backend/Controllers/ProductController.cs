@@ -3,6 +3,7 @@ using Backend.Authorization.PolicyProvider;
 using Backend.Common.Pagging;
 using Backend.Data;
 using Backend.DTOs;
+using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -20,18 +21,26 @@ public class ProductController : BaseController
         _productService = productService;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     [ResponseCache(Duration = 60, VaryByQueryKeys = new[] { "*" })]
-    public async Task<ActionResult<PagingListModel<ProductShortInfoDto>>> FilterProduct([FromQuery] ProductFilterInputDto productFilterInputDto, [FromQuery] PagingDTO pagingDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagingListModel<ProductShortInfoDto>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetListProductInClient([FromQuery] ProductFilterInputDto productFilterInputDto, [FromQuery] PagingDTO pagingDto)
     {
-        var productsQuery = await _productService.FilterProduct(productFilterInputDto);
+        var productsQueryable = await _productService.GetListProductsInClient(productFilterInputDto);
 
-        return Ok(RenderSuccessResponse(data: RenderPagingListModel(source: productsQuery, pageIndex: pagingDto.pageIndex,
+        return Ok(RenderSuccessResponse(data: RenderPagingListModel(source: productsQueryable, pageIndex: pagingDto.pageIndex,
             pageSize: pagingDto.pageSize)));
     }
 
+    [AllowAnonymous]
     [HttpGet("{productId:int}")]
-    public async Task<ActionResult<ProductDetailDto>> ProductDetail([FromRoute] int productId) 
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<ProductDetailDto>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> ProductDetail([FromRoute] int productId) 
     {
         var res = await _productService.GetProductDetailInfo(productId);
 
@@ -42,16 +51,27 @@ public class ProductController : BaseController
 
     [PermissionAuthorize(Permissions.ViewProducts)]
     [HttpGet("get")]
-    public async Task<ActionResult<object>> GetAllProducts([FromQuery] ProductFilterExtendInputDto filterDto, [FromQuery] PagingDTO pagingDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<PagingListModel<Product>>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetAllProducts([FromQuery] ProductFilterExtendInputDto filterDto, [FromQuery] PagingDTO pagingDto)
     {
-        var productsQuery = await _productService.GetListProducts(filterDto);
+        var productsQueryable = await _productService.GetListProducts(filterDto);
 
-        return Ok(RenderSuccessResponse(data: RenderPagingListModel(source: productsQuery, pageIndex: pagingDto.pageIndex, pageSize: pagingDto.pageSize)));
+        return Ok(RenderSuccessResponse(data: RenderPagingListModel(source: productsQueryable, pageIndex: pagingDto.pageIndex, pageSize: pagingDto.pageSize)));
     }
 
     [PermissionAuthorize(Permissions.CreateProduct)]
     [HttpPost("create")]
-    public async Task<ActionResult<object>> CreateProduct([FromBody] ProductCreateInputDto createInputDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<Product>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> CreateProduct([FromBody] ProductCreateInputDto createInputDto)
     {
         var product = await _productService.CreateProduct(createInputDto);
         return Ok(RenderSuccessResponse(data: product, message: "Create Product Success!"));
@@ -59,7 +79,14 @@ public class ProductController : BaseController
 
     [PermissionAuthorize(Permissions.UpdateProduct)]
     [HttpPatch("update/{productId:int}")]
-    public async Task<ActionResult<object>> UpdateProduct([FromRoute] int productId, [FromBody] ProductUpdateInputDto updateInputDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<Product>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> UpdateProduct([FromRoute] int productId, [FromBody] ProductUpdateInputDto updateInputDto)
     {
         var product = await _productService.UpdateProduct(productId, updateInputDto);
         return Ok(RenderSuccessResponse(data: product, message: "Update product success."));
@@ -68,7 +95,13 @@ public class ProductController : BaseController
 
     [PermissionAuthorize(Permissions.DeleteProduct)]
     [HttpDelete("delete/{productId:int}")]
-    public async Task<ActionResult<object>> DeleteProduct([FromRoute] int productId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseWithoutData))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> DeleteProduct([FromRoute] int productId)
     {
         await _productService.DeleteProduct(productId);
         return Ok(RenderSuccessResponseWithoutData(message: "Delete product success."));
@@ -76,7 +109,14 @@ public class ProductController : BaseController
 
     [PermissionAuthorize(Permissions.CreateProductVersion)]
     [HttpPost("version/create")]
-    public async Task<ActionResult<object>> CreateProductVersion([FromBody] ProductVersionCreateInputDto createInputDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<ProductVersion>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> CreateProductVersion([FromBody] ProductVersionCreateInputDto createInputDto)
     {
         var productVersion = await _productService.CreateProductVersion(createInputDto);
         return Ok(RenderSuccessResponse(data: productVersion, message: "Create product version success."));
@@ -84,7 +124,14 @@ public class ProductController : BaseController
 
     [PermissionAuthorize(Permissions.CreateProductVersion)]
     [HttpPatch("version/update/{productVersionId:int}")]
-    public async Task<ActionResult<object>> UpdateProductVersion([FromRoute] int productVersionId, [FromBody] ProductVersionUpdateInputDto updateInputDto)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<ProductVersion>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> UpdateProductVersion([FromRoute] int productVersionId, [FromBody] ProductVersionUpdateInputDto updateInputDto)
     {
         var productVersion = await _productService.UpdateProductVersion(productVersionId, updateInputDto);
         return Ok(RenderSuccessResponse(data: productVersion, message: "Create product version success."));
@@ -92,7 +139,13 @@ public class ProductController : BaseController
 
     [PermissionAuthorize(Permissions.DeleteProductVersion)]
     [HttpDelete("version/delete/{productVersionId:int}")]
-    public async Task<ActionResult<object>> DeleteProductVersion([FromRoute] int productVersionId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<DiscountDTO>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> DeleteProductVersion([FromRoute] int productVersionId)
     {
         await _productService.DeleteProductVersion(productVersionId);
         return Ok(RenderSuccessResponseWithoutData(message: "Delete product version success."));

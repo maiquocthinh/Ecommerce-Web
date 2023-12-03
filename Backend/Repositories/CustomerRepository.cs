@@ -32,20 +32,8 @@ public class CustomerRepository : SqlServerRepository<Customer>, ICustomerReposi
         return await _dbSet.Where(c => c.Email == email || c.PhoneNumber == phoneNumber).FirstOrDefaultAsync();
     }
 
-    public async Task<IQueryable<Customer>> FilteredCustomer(CustomerFilterDto filterDto)
+    public IQueryable<Customer> GetQueryable()
     {
-        var query = _dbSet.OrderByDescending(c => c.CreatedAt).AsQueryable();
-
-        if(filterDto.Keyword != null)
-        {
-            query = query.Where(c =>
-                c.FirstName.Contains(filterDto.Keyword) ||
-                c.LastName.Contains(filterDto.Keyword) ||
-                c.Email.Contains(filterDto.Keyword) ||
-                c.PhoneNumber.Contains(filterDto.Keyword)
-            );
-        }
-
-        return query;
+        return _dbSet.AsQueryable();
     }
 }

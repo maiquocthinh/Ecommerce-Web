@@ -4,7 +4,6 @@ using Backend.Infrastructure.Jwt;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
-using System.Security.Claims;
 
 namespace Backend.Services;
 

@@ -131,6 +131,7 @@ public class ProductFilters
     public int? BrandId { get; set; }
     public int? NeedId { get; set; }
     public PriceRange? PriceRange { get; set; }
+    public bool IsOutOfStock { get; set; }
 }
 
 

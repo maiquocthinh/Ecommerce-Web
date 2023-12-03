@@ -29,10 +29,10 @@ public class EmployeeCreateInputDto
     public string LastName { get; set; }
 
     [Required(ErrorMessage = "Gender is required")]
-    public bool Gender { get; set; }
+    public bool? Gender { get; set; } = null;
 
     [Required(ErrorMessage = "DayOfBirth is required")]
-    public DateTime DayOfBirth { get; set; }
+    public DateTime? DayOfBirth { get; set; } = null;
 
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email format")]
@@ -55,7 +55,7 @@ public class EmployeeCreateInputDto
     public AddressCreateInputDto Address { get; set; }
 
     [Required(ErrorMessage = "RoleId is required")]
-    public int RoleId { get; set; }
+    public int? RoleId { get; set; } = null;
 }
 
 public class EmployeeUpdateInputDto

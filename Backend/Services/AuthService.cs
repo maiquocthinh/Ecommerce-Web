@@ -16,6 +16,7 @@ namespace Backend.Services;
 
 public class AuthService : IAuthService
 {
+    private readonly HttpContext _httpContext;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly ICustomerRepository _customerRepository;
     private readonly IEmployeeRepository _employeeRepository;
@@ -27,10 +28,11 @@ public class AuthService : IAuthService
     private readonly string _customerAccessTokenExpired;
     private readonly string _customerResetPasswordTokenExpired;
 
-    public AuthService(IConfiguration configuration, JwtUtil jwtUtil, IRabbitMQService rabbitMqService,
-        IRefreshTokenRepository refreshTokenRepository,
+    public AuthService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, JwtUtil jwtUtil, 
+        IRabbitMQService rabbitMqService, IRefreshTokenRepository refreshTokenRepository,
         ICustomerRepository customerRepository, IEmployeeRepository employeeRepository)
     {
+        _httpContext = httpContextAccessor.HttpContext;
         _jwtUtil = jwtUtil;
         _rabbitMqService = rabbitMqService;
         _frontendBaseUrl = configuration.GetValue<string>("Frontend:BaseUrl") ?? string.Empty;
@@ -65,6 +67,7 @@ public class AuthService : IAuthService
         var atExpired = DateTime.Now.Add(JwtUtil.ParseTimeSpan(_employeeAccessTokenExpired));
         var accessToken = _jwtUtil.GenerateToken(new Claim[]
             {
+                new Claim(AppClaimTypes.EmployeeId, employee.Id.ToString()),
                 new Claim(ClaimTypes.Email, employee.Email),
                 new Claim(ClaimTypes.GivenName, employee.FirstName),
                 new Claim(ClaimTypes.Surname, employee.LastName),
@@ -170,11 +173,14 @@ public class AuthService : IAuthService
             new Claim(ClaimTypes.GivenName, customer.FirstName),
             new Claim(ClaimTypes.Surname, customer.LastName),
         }, atExpired);
-        return new AccessTokenDto() { AccessToken = accessToken, AccessTokenExpiredIn = atExpired };
+
+        return new AccessTokenDto{ AccessToken = accessToken, AccessTokenExpiredIn = atExpired };
     }
 
-    public async Task CustomerChangePassword(string? email, CustomerChangePasswordDto customerChangePasswordDto)
+    public async Task CustomerChangePassword(CustomerChangePasswordDto customerChangePasswordDto)
     {
+        var email = _httpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
         // validate email & customer
         if (email is null) throw new UnauthorizedException("Please login to do this action.");
         var customer = await _customerRepository.GetByEmail(email);
@@ -189,7 +195,7 @@ public class AuthService : IAuthService
         await _customerRepository.Update(customer);
     }
 
-    public async Task CustomerSendEmailReset(string email)
+    public async Task CustomerSendEmailReset(string? email)
     {
         // validate email & customer
         var customer = await _customerRepository.GetByEmail(email);
@@ -211,15 +217,17 @@ public class AuthService : IAuthService
             {
                 SiteUrl = _frontendBaseUrl,
                 Firstname = customer.FirstName,
-                Token = token
+                Token = token.Replace('.', '@')
             },
             TemplateName = EmailTemplates.ResetPassword
         });
         _rabbitMqService.PublishMessage(queueName: QueueNames.EmailQueue, message: emailMessageJson);
     }
 
-    public async Task CustomerResetPassword(string? email, CustomerResetPasswordDto customerResetPasswordDto)
+    public async Task CustomerResetPassword(CustomerResetPasswordDto customerResetPasswordDto)
     {
+        var email = _httpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
         // validate email & customer
         if (email is null) throw new InternalServerException("A error occurred while processing your request");
         var customer = await _customerRepository.GetByEmail(email);

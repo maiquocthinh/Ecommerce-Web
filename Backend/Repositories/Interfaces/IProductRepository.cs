@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories.Interfaces;
 
-public interface IProductRepository : IRepository<Product>
+public interface IProductRepository : IRepository<Product>, IRepositoryQueryable<Product> 
 {
-    Task<IQueryable<Product>> GetFilteredProducts(ProductFilterInputDto productFilterInputDto);
-    Task<IQueryable<Product>> FilteredProducts(ProductFilterExtendInputDto filter);
 }

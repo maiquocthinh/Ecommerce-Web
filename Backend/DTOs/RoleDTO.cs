@@ -26,19 +26,22 @@ public class RoleUpdateInputDto
 }
 
 //Output Dto
-public class RoleDto
+
+public class RoleTinyDto
 {
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
+}
 
-    public IEnumerable<string> Permissions { get; set; }
-
+public class RoleDto: RoleTinyDto
+{
     public DateTime UpdatedAt { get; set; }
 
     public DateTime CreatedAt { get; set; }
 }
 
-
-
-
+public class RoleDetailDto : RoleDto
+{
+    public IEnumerable<string> Permissions { get; set; }
+}
