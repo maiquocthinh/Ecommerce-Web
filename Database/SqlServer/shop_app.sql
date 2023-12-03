@@ -210,7 +210,7 @@ CREATE TABLE [reviews]
     [content]            NVARCHAR(500)   NOT NULL,
     [product_version_id] INT             NOT NULL,
     [customer_id]        INT             NOT NULL,
-    [score]              TINYINT         NOT NULL,
+    [score]              TINYINT         NOT NULL, 
     [updated_at]         DATETIME        NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     [created_at]         DATETIME        NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     CONSTRAINT FK_Review_ProductVersion FOREIGN KEY ([product_version_id]) REFERENCES [product_versions] ([id]),
@@ -533,4 +533,21 @@ BEGIN
     UPDATE product_versions
     SET inventory = inventory + @importedQuantity
     WHERE id = @productVersionId;
+END;
+
+-- trigger này đảm bảo với 1 review thì chỉ có tối đa 1 reply tương ứng
+CREATE OR ALTER TRIGGER trg_EnsureSingleReply
+ON reviews_reply
+AFTER INSERT
+AS
+BEGIN
+    IF (
+        SELECT COUNT(*)
+        FROM [dbo].[reviews_reply] rr
+        JOIN inserted i ON i.reviews_id = rr.reviews_id
+    ) > 1
+    BEGIN
+        RAISERROR('Mỗi Review chỉ có thể có một Reply.', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
 END;

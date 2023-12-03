@@ -610,7 +610,10 @@ public partial class DBContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_ReviewsReply");
 
-            entity.ToTable("reviews_reply");
+            entity.ToTable("reviews_reply", tb =>
+            {
+                tb.HasTrigger("trg_EnsureSingleReply");
+            });
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Content)

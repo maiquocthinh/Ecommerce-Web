@@ -20,4 +20,9 @@ public class ReviewRepository : SqlServerRepository<Review>, IReviewRepository
     {
         return await _dbSet.Where(r => r.CustomerId == customerId &&  r.ProductVersionId == productVersionId).FirstOrDefaultAsync();
     }
+
+    public IQueryable<Review> GetQueryable()
+    {
+        return _dbSet.AsQueryable();
+    }
 }

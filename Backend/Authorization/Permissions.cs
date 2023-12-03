@@ -59,4 +59,8 @@ public class Permissions
     public const string ViewInventory = "VI";
     public const string ViewImport = "VImp";
     public const string CreateImport = "CImp";
+
+    public const string ViewReview = "VRv";
+    public const string ReplyReview = "RepRv";
+    public const string DeleteReplyReview = "DelRepRv";
 }
