@@ -50,7 +50,7 @@ const CenterModal: React.FC<CenterModalProps> = ({
                     className={`${
                         isBorder
                             ? "max-w-2xl w-full p-4 z-50 relative"
-                            : "w-full p-4 z-50 relative"
+                            : "p-4 z-50 relative"
                     }`}
                 >
                     <div

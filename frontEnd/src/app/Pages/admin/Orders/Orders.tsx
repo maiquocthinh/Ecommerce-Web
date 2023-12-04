@@ -1,4 +1,6 @@
 import SelecterFilter from "@/Components/FormData/Selecter/SelecterFilter";
+import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
+import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import Notification from "@/Components/PageLoader/Notification";
 import Paginations from "@/Components/Paginations/Paginations";
 import {
@@ -10,6 +12,7 @@ import { getOrderType } from "@/common/getAllType";
 import { pagingType } from "@/common/paging";
 import { useEffect, useState } from "react";
 import { AiOutlinePrinter } from "react-icons/ai";
+import { CiEdit } from "react-icons/ci";
 import { LiaSearchPlusSolid } from "react-icons/lia";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -369,7 +372,7 @@ const Orders = () => {
                                                 <AiOutlinePrinter size={22} />
                                             </button>
                                             <span className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600">
-                                                <LiaSearchPlusSolid size={22} />
+                                                <CiEdit size={22} />
                                             </span>
                                         </div>
                                     </td>
@@ -377,6 +380,51 @@ const Orders = () => {
                             ))}
                     </tbody>
                 </table>
+                <CenterModal
+                    show={false}
+                    setShow={() => true}
+                    showModalTitle
+                    modalTitle={
+                        <h1 className="font-bold text-2xl text-white select-none mt-2">
+                            chỉnh sửa đơn hàng
+                        </h1>
+                    }
+                    bgAll="bg-custom-addmin_bg"
+                    mainContent={
+                        <div className="flex gap-4 justify-start items-start p-2">
+                            <div className="flex flex-col gap-6 w-full">
+                                <div className="flex justify-between gap-4">
+                                    <div className="w-full">
+                                        <p className="text-gray-300 text-sm text-start">
+                                            ImportShipment:
+                                        </p>
+                                        <SelecterLab
+                                            options={[
+                                                {
+                                                    id: 1,
+                                                    title: "nam",
+                                                },
+                                                {
+                                                    id: 2,
+                                                    title: "nữ",
+                                                },
+                                            ]}
+                                            handleGetOptionBySelect={
+                                                handleGetOptionBySelect
+                                            }
+                                            typeId="gender"
+                                            // valueUpdate={
+                                            //     formData.gender
+                                            //         ? ["nam"]
+                                            //         : ["nữ"]
+                                            // }
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                />
                 {dataOrder && (
                     <Paginations
                         handlePageChange={handlePageChange}

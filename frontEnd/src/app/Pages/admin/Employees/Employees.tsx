@@ -126,7 +126,7 @@ const Employees = () => {
             setIdEmployeeDelete(0);
             dispatch(
                 adminAllEmployees({
-                    pageSize: 100,
+                    pageSize: 6,
                     pageIndex: 1,
                 })
             );
@@ -164,14 +164,6 @@ const Employees = () => {
                                             <CiBookmarkPlus size={22} />
                                             <span className="text-xs">
                                                 Thêm mới (+)
-                                            </span>
-                                        </button>
-                                    </div>
-                                    <div className="lg:flex-1 md:flex-1 mr-3 sm:flex-none">
-                                        <button className="border flex gap-1 justify-center items-center h-10 min-w-[120px] hover:text-yellow-400 border-gray-300 dark:text-gray-300 cursor-pointer py-2 hover:border-yellow-400 rounded-md focus:outline-none">
-                                            <CiImport size={22} />
-                                            <span className="text-xs">
-                                                Import
                                             </span>
                                         </button>
                                     </div>

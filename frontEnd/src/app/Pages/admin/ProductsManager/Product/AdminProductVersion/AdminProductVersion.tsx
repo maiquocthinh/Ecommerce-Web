@@ -13,6 +13,8 @@ import {
     adminDeleteProductVersion,
     adminUpadateProductVersion,
 } from "@/app/action/adminAction/adminProduct";
+import UploadImg from "@/Components/UploadImg/UploadImg";
+import { setImgUrl } from "@/app/Slices/user/UploadSlice";
 const AdminProductVersion = () => {
     const param = useParams();
     const date = new Date();
@@ -21,7 +23,7 @@ const AdminProductVersion = () => {
         productId: Number(param?.id) || 0,
         name: "",
         imageUrl:
-            "https://didongmango.com/images/products/2023/09/25/small/poco-m5s-trang-thumb-600x600_1695633406.jpg",
+            "https://ucarecdn.com/ce1b0c8c-b828-4700-8bd3-c90f021f4c58/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/",
         color: "",
         price: 0,
         specifications: {
@@ -31,6 +33,9 @@ const AdminProductVersion = () => {
     const dispatch = useDispatch<any>();
     const productDetail = useSelector(
         (state: any) => state.productDetail.data as ProductType
+    );
+    const uploadFileData = useSelector(
+        (state: any) => state.uploadFileData.imgUrl
     );
     const [isNewProductVersion, setISNewProductVersion] =
         useState<boolean>(false);
@@ -44,6 +49,11 @@ const AdminProductVersion = () => {
             dispatch(getProductById(param?.id));
         }
     }, [param, dispatch]);
+    useEffect(() => {
+        if (uploadFileData !== "") {
+            setFormData({ ...formData, imageUrl: uploadFileData });
+        }
+    }, [uploadFileData]);
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -73,6 +83,7 @@ const AdminProductVersion = () => {
                         toast.success("tạo mới sản phẩm thành công!");
                         setFormData(initFormData);
                         setISNewProductVersion(false);
+                        dispatch(setImgUrl(""));
                         setIsInfomation(false);
                     } else {
                         toast.error(
@@ -98,6 +109,9 @@ const AdminProductVersion = () => {
                         toast.success("chỉnh sửa sản phẩm thành công!");
                         setFormData(initFormData);
                         setISNewProductVersion(false);
+                        dispatch(setImgUrl(""));
+                        setISUpdateProductVersion(false);
+                        setIsInfomation(false);
                     } else {
                         toast.error(
                             `chỉnh sửa sản phẩm thất bại! ${res.payload.message}`
@@ -178,12 +192,15 @@ const AdminProductVersion = () => {
                 showModalTitle={true}
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
-                        Tạo ProductVersion mới
+                        {isUpdateProductVersion
+                            ? "Cập nhật sản phẩm"
+                            : "tạo mới sản phẩm"}
                     </h1>
                 }
                 bgAll="bg"
                 mainContent={
                     <div className="flex flex-col gap-2">
+                        <UploadImg imgUrl={formData.imageUrl} />
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
                                 <p className="text-gray-300 text-sm text-start mb-1">
@@ -248,7 +265,16 @@ const AdminProductVersion = () => {
                             Tới nhập thông tin
                         </button>
                         <button
-                            onClick={() => setISNewProductVersion(false)}
+                            onClick={() => {
+                                setISNewProductVersion(false);
+                                if (isUpdateProductVersion) {
+                                    setISUpdateProductVersion(false);
+                                }
+                                if (uploadFileData !== "") {
+                                    dispatch(setImgUrl(""));
+                                }
+                                setFormData(initFormData);
+                            }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
                             đóng
@@ -262,7 +288,9 @@ const AdminProductVersion = () => {
                 showModalTitle={true}
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
-                        Tạo ProductVersion mới
+                        {isUpdateProductVersion
+                            ? "Cập nhật thông tin sản phẩm"
+                            : "tạo mới thông tin sản phẩm"}
                     </h1>
                 }
                 bgAll="bg"
@@ -535,7 +563,16 @@ const AdminProductVersion = () => {
                             Tạo mới
                         </button>
                         <button
-                            onClick={() => setIsInfomation(false)}
+                            onClick={() => {
+                                setIsInfomation(false);
+                                if (isUpdateProductVersion) {
+                                    setISUpdateProductVersion(false);
+                                }
+                                if (uploadFileData !== "") {
+                                    dispatch(setImgUrl(""));
+                                }
+                                setFormData(initFormData);
+                            }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
                             Đóng

@@ -58,7 +58,6 @@ const Imports = () => {
                                 <td className="px-4 py-2">NHÀ CUNG CẤP</td>
                                 <td className="px-4 py-2">GIÁ</td>
                                 <td className="px-4 py-2">NGÀY THÊM</td>
-                                <td className="px-4 py-2 text-right">ACTION</td>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
@@ -89,18 +88,6 @@ const Imports = () => {
                                             <span className="text-sm font-semibold">
                                                 {handleDate(item.createdAt)}
                                             </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <div className="flex justify-end text-right">
-                                                <button className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none">
-                                                    <CiEdit size={22} />
-                                                </button>
-                                                <button className="p-2 cursor-pointer text-gray-400 hover:text-red-600 focus:outline-none">
-                                                    <AiOutlineDelete
-                                                        size={22}
-                                                    />
-                                                </button>
-                                            </div>
                                         </td>
                                     </tr>
                                 ))}

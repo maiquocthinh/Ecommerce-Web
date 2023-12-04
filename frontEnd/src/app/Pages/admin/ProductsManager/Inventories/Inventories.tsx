@@ -1,25 +1,53 @@
+import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
+import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import Notification from "@/Components/PageLoader/Notification";
 import Paginations from "@/Components/Paginations/Paginations";
 import { adminGetAllInventory } from "@/app/action/adminAction/adminInventory";
-import { allInventoryType } from "@/common/Inventory";
-import { getDisscountType } from "@/common/getAllType";
+import { getListSupplier } from "@/app/action/adminAction/adminSupplier";
+import {
+    allInventoryType,
+    importShipmentsgetType,
+    importsCreateType,
+} from "@/common/Inventory";
+import { getDisscountType, supplierType } from "@/common/getAllType";
 import { pagingType } from "@/common/paging";
 import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { CiEdit } from "react-icons/ci";
+import { MdOutlineAddBox } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+const initFormData = {
+    productVersionId: 0,
+    quantity: 0,
+    cost: 0,
+};
 const Inventories = () => {
     const dispatch = useDispatch<any>();
     const allInventory = useSelector((state: any) => state.allInventory.data);
+    const listSuplierData = useSelector(
+        (state: any) => state.listSuplierData.data
+    ) as {
+        data: { list: supplierType[]; paging: pagingType };
+        success: boolean;
+    };
     const [paging, setPaging] = useState<pagingType>();
     const [inventories, setInventories] = useState<allInventoryType[]>();
+    const [idSupplier, setIdSupplier] = useState<number>(0);
     const [formParam, setFormParam] = useState<getDisscountType>({
         pageIndex: 1,
         pageSize: 6,
     });
+    const [formData, setFormData] =
+        useState<importShipmentsgetType>(initFormData);
+    const [isNewImport, setIsNewImport] = useState<boolean>(false);
     useEffect(() => {
         dispatch(adminGetAllInventory({ pageIndex: 1, pageSize: 6 }));
     }, [dispatch]);
+    useEffect(() => {
+        if (isNewImport && !listSuplierData.success) {
+            dispatch(getListSupplier({ pageIndex: 1, pageSize: 100 }));
+        }
+    }, [dispatch, isNewImport, listSuplierData]);
     useEffect(() => {
         if (allInventory.success) {
             setInventories(allInventory?.data?.list);
@@ -69,6 +97,9 @@ const Inventories = () => {
                 pageIndex: paging?.pageIndex || 1,
             })
         );
+    };
+    const handleGetOptionBySelect = (option: any, typeId: string) => {
+        setIdSupplier(option?.id);
     };
     return (
         <div className="flex flex-col p-4">
@@ -128,9 +159,6 @@ const Inventories = () => {
                                 <td className="px-4 py-2">IMAGE</td>
                                 <td className="px-4 py-2">HÀNG TỒN KHO</td>
                                 <td className="px-4 py-2">TRẠNG THÁI</td>
-                                <td className="px-4 py-2">
-                                    PHẦN TRĂM GIẢM GIÁ
-                                </td>
                                 <td className="px-4 py-2 text-right">ACTION</td>
                             </tr>
                         </thead>
@@ -169,11 +197,13 @@ const Inventories = () => {
                                         </td>
                                         <td className="px-4 py-2">
                                             <div className="flex justify-end text-right">
-                                                <button className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none">
-                                                    <CiEdit size={22} />
-                                                </button>
-                                                <button className="p-2 cursor-pointer text-gray-400 hover:text-red-600 focus:outline-none">
-                                                    <AiOutlineDelete
+                                                <button
+                                                    onClick={() =>
+                                                        setIsNewImport(true)
+                                                    }
+                                                    className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none"
+                                                >
+                                                    <MdOutlineAddBox
                                                         size={22}
                                                     />
                                                 </button>
@@ -194,6 +224,61 @@ const Inventories = () => {
                         />
                     )}
                 </div>
+                <CenterModal
+                    show={isNewImport}
+                    setShow={setIsNewImport}
+                    showModalTitle={true}
+                    modalTitle={
+                        <h1 className="text-2xl font-bold text-white">
+                            thêm hàng cho sản phẩm
+                        </h1>
+                    }
+                    bgAll="bg"
+                    mainContent={
+                        <div className="flex flex-col justify-between items-start gap-4">
+                            <div className="w-full">
+                                <p className="text-gray-300 text-sm text-start">
+                                    chọn nhà cung cấp :
+                                </p>
+                                {listSuplierData?.data?.list?.length ? (
+                                    <SelecterLab
+                                        options={listSuplierData?.data?.list}
+                                        handleGetOptionBySelect={
+                                            handleGetOptionBySelect
+                                        }
+                                        typeId="Suplier"
+                                    />
+                                ) : null}
+                            </div>
+                        </div>
+                    }
+                    showButtons={true}
+                    buttonComponent={
+                        <div className="flex gap-2 justify-center mb-2">
+                            <button
+                                // onClick={handleAddOrUpdateRoles}
+                                className="px-4 py-2 border-b-4 border border-yellow-500 text-yellow-500 hover:text-white hover:bg-yellow-500 transition-all duration-200"
+                            >
+                                Thêm Lô hàng
+                            </button>
+                            <button
+                                // onClick={handleAddOrUpdateRoles}
+                                className="px-4 py-2 border-b-4 border border-green-500 text-green-500 hover:text-white hover:bg-green-500 transition-all duration-200"
+                            >
+                                Tạo
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    setIsNewImport(false);
+                                }}
+                                className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
+                            >
+                                Đóng
+                            </button>
+                        </div>
+                    }
+                />
                 <Notification />
             </div>
         </div>

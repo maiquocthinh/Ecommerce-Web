@@ -1,6 +1,8 @@
 import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
 import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
+import UploadImg from "@/Components/UploadImg/UploadImg";
 import { setComponentLevelLoading } from "@/app/Slices/common/componentLeveLoadingSlice";
+import { setImgUrl } from "@/app/Slices/user/UploadSlice";
 import {
     adminAllProduct,
     adminCreateProduct,
@@ -11,7 +13,7 @@ import {
     addProductType,
 } from "@/common/adminType/AdminProduct";
 import { categoryType, needType } from "@/common/catalog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 interface AddAndUpdateProductProps {
@@ -24,7 +26,7 @@ const initFormData = {
     name: "",
     description: "",
     imageUrl:
-        "https://cdn2.cellphones.com.vn/insecure/rs:fill:1920:0/q:80/plain/https://cellphones.com.vn/media/wysiwyg/d-n3-flip-content2.jpg",
+        "https://ucarecdn.com/ce1b0c8c-b828-4700-8bd3-c90f021f4c58/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/",
     warranty: "",
     categoryId: 0,
     brandId: 0,
@@ -40,6 +42,9 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
     const [formData, setFormData] = useState<addProductType>(
         productInfor ? productInfor : initFormData
     );
+    const uploadFileData = useSelector(
+        (state: any) => state.uploadFileData.imgUrl
+    );
     const branchData = useSelector((state: any) => state.branchData.data);
     const categoriesData = useSelector(
         (state: any) => state.categoriesData.data as categoryType[]
@@ -47,6 +52,11 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
     const needsData = useSelector(
         (state: any) => state.needsData.data as needType[]
     );
+    useEffect(() => {
+        if (uploadFileData !== "") {
+            setFormData({ ...formData, imageUrl: uploadFileData });
+        }
+    }, [uploadFileData]);
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -72,6 +82,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                                 pageIndex: 1,
                             })
                         );
+                        dispatch(setImgUrl(""));
                         setFormData(initFormData);
                         setIsNewProduct(false);
                     }
@@ -90,6 +101,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                 dispatch(setComponentLevelLoading({ isLoading: true, id: "" }));
                 dispatch(adminUpdateProduct(formData)).then((res: any) => {
                     if (res.payload?.success) {
+                        dispatch(setImgUrl(""));
                         toast.success("cập nhật sản phẩm thành công");
                         dispatch(
                             adminAllProduct({
@@ -121,6 +133,8 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
             mainContent={
                 <div className="flex gap-4 justify-start items-start p-2">
                     <div className="flex flex-col gap-6 w-full">
+                        <UploadImg imgUrl={formData.imageUrl} />
+
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
                                 <p className="text-gray-300 text-sm text-start">
@@ -265,7 +279,10 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                         {isUpdateProduct ? "Chỉnh sửa" : "Tạo"}
                     </button>
                     <button
-                        onClick={() => setIsNewProduct(false)}
+                        onClick={() => {
+                            setIsNewProduct(false);
+                            if (uploadFileData) dispatch(setImgUrl(""));
+                        }}
                         className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                     >
                         đóng

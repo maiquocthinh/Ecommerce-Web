@@ -1,5 +1,7 @@
 import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
 import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
+import UploadImg from "@/Components/UploadImg/UploadImg";
+import { setImgUrl } from "@/app/Slices/user/UploadSlice";
 import {
     adminAllEmployees,
     adminCreateEmployee,
@@ -26,7 +28,7 @@ const initFormData = {
     email: "",
     phoneNumber: "",
     password: "",
-    avatarUrl: "https://avatars.githubusercontent.com/u/95113661?v=4",
+    avatarUrl: "https://i.imgur.com/Th0n214.jpg",
     active: true,
     roleId: -1,
 };
@@ -52,6 +54,9 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
     const adminGetEmployeeByIdData = useSelector(
         (state: any) => state.adminGetEmployeeByIdData.data
     ) as { data?: employeeType; success: boolean };
+    const uploadFileData = useSelector(
+        (state: any) => state.uploadFileData.imgUrl
+    );
     const [formData, setFormData] = useState<employeeType>(initFormData);
     const [optionRoles, setOptionRoles] = useState<{}[]>();
     const [listError, setListError] = useState({ Email: [] });
@@ -59,6 +64,11 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
         useState<emlpoyeeAddress>(initFormDataAddress);
     const [typePassword, setTypePassword] = useState(true);
     const [isCreateAddress, setIsCreateAddress] = useState(false);
+    useEffect(() => {
+        if (uploadFileData !== "") {
+            setFormData({ ...formData, avatarUrl: uploadFileData });
+        }
+    }, [uploadFileData]);
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -116,13 +126,16 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                 );
 
                 if (response.payload?.success) {
-                    toast.success("Cập nhật nhân viên thành công");
+                    toast.success("Tạo nhân viên thành công");
                     setFormData(initFormData);
                     setFormDataAddress(initFormDataAddress);
                     setIsNewEmployee(false);
                     await dispatch(
                         adminAllEmployees({ pageIndex: 1, pageSize: 10 })
                     );
+                    if (uploadFileData) {
+                        dispatch(setImgUrl(""));
+                    }
                 } else {
                     toast.error(
                         response.payload.message ||
@@ -142,6 +155,9 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                     await dispatch(
                         adminAllEmployees({ pageIndex: 1, pageSize: 10 })
                     );
+                    if (uploadFileData) {
+                        dispatch(setImgUrl(""));
+                    }
                 } else {
                     toast.error(
                         response.payload.message ||
@@ -184,6 +200,9 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
         if (setEmployeeIdUpdate) {
             setEmployeeIdUpdate(null);
         }
+        if (uploadFileData) {
+            dispatch(setImgUrl(""));
+        }
     };
     return (
         <Fragment>
@@ -202,6 +221,8 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                     mainContent={
                         <div className="flex gap-4 justify-start items-start p-2">
                             <div className="flex flex-col gap-6 w-full">
+                                <UploadImg imgUrl={formData.avatarUrl} />
+
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
                                         <p className="text-gray-300 text-sm text-start">

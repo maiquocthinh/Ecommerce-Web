@@ -23,3 +23,8 @@ export interface importShipmentsType {
     supplierId: number;
     importShipments: importShipmentsgetType[];
 }
+
+export interface importsCreateType {
+    supplierId: number;
+    importShipments: importShipmentsgetType[];
+}

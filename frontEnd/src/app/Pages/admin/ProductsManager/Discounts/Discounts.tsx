@@ -141,116 +141,129 @@ const Discounts = () => {
                     </div>
                 </div>
             </div>
-            <div className="rounded-lg shadow-xs bg-gray-800 mb-5">
-                <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg rounded-b-lg">
-                    <table className="w-full whitespace-nowrap">
-                        <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
-                            <tr>
-                                <td className="px-4 py-2">ID</td>
-                                <td className="px-4 py-2">SẢN PHẨM GIẢM GIÁ</td>
-                                <td className="px-4 py-2">SỐ LƯỢNG</td>
-                                <td className="px-4 py-2">NGÀY BẮT ĐẦU</td>
-                                <td className="px-4 py-2">NGÀY KẾT THÚC</td>
-                                <td className="px-4 py-2">trạng thái</td>
-                                <td className="px-4 py-2">
-                                    PHẦN TRĂM GIẢM GIÁ
-                                </td>
-                                <td className="px-4 py-2 text-right">ACTION</td>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
-                            {discount?.length &&
-                                discount.map((item) => (
-                                    <tr key={item.id}>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm">
-                                                {item.id}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm font-semibold">
-                                                {item.productName}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            {item.quantity}
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm font-semibold">
-                                                {handleDate(item.startDate)}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm font-semibold">
-                                                {handleDate(item.endDate)}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            {(
-                                                Number(item.discountPercent) *
-                                                100
-                                            ).toFixed(2)}{" "}
-                                            %
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm font-semibold">
-                                                {item.active
-                                                    ? "hoạt động"
-                                                    : "không hoạt động"}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <div className="flex justify-end text-right">
-                                                <button
-                                                    onClick={() => {
-                                                        setUpdateDiscont(true);
-                                                        setDataUpdateDiscont(
-                                                            item
-                                                        );
-                                                    }}
-                                                    className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none"
-                                                >
-                                                    <CiEdit size={22} />
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleDeleteDiscount(
-                                                            item.id
-                                                        )
-                                                    }
-                                                    className="p-2 cursor-pointer text-gray-400 hover:text-red-600 focus:outline-none"
-                                                >
-                                                    <AiOutlineDelete
-                                                        size={22}
-                                                    />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </table>
-                    {allDiscountData && paging && (
-                        <Paginations
-                            handlePageChange={handlePageChange}
-                            pagination={{
-                                currentPage: paging.pageIndex || 0,
-                                totalPage: paging.totalPages || 0,
-                            }}
-                            paging={paging}
+            {discount?.length ? (
+                <div className="rounded-lg shadow-xs bg-gray-800 mb-5">
+                    <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg rounded-b-lg">
+                        <table className="w-full whitespace-nowrap">
+                            <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+                                <tr>
+                                    <td className="px-4 py-2">ID</td>
+                                    <td className="px-4 py-2">
+                                        SẢN PHẨM GIẢM GIÁ
+                                    </td>
+                                    <td className="px-4 py-2">SỐ LƯỢNG</td>
+                                    <td className="px-4 py-2">NGÀY BẮT ĐẦU</td>
+                                    <td className="px-4 py-2">NGÀY KẾT THÚC</td>
+                                    <td className="px-4 py-2">trạng thái</td>
+                                    <td className="px-4 py-2">
+                                        PHẦN TRĂM GIẢM GIÁ
+                                    </td>
+                                    <td className="px-4 py-2 text-right">
+                                        ACTION
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
+                                {discount?.length &&
+                                    discount.map((item) => (
+                                        <tr key={item.id}>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm">
+                                                    {item.id}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm font-semibold">
+                                                    {item.productName}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {item.quantity}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm font-semibold">
+                                                    {handleDate(item.startDate)}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm font-semibold">
+                                                    {handleDate(item.endDate)}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {(
+                                                    Number(
+                                                        item.discountPercent
+                                                    ) * 100
+                                                ).toFixed(2)}{" "}
+                                                %
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm font-semibold">
+                                                    {item.active
+                                                        ? "hoạt động"
+                                                        : "không hoạt động"}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <div className="flex justify-end text-right">
+                                                    <button
+                                                        onClick={() => {
+                                                            setUpdateDiscont(
+                                                                true
+                                                            );
+                                                            setDataUpdateDiscont(
+                                                                item
+                                                            );
+                                                        }}
+                                                        className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none"
+                                                    >
+                                                        <CiEdit size={22} />
+                                                    </button>
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDeleteDiscount(
+                                                                item.id
+                                                            )
+                                                        }
+                                                        className="p-2 cursor-pointer text-gray-400 hover:text-red-600 focus:outline-none"
+                                                    >
+                                                        <AiOutlineDelete
+                                                            size={22}
+                                                        />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                            </tbody>
+                        </table>
+                        {allDiscountData && paging && (
+                            <Paginations
+                                handlePageChange={handlePageChange}
+                                pagination={{
+                                    currentPage: paging.pageIndex || 0,
+                                    totalPage: paging.totalPages || 0,
+                                }}
+                                paging={paging}
+                            />
+                        )}
+                    </div>
+                    {updateDiscont && paging ? (
+                        <DiscountModal
+                            show={updateDiscont}
+                            setShow={setUpdateDiscont}
+                            data={dataUpdateDiscont}
+                            pagin={paging}
                         />
-                    )}
+                    ) : null}
+                    <Notification />
                 </div>
-                {updateDiscont && paging ? (
-                    <DiscountModal
-                        show={updateDiscont}
-                        setShow={setUpdateDiscont}
-                        data={dataUpdateDiscont}
-                        pagin={paging}
-                    />
-                ) : null}
-                <Notification />
-            </div>
+            ) : (
+                <div className="flex justify-center items-center w-full font-bold text-white text-2xl">
+                    không có giảm giá nào hợp lệ
+                </div>
+            )}
         </div>
     );
 };

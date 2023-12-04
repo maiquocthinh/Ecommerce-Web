@@ -189,7 +189,7 @@ const RoleManager = () => {
         }
         setFormData({ ...formData, permissions: cpOption });
     };
-    console.log(listPermissionsAdmin);
+
     return (
         <div className="flex flex-col p-4">
             <div className="rounded-lg shadow-xs bg-gray-800 mb-5">
@@ -255,7 +255,10 @@ const RoleManager = () => {
                                                         (
                                                             permission: string
                                                         ) => (
-                                                            <span className="text-sm font-semibold">
+                                                            <span
+                                                                key={permission}
+                                                                className="text-sm font-semibold"
+                                                            >
                                                                 {` ${permission} -`}
                                                             </span>
                                                         )
