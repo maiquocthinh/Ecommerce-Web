@@ -12,6 +12,7 @@ using Backend.Services;
 using Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Backend.Infrastructure.Uploader.Uploadcare;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +78,8 @@ builder.Services.AddScoped<IImportRepository, ImportRepository>();
 builder.Services.AddScoped<IImportShipmentRepository, ImportShipmentRepository>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
+builder.Services.AddScoped<IUploadcareService, UploadcareService>();
+builder.Services.AddScoped<HttpClient>();
 builder.Services.AddHostedService<EmailWorker>();
 
 var app = builder.Build();
