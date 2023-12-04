@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { UserRegisterType, userLoginType } from "../common/user";
+import { UserRegisterType, profileType, userLoginType } from "../common/user";
 import axios from "../utils/instance";
 const handleRegister = (formData: UserRegisterType) => {
     return axios.post(`/api/auth/customer/register`, formData);
@@ -34,5 +34,26 @@ const handleGetProfile = () => {
     };
     return axios.get(`/api/customer/profile`, { headers });
 };
-
-export { handleRegister, handleLogin, handleGetProfile, handleResetPassword };
+const handleUploadImg = (ImageFile: any) => {
+    return axios.post(`/api/upload/image/single`, ImageFile);
+};
+const handleUpdateUser = (formData: profileType) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    return axios.patch(
+        `/api/customer/profile`,
+        {
+            ...formData,
+        },
+        { headers }
+    );
+};
+export {
+    handleRegister,
+    handleLogin,
+    handleGetProfile,
+    handleResetPassword,
+    handleUploadImg,
+    handleUpdateUser,
+};

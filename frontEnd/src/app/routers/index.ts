@@ -26,7 +26,6 @@ import Inventories from "../Pages/admin/ProductsManager/Inventories/Inventories"
 import AdminDetailProduct from "../Pages/admin/ProductsManager/Product/AdminProductVersion/AdminProductVersion";
 import ProductsManager from "../Pages/admin/ProductsManager/Product/ProductsManager";
 import RoleManager from "../Pages/admin/RoleManager/RoleManager";
-import ALlStaff from "../Pages/admin/Staff/AllStaff";
 import Supplier from "../Pages/admin/Supplier/Supplier";
 
 interface RouteConfig {
@@ -173,6 +172,11 @@ const privateRouter: RouteConfig[] = [
         path: "/admin/order-detail/:id",
         element: OrderDetail,
         Layout: null,
+    },
+    {
+        path: "/admin/customer",
+        element: Customers,
+        Layout: AdminLayout,
     },
 ];
 

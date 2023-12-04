@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
 import { registerAction } from "../action/UserAction";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 const initialFormData = {
     firstName: "",
     lastName: "",
@@ -21,6 +22,7 @@ const initialFormData = {
 const Register = () => {
     const [formData, setFormData] =
         useState<typeof initialFormData>(initialFormData);
+    const [formError, setFormError] = useState<any>();
     const dispatch = useDispatch<any>();
     const err = useSelector(
         (state: { auth: UserType.AuthState }) => state.auth.error
@@ -28,6 +30,7 @@ const Register = () => {
     const componentLoading = useSelector(
         (state: any) => state.componentLoading.componentLevelLoading
     );
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const registerData = useSelector((state: any) => state.registerData.data);
     const navigate = useNavigate();
     const isFormValid = () => {
@@ -41,33 +44,30 @@ const Register = () => {
             ? true
             : false;
     };
-    const handleRegisterOnSubmit = () => {
+    const handleRegisterOnSubmit = async () => {
         if (isFormValid()) {
             dispatch(setComponentLevelLoading({ loading: true, id: "" }));
-            dispatch(registerAction(formData)).then((response: any) => {
-                console.log(response);
-                if (!response.payload) {
-                    dispatch(
-                        dispatch(
-                            setComponentLevelLoading({ loading: false, id: "" })
-                        )
-                    );
-                    toast.error("vui lòng điền đủ thông tin", {
+            const res = await dispatch(registerAction(formData));
+            try {
+                if (res.payload?.errors) {
+                    setFormError(res.payload.errors);
+                    toast.error(`đăng kí không thành công vui lòng thử lại`, {
                         position: toast.POSITION.TOP_RIGHT,
                     });
-                } else if (response.payload.success) {
                     dispatch(
                         setComponentLevelLoading({ loading: false, id: "" })
                     );
+                } else {
                     toast.success("đăng kí thành công", {
                         position: toast.POSITION.TOP_RIGHT,
                     });
                     setFormData(initialFormData);
-                    setTimeout(() => {
-                        navigate("/login");
-                    }, 1000);
+                    await dispatch(
+                        setComponentLevelLoading({ loading: false, id: "" })
+                    );
+                    navigate("/login");
                 }
-            });
+            } catch (error) {}
         } else {
             dispatch(setComponentLevelLoading({ loading: false, id: "" }));
             toast.error("vui lòng nhập đầy đủ thông tin", {
@@ -76,17 +76,6 @@ const Register = () => {
             setFormData(initialFormData);
         }
     };
-    //     if (data.accessToken !== "") {
-
-    //     }
-    //     if (err) {
-    //         dispatch(setComponentLevelLoading({ loading: false, id: "" }));
-    //         toast.error("lỗi hệ thống, vui lòng quay lại sau vài phút", {
-    //             position: toast.POSITION.TOP_RIGHT,
-    //         });
-    //         setFormData(initialFormData);
-    //     }
-    // }, [data, err]);
     const handleOnchange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -102,7 +91,7 @@ const Register = () => {
                         className="h-[100px] mt-2 object-cover object-center"
                         alt=""
                     />
-                    <div className="my-4 flex flex-col gap-6">
+                    <div className="my-4 flex flex-col gap-8">
                         <div className="flex gap-2 items-center">
                             <InputForm
                                 type="text"
@@ -131,15 +120,41 @@ const Register = () => {
                             onChange={handleOnchange}
                             value={formData.email}
                             Icon={<AiOutlineMail size={20} />}
+                            err={formError?.Email?.length > 0 ? true : false}
+                            textErr={
+                                formError?.Email?.length > 0
+                                    ? "Không dùng Email đã đăng kí trước đó"
+                                    : undefined
+                            }
                         />
                         <InputForm
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder="nhập password"
                             lable="password"
                             name="password"
+                            err={formError?.Password?.length > 0 ? true : false}
+                            textErr={
+                                formError?.Password?.length > 0
+                                    ? "Mật khẩu ít nhất 8 kí tự, gôm ít nhất 1 kí tự đặc biệt và 1 kí tự viết hoa"
+                                    : undefined
+                            }
                             onChange={handleOnchange}
                             value={formData.password}
-                            Icon={<BiLockAlt size={20} />}
+                            Icon={
+                                !showPassword ? (
+                                    <FaRegEyeSlash
+                                        className="cursor-pointer"
+                                        size={20}
+                                        onClick={() => setShowPassword(true)}
+                                    />
+                                ) : (
+                                    <FaRegEye
+                                        className="cursor-pointer"
+                                        size={20}
+                                        onClick={() => setShowPassword(false)}
+                                    />
+                                )
+                            }
                         />
                         <InputForm
                             type="text"
@@ -149,12 +164,22 @@ const Register = () => {
                             onChange={handleOnchange}
                             value={formData.phoneNumber}
                             Icon={<BsPhoneFlip size={20} />}
+                            err={
+                                formError?.PhoneNumber?.length > 0
+                                    ? true
+                                    : false
+                            }
+                            textErr={
+                                formError?.PhoneNumber?.length > 0
+                                    ? "vui lòng nhập đúng số điện thoại của bạn"
+                                    : undefined
+                            }
                         />
                     </div>
                     <button
                         disabled={componentLoading.loading}
                         onClick={handleRegisterOnSubmit}
-                        className="rounded-sm disabled:opacity-50 inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
+                        className="rounded-sm disabled:opacity-50 inline-flex w-full items-center justify-center bg-black px-6 py-4 mt-2 text-lg 
                    text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
                    "
                     >

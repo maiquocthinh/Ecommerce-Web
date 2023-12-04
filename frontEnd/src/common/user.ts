@@ -19,6 +19,7 @@ export interface UserType {
     gender: string;
 }
 export interface profileType {
+    id?: number;
     firstName: string;
     lastName: string;
     gender: boolean;
@@ -26,6 +27,7 @@ export interface profileType {
     email: string;
     phoneNumber: string;
     avatarUrl: string;
+    password?: string;
 }
 export interface AuthState {
     isLoggedIn: boolean;

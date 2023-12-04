@@ -81,7 +81,33 @@ export default function Login() {
                     );
                 }
             } else {
-                dispatch(login(formData));
+                const res = await dispatch(login(formData));
+                try {
+                    if (res.payload.success) {
+                        Cookies.set("token", res.payload?.data?.accessToken);
+                        Cookies.set(
+                            "accessTokenExpiredIn",
+                            res.payload?.data?.accessTokenExpiredIn
+                        );
+                        toast.success("đăng nhập thành công", {
+                            position: toast.POSITION.TOP_RIGHT,
+                        });
+                        dispatch(
+                            setComponentLevelLoading({ loading: false, id: "" })
+                        );
+                        route("/");
+                    } else {
+                        toast.error(
+                            `tài khoản không tồn tại ${res.payload.message}`,
+                            {
+                                position: toast.POSITION.TOP_RIGHT,
+                            }
+                        );
+                        dispatch(
+                            setComponentLevelLoading({ loading: false, id: "" })
+                        );
+                    }
+                } catch (error) {}
             }
         } else {
             toast.error("vui lòng nhập đầy đủ thông tin", {
@@ -103,24 +129,6 @@ export default function Login() {
             ? true
             : false;
     };
-    useEffect(() => {
-        if (isLoggedIn) {
-            Cookies.set("token", data.accessToken);
-            Cookies.set("accessTokenExpiredIn", data.accessTokenExpiredIn);
-            toast.success("đăng nhập thành công", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
-        }
-    }, [isLoggedIn, data, dispatch]);
-    useEffect(() => {
-        if (err !== null) {
-            toast.error("tài khoản không tồn tại", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-            dispatch(setComponentLevelLoading({ loading: false, id: "" }));
-        }
-    }, [isLoggedIn, err, dispatch]);
     return (
         <div className="relative">
             <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mr-auto xl:px-5 lg:flex-row">
@@ -206,7 +214,6 @@ export default function Login() {
                     </div>
                 </div>
             </div>
-            <Notification />
         </div>
     );
 }

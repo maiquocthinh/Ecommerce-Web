@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import axios from "../utils/instance";
+import { checkoutProductType, productItemType } from "@/common/Cart";
 
 const handleCheckOutWidthCart = (cartItemsIds: number[]) => {
     const headers = {
@@ -7,17 +8,11 @@ const handleCheckOutWidthCart = (cartItemsIds: number[]) => {
     };
     return axios.post(`/api/checkout/cart`, { cartItemsIds }, { headers });
 };
-const handleCheckOutWidthProduct = (cartItemsIds: number[]) => {
-    const headers = {
-        Authorization: `Bearer ${Cookies.get("token")}`,
-    };
-    return axios.post(`/api/checkout/product`, cartItemsIds, { headers });
+const handleCheckOutWidthProduct = (formData: checkoutProductType) => {
+    return axios.post(`/api/checkout/product`, formData);
 };
 const handleCheckoutWidthproductWithAuthentication = (
-    items: {
-        productVersionId: number;
-        quantity: number;
-    }[]
+    items: productItemType[]
 ) => {
     const headers = {
         Authorization: `Bearer ${Cookies.get("token")}`,

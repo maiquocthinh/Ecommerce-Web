@@ -42,13 +42,15 @@ const CenterModal: React.FC<CenterModalProps> = ({
                     leaveTo="opacity-0"
                 >
                     <div
-                        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-50"
                         onClick={() => setShow(false)}
                     />
                 </Transition.Child>
                 <div
                     className={`${
-                        isBorder ? "max-w-2xl w-full p-4 z-20 relative" : ""
+                        isBorder
+                            ? "max-w-2xl w-full p-4 z-50 relative"
+                            : "w-full p-4 z-50 relative"
                     }`}
                 >
                     <div

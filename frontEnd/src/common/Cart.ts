@@ -13,3 +13,20 @@ export interface PriceType {
     originalPrice: string | number;
     price: string | number;
 }
+export interface productItemType {
+    productVersionId: number;
+    quantity: number;
+}
+
+export interface checkoutProductType {
+    deliveryInfo: {
+        recipientName: string;
+        phoneNumber: string;
+        email: string;
+        specificAddress: string;
+        province: string;
+        districts: string;
+        wards: string;
+    };
+    items: productItemType[];
+}

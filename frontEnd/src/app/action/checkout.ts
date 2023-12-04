@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as checkoutApi from "@/Server/checkoutApi";
+import { checkoutProductType, productItemType } from "@/common/Cart";
 export const CheckOutWidthCart = createAsyncThunk(
     "CheckOutWidthCart/CheckOutWidthCart",
     async (cartItemsIds: number[]) => {
@@ -14,14 +15,23 @@ export const CheckOutWidthCart = createAsyncThunk(
         }
     }
 );
+export const CheckoutProduct = createAsyncThunk(
+    "CheckoutProduct/CheckoutProduct",
+    async (formData: checkoutProductType) => {
+        try {
+            const response = await checkoutApi.handleCheckOutWidthProduct(
+                formData
+            );
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
 export const checkoutWidthproductWithAuthentication = createAsyncThunk(
     "checkoutWidthproductWithAuthentication/checkoutWidthproductWithAuthentication",
-    async (
-        productItems: {
-            productVersionId: number;
-            quantity: number;
-        }[]
-    ) => {
+    async (productItems: productItemType[]) => {
         try {
             const response =
                 await checkoutApi.handleCheckoutWidthproductWithAuthentication(

@@ -81,33 +81,120 @@ const Paginations: React.FC<PaginationsProps> = ({
                                         <MdArrowBackIos />
                                     </button>
                                 </li>
-                                {pageArr &&
-                                    pageArr.map((page, index: number) => (
+                                {currentPage > 5 ? (
+                                    <>
                                         <li
-                                            key={index}
                                             className={`${
-                                                currentPage === page + 1
+                                                currentPage === totalPage
                                                     ? "text-white"
                                                     : "text-gray-600"
                                             }`}
                                         >
                                             <button
-                                                disabled={
-                                                    currentPage === page + 1
-                                                }
+                                                disabled={currentPage === 1}
                                                 onClick={() =>
                                                     handlePaginationClick(
-                                                        page + 1,
+                                                        1,
                                                         pagination.currentPage
                                                     )
                                                 }
                                                 className="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium p-2 rounded-md  focus:outline-none border border-transparent cursor-pointer disabled:cursor-not-allowed"
                                                 type="button"
                                             >
-                                                {page + 1}
+                                                {1}
                                             </button>
                                         </li>
-                                    ))}
+                                        <li className="text-gray-600">
+                                            <button
+                                                disabled={true}
+                                                className="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium p-2 rounded-md  focus:outline-none border border-transparent cursor-pointer disabled:cursor-not-allowed"
+                                                type="button"
+                                            >
+                                                ...
+                                            </button>
+                                        </li>
+                                    </>
+                                ) : null}
+                                {pageArr &&
+                                    pageArr.map((page, index: number) => {
+                                        if (
+                                            pageArr.length - 1 === index &&
+                                            totalPage > 6 &&
+                                            currentPage < totalPage - 3
+                                        ) {
+                                            return null;
+                                        } else if (
+                                            index === 0 &&
+                                            currentPage > 6
+                                        ) {
+                                            return null;
+                                        } else {
+                                            return (
+                                                <li
+                                                    key={index}
+                                                    className={`${
+                                                        currentPage === page + 1
+                                                            ? "text-white"
+                                                            : "text-gray-600"
+                                                    }`}
+                                                >
+                                                    <button
+                                                        disabled={
+                                                            currentPage ===
+                                                            page + 1
+                                                        }
+                                                        onClick={() =>
+                                                            handlePaginationClick(
+                                                                page + 1,
+                                                                pagination.currentPage
+                                                            )
+                                                        }
+                                                        className="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium p-2 rounded-md  focus:outline-none border border-transparent cursor-pointer disabled:cursor-not-allowed"
+                                                        type="button"
+                                                    >
+                                                        {page + 1}
+                                                    </button>
+                                                </li>
+                                            );
+                                        }
+                                    })}
+                                {totalPage > 6 &&
+                                currentPage < totalPage - 3 ? (
+                                    <>
+                                        <li className="text-gray-600">
+                                            <button
+                                                disabled={true}
+                                                className="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium p-2 rounded-md  focus:outline-none border border-transparent cursor-pointer disabled:cursor-not-allowed"
+                                                type="button"
+                                            >
+                                                ...
+                                            </button>
+                                        </li>
+                                        <li
+                                            className={`${
+                                                currentPage === totalPage
+                                                    ? "text-white"
+                                                    : "text-gray-600"
+                                            }`}
+                                        >
+                                            <button
+                                                disabled={
+                                                    currentPage === totalPage
+                                                }
+                                                onClick={() =>
+                                                    handlePaginationClick(
+                                                        totalPage,
+                                                        pagination.currentPage
+                                                    )
+                                                }
+                                                className="align-bottom inline-flex items-center justify-center leading-5 transition-colors duration-150 font-medium p-2 rounded-md  focus:outline-none border border-transparent cursor-pointer disabled:cursor-not-allowed"
+                                                type="button"
+                                            >
+                                                {totalPage}
+                                            </button>
+                                        </li>
+                                    </>
+                                ) : null}
 
                                 <li>
                                     <button

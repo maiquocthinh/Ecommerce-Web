@@ -14,6 +14,7 @@ interface SelecterLabProps {
         needId?: number;
         roleId?: number;
     };
+    w?: string;
 }
 
 const SelecterLab: React.FC<SelecterLabProps> = ({
@@ -24,6 +25,7 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
     isMulti,
     valueUpdate,
     valueUpdateOj,
+    w,
 }) => {
     const [selectedOption, setSelectedOption] = useState<any>(null);
     const getOptionLabel = (option: any) => option.title || option.name;
@@ -35,6 +37,7 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
             ...provided,
             borderRadius: 8,
             height: isMulti ? "auto" : "48px",
+            width: w ? w : "",
             minHeight: "48px",
             borderColor: state.isFocused ? "#4c9aff" : "#d1d5db",
             boxShadow: state.isFocused ? "0 0 0 1px #4c9aff" : "none",

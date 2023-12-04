@@ -3,7 +3,13 @@ import Notification from "@/Components/PageLoader/Notification";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { BiTable, BiUserPin } from "react-icons/Bi";
-import { FaHouseUser, FaJediOrder } from "react-icons/fa";
+import {
+    FaHouseUser,
+    FaJediOrder,
+    FaSupple,
+    FaUserAstronaut,
+} from "react-icons/fa";
+import { FcCustomerSupport } from "react-icons/fc";
 import { FiSettings, FiUsers, FiLogOut } from "react-icons/Fi";
 import {
     MdOutlineExpandMore,
@@ -106,9 +112,15 @@ const AdminSidebar = () => {
         },
         {
             id: 10,
-            Icon: <BiUserPin size={22} />,
+            Icon: <FaSupple size={22} />,
             label: "supplier management",
             link: "/admin/supplier",
+        },
+        {
+            id: 15,
+            Icon: <FaUserAstronaut size={22} />,
+            link: "/admin/customer",
+            label: "customer management",
         },
     ];
     useEffect(() => {

@@ -74,6 +74,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 decodedValue.given_name
             ) {
                 const userName = `${decodedValue?.family_name} ${decodedValue?.given_name}`;
+                console.log(decodedValue);
                 localStorage.setItem("userName", userName);
                 setUserName(userName);
             }

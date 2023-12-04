@@ -74,7 +74,9 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                     );
                     setShow(false);
                 } else {
-                    toast.success("cập nhật giảm giá thất bại");
+                    toast.success(
+                        `cập nhật giảm giá thất bại : ${res.payload.message}`
+                    );
                 }
             } catch (error) {
                 toast.error("lỗi máy chủ vui lòng quay lại sau");

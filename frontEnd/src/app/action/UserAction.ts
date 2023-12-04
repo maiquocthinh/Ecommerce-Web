@@ -2,12 +2,13 @@ import { UserType } from "@/common";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createAction } from "@reduxjs/toolkit";
 import * as userApi from "../../Server/UserApi";
+import { profileType } from "@/common/user";
 export const login = createAsyncThunk(
     "login/login",
     async (formData: UserType.userLoginType) => {
         try {
             const response = await userApi.handleLogin(formData);
-            let data = response.data;
+            let data = response;
             return data;
         } catch (error) {
             throw error;
@@ -49,6 +50,30 @@ export const getProfile = createAsyncThunk(
         try {
             const response = await userApi.handleGetProfile();
             let data = response.data;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+export const uploadFile = createAsyncThunk(
+    "uploadFile/uploadFile",
+    async (file: any) => {
+        try {
+            const response = await userApi.handleUploadImg(file);
+            let data = response.data;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+export const updateUserProfile = createAsyncThunk(
+    "updateUserProfile/updateUserProfile",
+    async (formData: profileType) => {
+        try {
+            const response = await userApi.handleUpdateUser(formData);
+            let data = response;
             return data;
         } catch (error) {
             throw error;

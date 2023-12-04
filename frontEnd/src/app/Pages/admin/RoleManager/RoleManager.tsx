@@ -36,6 +36,7 @@ const RoleManager = () => {
     const [formData, setFormData] = useState<typeof initFormData>(initFormData);
     const [isUpdateRole, setISUpdateRole] = useState<boolean>(false);
     const [roleIdUpdateOrDelete, setRoleIdUpdateOrDelete] = useState<number>();
+    const [roleData, setRoleData] = useState<[]>([]);
     const handleSearchRole = () => {
         if (searchValue.trim() !== "" && listRolesAdmin.data.paging.pageIndex) {
             dispatch(
@@ -56,6 +57,11 @@ const RoleManager = () => {
             setPermissions(listPermissionsAdmin?.data);
         }
     }, [listPermissionsAdmin]);
+    useEffect(() => {
+        if (listRolesAdmin.success && listRolesAdmin?.data?.list) {
+            setRoleData(listRolesAdmin.data.list);
+        }
+    });
     const handlePageChange = (newPage: number, oldPage: number) => {
         if (newPage > 0 && oldPage > 0) {
             if (searchValue.trim() !== "") {
@@ -183,6 +189,7 @@ const RoleManager = () => {
         }
         setFormData({ ...formData, permissions: cpOption });
     };
+    console.log(listPermissionsAdmin);
     return (
         <div className="flex flex-col p-4">
             <div className="rounded-lg shadow-xs bg-gray-800 mb-5">
@@ -207,7 +214,7 @@ const RoleManager = () => {
                 handleReset={handleResetRoles}
                 placeholder="tìm kiếm theo tên role"
             />
-            {listRolesAdmin?.data?.list.length ? (
+            {roleData.length > 0 ? (
                 <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
                     {listRolesAdmin.data.list ? (
                         <div className="w-full overflow-x-auto">
@@ -225,67 +232,63 @@ const RoleManager = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
-                                    {listRolesAdmin?.data?.list.length &&
-                                        listRolesAdmin?.data?.list.map(
-                                            (item: any) => (
-                                                <tr key={item.id}>
-                                                    <td className="px-4 py-2">
-                                                        <span className="text-sm">
-                                                            {item.id}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-4 py-2">
-                                                        <span className="text-sm font-semibold">
-                                                            {item.name}
-                                                        </span>
-                                                    </td>
-                                                    <td
-                                                        className="px-4 py-2 flex flex-wrap gap-1 leading-6 item-center"
-                                                        style={{
-                                                            maxWidth: "800px",
-                                                        }}
-                                                    >
-                                                        {item?.permissions.map(
-                                                            (
-                                                                permission: string
-                                                            ) => (
-                                                                <span className="text-sm font-semibold">
-                                                                    {` ${permission} -`}
-                                                                </span>
-                                                            )
-                                                        )}
-                                                    </td>
-                                                    <td className="px-4 py-2">
-                                                        <div className="flex justify-end text-right">
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleEditRole(
-                                                                        item
-                                                                    )
-                                                                }
-                                                                className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none"
-                                                            >
-                                                                <CiEdit
-                                                                    size={22}
-                                                                />
-                                                            </button>
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleDeleteRole(
-                                                                        item.id
-                                                                    )
-                                                                }
-                                                                className="p-2 cursor-pointer text-gray-400 hover:text-red-600 focus:outline-none"
-                                                            >
-                                                                <AiOutlineDelete
-                                                                    size={22}
-                                                                />
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        )}
+                                    {roleData &&
+                                        roleData.map((item: any) => (
+                                            <tr key={item.id}>
+                                                <td className="px-4 py-2">
+                                                    <span className="text-sm">
+                                                        {item.id}
+                                                    </span>
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    <span className="text-sm font-semibold">
+                                                        {item.name}
+                                                    </span>
+                                                </td>
+                                                <td
+                                                    className="px-4 py-2 flex flex-wrap gap-1 leading-6 item-center"
+                                                    style={{
+                                                        maxWidth: "800px",
+                                                    }}
+                                                >
+                                                    {item?.permissions?.map(
+                                                        (
+                                                            permission: string
+                                                        ) => (
+                                                            <span className="text-sm font-semibold">
+                                                                {` ${permission} -`}
+                                                            </span>
+                                                        )
+                                                    )}
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    <div className="flex justify-end text-right">
+                                                        <button
+                                                            onClick={() =>
+                                                                handleEditRole(
+                                                                    item
+                                                                )
+                                                            }
+                                                            className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none"
+                                                        >
+                                                            <CiEdit size={22} />
+                                                        </button>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleDeleteRole(
+                                                                    item.id
+                                                                )
+                                                            }
+                                                            className="p-2 cursor-pointer text-gray-400 hover:text-red-600 focus:outline-none"
+                                                        >
+                                                            <AiOutlineDelete
+                                                                size={22}
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>

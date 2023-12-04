@@ -22,6 +22,7 @@ import * as AdminOrderSlice from "./Slices/admin/AdminOrder";
 import * as AdminSupplierSlice from "./Slices/admin/AdminSupplier";
 import * as adminDiscount from "./Slices/admin/adminDiscount";
 import * as adminInventory from "./Slices/admin/adminInventory";
+import * as adminCustomerSlice from "./Slices/admin/adminCustomer";
 export const store = configureStore({
     reducer: {
         modal: modalReducer,
@@ -36,6 +37,8 @@ export const store = configureStore({
         componentLoading: commonSlice.componentLevelLoading.default,
         profile: userSlice.profile.default,
         showAdminSlide: commonSlice.showAdminSlide.default,
+        //upload
+        uploadFileData: userSlice.UploadSlice.default,
         //cart
         addToCart: cartSlice.AddTocartSlice.default,
         allCart: cartSlice.GetAllCartSlice.default,
@@ -106,6 +109,8 @@ export const store = configureStore({
         //inventory
         allInventory: adminInventory.AdminGetAllInventory.default,
         allImports: adminInventory.AdminGetAllImports.default,
+        //customer
+        listCustomnerData: adminCustomerSlice.AdminGetListCustomer.default,
     },
     middleware: [thunk],
 });

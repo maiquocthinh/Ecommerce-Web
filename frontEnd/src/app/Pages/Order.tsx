@@ -44,7 +44,7 @@ const Order = () => {
         }
     }, [searchValue, isSearch, allOrder]);
     useEffect(() => {
-        if (allOrder?.length > 0) {
+        if (allOrder) {
             dispatch(setPageLevelLoading(false));
         }
     }, [allOrder, dispatch]);
@@ -110,297 +110,217 @@ const Order = () => {
                                 )}
                             </div>
                         </div>
+                        {!allOrder.length && !orderSearch?.length ? (
+                            <h1 className="w-full text-2xl font-bold py-4 block text-center">
+                                Không có đơn hàng nào trước đây
+                            </h1>
+                        ) : (
+                            <div className="mt-6 overflow-hidden rounded-xl bg-white px-6 shadow lg:px-4">
+                                <table className="min-w-full border-collapse border-spacing-y-2 border-spacing-x-2">
+                                    <thead className="hidden border-b lg:table-header-group">
+                                        <tr className="uppercase">
+                                            <td className="whitespace-normal py-4 text-sm font-semibold text-gray-800 sm:px-3">
+                                                mã đơn
+                                            </td>
 
-                        <div className="mt-6 overflow-hidden rounded-xl bg-white px-6 shadow lg:px-4">
-                            <table className="min-w-full border-collapse border-spacing-y-2 border-spacing-x-2">
-                                <thead className="hidden border-b lg:table-header-group">
-                                    <tr className="uppercase">
-                                        <td className="whitespace-normal py-4 text-sm font-semibold text-gray-800 sm:px-3">
-                                            mã đơn
-                                        </td>
+                                            <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
+                                                mô tả đơn hàng
+                                            </td>
 
-                                        <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
-                                            mô tả đơn hàng
-                                        </td>
+                                            <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
+                                                thông tin người nhận
+                                            </td>
 
-                                        <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
-                                            thông tin người nhận
-                                        </td>
+                                            <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
+                                                giá
+                                            </td>
 
-                                        <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
-                                            giá
-                                        </td>
+                                            <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
+                                                trạng thái
+                                            </td>
+                                            <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
+                                                action
+                                            </td>
+                                        </tr>
+                                    </thead>
 
-                                        <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
-                                            trạng thái
-                                        </td>
-                                        <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
-                                            action
-                                        </td>
-                                    </tr>
-                                </thead>
-
-                                <tbody className="bg-white lg:border-gray-300">
-                                    {orderSearch?.length
-                                        ? orderSearch.map((order) => (
-                                              <tr
-                                                  onClick={() =>
-                                                      setIsOrderDetail(
-                                                          !isOrderDetail
-                                                      )
-                                                  }
-                                                  className="hover:bg-slate-100 cursor-pointer"
-                                              >
-                                                  <td className="whitespace-no-wrap py-4 text-left text-sm text-gray-600 sm:px-3 lg:text-left">
-                                                      {order.orderId}
-                                                  </td>
-                                                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
-                                                      <div className="flex flex-col gap-1">
-                                                          {order.orderDetails.map(
-                                                              (
-                                                                  orderDetails
-                                                              ) => (
-                                                                  <span>
-                                                                      {`${
-                                                                          orderDetails.productVersionName
-                                                                      } ${
-                                                                          orderDetails.quantity ===
-                                                                          1
-                                                                              ? ""
-                                                                              : `x ${orderDetails.quantity}`
-                                                                      }`}
-                                                                  </span>
-                                                              )
-                                                          )}
-                                                      </div>
-                                                  </td>
-                                                  <td className="whitespace-no-wrap hidden py-4 text-left text-sm text-gray-600 sm:px-3 lg:table-cell lg:text-left">
-                                                      <div className="flex flex-col gap-1">
-                                                          <span>
-                                                              {`${order.shippingInfo.address}`}
-                                                          </span>
-                                                          <span>
-                                                              {`${order.shippingInfo.recipientName} - ${order.shippingInfo.phoneNumber}`}
-                                                          </span>
-                                                      </div>
-                                                  </td>
-                                                  <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
-                                                      <span>
-                                                          {order.totalAmount}
-                                                      </span>
-                                                  </td>
-                                                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-3 lg:table-cell">
-                                                      <span
-                                                          className={`ml-2 mr-3 whitespace-nowrap rounded-full bg-purple-100 px-2 py-0.5 text-purple-800 ${
-                                                              order.orderStatus ===
-                                                              "cancelled"
-                                                                  ? "bg-red-500 text-white text-center"
-                                                                  : order.orderStatus ===
-                                                                    "processing"
-                                                                  ? "bg-yellow-600 text-white text-center"
-                                                                  : "bg-green-600 text-white text-center"
-                                                          }
-                                                     ""
-                                                 }`}
-                                                      >
-                                                          {order.orderStatus}
-                                                      </span>
-                                                  </td>
-                                              </tr>
-                                          ))
-                                        : allOrder?.length &&
-                                          allOrder.map((order) => (
-                                              <tr
-                                                  onClick={() =>
-                                                      setIsOrderDetail(
-                                                          !isOrderDetail
-                                                      )
-                                                  }
-                                                  className="hover:bg-slate-100 cursor-pointer"
-                                              >
-                                                  <td className="whitespace-no-wrap py-4 text-left text-sm text-gray-600 sm:px-3 lg:text-left">
-                                                      {order.orderId}
-                                                  </td>
-                                                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
-                                                      <div className="flex flex-col gap-1">
-                                                          {order.orderDetails.map(
-                                                              (
-                                                                  orderDetails
-                                                              ) => (
-                                                                  <span>
-                                                                      {`${
-                                                                          orderDetails.productVersionName
-                                                                      } ${
-                                                                          orderDetails.quantity ===
-                                                                          1
-                                                                              ? ""
-                                                                              : `x ${orderDetails.quantity}`
-                                                                      }`}
-                                                                  </span>
-                                                              )
-                                                          )}
-                                                      </div>
-                                                  </td>
-                                                  <td className="whitespace-no-wrap hidden py-4 text-left text-sm text-gray-600 sm:px-3 lg:table-cell lg:text-left">
-                                                      <div className="flex flex-col gap-1">
-                                                          <span>
-                                                              {`${order.shippingInfo.address}`}
-                                                          </span>
-                                                          <span>
-                                                              {`${order.shippingInfo.recipientName} - ${order.shippingInfo.phoneNumber}`}
-                                                          </span>
-                                                      </div>
-                                                  </td>
-                                                  <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
-                                                      <span>
-                                                          {order.totalAmount}đ
-                                                      </span>
-                                                  </td>
-                                                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-3 lg:table-cell">
-                                                      <span
-                                                          className={`ml-2 mr-3 whitespace-nowrap rounded-full bg-purple-100 px-2 py-0.5 text-purple-800 ${
-                                                              order.orderStatus ===
-                                                              "cancelled"
-                                                                  ? "bg-red-500 text-white text-center"
-                                                                  : order.orderStatus ===
-                                                                    "processing"
-                                                                  ? "bg-yellow-600 text-white text-center"
-                                                                  : "bg-green-600 text-white text-center"
-                                                          }
-                                                        ""
-                                                    }`}
-                                                      >
-                                                          {order.orderStatus}
-                                                      </span>
-                                                  </td>
-                                                  <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
-                                                      {order.orderStatus ===
-                                                      "processing" ? (
-                                                          <div
-                                                              onClick={() =>
-                                                                  handleCancelOrderView(
-                                                                      order.orderId
+                                    <tbody className="bg-white lg:border-gray-300">
+                                        {orderSearch?.length
+                                            ? orderSearch.map((order) => (
+                                                  <tr
+                                                      onClick={() =>
+                                                          setIsOrderDetail(
+                                                              !isOrderDetail
+                                                          )
+                                                      }
+                                                      className="hover:bg-slate-100 cursor-pointer"
+                                                  >
+                                                      <td className="whitespace-no-wrap py-4 text-left text-sm text-gray-600 sm:px-3 lg:text-left">
+                                                          {order.orderId}
+                                                      </td>
+                                                      <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
+                                                          <div className="flex flex-col gap-1">
+                                                              {order.orderDetails.map(
+                                                                  (
+                                                                      orderDetails
+                                                                  ) => (
+                                                                      <span
+                                                                          key={Number(
+                                                                              orderDetails.productVersionId
+                                                                          )}
+                                                                      >
+                                                                          {`${
+                                                                              orderDetails.productVersionName
+                                                                          } ${
+                                                                              orderDetails.quantity ===
+                                                                              1
+                                                                                  ? ""
+                                                                                  : `x ${orderDetails.quantity}`
+                                                                          }`}
+                                                                      </span>
                                                                   )
-                                                              }
-                                                              className="flex gap-1 items-center text-custom-Colorprimary"
-                                                          >
-                                                              <MdOutlineCancel />
-                                                              <span>hủy</span>
+                                                              )}
                                                           </div>
-                                                      ) : null}
-                                                  </td>
-                                              </tr>
-                                          ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    {/* {isOrderDetail && (
-                        <div>
-                            <div className="relative my-10 flex h-full flex-col overflow-hidden rounded-2xl bg-white text-gray-600 shadow-lg ring-1 ring-gray-200">
-                                <div className="border-b p-6">
-                                    <h6 className="mb-2 text-base font-semibold">
-                                        Orders overview
-                                    </h6>
-                                    <p className="mb-4 text-sm font-light">
-                                        <i
-                                            className="inline-block font-black not-italic text-green-600"
-                                            aria-hidden="true"
-                                        ></i>
-                                        <span className="font-semibold">
-                                            24%
-                                        </span>{" "}
-                                        this month
-                                    </p>
-                                </div>
-                                <div className="flex-auto p-6">
-                                    <div className="relative flex flex-col justify-center">
-                                        <div className="absolute left-4 h-full border-r-2"></div>
-                                        <div className="relative mb-4">
-                                            <span className="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 p-4 text-center text-base font-semibold text-white shadow">
-                                                A
-                                            </span>
-                                            <div className="ml-12 w-auto pt-1">
-                                                <h6 className="text-sm font-semibold text-blue-900">
-                                                    $2400, Design changes
-                                                </h6>
-                                                <p className="mt-1 text-xs text-gray-500">
-                                                    22 DEC 7:20 PM
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="relative mb-4">
-                                            <span className="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 p-4 text-center text-base font-semibold text-white shadow">
-                                                B
-                                            </span>
-                                            <div className="ml-12 w-auto pt-1">
-                                                <h6 className="text-sm font-semibold text-blue-900">
-                                                    New order #1832412
-                                                </h6>
-                                                <p className="mt-1 text-xs text-gray-500">
-                                                    21 DEC 11 PM
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="relative mb-4">
-                                            <span className="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 p-4 text-center text-base font-semibold text-white shadow">
-                                                C
-                                            </span>
-                                            <div className="ml-12 w-auto pt-1">
-                                                <h6 className="text-sm font-semibold text-blue-900">
-                                                    Server payments for April
-                                                </h6>
-                                                <p className="mt-1 text-xs text-gray-500">
-                                                    21 DEC 9:34 PM
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="relative mb-4">
-                                            <span className="absolute inline-flex h-6 w-6 items-center justify-center text-center text-base font-semibold">
-                                                <span className="text-xl text-orange-600"></span>
-                                            </span>
-                                            <div className="ml-12 w-auto pt-1">
-                                                <h6 className="text-sm font-semibold text-blue-900">
-                                                    New card added for order
-                                                    #4395133
-                                                </h6>
-                                                <p className="mt-1 text-xs text-gray-500">
-                                                    20 DEC 2:20 AM
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="relative mb-4">
-                                            <span className="absolute inline-flex h-6 w-6 items-center justify-center text-center text-base font-semibold">
-                                                <span className="text-xl text-red-600"></span>
-                                            </span>
-                                            <div className="ml-12 w-auto pt-1">
-                                                <h6 className="text-sm font-semibold text-blue-900">
-                                                    Unlock packages for
-                                                    development
-                                                </h6>
-                                                <p className="mt-1 text-xs text-gray-500">
-                                                    18 DEC 4:54 AM
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="relative">
-                                            <span className="absolute inline-flex h-6 w-6 items-center justify-center text-center text-base font-semibold">
-                                                <span className="text-xl text-blue-900"></span>
-                                            </span>
-                                            <div className="ml-12 w-auto pt-1">
-                                                <h6 className="text-sm font-semibold text-blue-900">
-                                                    New order #9583120
-                                                </h6>
-                                                <p className="mt-1 text-xs text-gray-500">
-                                                    17 DEC
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                                      </td>
+                                                      <td className="whitespace-no-wrap hidden py-4 text-left text-sm text-gray-600 sm:px-3 lg:table-cell lg:text-left">
+                                                          <div className="flex flex-col gap-1">
+                                                              <span>
+                                                                  {`${order.shippingInfo.address}`}
+                                                              </span>
+                                                              <span>
+                                                                  {`${order.shippingInfo.recipientName} - ${order.shippingInfo.phoneNumber}`}
+                                                              </span>
+                                                          </div>
+                                                      </td>
+                                                      <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
+                                                          <span>
+                                                              {
+                                                                  order.totalAmount
+                                                              }
+                                                          </span>
+                                                      </td>
+                                                      <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-3 lg:table-cell">
+                                                          <span
+                                                              className={`ml-2 mr-3 whitespace-nowrap rounded-full bg-purple-100 px-2 py-0.5 text-purple-800 ${
+                                                                  order.orderStatus ===
+                                                                  "cancelled"
+                                                                      ? "bg-red-500 text-white text-center"
+                                                                      : order.orderStatus ===
+                                                                        "processing"
+                                                                      ? "bg-yellow-600 text-white text-center"
+                                                                      : "bg-green-600 text-white text-center"
+                                                              }
+                                                 ""
+                                             }`}
+                                                          >
+                                                              {
+                                                                  order.orderStatus
+                                                              }
+                                                          </span>
+                                                      </td>
+                                                  </tr>
+                                              ))
+                                            : allOrder?.length
+                                            ? allOrder.map((order) => (
+                                                  <tr
+                                                      key={order.orderId}
+                                                      onClick={() =>
+                                                          setIsOrderDetail(
+                                                              !isOrderDetail
+                                                          )
+                                                      }
+                                                      className="hover:bg-slate-100 cursor-pointer"
+                                                  >
+                                                      <td className="whitespace-no-wrap py-4 text-left text-sm text-gray-600 sm:px-3 lg:text-left">
+                                                          {order.orderId}
+                                                      </td>
+                                                      <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
+                                                          <div className="flex flex-col gap-1">
+                                                              {order.orderDetails.map(
+                                                                  (
+                                                                      orderDetails
+                                                                  ) => (
+                                                                      <span
+                                                                          key={Number(
+                                                                              orderDetails.productVersionId
+                                                                          )}
+                                                                      >
+                                                                          {`${
+                                                                              orderDetails.productVersionName
+                                                                          } ${
+                                                                              orderDetails.quantity ===
+                                                                              1
+                                                                                  ? ""
+                                                                                  : `x ${orderDetails.quantity}`
+                                                                          }`}
+                                                                      </span>
+                                                                  )
+                                                              )}
+                                                          </div>
+                                                      </td>
+                                                      <td className="whitespace-no-wrap hidden py-4 text-left text-sm text-gray-600 sm:px-3 lg:table-cell lg:text-left">
+                                                          <div className="flex flex-col gap-1">
+                                                              <span>
+                                                                  {`${order.shippingInfo.address}`}
+                                                              </span>
+                                                              <span>
+                                                                  {`${order.shippingInfo.recipientName} - ${order.shippingInfo.phoneNumber}`}
+                                                              </span>
+                                                          </div>
+                                                      </td>
+                                                      <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
+                                                          <span>
+                                                              {
+                                                                  order.totalAmount
+                                                              }
+                                                              đ
+                                                          </span>
+                                                      </td>
+                                                      <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-3 lg:table-cell">
+                                                          <span
+                                                              className={`ml-2 mr-3 whitespace-nowrap rounded-full bg-purple-100 px-2 py-0.5 text-purple-800 ${
+                                                                  order.orderStatus ===
+                                                                  "cancelled"
+                                                                      ? "bg-red-500 text-white text-center"
+                                                                      : order.orderStatus ===
+                                                                        "processing"
+                                                                      ? "bg-yellow-600 text-white text-center"
+                                                                      : "bg-green-600 text-white text-center"
+                                                              }
+                                                    ""
+                                                }`}
+                                                          >
+                                                              {
+                                                                  order.orderStatus
+                                                              }
+                                                          </span>
+                                                      </td>
+                                                      <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
+                                                          {order.orderStatus ===
+                                                          "processing" ? (
+                                                              <div
+                                                                  onClick={() =>
+                                                                      handleCancelOrderView(
+                                                                          order.orderId
+                                                                      )
+                                                                  }
+                                                                  className="flex gap-1 items-center text-custom-Colorprimary"
+                                                              >
+                                                                  <MdOutlineCancel />
+                                                                  <span>
+                                                                      hủy
+                                                                  </span>
+                                                              </div>
+                                                          ) : null}
+                                                      </td>
+                                                  </tr>
+                                              ))
+                                            : null}
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-                    )} */}
+                        )}
+                    </div>
                 </div>
             </div>
             <Notification />

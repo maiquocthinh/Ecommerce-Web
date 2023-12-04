@@ -31,7 +31,7 @@ const Profile = () => {
         if (reloadData) setReloadData(false);
     }, [dispatch, reloadData]);
     useEffect(() => {
-        if (profile?.firstName && allAddresses?.length > 0) {
+        if (profile?.firstName) {
             dispatch(setPageLevelLoading(false));
         }
     }, [profile, allAddresses, dispatch]);
@@ -51,18 +51,19 @@ const Profile = () => {
     return (
         profile &&
         allAddresses && (
-            <div className="flex gap-4 min-h-full ">
+            <div className="flex gap-4 min-h-full">
                 <div className="w-[20%] border-r-[1px] bg-whiterounded-t-borderContnet overflow-hidden">
                     <SideBarProfile />
                 </div>
                 <div className="w-[80%] flex flex-col gap-4 mb-10">
-                    <div className="flex gap-2 ">
+                    <div className="flex gap-2">
                         <UserInfo
                             data={profile}
                             setShowUpdateAccount={(show: boolean) =>
                                 setShowUpdateAccount(show)
                             }
                         />
+
                         {allAddresses.map((address: addressType) => {
                             if (address.isDefault) {
                                 return (

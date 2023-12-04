@@ -1,8 +1,15 @@
 import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import { profileType } from "@/common/user";
 import { AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import InputForm from "@/Components/FormData/InputForm/InputForm";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserProfile, uploadFile } from "@/app/action/UserAction";
+import axios from "axios";
+import UploadImg from "@/Components/UploadImg/UploadImg";
+import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
+import { setImgUrl } from "@/app/Slices/user/UploadSlice";
+import { toast } from "react-toastify";
 interface EditProfileProps {
     data: profileType;
     showUpdateAccount: boolean;
@@ -15,17 +22,54 @@ const EditProfile: React.FC<EditProfileProps> = ({
     setShowUpdateAccount,
     setReloadData,
 }) => {
+    const dispatch = useDispatch<any>();
+    const uploadFileData = useSelector(
+        (state: any) => state.uploadFileData.imgUrl
+    );
     const [formData, setFormData] = useState<profileType>(data);
-
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+    useEffect(() => {
+        if (uploadFileData !== "") {
+            setFormData({ ...formData, avatarUrl: uploadFileData });
+        }
+    }, [uploadFileData]);
+    const handleGetOptionBySelect = (option: any, typeId: string) => {
+        if (typeId === "gender") {
+            setFormData({
+                ...formData,
+                [typeId]: option.id === 1 ? true : false,
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [typeId]: option.id,
+            });
+        }
+    };
+    const handleUpdateAccount = async () => {
+        const res = await dispatch(updateUserProfile(formData));
+        try {
+            console.log(res);
+            if (res?.payload?.success) {
+                toast.success("thông tin đã được cập nhật");
+                dispatch(setImgUrl(""));
+                setReloadData(true);
+                setShowUpdateAccount(false);
+            }
+        } catch (error) {
+            toast.error("có lỗi sảy ra vui lòng đợi trong giây lát");
+        }
+    };
+    console.log(data);
     return (
         <CenterModal
             showButtons={true}
             show={showUpdateAccount}
             setShow={() => setShowUpdateAccount(!showUpdateAccount)}
             showModalTitle={true}
+            isBorder={false}
             modalTitle={
                 <div className="flex gap-2 justify-center items-center">
                     <AiOutlineEdit
@@ -38,47 +82,10 @@ const EditProfile: React.FC<EditProfileProps> = ({
             mainContent={
                 <div>
                     <div className="flex flex-col gap-6 items-center">
-                        <div className="col-span-6 ml-2 sm:col-span-4 md:mr-3">
-                            <input
-                                type="file"
-                                className="hidden"
-                                x-ref="photo"
-                                x-on:change="
-        const fileInput = $refs.photo;
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const photoName = file.name;
-            const reader = new FileReader();
-
-            reader.onload = (e) => {
-                const photoPreview = e.target.result;
-                console.log(photoName, photoPreview);
-            };
-
-            reader.readAsDataURL(file);
-        }
-    "
-                            />
-
-                            <div className="text-center">
-                                <div className="mt-2" x-show="! photoPreview">
-                                    <img
-                                        alt=""
-                                        src={data.avatarUrl}
-                                        className="w-40 h-40 m-auto rounded-full shadow"
-                                    />
-                                </div>
-
-                                <button
-                                    type="button"
-                                    className="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-custom-Colorprimary focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3"
-                                >
-                                    Select New Photo
-                                </button>
-                            </div>
-                        </div>
+                        <UploadImg imgUrl={data.avatarUrl} />
                         <div className="flex items-center gap-8">
                             <InputForm
+                                w="300px"
                                 lable="email"
                                 placeholder="nhập email"
                                 value={formData.email}
@@ -87,6 +94,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                                 type="text"
                             />
                             <InputForm
+                                w="300px"
                                 lable="phoneNumber"
                                 placeholder="nhập phoneNumber"
                                 value={formData.phoneNumber}
@@ -97,6 +105,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                         </div>
                         <div className="flex items-center gap-8">
                             <InputForm
+                                w="300px"
                                 lable="firstName"
                                 placeholder="nhập firstName"
                                 value={formData.firstName}
@@ -105,12 +114,42 @@ const EditProfile: React.FC<EditProfileProps> = ({
                                 type="text"
                             />
                             <InputForm
+                                w="300px"
                                 lable="lastName"
                                 placeholder="nhập lastName"
                                 value={formData.lastName}
                                 name="lastName"
                                 onChange={handleOnChange}
                                 type="text"
+                            />
+                        </div>
+                        <div className="flex items-center gap-8">
+                            <InputForm
+                                w="300px"
+                                lable="birthDay"
+                                placeholder="nhập dayOfBirth"
+                                value={formData.dayOfBirth?.split("T")[0]}
+                                name="dayOfBirth"
+                                onChange={handleOnChange}
+                                type="date"
+                            />
+                            <SelecterLab
+                                valueUpdate={formData.gender ? ["nam"] : ["nữ"]}
+                                w="300px"
+                                options={[
+                                    {
+                                        id: 1,
+                                        title: "nam",
+                                    },
+                                    {
+                                        id: 2,
+                                        title: "nữ",
+                                    },
+                                ]}
+                                handleGetOptionBySelect={
+                                    handleGetOptionBySelect
+                                }
+                                typeId="gender"
                             />
                         </div>
                     </div>
@@ -124,9 +163,23 @@ const EditProfile: React.FC<EditProfileProps> = ({
             }
             buttonComponent={
                 <div className="flex justify-center items-center pb-2">
-                    <button className="border px-4 py-2 text-sm font-bold border-custom-primary rounded-md">
-                        cập nhật
-                    </button>
+                    <div className="flex gap-2 justify-center mb-2">
+                        <button
+                            onClick={handleUpdateAccount}
+                            className="px-4 py-2 border-b-4 border border-green-500 text-green-500 hover:text-white hover:bg-green-500 transition-all duration-200"
+                        >
+                            Hoàn tất
+                        </button>
+                        <button
+                            onClick={() => {
+                                setShowUpdateAccount(false);
+                                dispatch(setImgUrl(""));
+                            }}
+                            className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
+                        >
+                            đóng
+                        </button>
+                    </div>
                 </div>
             }
         />
