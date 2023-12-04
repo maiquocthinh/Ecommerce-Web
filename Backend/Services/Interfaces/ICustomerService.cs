@@ -11,7 +11,7 @@ public interface ICustomerService
     Task<ShippingAddressDto> UpdateAddress(int shippingAddressId, ShippingAddressUpdateDto shippingAddressUpdateDto);
     Task DeleteAddress(int shippingAddressId);
 
-    Task<IQueryable<CustomerShortDto>> GetListCustomer(CustomerFilterDto filterDto);
+    Task<IQueryable<CustomerDetailDto>> GetListCustomer(CustomerFilterDto filterDto);
     Task<CustomerDetailDto> GetCustomerById(int customerId);
     Task<CustomerDetailDto> CreateCustomer(CustomerCreateInputDto createInputDto);
     Task<CustomerDetailDto> UpdateCustomer(int customerId, CustomerUpdateInputDto updateInputDto);

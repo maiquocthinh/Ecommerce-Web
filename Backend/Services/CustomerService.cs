@@ -149,7 +149,7 @@ public class CustomerService : ICustomerService
         }
     }
 
-    public async Task<IQueryable<CustomerShortDto>> GetListCustomer(CustomerFilterDto filterDto)
+    public async Task<IQueryable<CustomerDetailDto>> GetListCustomer(CustomerFilterDto filterDto)
     {
         var query = _customerRepository.GetQueryable().OrderByDescending(c => c.CreatedAt).AsQueryable();
 
@@ -163,7 +163,7 @@ public class CustomerService : ICustomerService
             );
         }
 
-        return query.Select(c => _mapper.Map<CustomerShortDto>(c));
+        return query.Select(c => _mapper.Map<CustomerDetailDto>(c));
     }
 
     public async Task<CustomerDetailDto> GetCustomerById(int customerId)

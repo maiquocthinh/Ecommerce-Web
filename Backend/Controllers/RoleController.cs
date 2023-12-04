@@ -71,7 +71,7 @@ public class RoleController: BaseController
 
     [PermissionAuthorize(Permissions.ViewRole)]
     [HttpGet("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<RoleDto>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponse<RoleDetailDto>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]
     [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ErrorResponse))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponse))]

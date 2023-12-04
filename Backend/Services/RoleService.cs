@@ -36,7 +36,7 @@ public class RoleService : IRoleService
         return allRole.Select(r => _mapper.Map<RoleTinyDto>(r));
     }
 
-    public async Task<IQueryable<RoleDto>> GetListRole(RoleFilterDto filterDto)
+    public async Task<IQueryable<RoleDetailDto>> GetListRole(RoleFilterDto filterDto)
     {
         var query = _roleRepository.GetQueryable().OrderByDescending(r => r.CreatedAt).AsQueryable();
 
@@ -45,7 +45,7 @@ public class RoleService : IRoleService
             query = query.Where(r => r.Name.Contains(filterDto.RoleName));
         }
 
-        return query.Select(r => _mapper.Map<RoleDto>(r));
+        return query.Select(r => _mapper.Map<RoleDetailDto>(r));
     }
 
     public async Task<RoleDto> GetRoleById(int id)
