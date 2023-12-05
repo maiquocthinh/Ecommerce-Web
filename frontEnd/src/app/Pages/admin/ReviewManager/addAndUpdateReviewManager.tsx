@@ -7,7 +7,6 @@ import {
     adminUpdateCustomer,
     getListCustomer,
 } from "@/app/action/adminAction/adminCustomer";
-import { employeeType } from "@/common/employee";
 import { profileType } from "@/common/user";
 import React, { Fragment, useEffect, useState } from "react";
 import { FaRegEyeSlash } from "react-icons/fa";

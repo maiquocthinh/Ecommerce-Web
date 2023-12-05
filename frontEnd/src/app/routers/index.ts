@@ -25,6 +25,7 @@ import Imports from "../Pages/admin/ProductsManager/Imports/Imports";
 import Inventories from "../Pages/admin/ProductsManager/Inventories/Inventories";
 import AdminDetailProduct from "../Pages/admin/ProductsManager/Product/AdminProductVersion/AdminProductVersion";
 import ProductsManager from "../Pages/admin/ProductsManager/Product/ProductsManager";
+import ReviewManager from "../Pages/admin/ReviewManager/ReviewManager";
 import RoleManager from "../Pages/admin/RoleManager/RoleManager";
 import Supplier from "../Pages/admin/Supplier/Supplier";
 
@@ -176,6 +177,11 @@ const privateRouter: RouteConfig[] = [
     {
         path: "/admin/customer",
         element: Customers,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/reviews",
+        element: ReviewManager,
         Layout: AdminLayout,
     },
 ];

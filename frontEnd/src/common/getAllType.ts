@@ -61,3 +61,12 @@ export interface InventoryType {
     IsOutOfStock?: boolean;
     Keyword?: string;
 }
+export interface getReviewType {
+    IsReply?: boolean;
+    MinScore?: number;
+    MacScore?: number;
+    StartDate?: string;
+    EndDate?: string;
+    pageIndex: number;
+    pagesize: number;
+}

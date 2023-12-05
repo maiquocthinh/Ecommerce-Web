@@ -4,6 +4,7 @@ export interface pagingType {
     hasPreviousPage?: number;
     pageIndex?: number;
     pageSize?: number;
+    pagesize?: number;
     totalCount?: number;
     totalPages?: number;
 }

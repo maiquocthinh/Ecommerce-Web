@@ -14,6 +14,7 @@ import { FiSettings, FiUsers, FiLogOut } from "react-icons/Fi";
 import {
     MdOutlineExpandMore,
     MdOutlineProductionQuantityLimits,
+    MdOutlineReviews,
 } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -121,6 +122,12 @@ const AdminSidebar = () => {
             Icon: <FaUserAstronaut size={22} />,
             link: "/admin/customer",
             label: "customer management",
+        },
+        {
+            id: 16,
+            Icon: <MdOutlineReviews size={22} />,
+            link: "/admin/reviews",
+            label: "review management",
         },
     ];
     useEffect(() => {
