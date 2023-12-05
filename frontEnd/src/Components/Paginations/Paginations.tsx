@@ -61,7 +61,9 @@ const Paginations: React.FC<PaginationsProps> = ({
             <div className="px-4 py-3 border-t border-gray-700  bg-gray-800">
                 <div className="flex flex-col justify-between text-xs sm:flex-row text-gray-600 ">
                     <span className="flex items-center font-semibold tracking-wide uppercase">
-                        {`Showing ${paging.pageSize} of ${paging.totalCount}`}
+                        {(paging.pageSize || 0) < (paging.totalCount || 0)
+                            ? `Showing ${paging.pageSize} of ${paging.totalCount}`
+                            : `Showing ${paging.totalCount} of ${paging.totalCount}`}
                     </span>
                     <div className="flex mt-2 sm:mt-auto sm:justify-end">
                         <nav aria-label="Table navigation">

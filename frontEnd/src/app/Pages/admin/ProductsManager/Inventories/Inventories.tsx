@@ -2,20 +2,18 @@ import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
 import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import Notification from "@/Components/PageLoader/Notification";
 import Paginations from "@/Components/Paginations/Paginations";
-import { adminGetAllInventory } from "@/app/action/adminAction/adminInventory";
-import { getListSupplier } from "@/app/action/adminAction/adminSupplier";
 import {
-    allInventoryType,
-    importShipmentsgetType,
-    importsCreateType,
-} from "@/common/Inventory";
+    adminCreateImport,
+    adminGetAllInventory,
+} from "@/app/action/adminAction/adminInventory";
+import { getListSupplier } from "@/app/action/adminAction/adminSupplier";
+import { allInventoryType, importShipmentsgetType } from "@/common/Inventory";
 import { getDisscountType, supplierType } from "@/common/getAllType";
 import { pagingType } from "@/common/paging";
 import { useEffect, useState } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
-import { CiEdit } from "react-icons/ci";
 import { MdOutlineAddBox } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 const initFormData = {
     productVersionId: 0,
     quantity: 0,
@@ -30,9 +28,11 @@ const Inventories = () => {
         data: { list: supplierType[]; paging: pagingType };
         success: boolean;
     };
+
     const [paging, setPaging] = useState<pagingType>();
     const [inventories, setInventories] = useState<allInventoryType[]>();
     const [idSupplier, setIdSupplier] = useState<number>(0);
+    const [idProductVersion, setIdProductVersion] = useState<number>(0);
     const [formParam, setFormParam] = useState<getDisscountType>({
         pageIndex: 1,
         pageSize: 6,
@@ -71,12 +71,11 @@ const Inventories = () => {
             }
         }
     };
-    const handleDate = (time: string) => {
-        const date = new Date(time);
-        return `${date.getDay()} / ${date.getMonth()} / ${date.getFullYear()}`;
-    };
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormParam({ ...formParam, [e.target.name]: e.target.value });
+    };
+    const handleOnChangeData = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
     const handleSearhInventories = () => {
         if (formParam.ProductName && formParam.ProductName.trim() !== "") {
@@ -100,6 +99,46 @@ const Inventories = () => {
     };
     const handleGetOptionBySelect = (option: any, typeId: string) => {
         setIdSupplier(option?.id);
+    };
+    const handleCreateImports = async () => {
+        if (
+            idProductVersion > 0 &&
+            idSupplier > 0 &&
+            formData.quantity > 0 &&
+            formData.cost > 0
+        ) {
+            const res = await dispatch(
+                adminCreateImport({
+                    supplierId: idSupplier,
+                    importShipments: [
+                        { ...formData, productVersionId: idProductVersion },
+                    ],
+                })
+            );
+            try {
+                if (res.payload.success) {
+                    toast.success("thêm sản phẩm vào kho thành công");
+                    setFormData(initFormData);
+                    setIdProductVersion(0);
+                    setIdSupplier(0);
+                    setIsNewImport(false);
+                    dispatch(
+                        adminGetAllInventory({
+                            pageIndex: paging?.pageIndex || 1,
+                            pageSize: paging?.pageSize || 6,
+                        })
+                    );
+                } else {
+                    toast.error(
+                        `thêm sản phẩm vào kho thất bại ${res.payload.message}`
+                    );
+                }
+            } catch (error) {
+                toast.error("lỗi sảy ra vui lòng thử lại sau giây lát");
+            }
+        } else {
+            toast.error("vui lòng nhập đúng thông tin");
+        }
     };
     return (
         <div className="flex flex-col p-4">
@@ -198,9 +237,12 @@ const Inventories = () => {
                                         <td className="px-4 py-2">
                                             <div className="flex justify-end text-right">
                                                 <button
-                                                    onClick={() =>
-                                                        setIsNewImport(true)
-                                                    }
+                                                    onClick={() => {
+                                                        setIsNewImport(true);
+                                                        setIdProductVersion(
+                                                            item.productVersionId
+                                                        );
+                                                    }}
                                                     className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none"
                                                 >
                                                     <MdOutlineAddBox
@@ -227,28 +269,60 @@ const Inventories = () => {
                 <CenterModal
                     show={isNewImport}
                     setShow={setIsNewImport}
-                    showModalTitle={true}
-                    modalTitle={
-                        <h1 className="text-2xl font-bold text-white">
-                            thêm hàng cho sản phẩm
-                        </h1>
-                    }
                     bgAll="bg"
                     mainContent={
-                        <div className="flex flex-col justify-between items-start gap-4">
-                            <div className="w-full">
-                                <p className="text-gray-300 text-sm text-start">
-                                    chọn nhà cung cấp :
-                                </p>
-                                {listSuplierData?.data?.list?.length ? (
-                                    <SelecterLab
-                                        options={listSuplierData?.data?.list}
-                                        handleGetOptionBySelect={
-                                            handleGetOptionBySelect
-                                        }
-                                        typeId="Suplier"
-                                    />
-                                ) : null}
+                        <div className="flex gap-4 justify-start items-start p-2">
+                            <div className="flex flex-col gap-6 w-full">
+                                <div className="flex flex-col justify-between items-start gap-4">
+                                    <div className="w-full">
+                                        <p className="text-gray-300 text-sm text-start">
+                                            chọn nhà cung cấp :
+                                        </p>
+                                        {listSuplierData?.data?.list?.length ? (
+                                            <SelecterLab
+                                                options={
+                                                    listSuplierData?.data?.list
+                                                }
+                                                handleGetOptionBySelect={
+                                                    handleGetOptionBySelect
+                                                }
+                                                typeId="Suplier"
+                                            />
+                                        ) : null}
+                                    </div>
+                                </div>
+                                <div className="flex justify-between gap-4">
+                                    <div className="w-1/2">
+                                        <p className="text-gray-300 text-sm text-start">
+                                            quantity:
+                                        </p>
+                                        <input
+                                            className="w-full h-[48px] px-2 rounded-[8px]"
+                                            type="number"
+                                            value={formData.quantity}
+                                            name="quantity"
+                                            onChange={(
+                                                e: React.ChangeEvent<HTMLInputElement>
+                                            ) => handleOnChangeData(e)}
+                                            placeholder="nhập số lượng"
+                                        />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-gray-300 text-sm text-start">
+                                            cost :
+                                        </p>
+                                        <input
+                                            className="w-full h-[48px] px-2 rounded-[8px]"
+                                            type="number"
+                                            value={formData.cost}
+                                            name="cost"
+                                            onChange={(
+                                                e: React.ChangeEvent<HTMLInputElement>
+                                            ) => handleOnChangeData(e)}
+                                            placeholder="cost"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     }
@@ -256,29 +330,25 @@ const Inventories = () => {
                     buttonComponent={
                         <div className="flex gap-2 justify-center mb-2">
                             <button
-                                // onClick={handleAddOrUpdateRoles}
-                                className="px-4 py-2 border-b-4 border border-yellow-500 text-yellow-500 hover:text-white hover:bg-yellow-500 transition-all duration-200"
-                            >
-                                Thêm Lô hàng
-                            </button>
-                            <button
-                                // onClick={handleAddOrUpdateRoles}
+                                onClick={handleCreateImports}
                                 className="px-4 py-2 border-b-4 border border-green-500 text-green-500 hover:text-white hover:bg-green-500 transition-all duration-200"
                             >
-                                Tạo
+                                Hoàn tất
                             </button>
-
                             <button
                                 onClick={() => {
                                     setIsNewImport(false);
+                                    setFormData(initFormData);
+                                    setIdSupplier(0);
                                 }}
                                 className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                             >
-                                Đóng
+                                đóng
                             </button>
                         </div>
                     }
                 />
+
                 <Notification />
             </div>
         </div>
