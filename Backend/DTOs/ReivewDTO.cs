@@ -16,11 +16,13 @@ public class ReviewInputDto
 
 public class ReviewFilterDto
 {
+    public int? ProductId { get; set; } = null;
+
     public bool? IsReply { get; set; } = null;
 
-    public decimal? MinScore { get; set; } = null;
+    public byte? MinScore { get; set; } = null;
 
-    public decimal? MaxScore { get; set; } = null;
+    public byte? MaxScore { get; set; } = null;
 
     public DateTime? StartDate { get; set; } = null;
 

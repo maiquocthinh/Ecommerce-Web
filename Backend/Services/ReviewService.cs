@@ -79,9 +79,17 @@ public class ReviewService : IReviewService
     {
         var query = _reviewRepository.GetQueryable().OrderByDescending(r => r.CreatedAt).AsQueryable();
         {
+            if (filterDto.ProductId != null)
+            {
+                query = query.Where(r => r.ProductVersion.ProductId == filterDto.ProductId);
+            }
+
             if (filterDto.IsReply != null)
             {
-                query = query.Where(r => r.ReviewsReplies.Count > 0);
+                if ((bool)filterDto.IsReply)
+                    query = query.Where(r => r.ReviewsReplies.Count > 0);
+                else
+                    query = query.Where(r => r.ReviewsReplies.Count == 0);
             }
 
             if (filterDto.StartDate != null)
@@ -101,7 +109,7 @@ public class ReviewService : IReviewService
 
             if (filterDto.MaxScore != null)
             {
-                query = query.Where(r => r.Score <= filterDto.MinScore);
+                query = query.Where(r => r.Score <= filterDto.MaxScore);
             }
         }
 
