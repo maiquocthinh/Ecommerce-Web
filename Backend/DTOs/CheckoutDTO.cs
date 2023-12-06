@@ -1,5 +1,4 @@
-﻿using Backend.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Backend.DTOs;
 
@@ -9,16 +8,23 @@ public class CheckoutWithCartItemsInputDto
 {
     [Required(ErrorMessage = "CartItemsIds is required")]
     public IEnumerable<int> CartItemsIds { get; set; }
+
+    public int? ShippingAddressesId { get; set; }
 }
 
 public class CheckoutWithProductsInputDto
 {
     [Required(ErrorMessage = "Items is required")]
     public IEnumerable<CheckoutProductItem> Items { get; set; }
+
+    public int? ShippingAddressesId { get; set; }
 }
 
-public class CheckoutInputDto: CheckoutWithProductsInputDto
+public class CheckoutInputDto
 {
+    [Required(ErrorMessage = "Items is required")]
+    public IEnumerable<CheckoutProductItem> Items { get; set; }
+
     [Required(ErrorMessage = "DeliveryInfo is required")]
     public DeliveryInfo DeliveryInfo { get; set; }
 }

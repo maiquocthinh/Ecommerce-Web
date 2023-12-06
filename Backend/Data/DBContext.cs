@@ -1,7 +1,5 @@
 ﻿using Backend.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Newtonsoft.Json;
 
 namespace Backend.Data;
 

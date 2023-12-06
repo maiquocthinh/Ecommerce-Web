@@ -1,4 +1,3 @@
-using Backend.Models;
 using System.Linq.Expressions;
 
 namespace Backend.Repositories.Interfaces;

@@ -53,6 +53,10 @@ public class CheckoutService : ICheckoutService
         if (cartItems.IsNullOrEmpty())
             throw new BadRequestException("Notthing to order!");
 
+
+        if (cartItems.Count() != checkoutInput.CartItemsIds.Count())
+            throw new BadRequestException("Some CartItemsId is invalid!");
+
         foreach (var cartItem in cartItems)
         {
             if (cartItem.Quantity > cartItem.ProductsVersion.Inventory)
@@ -63,18 +67,20 @@ public class CheckoutService : ICheckoutService
             throw new ConflictException(message: string.Join("\n", messagesError));
 
         // get Shipping Info
-        var shippingInfo = customer.ShippingAddresses.FirstOrDefault(sa => sa.IsDefault == true);
-        if (shippingInfo is null) throw new ConflictException("A minimum of 1 shipping address is required before placing an order");
+        ShippingAddress shippingInfo;
+        if (checkoutInput.ShippingAddressesId != null)
+        {
+            shippingInfo = customer.ShippingAddresses.FirstOrDefault(sa => sa.Id == checkoutInput.ShippingAddressesId);
+            if (shippingInfo is null) throw new NotFoundException("Shipping address not found.");
+        }
+        else
+        {
+            shippingInfo = customer.ShippingAddresses.FirstOrDefault(sa => sa.IsDefault == true);
+            if (shippingInfo is null) throw new ConflictException("A minimum of 1 shipping address is required before placing an order");
+        }
         var address = shippingInfo.Address;
 
         // create order
-        var order = await _orderRepository.Add(new Order
-        {
-            CustomerId = customerId,
-            RecipientName = shippingInfo.RecipientName,
-            PhoneNumber = shippingInfo.PhoneNumber,
-            Address = $"{address.SpecificAddress}, {address.Wards}, {address.Districts}, {address.Province}",
-        });
         var orderDetails = cartItems.Select(c =>
         {
             var Discount = c.ProductsVersion.Product.Discounts.FirstOrDefault(d => d.EndDate > DateTime.Now && d.Active == true && d.Quantity > 0);
@@ -82,16 +88,22 @@ public class CheckoutService : ICheckoutService
 
             return new OrderDetail
             {
-                OrderId = (int)order.Id!,
                 ProductVersionId = c.ProductsVersionId,
                 Quantity = c.Quantity,
                 OriginPrice = Price,
                 Price = Discount is null ? Price : (int)Math.Round((decimal)(Price * (1 - Discount.DiscountPercent))!) * c.Quantity,
             };
         }).ToList();
+        var order = await _orderRepository.Add(new Order
+        {
+            CustomerId = customerId,
+            RecipientName = shippingInfo.RecipientName,
+            PhoneNumber = shippingInfo.PhoneNumber,
+            Address = $"{address.SpecificAddress}, {address.Wards}, {address.Districts}, {address.Province}",
+            TotalPrice = orderDetails.Sum(od => od.Price * od.Quantity),
+        });
 
-        order.TotalPrice = orderDetails.Sum(od => od.Price);
-        await _orderRepository.Update(order);
+        orderDetails.ForEach(od => { od.OrderId = (int)order.Id; });
 
         await _orderDetailRepository.AddMultiple(orderDetails);
 
@@ -155,10 +167,10 @@ public class CheckoutService : ICheckoutService
         var itemProductVersionIds = checkoutInput.Items.Select(i => (int)i.ProductVersionId).ToList();
         var productVersionsOrder = (await _productVersionRepository.Where(pv => itemProductVersionIds.Contains<int>((int)pv.Id)))
             .Select(pv => new
-                {
-                    ProductVersion = pv,
-                    OrderQuantity = checkoutInput.Items.FirstOrDefault(i => i.ProductVersionId == pv.Id)?.Quantity
-                }).ToList();
+            {
+                ProductVersion = pv,
+                OrderQuantity = checkoutInput.Items.FirstOrDefault(i => i.ProductVersionId == pv.Id)?.Quantity
+            }).ToList();
         var messagesError = new List<string>();
 
         foreach (var pvo in productVersionsOrder)
@@ -275,6 +287,12 @@ public class CheckoutService : ICheckoutService
             }).ToList();
         var messagesError = new List<string>();
 
+        if (productVersionsOrder.IsNullOrEmpty())
+            throw new BadRequestException("Notthing to order!");
+
+        if (productVersionsOrder.Count() != itemProductVersionIds.Count())
+            throw new BadRequestException("Some ProductVersionId is invalid!");
+
         foreach (var pvo in productVersionsOrder)
         {
             if (pvo.ProductVersion.Inventory < pvo.OrderQuantity)
@@ -285,36 +303,45 @@ public class CheckoutService : ICheckoutService
             throw new ConflictException(message: string.Join("\n", messagesError));
 
         // get Shipping Info
-        var shippingInfo = customer.ShippingAddresses.FirstOrDefault(sa => sa.IsDefault == true);
-        if (shippingInfo is null) throw new ConflictException("A minimum of 1 shipping address is required before placing an order");
+        ShippingAddress shippingInfo;
+        if (checkoutInput.ShippingAddressesId != null)
+        {
+            shippingInfo = customer.ShippingAddresses.FirstOrDefault(sa => sa.Id == checkoutInput.ShippingAddressesId);
+            if (shippingInfo is null) throw new NotFoundException("Shipping address not found.");
+        }
+        else
+        {
+            shippingInfo = customer.ShippingAddresses.FirstOrDefault(sa => sa.IsDefault == true);
+            if (shippingInfo is null) throw new ConflictException("A minimum of 1 shipping address is required before placing an order");
+        }
         var address = shippingInfo.Address;
 
         // create order
         try
         {
-            var order = await _orderRepository.Add(new Order
-            {
-                CustomerId = customer.Id,
-                RecipientName = shippingInfo.RecipientName,
-                PhoneNumber = shippingInfo.PhoneNumber,
-                Address = $"{address.SpecificAddress}, {address.Wards}, {address.Districts}, {address.Province}",
-            });
             var orderDetails = productVersionsOrder.Select(pvo =>
             {
                 var Discount = pvo.ProductVersion.Product.Discounts.FirstOrDefault(d => d.EndDate > DateTime.Now && d.Active == true && d.Quantity > 0);
                 var Price = pvo.ProductVersion.Price;
+
                 return new OrderDetail
                 {
-                    OrderId = (int)order.Id!,
                     ProductVersionId = pvo.ProductVersion.Id,
                     Quantity = (int)pvo.OrderQuantity!,
                     OriginPrice = Price,
                     Price = Discount is null ? Price : (int)Math.Round((decimal)(Price * (1 - Discount.DiscountPercent))!) * (int)pvo.OrderQuantity,
                 };
             }).ToList();
+            var order = await _orderRepository.Add(new Order
+            {
+                CustomerId = customer.Id,
+                RecipientName = shippingInfo.RecipientName,
+                PhoneNumber = shippingInfo.PhoneNumber,
+                Address = $"{address.SpecificAddress}, {address.Wards}, {address.Districts}, {address.Province}",
+                TotalPrice = orderDetails.Sum(od => od.Price * od.Quantity),
+            });
 
-            order.TotalPrice = orderDetails.Sum(od => od.Price);
-            await _orderRepository.Update(order);
+            orderDetails.ForEach(od => { od.OrderId = (int)order.Id; });
 
             await _orderDetailRepository.AddMultiple(orderDetails);
 
