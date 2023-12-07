@@ -28,10 +28,14 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
     w,
 }) => {
     const [selectedOption, setSelectedOption] = useState<any>(null);
-    const getOptionLabel = (option: any) => option.title || option.name;
+    const getOptionLabel = (option: any) =>
+        option.title || option.name || option.productVersionName;
 
     const getOptionValue = (option: any) =>
-        option.value || option.title || option.name;
+        option.value ||
+        option.title ||
+        option.name ||
+        option.productVersionName;
     const customStyles = {
         control: (provided: any, state: any) => ({
             ...provided,
@@ -70,7 +74,10 @@ const SelecterLab: React.FC<SelecterLabProps> = ({
         if (valueUpdate) {
             filteredOptions = options.filter((option: any) =>
                 valueUpdate.includes(
-                    (option?.value || option?.title || option?.name) as string
+                    (option?.value ||
+                        option?.title ||
+                        option?.name ||
+                        option?.productVersionName) as string
                 )
             );
         }

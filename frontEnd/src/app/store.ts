@@ -110,6 +110,7 @@ export const store = configureStore({
         //inventory
         allInventory: adminInventory.AdminGetAllInventory.default,
         allImports: adminInventory.AdminGetAllImports.default,
+        importShipmentData: adminInventory.AdminGetImportShipment.default,
         //customer
         listCustomnerData: adminCustomerSlice.AdminGetListCustomer.default,
         //review

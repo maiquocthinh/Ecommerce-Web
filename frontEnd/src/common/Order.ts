@@ -19,3 +19,13 @@ export interface shippingInfoType {
     phoneNumber: string;
     address: string;
 }
+export interface orderDetailType {
+    id: number;
+    imageUrl: string;
+    productVersionId: number;
+    productVersionName: string;
+    quantity: number;
+    price: number;
+    originPrice: number;
+    totalPrice: number;
+}

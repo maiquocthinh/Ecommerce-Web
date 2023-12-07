@@ -169,13 +169,16 @@ const AdminSidebar = () => {
         <div className="col-span-2 overflow-hidden left-0-0 top-0 bottom-0 p-4 bg-custom-admin_bg_content h-full text-custom-addmin_color">
             <div className="fixed w-56 flex flex-col justify-between h-full">
                 <div className="flex-1 ">
-                    <div className="h-[64px] flex items-center justify-start">
+                    <button
+                        onClick={() => router("/admin/dashboard")}
+                        className="h-[64px] flex items-center justify-start"
+                    >
                         <img
-                            src="https://dashtar-admin.vercel.app/@/assets/logo-dark-a4d6f179.svg"
+                            src="../src/assets/imgs/logo.png"
                             alt="logo"
-                            className="h-[32px] object-contain ml-2"
+                            className="h-20 object-contain ml-2"
                         />
-                    </div>
+                    </button>
                     <div className="mt-6 w-full flex flex-col gap-4 text-[14px] font-medium">
                         {listTask.map((task) => {
                             if (!task.more) {

@@ -44,4 +44,17 @@ const handleCreateImport = (formData: importShipmentsType) => {
     };
     return axios.post(`/api/inventory/imports`, formData, { headers });
 };
-export { handleGetAllInventory, handleGetAllImports, handleCreateImport };
+const handleGetImportShipment = (productVersionId: number) => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
+    return axios.get(`/api/inventory/import-shipment/${productVersionId}`, {
+        headers,
+    });
+};
+export {
+    handleGetAllInventory,
+    handleGetAllImports,
+    handleCreateImport,
+    handleGetImportShipment,
+};
