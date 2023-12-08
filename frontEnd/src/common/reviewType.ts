@@ -27,3 +27,26 @@ export interface reviewRelyType {
     createdAt: string;
     reply?: relyType;
 }
+export interface allReviewType {
+    totalReview: number;
+    averaegScore: number;
+    reviews: reviewUserType[];
+}
+export interface reviewUserType {
+    reply: {
+        id: number;
+        content: string;
+        fullname: string;
+        avatarUrl: string;
+        createdAt: string;
+        updatedAt: string;
+    };
+    id: number;
+    content: string;
+    score: number;
+    productVersionName: string;
+    productVersionImgUrl: string;
+    fullname: string;
+    avatarUrl: string;
+    createdAt: string;
+}

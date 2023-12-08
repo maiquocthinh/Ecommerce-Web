@@ -45,7 +45,7 @@ const MySelecter: React.FC<MySelecterProps> = ({
         <div className="relative z-20" onClick={handleShowDropdown}>
             <div
                 className={`flex items-center p-2 border-[1px] cursor-pointer rounded-borderContnet bg-[#f3f4f6] ${
-                    active
+                    showDropdown
                         ? "border-custom-primary text-custom-primary"
                         : "text-[#444444]"
                 }`}

@@ -6,8 +6,8 @@ export const getAllReview = createAsyncThunk(
     async (id: number) => {
         try {
             const response = await reviewApi.handlegetAllReview(id);
-            let products = response.data;
-            return products;
+            let reviews = response.data;
+            return reviews;
         } catch (error) {
             throw error;
         }
@@ -18,8 +18,7 @@ export const createReview = createAsyncThunk(
     async (formData: commentType) => {
         try {
             const response = await reviewApi.handleCreateReview(formData);
-            let products = response.data;
-            return products;
+            return response;
         } catch (error) {
             throw error;
         }

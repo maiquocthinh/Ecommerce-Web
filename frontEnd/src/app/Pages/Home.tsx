@@ -5,17 +5,12 @@ import Slide from "@/Components/Slide/Slide";
 import HotSale from "@/Components/productListing/HotSale/HotSale";
 import Product from "@/Components/productListing/Product/Product";
 import SlideBar from "@/app/Layout/Sidebar/SideBar";
-import { selectShowModal } from "@/app/Slices/common/modalSlice";
 import { ProductType } from "@/common";
 import { listProduct, posterData } from "@/utils/Data";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
-import {
-    getAllProduct,
-    getLaptopProduct,
-    getMobileProduct,
-} from "../action/product";
+import { getAllProduct } from "../action/product";
 
 interface HomeProps {}
 
@@ -82,7 +77,9 @@ const Home: React.FC<HomeProps> = () => {
             dispatch(setPageLevelLoading(false));
         }
     }, [productdata, dispatch]);
-
+    useEffect(() => {
+        dispatch(getAllProduct({ pageSize: "10", pageIndex: "1" }));
+    }, [dispatch]);
     const handleChangeDatasale = (link: string) => {
         setChangedDataSale(link);
     };
@@ -95,7 +92,7 @@ const Home: React.FC<HomeProps> = () => {
                 <div className="lg:block col-span-2 hidden">
                     <SlideBar />
                 </div>
-                <div className="shadow-custom rounded-borderContnet overflow-hidden lg:col-span-10 col-span-12">
+                <div className="shadow-custom rounded-borderContnet lg:col-span-10 col-span-12">
                     {posterData && (
                         <Slide
                             data={posterData}
@@ -132,16 +129,18 @@ const Home: React.FC<HomeProps> = () => {
                         )}
                 </div>
             </div>
-            <div>
+            <div className="flex flex-col gap-2 h-auto">
                 <HeaderProduct
                     listProduct={listProduct}
                     heading="LAPTOP THOẠI NỔI BẬT NHẤT"
                 />
-                <Slide
-                    ItemSlide={Product}
-                    data={laptopProduct?.list}
-                    numberSlide={5}
-                />
+                <div className="">
+                    <Slide
+                        ItemSlide={Product}
+                        data={laptopProduct?.list}
+                        numberSlide={5}
+                    />
+                </div>
             </div>
             <div>
                 <HeaderProduct

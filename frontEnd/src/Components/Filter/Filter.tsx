@@ -147,7 +147,7 @@ const Filter: React.FC<FilterProps> = ({
                     <div>
                         <button
                             onClick={handleGetProductByFilter}
-                            className="align-bottom p-2 inline-flex items-center justify-center cursor-pointer  transition-colors duration-150 font-medium focus:outline-none  rounded-lg text-sm text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600"
+                            className="align-bottom px-4 py-2 inline-flex items-center justify-center cursor-pointer  transition-colors duration-150 font-medium focus:outline-none  rounded-lg text-sm text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600"
                         >
                             Lọc
                         </button>

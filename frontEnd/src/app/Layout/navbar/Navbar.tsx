@@ -45,7 +45,6 @@ const Navbar: React.FC<NavbarProps> = () => {
     const debounce = useDebounce(searchValue, 1000) as string;
     const dispatch = useDispatch<any>();
     useEffect(() => {
-        dispatch(getAllProduct({ pageSize: "10", pageIndex: "1" }));
         dispatch(getLaptopProduct({ pageSize: "10", pageIndex: "1" }));
         dispatch(getMobileProduct({ pageSize: "10", pageIndex: "1" }));
         dispatch(getAllNeeds());

@@ -3,6 +3,7 @@ import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import HeaderLayout from "../Layout/HeaderLayout/HeaderLayout";
 import Cart from "../Pages/CartPage";
 import Checkout from "../Pages/Checkout";
+import ComparisonPage from "../Pages/ComparisonPage";
 import DetailProduct from "../Pages/DetailProduct";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
@@ -100,6 +101,11 @@ const publishRouter: RouteConfig[] = [
         path: "/unauthorizedPage",
         element: UnauthorizedPage,
         Layout: null,
+    },
+    {
+        path: "/comparisonPage",
+        element: ComparisonPage,
+        Layout: DefaultLayout,
     },
 ];
 

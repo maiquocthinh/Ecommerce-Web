@@ -15,7 +15,7 @@ const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
     };
     return (
         <div
-            className={`shadow-custom relative font-bold bg-white rounded-borderContnet mx-1 flex flex-col p-2  col-span-${col} cursor-pointer`}
+            className={`border shadow-custom  relative font-bold bg-white rounded-borderContnet mx-1 flex flex-col p-2  col-span-${col} cursor-pointer`}
         >
             <Link to={`/product/${data.id}`} className="flex flex-col">
                 <div className="center">

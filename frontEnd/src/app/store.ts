@@ -36,8 +36,10 @@ export const store = configureStore({
         auth: userSlice.auth.default,
         pageLevelLoading: commonSlice.pageLevelLoading.default,
         componentLoading: commonSlice.componentLevelLoading.default,
+        productComparisonData: commonSlice.ProductComparison.default,
         profile: userSlice.profile.default,
         showAdminSlide: commonSlice.showAdminSlide.default,
+
         //upload
         uploadFileData: userSlice.UploadSlice.default,
         //cart
