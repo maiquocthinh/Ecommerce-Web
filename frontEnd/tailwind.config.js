@@ -47,6 +47,9 @@ export default {
             borderColor: {
                 border: "#cbd5e11a",
             },
+            minWidth: {
+                'sm': '120px',
+            }
         },
     },
     plugins: [],

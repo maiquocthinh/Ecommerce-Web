@@ -171,9 +171,9 @@ const AdminSidebar = () => {
                 <div className="flex-1 ">
                     <div className="h-[64px] flex items-center justify-start">
                         <img
-                            src="https://dashtar-admin.vercel.app/@/assets/logo-dark-a4d6f179.svg"
+                            src="/src/assets/imgs/logo.png"
                             alt="logo"
-                            className="h-[32px] object-contain ml-2"
+                            className="h-[100px] object-contain ml-2"
                         />
                     </div>
                     <div className="mt-6 w-full flex flex-col gap-4 text-[14px] font-medium">
@@ -183,14 +183,13 @@ const AdminSidebar = () => {
                                     <div key={task.id}>
                                         <div
                                             onClick={() => handleTask(task)}
-                                            className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${
-                                                active ===
+                                            className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${active ===
                                                 (task.listMore
                                                     ? task.listMore[0]
                                                     : task.link)
-                                                    ? "text-custom-addmin_Active__color"
-                                                    : "hover:text-white"
-                                            }`}
+                                                ? "text-custom-addmin_Active__color"
+                                                : "hover:text-white"
+                                                }`}
                                         >
                                             {task.Icon}
                                             <span>{task.label}</span>
@@ -209,11 +208,10 @@ const AdminSidebar = () => {
                                                     handleShowMore(task)
                                                 }
                                                 key={task.id}
-                                                className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${
-                                                    active === task.id
-                                                        ? "text-custom-addmin_Active__color"
-                                                        : "hover:text-white"
-                                                }`}
+                                                className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${active === task.id
+                                                    ? "text-custom-addmin_Active__color"
+                                                    : "hover:text-white"
+                                                    }`}
                                             >
                                                 {task.Icon}
                                                 <span>{task.label}</span>
@@ -227,11 +225,10 @@ const AdminSidebar = () => {
                                                 {task.listMore.map((item) => (
                                                     <span
                                                         key={item.id}
-                                                        className={`hover:text-white cursor-pointer ${
-                                                            active === item.link
-                                                                ? "text-custom-addmin_Active__color"
-                                                                : "hover:text-white"
-                                                        }`}
+                                                        className={`hover:text-white cursor-pointer ${active === item.link
+                                                            ? "text-custom-addmin_Active__color"
+                                                            : "hover:text-white"
+                                                            }`}
                                                         onClick={() =>
                                                             router(item.link)
                                                         }
