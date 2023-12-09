@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
 import { getAllProduct } from "../action/product";
+import { getAllBrands } from "../action/catalogs";
 
 interface HomeProps {}
 
@@ -26,7 +27,7 @@ const Home: React.FC<HomeProps> = () => {
     const productdata = useSelector((state: any) => state.allproduct.data);
     const laptopProduct = useSelector((state: any) => state.laptopProduct.data);
     const mobileProduct = useSelector((state: any) => state.mobileProduct.data);
-
+    const branchData = useSelector((state: any) => state.branchData.data);
     const pageLevelLoading = useSelector(
         (sate: any) => sate.pageLevelLoading.pageLevelLoading
     );
@@ -79,6 +80,7 @@ const Home: React.FC<HomeProps> = () => {
     }, [productdata, dispatch]);
     useEffect(() => {
         dispatch(getAllProduct({ pageSize: "10", pageIndex: "1" }));
+        dispatch(getAllBrands());
     }, [dispatch]);
     const handleChangeDatasale = (link: string) => {
         setChangedDataSale(link);
@@ -116,6 +118,7 @@ const Home: React.FC<HomeProps> = () => {
             </div>
             <div>
                 <HeaderProduct
+                    brand={branchData ? branchData : undefined}
                     listProduct={listProduct}
                     heading="sản phẩm mới nhất"
                 />
@@ -131,6 +134,7 @@ const Home: React.FC<HomeProps> = () => {
             </div>
             <div className="flex flex-col gap-2 h-auto">
                 <HeaderProduct
+                    brand={branchData ? branchData : undefined}
                     listProduct={listProduct}
                     heading="LAPTOP THOẠI NỔI BẬT NHẤT"
                 />
@@ -144,6 +148,7 @@ const Home: React.FC<HomeProps> = () => {
             </div>
             <div>
                 <HeaderProduct
+                    brand={branchData ? branchData : undefined}
                     listProduct={listProduct}
                     heading="ĐIỆN THOẠI NỔI BẬT NHẤT"
                 />

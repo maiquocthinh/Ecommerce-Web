@@ -92,7 +92,6 @@ const DetailProduct = () => {
     const handleAddCart = () => {
         if (!isLoggedIn) {
             toast.error("đăng nhập để tiếp tục");
-            route("/login");
             return;
         }
         if (productVersion?.id) {

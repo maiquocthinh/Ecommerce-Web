@@ -31,11 +31,14 @@ export const CheckoutProduct = createAsyncThunk(
 );
 export const checkoutWidthproductWithAuthentication = createAsyncThunk(
     "checkoutWidthproductWithAuthentication/checkoutWidthproductWithAuthentication",
-    async (productItems: productItemType[]) => {
+    async (formData: {
+        items: productItemType[];
+        shippingAddressesId?: number;
+    }) => {
         try {
             const response =
                 await checkoutApi.handleCheckoutWidthproductWithAuthentication(
-                    productItems
+                    formData
                 );
             let data = response;
             return data;

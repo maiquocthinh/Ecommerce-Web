@@ -11,19 +11,16 @@ const handleCheckOutWidthCart = (cartItemsIds: number[]) => {
 const handleCheckOutWidthProduct = (formData: checkoutProductType) => {
     return axios.post(`/api/checkout/product`, formData);
 };
-const handleCheckoutWidthproductWithAuthentication = (
-    items: productItemType[]
-) => {
+const handleCheckoutWidthproductWithAuthentication = (formData: {
+    items: productItemType[];
+    shippingAddressesId?: number;
+}) => {
     const headers = {
         Authorization: `Bearer ${Cookies.get("token")}`,
     };
-    return axios.post(
-        `/api/checkout/product-with-authentication`,
-        { items },
-        {
-            headers,
-        }
-    );
+    return axios.post(`/api/checkout/product-with-authentication`, formData, {
+        headers,
+    });
 };
 export {
     handleCheckOutWidthCart,
