@@ -1,11 +1,13 @@
 import axios from "../utils/instance";
 import Cookies from "js-cookie";
 
-const handleGetAllOrder = () => {
+const handleGetAllOrder = (status?: string) => {
     const headers = {
         Authorization: `Bearer ${Cookies.get("token")}`,
     };
-    return axios.get(`/api/orders`, { headers });
+    if (status !== "") {
+        return axios.get(`/api/orders?status=${status}`, { headers });
+    } else return axios.get(`/api/orders`, { headers });
 };
 const handleCancelOrder = (orderId: number) => {
     const headers = {

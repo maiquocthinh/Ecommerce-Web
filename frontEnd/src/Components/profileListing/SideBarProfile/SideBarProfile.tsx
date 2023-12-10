@@ -16,7 +16,7 @@ const Greneral = [
         id: 2,
         icon: <FaHistory />,
         title: "Lịch sử mua hàng",
-        link: "/profile/order",
+        link: "/profile/order/processing",
     },
 ];
 const SideBarProfile = () => {

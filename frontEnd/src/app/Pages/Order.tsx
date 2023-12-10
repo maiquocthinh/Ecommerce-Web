@@ -1,18 +1,18 @@
+import Notification from "@/Components/PageLoader/Notification";
+import PageLoader from "@/Components/PageLoader/PageLoader";
 import SideBarProfile from "@/Components/profileListing/SideBarProfile/SideBarProfile";
 import { orderType } from "@/common/Order";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BiReset, BiSearchAlt } from "react-icons/Bi";
-import { CiFilter } from "react-icons/ci";
-import { useDispatch, useSelector } from "react-redux";
-import { cancelOrder, getAllOrder } from "../action/Order";
-import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
-import PageLoader from "@/Components/PageLoader/PageLoader";
-import { FcCancel } from "react-icons/fc";
-import { BsCartCheck } from "react-icons/bs";
-import Notification from "@/Components/PageLoader/Notification";
-import { AiOutlineDelete } from "react-icons/ai";
+import { CiCircleCheck, CiFilter } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
+import { cancelOrder, getAllOrder } from "../action/Order";
+import { useNavigate, useParams } from "react-router-dom";
 const Order = () => {
+    const param = useParams();
+    const router = useNavigate();
     const [isOrderDetail, setIsOrderDetail] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
     const [orderSearch, setOrderSearch] = useState<orderType[]>([]);
@@ -26,8 +26,8 @@ const Order = () => {
     const dispatch = useDispatch<any>();
     useEffect(() => {
         dispatch(setPageLevelLoading(true));
-        dispatch(getAllOrder());
-    }, [dispatch]);
+        if (param?.status) dispatch(getAllOrder(param.status));
+    }, [dispatch, param]);
     useEffect(() => {
         if (searchValue !== "" && isSearch && allOrder?.length) {
             const filteredOrders = allOrder.filter((order) =>
@@ -49,7 +49,9 @@ const Order = () => {
         }
     }, [allOrder, dispatch]);
     const handleCancelOrderView = (id: number) => {
-        dispatch(cancelOrder(id)).then(() => dispatch(getAllOrder()));
+        dispatch(cancelOrder(id)).then(() => {
+            if (param?.status) dispatch(getAllOrder(param.status));
+        });
     };
     if (pageLevelLoading) {
         return <PageLoader pageLevelLoading={pageLevelLoading} />;
@@ -68,7 +70,7 @@ const Order = () => {
                 <div className="flex bg-gray-50">
                     <div className="flex-1 mx-auto px-2">
                         <div className="mt-4 w-full">
-                            <div className="flex w-full flex-col items-center justify-between space-y-2 sm:flex-row sm:space-y-0">
+                            <div className="border-b-gray-400 border-b flex w-full flex-col items-center justify-between space-y-2 sm:flex-row sm:space-y-0">
                                 <div className="relative flex w-full max-w-2xl items-center">
                                     <BiSearchAlt className="absolute left-2 block h-5 w-5 text-gray-400" />
                                     <input
@@ -78,7 +80,7 @@ const Order = () => {
                                         onChange={(e) =>
                                             setSearchValue(e.target.value)
                                         }
-                                        className="h-12 border-b w-full border-b-gray-400 bg-transparent py-4 pl-12 text-sm outline-none"
+                                        className="h-12 w-full bg-transparent py-4 pl-12 text-sm outline-none"
                                         placeholder="tìm kiếm bằng tên hàng"
                                     />
                                 </div>
@@ -110,6 +112,39 @@ const Order = () => {
                                 )}
                             </div>
                         </div>
+                        <div className="flex gap-4 items-center pt-4">
+                            <button
+                                onClick={() =>
+                                    router("/profile/order/processing")
+                                }
+                                className="px-2 flex items-center gap-1 py-1 border border-yellow-500 text-yellow-500 rounded-md text-xs font-bold"
+                            >
+                                {param?.status === "processing" ? (
+                                    <CiCircleCheck size={20} />
+                                ) : null}
+                                Đang vẩn chuyển
+                            </button>
+                            <button
+                                onClick={() => router("/profile/order/shipped")}
+                                className="px-2 flex items-center gap-1 border-green-500 text-green-500  py-1 border rounded-md text-xs font-bold"
+                            >
+                                {param?.status === "shipped" ? (
+                                    <CiCircleCheck size={20} />
+                                ) : null}
+                                Đã nhận hàng
+                            </button>
+                            <button
+                                onClick={() =>
+                                    router("/profile/order/cancelled")
+                                }
+                                className="px-2 flex items-center gap-1 border-yellow-500 text-yellow-500  py-1 border rounded-md text-xs font-bold"
+                            >
+                                {param?.status === "cancelled" ? (
+                                    <CiCircleCheck size={20} />
+                                ) : null}
+                                Đã hủy
+                            </button>
+                        </div>
                         {!allOrder.length && !orderSearch?.length ? (
                             <h1 className="w-full text-2xl font-bold py-4 block text-center">
                                 Không có đơn hàng nào trước đây
@@ -138,9 +173,11 @@ const Order = () => {
                                             <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
                                                 trạng thái
                                             </td>
-                                            <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
-                                                action
-                                            </td>
+                                            {param?.status === "processing" ? (
+                                                <td className="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">
+                                                    action
+                                                </td>
+                                            ) : null}
                                         </tr>
                                     </thead>
 
@@ -201,23 +238,44 @@ const Order = () => {
                                                       </td>
                                                       <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-3 lg:table-cell">
                                                           <span
-                                                              className={`ml-2 mr-3 whitespace-nowrap rounded-full bg-purple-100 px-2 py-0.5 text-purple-800 ${
-                                                                  order.orderStatus ===
-                                                                  "cancelled"
-                                                                      ? "bg-red-500 text-white text-center"
-                                                                      : order.orderStatus ===
-                                                                        "processing"
-                                                                      ? "bg-yellow-600 text-white text-center"
-                                                                      : "bg-green-600 text-white text-center"
-                                                              }
-                                                 ""
-                                             }`}
+                                                              className={`ml-2 mr-3 whitespace-nowrap rounded-full bg-green-500 px-2 py-0.5 text-black`}
+                                                              style={{
+                                                                  backgroundColor:
+                                                                      order.orderStatus ===
+                                                                      "cancelled"
+                                                                          ? "red"
+                                                                          : order.orderStatus ===
+                                                                            "processing"
+                                                                          ? "yellow"
+                                                                          : "",
+                                                              }}
                                                           >
                                                               {
                                                                   order.orderStatus
                                                               }
                                                           </span>
                                                       </td>
+                                                      {param?.status ===
+                                                      "processing" ? (
+                                                          <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
+                                                              {order.orderStatus ===
+                                                              "processing" ? (
+                                                                  <div
+                                                                      onClick={() =>
+                                                                          handleCancelOrderView(
+                                                                              order.orderId
+                                                                          )
+                                                                      }
+                                                                      className="flex gap-1 items-center text-custom-Colorprimary"
+                                                                  >
+                                                                      <MdOutlineCancel />
+                                                                      <span>
+                                                                          hủy
+                                                                      </span>
+                                                                  </div>
+                                                              ) : null}
+                                                          </td>
+                                                      ) : null}
                                                   </tr>
                                               ))
                                             : allOrder?.length
@@ -278,41 +336,44 @@ const Order = () => {
                                                       </td>
                                                       <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-3 lg:table-cell">
                                                           <span
-                                                              className={`ml-2 mr-3 whitespace-nowrap rounded-full bg-purple-100 px-2 py-0.5 text-purple-800 ${
-                                                                  order.orderStatus ===
-                                                                  "cancelled"
-                                                                      ? "bg-red-500 text-white text-center"
-                                                                      : order.orderStatus ===
-                                                                        "processing"
-                                                                      ? "bg-yellow-600 text-white text-center"
-                                                                      : "bg-green-600 text-white text-center"
-                                                              }
-                                                    ""
-                                                }`}
+                                                              className={`ml-2 mr-3 whitespace-nowrap rounded-full bg-green-500 px-2 py-0.5 text-black`}
+                                                              style={{
+                                                                  backgroundColor:
+                                                                      order.orderStatus ===
+                                                                      "cancelled"
+                                                                          ? "red"
+                                                                          : order.orderStatus ===
+                                                                            "processing"
+                                                                          ? "yellow"
+                                                                          : "",
+                                                              }}
                                                           >
                                                               {
                                                                   order.orderStatus
                                                               }
                                                           </span>
                                                       </td>
-                                                      <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
-                                                          {order.orderStatus ===
-                                                          "processing" ? (
-                                                              <div
-                                                                  onClick={() =>
-                                                                      handleCancelOrderView(
-                                                                          order.orderId
-                                                                      )
-                                                                  }
-                                                                  className="flex gap-1 items-center text-custom-Colorprimary"
-                                                              >
-                                                                  <MdOutlineCancel />
-                                                                  <span>
-                                                                      hủy
-                                                                  </span>
-                                                              </div>
-                                                          ) : null}
-                                                      </td>
+                                                      {param?.status ===
+                                                      "processing" ? (
+                                                          <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
+                                                              {order.orderStatus ===
+                                                              "processing" ? (
+                                                                  <div
+                                                                      onClick={() =>
+                                                                          handleCancelOrderView(
+                                                                              order.orderId
+                                                                          )
+                                                                      }
+                                                                      className="flex gap-1 items-center text-custom-Colorprimary"
+                                                                  >
+                                                                      <MdOutlineCancel />
+                                                                      <span>
+                                                                          hủy
+                                                                      </span>
+                                                                  </div>
+                                                              ) : null}
+                                                          </td>
+                                                      ) : null}
                                                   </tr>
                                               ))
                                             : null}

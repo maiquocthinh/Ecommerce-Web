@@ -10,11 +10,15 @@ interface CartItemProps {
     data: CartType;
     updateCartProps: (check: boolean) => void;
     handleDeleteCartItem: (id: number | string) => void;
+    setSelectedItems: (cart: CartType[]) => void;
+    selectedItems: CartType[];
 }
 const CartItem: React.FC<CartItemProps> = ({
     data,
     updateCartProps,
     handleDeleteCartItem,
+    setSelectedItems,
+    selectedItems,
 }) => {
     const [quantity, setQuantity] = useState(data.quantity);
     const dispatch = useDispatch<any>();
@@ -31,23 +35,54 @@ const CartItem: React.FC<CartItemProps> = ({
         setQuantity(value);
         handleUpdateCart(value);
     };
+    const handleCheckboxChange = (cart: CartType) => {
+        const tempCart = [...selectedItems];
 
+        if (tempCart?.length > 0) {
+            const check = tempCart.find((item) => item.id === cart.id);
+
+            if (check) {
+                const updatedTempCart = tempCart.filter(
+                    (item) => item.id !== cart.id
+                );
+                setSelectedItems(updatedTempCart);
+            } else {
+                setSelectedItems([...selectedItems, cart]);
+            }
+        } else {
+            setSelectedItems([cart]);
+        }
+    };
+    console.log(selectedItems);
     return (
-        <div className="mt-2 py-4 flex items-center justify-between  border-b last:border-none relative">
-            <div className="flex-1 flex items-center gap-2">
-                <img
-                    src={data.image}
-                    alt=""
-                    width={100}
-                    height={100}
-                    className="p-2 border rounded-borderContnet object-cover"
+        <tr>
+            <td className="border border-gray-300 py-2 px-4 text-center">
+                <input
+                    defaultChecked={true}
+                    id="red-checkbox"
+                    type="checkbox"
+                    value=""
+                    checked={selectedItems.includes(data)}
+                    onChange={() => handleCheckboxChange(data)}
+                    className="w-4 h-4 text-red-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600"
                 />
-                <div className="flex flex-col items-start">
-                    <span className="text-xl font-medium">{data.name}</span>
-                    <span>{data.color}</span>
+            </td>
+            <td className="border border-gray-300 py-2 px-4">
+                <div className="flex gap-2 items-center">
+                    <img
+                        src={data.image}
+                        alt=""
+                        width={100}
+                        height={100}
+                        className="p-2 border rounded-borderContnet object-cover"
+                    />
+                    <div className="flex flex-col items-start">
+                        <span className="text-xl font-medium">{data.name}</span>
+                        <span>{data.color}</span>
+                    </div>
                 </div>
-            </div>
-            <div className="w-1/5 flex items-center gap-1">
+            </td>
+            <td className="border border-gray-300 py-2 px-4 text-center">
                 <button
                     disabled={Number(quantity) === 1}
                     className="disabled:text-custom-disable"
@@ -68,21 +103,27 @@ const CartItem: React.FC<CartItemProps> = ({
                 >
                     <FaChevronRight />
                 </button>
-            </div>
-            <div className="w-1/5 text-center">
+            </td>
+            <td className="border border-gray-300 py-2 px-4">
                 <span>
                     {Number(data.prices.price) * Number(data.quantity)}đ
                 </span>
-            </div>
-            <Tippy content="xóa" placement="bottom" className=" text-red-500">
-                <button
-                    onClick={() => handleDeleteCartItem(data.id)}
-                    className="text-end text-red-500"
+            </td>
+            <td className="border border-gray-300 py-2 px-4">
+                <Tippy
+                    content="xóa"
+                    placement="bottom"
+                    className=" text-red-500"
                 >
-                    <AiOutlineDelete size={20} />
-                </button>
-            </Tippy>
-        </div>
+                    <button
+                        onClick={() => handleDeleteCartItem(data.id)}
+                        className="text-end text-red-500"
+                    >
+                        <AiOutlineDelete size={20} />
+                    </button>
+                </Tippy>
+            </td>
+        </tr>
     );
 };
 

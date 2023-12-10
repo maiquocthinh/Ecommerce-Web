@@ -27,7 +27,7 @@ const Checkout = () => {
     const route = useNavigate();
 
     useEffect(() => {
-        const cartItemsLocal = localStorage.getItem("cart");
+        const cartItemsLocal = localStorage.getItem("selectedCart");
         if (typeof cartItemsLocal === "string") {
             setCartItems(JSON.parse(cartItemsLocal));
         }
@@ -68,7 +68,7 @@ const Checkout = () => {
                     );
                     dispatch(getAllCart());
                     setTimeout(() => {
-                        route("/profile/order");
+                        route("/profile/order/processing");
                     }, 2000);
                 } else {
                     dispatch(

@@ -3,9 +3,9 @@ import * as orderApi from "@/Server/orderApi";
 import { orderType } from "@/common/Order";
 export const getAllOrder = createAsyncThunk(
     "getAllOrder/getAllOrder",
-    async () => {
+    async (status?: string) => {
         try {
-            const response = await orderApi.handleGetAllOrder();
+            const response = await orderApi.handleGetAllOrder(status);
             let data = response.data as orderType[];
             return data;
         } catch (error) {

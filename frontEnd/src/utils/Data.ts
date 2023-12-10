@@ -111,23 +111,28 @@ export const loginFormControls = [
 export const posterData = [
     {
         imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2F_3df774a6-1486-41e5-9b66-a67c979651cf%20(1).jpg-1699277321253-di13e0di4h?alt=media&token=b802d602-22a1-4bf4-8d93-ecf168bea6b0",
+            "https://ucarecdn.com/da821dfa-06b2-44a2-8392-1a6f2cf28327/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/",
         label: "mua sắm 24/24",
     },
     {
         imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2F_438182cd-ee83-49d6-809f-95b951b22716%20(1).jpg-1699277397331-0yvmj8xhwn?alt=media&token=e4982d03-7a53-4d79-8c5e-666536d7de86",
+            "https://ucarecdn.com/6825214b-7aa5-4717-8c65-6e90178b73d0/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/",
         label: "miễn phí vận chuyển",
     },
     {
         imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2F_2f83e5d7-9757-49c0-b465-d25e94013996%20(1).jpg-1699277399874-cyyawdk6uq?alt=media&token=0846dff1-3a59-4f09-a230-0f3c9c6a9966",
+            "https://ucarecdn.com/44941393-abc5-4000-923e-91758eee50a0/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/",
         label: "giao hàng tận nơi",
     },
     {
         imageUrl:
-            "https://firebasestorage.googleapis.com/v0/b/next-js-ecommerce-a8235.appspot.com/o/ecommerce%2F_c7c9222c-2df0-472d-88f7-ca9eed2b65b3%20(1).jpg-1699277446270-kvb6zuzle8?alt=media&token=a0c8db17-2dc3-4915-b8ce-7f6156b3e3c1",
+            "https://ucarecdn.com/f3ed1e8e-5deb-42ca-b004-d48461a9d698/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/",
         label: "giao hàng 24h",
+    },
+    {
+        imageUrl:
+            "https://ucarecdn.com/3a814ca8-1d5d-42ee-903a-3c9cbd5b16e8/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/",
+        label: "Giảm giá sập sàn",
     },
 ];
 export const orderAction = [

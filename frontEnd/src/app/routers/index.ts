@@ -88,7 +88,7 @@ const publishRouter: RouteConfig[] = [
         Layout: null,
     },
     {
-        path: "/profile/order",
+        path: "/profile/order/:status",
         element: Order,
         Layout: HeaderLayout,
     },

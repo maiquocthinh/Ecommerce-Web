@@ -90,7 +90,7 @@ const CheckoutWithProduct: React.FC<CheckoutWithProductProps> = ({
                     );
                     setShow(false);
                     setTimeout(() => {
-                        route("/profile/order");
+                        route("/profile/order/processing");
                     }, 1000);
                 } else {
                     dispatch(
