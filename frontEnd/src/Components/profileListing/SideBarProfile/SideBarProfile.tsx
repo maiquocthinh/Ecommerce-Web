@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { FaArrowCircleRight, FaHistory, FaHouseDamage } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-
+interface GreneralType {
+    id: Number;
+    link: string;
+}
 const Greneral = [
     {
         id: 1,
@@ -23,15 +26,14 @@ const SideBarProfile = () => {
     const dispatch = useDispatch();
     const route = useNavigate();
     const path = useLocation();
-    const [isActive, setIsActive] = useState(path.pathname);
+    const [isActive, setIsActive] = useState<Number>(
+        path.pathname.includes("/order") ? 2 : 1
+    );
     const router = useNavigate();
-    const handleActiveItem = (link: string) => {
-        router(link);
-        setIsActive(link);
+    const handleActiveItem = (item: GreneralType) => {
+        router(item.link);
+        setIsActive(item.id);
     };
-    useEffect(() => {
-        if (isActive === path.pathname) setIsActive(path.pathname);
-    }, [path, isActive]);
     const handleLogout = () => {
         dispatch(logout());
         Cookies.remove("token");
@@ -58,10 +60,10 @@ const SideBarProfile = () => {
                     {Greneral?.length > 0 &&
                         Greneral.map((item, index) => (
                             <div
-                                onClick={() => handleActiveItem(item.link)}
+                                onClick={() => handleActiveItem(item)}
                                 key={index}
                                 className={`p-2 gap-2 flex items-center cursor-pointer hover:text-custom-primary border-transparent text-[#4a4a4a] text-xl border hover:border-custom-primary rounded-borderContnet hover:bg-custom-primary hover:bg-opacity-[.1] ${
-                                    isActive === item.link
+                                    isActive === item.id
                                         ? "text-custom-Colorprimary"
                                         : null
                                 }`}

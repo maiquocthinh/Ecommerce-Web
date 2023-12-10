@@ -1,21 +1,20 @@
+import ComponentLevelLoader from "@/Components/Loader/componentlevel";
 import Notification from "@/Components/PageLoader/Notification";
+import { addressType } from "@/common/Address";
 import { CartType } from "@/common/Cart";
-import { GrDeliver } from "@react-icons/all-files/gr/GrDeliver";
 import { useEffect, useState } from "react";
-import { AiOutlineCheck } from "react-icons/ai";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { CiCirclePlus } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { CheckOutWidthCart } from "../action/checkout";
+import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
 import { getAllCart } from "../action/CartActon";
 import { getAllAddresses } from "../action/address";
-import { addressType } from "@/common/Address";
-import ComponentLevelLoader from "@/Components/Loader/componentlevel";
-import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
+import { CheckOutWidthCart } from "../action/checkout";
 const Checkout = () => {
     const [cartItems, setCartItems] = useState<CartType[]>([]);
-    const [addressDefault, setAddressDefault] = useState<addressType>();
+    const [addressSiping, setAddressShipping] = useState<addressType>();
+    const [IdAddress, setIdAddress] = useState<number>(0);
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const allAddresses = useSelector(
         (state: any) => state.allAddresses.data as addressType[]
@@ -35,12 +34,12 @@ const Checkout = () => {
     }, [dispatch]);
     useEffect(() => {
         if (allAddresses) {
-            const addressDefault = allAddresses.filter(
+            const addressSiping = allAddresses.filter(
                 (address) => address.isDefault
             );
-            setAddressDefault(addressDefault[0]);
+            setAddressShipping(addressSiping[0]);
         }
-    }, [allAddresses, addressDefault]);
+    }, [allAddresses]);
     useEffect(() => {
         let subPrice = 0;
         if (cartItems) {
@@ -57,7 +56,12 @@ const Checkout = () => {
             listIdCart.push(Number(cartItem.id));
         });
         if (listIdCart.length > 0) {
-            dispatch(CheckOutWidthCart(listIdCart)).then((response: any) => {
+            dispatch(
+                CheckOutWidthCart({
+                    cartItemsIds: listIdCart,
+                    shippingAddressesId: addressSiping?.id || undefined,
+                })
+            ).then((response: any) => {
                 if (response.payload.success) {
                     dispatch(
                         setComponentLevelLoading({ loading: false, id: "" })
@@ -85,55 +89,12 @@ const Checkout = () => {
         }
     };
     return (
-        <div className="flex flex-col">
-            <div className="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
-                <button
-                    onClick={() => route("/")}
-                    className="text-2xl font-bold text-gray-800"
-                >
-                    E-commerce
-                </button>
-                <div className="mt-4 py-2 text-xs sm:mt-0 sm:ml-auto sm:text-base">
-                    <div className="relative">
-                        <ul className="relative flex w-full items-center justify-between space-x-2 sm:space-x-4">
-                            <li className="flex items-center space-x-3 text-left sm:space-x-4">
-                                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-200 text-xs font-semibold text-emerald-700">
-                                    <AiOutlineCheck className="h-4 w-4" />
-                                </div>
-                                <span className="font-semibold text-gray-900">
-                                    Shop
-                                </span>
-                            </li>
-                            <MdKeyboardArrowRight className="h-4 w-4 text-gray-400" />
-                            <li className="flex items-center space-x-3 text-left sm:space-x-4">
-                                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-600 text-xs font-semibold text-white ring ring-gray-600 ring-offset-2">
-                                    2
-                                </div>
-                                <span className="font-semibold text-gray-900">
-                                    Shipping
-                                </span>
-                            </li>
-                            <MdKeyboardArrowRight className="h-4 w-4 text-gray-400" />
-                            <li className="flex items-center space-x-3 text-left sm:space-x-4">
-                                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-400 text-xs font-semibold text-white">
-                                    3
-                                </div>
-                                <span className="font-semibold text-gray-500">
-                                    Payment
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
+        <div className="flex flex-col w-full">
+            <div className="flex items-start justify-center">
                 <div className="px-4 pt-8">
                     <p className="text-xl font-medium">sản phẩm được chọn</p>
-                    <p className="text-gray-400">
-                        Kiểm tra các mục của bạn. Và lựa chọn phương thức vận
-                        chuyển phù hợp.
-                    </p>
-                    <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
+                    <p className="text-gray-400">Kiểm tra các mục của bạn.</p>
+                    <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4">
                         {cartItems?.length &&
                             cartItems.map((cart) => (
                                 <div
@@ -153,91 +114,149 @@ const Checkout = () => {
                                             {cart.quantity}
                                         </span>
                                         <p className="text-lg font-bold">
-                                            $
                                             {Number(cart.prices.price) *
                                                 Number(cart.quantity)}
+                                            VNĐ
                                         </p>
                                     </div>
                                 </div>
                             ))}
                     </div>
-                    {addressDefault && (
-                        <div className="flex flex-col gap-2 text-lg font-normal text-slate-500 mt-2 p-2">
-                            <h2 className="uppercase text-black font-medium">
-                                địa chỉ nhận hàng
-                            </h2>
-                            <span>Phường : {addressDefault.wards}</span>
-                            <span>huyện : {addressDefault.districts}</span>
-                            <span>tỉnh : {addressDefault.province}</span>
-                            <span>
-                                địa chỉ cụ thể :{addressDefault.specificAddress}
-                            </span>
-                            <span>
-                                số điện thoại: {addressDefault.phoneNumber}
-                            </span>
+                    <>
+                        <div className="flex flex-col gap-4">
+                            {addressSiping ? (
+                                <div className="flex w-full mt-8 flex-col p-2 gap-2 items-start justify-start rounded-md border border-custom-primary">
+                                    <h1 className="font-bold text-lg">
+                                        Địa chỉ nhận hàng
+                                    </h1>
+                                    <div className="flex space-x-4 items-center">
+                                        <span className="text-lg border-r pr-4">
+                                            {addressSiping.recipientName}
+                                        </span>
+                                        <span className="text-sm text-custom-addmin_color">
+                                            {addressSiping.phoneNumber}
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-wrap space-x-2 items-center">
+                                        <span className="text-sm text-custom-addmin_color">
+                                            {addressSiping.province} -
+                                        </span>
+                                        <span className="text-sm text-custom-addmin_color">
+                                            {addressSiping.districts} -
+                                        </span>
+                                        <span className="text-sm text-custom-addmin_color">
+                                            {addressSiping.wards}
+                                        </span>
+                                    </div>
+                                    <div className="flex space-x-4 items-center">
+                                        <span className="text-sm text-custom-addmin_color">
+                                            {addressSiping.specificAddress}
+                                        </span>
+                                    </div>
+                                    {addressSiping.isDefault ? (
+                                        <button className="hover:bg-backgroundHover px-2 py-1 border border-custom-primary rounded-md text-custom-primary mt-2 text-xs">
+                                            Mặc định
+                                        </button>
+                                    ) : null}
+                                </div>
+                            ) : null}
+                            <div className="flex gap-4 flex-wrap">
+                                {allAddresses?.length ? (
+                                    allAddresses.map(
+                                        (address, index: number) => {
+                                            return (
+                                                <div
+                                                    key={address.id}
+                                                    className={`
+                                        ${index % 2 === 0 ? "flex-1" : "w-1/2"}
+                                       flex flex-col p-2 gap-2 items-start justify-start rounded-md w-1/2 border`}
+                                                >
+                                                    <div className="flex space-x-4 items-center">
+                                                        <input
+                                                            onChange={() => {
+                                                                setIdAddress(
+                                                                    address.id
+                                                                );
+                                                                setAddressShipping(
+                                                                    address
+                                                                );
+                                                            }}
+                                                            defaultChecked={
+                                                                address.isDefault
+                                                            }
+                                                            checked={
+                                                                IdAddress > 0
+                                                                    ? address.id ===
+                                                                      IdAddress
+                                                                    : address.isDefault
+                                                            }
+                                                            id="red-checkbox"
+                                                            type="checkbox"
+                                                            className="w-4 h-4 text-red-600 rounded  ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600"
+                                                        />
+                                                        <span className="text-sm border-r pr-4">
+                                                            {
+                                                                address.recipientName
+                                                            }
+                                                        </span>
+                                                        <span className="text-xs text-custom-addmin_color">
+                                                            {
+                                                                address.phoneNumber
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-wrap space-x-2 items-center">
+                                                        <span className="text-xs text-custom-addmin_color">
+                                                            {address.province} -
+                                                        </span>
+                                                        <span className="text-xs text-custom-addmin_color">
+                                                            {address.districts}{" "}
+                                                            -
+                                                        </span>
+                                                        <span className="text-xs text-custom-addmin_color">
+                                                            {address.wards}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex space-x-4 items-center">
+                                                        <span className="text-xs text-custom-addmin_color">
+                                                            {
+                                                                address.specificAddress
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                    {address.isDefault ? (
+                                                        <button className="hover:bg-backgroundHover px-2 py-1 border border-custom-primary rounded-md text-custom-primary mt-2 text-xs">
+                                                            Mặc định
+                                                        </button>
+                                                    ) : null}
+                                                </div>
+                                            );
+                                        }
+                                    )
+                                ) : (
+                                    <div className="flex flex-col gap-6 justify-center items-center w-full">
+                                        <h1 className="font-bold text-xl text-center">
+                                            Chưa có địa chỉ nào được tạo
+                                        </h1>
+                                        <img
+                                            src="https://ucarecdn.com/1f9ddd37-94db-4442-8119-e69c7f1dff08/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/"
+                                            alt=""
+                                            className="w-60 rounded-md"
+                                        />
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    )}
+                    </>
                 </div>
                 <div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
                     <div className="flex flex-col">
-                        <div className="mb-6">
-                            <p className="mt-8 text-lg font-medium">
-                                Phương thức vận chuyển
-                            </p>
-                            <form className="mt-5 grid gap-6">
-                                <div className="relative">
-                                    <input
-                                        className="peer hidden"
-                                        id="radio_1"
-                                        type="radio"
-                                        name="radio"
-                                        checked
-                                    />
-                                    <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
-                                    <label
-                                        className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
-                                        htmlFor="radio_1"
-                                    >
-                                        <div className="flex gap-4 items-center">
-                                            <GrDeliver className="text-2xl" />
-                                            <div className="flex-1">
-                                                <span className="mt-2 font-semibold">
-                                                    Chuyển phát nhanh
-                                                </span>
-                                                <p className="text-slate-500 text-sm leading-6">
-                                                    Giao hàng: 24h
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                                <div className="relative">
-                                    <input
-                                        className="peer hidden"
-                                        id="radio_2"
-                                        type="radio"
-                                        name="radio"
-                                        checked
-                                    />
-                                    <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
-                                    <label
-                                        className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
-                                        htmlFor="radio_2"
-                                    >
-                                        <div className="flex gap-4 items-center">
-                                            <GrDeliver className="text-2xl" />
-                                            <div className="flex-1">
-                                                <span className="mt-2 font-semibold">
-                                                    Giao hàng phổ thông
-                                                </span>
-                                                <p className="text-slate-500 text-sm leading-6">
-                                                    Giao hàng: 4-6 ngày
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                            </form>
+                        <div className="self-center">
+                            <img
+                                src="https://th.bing.com/th/id/OIG.G_MVCJ4bdFyXQex9Ncul?pid=ImgGn"
+                                alt=""
+                                className="w-60 object-contain text-center border p-1 mb-8"
+                            />
                         </div>
                         <div>
                             <p className="text-xl font-medium">
@@ -279,16 +298,16 @@ const Checkout = () => {
                     </div>
                     <button
                         onClick={handleCheckout}
-                        className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white text-center flex justify-center"
+                        className="mt-4 mb-8 w-full rounded-md px-6 py-3 font-medium text-custom-primary border border-custom-primary hover:bg-backgroundHover text-center flex justify-center"
                     >
                         {componentLoading.loading === true ? (
                             <ComponentLevelLoader
-                                text={"đang đặt hàng"}
-                                color={"#ffffff"}
+                                text={"Đang đặt hàng"}
+                                color={"red"}
                                 loading={componentLoading.loading}
                             />
                         ) : (
-                            "đặt hàng"
+                            "Đặt hàng"
                         )}
                     </button>
                 </div>

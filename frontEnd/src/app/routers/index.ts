@@ -85,7 +85,7 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/checkout",
         element: Checkout,
-        Layout: null,
+        Layout: DefaultLayout,
     },
     {
         path: "/profile/order/:status",
