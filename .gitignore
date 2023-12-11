@@ -1,0 +1,8 @@
+.vs/
+.vscode/
+.idea/
+
+Backend/bin
+Backend/obj
+Backend/Backend.csproj.user
+Backend/logs
