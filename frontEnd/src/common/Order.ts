@@ -29,3 +29,11 @@ export interface orderDetailType {
     originPrice: number;
     totalPrice: number;
 }
+export interface orderRecentType {
+    id: number;
+    date: string;
+    customerName: string;
+    customerAvatarUrl: string;
+    totalPrice: number;
+    status: string;
+}

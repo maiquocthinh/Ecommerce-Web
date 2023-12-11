@@ -137,6 +137,15 @@ const handleGetChartAmountSoldOfNeeds = (formData: limitType) => {
         params: queryParams,
     });
 };
+const handleGetParameters = () => {
+    const headers = {
+        Authorization: `Bearer ${Cookies.get("AdminToken")}`,
+    };
+
+    return axios.get(`/api/dashboard/parameters`, {
+        headers,
+    });
+};
 export {
     handleGetBestSellingProduct,
     handleGetEmployeeTopSeling,
@@ -147,4 +156,5 @@ export {
     handleGetChartAmountSoldOfNeeds,
     handleGetChartAmountSoldOfBrands,
     handleGetChartAmountSoldOfCategories,
+    handleGetParameters,
 };

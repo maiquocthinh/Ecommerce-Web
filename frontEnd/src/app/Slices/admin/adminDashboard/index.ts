@@ -7,3 +7,4 @@ export * as getChartRevenueAndProfitSlice from "./getChartRevenueAndProfitSlice"
 export * as getAmountNeedSlice from "./getAmountNeedSlice";
 export * as getAmountSoldOfBrandsSlice from "./getAmountSoldOfBrandsSlice";
 export * as getAmountSoldOfCategoriesSlice from "./getAmountSoldOfCategoriesSlice";
+export * as AdminGetParametersSlice from "./AdminGetParametersSlice";

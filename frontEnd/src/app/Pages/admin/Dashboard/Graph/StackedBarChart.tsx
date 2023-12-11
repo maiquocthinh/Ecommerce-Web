@@ -1,14 +1,13 @@
 import React from "react";
 import {
-    BarChart,
     Bar,
-    Cell,
-    XAxis,
-    YAxis,
+    BarChart,
     CartesianGrid,
-    Tooltip,
     Legend,
     ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
 } from "recharts";
 
 type DataItemType = {

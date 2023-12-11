@@ -130,3 +130,15 @@ export const getChartAmountSoldOfNeeds = createAsyncThunk(
         }
     }
 );
+export const getParameters = createAsyncThunk(
+    "getParameters/getParameters",
+    async () => {
+        try {
+            const response = await adminDashboardApi.handleGetParameters();
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
