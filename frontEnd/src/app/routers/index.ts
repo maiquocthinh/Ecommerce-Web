@@ -3,6 +3,7 @@ import DefaultLayout from "../Layout/DefaultLayout/DefaultLayout";
 import HeaderLayout from "../Layout/HeaderLayout/HeaderLayout";
 import Cart from "../Pages/CartPage";
 import Checkout from "../Pages/Checkout";
+import ComparisonPage from "../Pages/ComparisonPage";
 import DetailProduct from "../Pages/DetailProduct";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
@@ -84,10 +85,10 @@ const publishRouter: RouteConfig[] = [
     {
         path: "/checkout",
         element: Checkout,
-        Layout: null,
+        Layout: DefaultLayout,
     },
     {
-        path: "/profile/order",
+        path: "/profile/order/:status",
         element: Order,
         Layout: HeaderLayout,
     },
@@ -100,6 +101,11 @@ const publishRouter: RouteConfig[] = [
         path: "/unauthorizedPage",
         element: UnauthorizedPage,
         Layout: null,
+    },
+    {
+        path: "/comparisonPage",
+        element: ComparisonPage,
+        Layout: DefaultLayout,
     },
 ];
 
@@ -181,6 +187,11 @@ const privateRouter: RouteConfig[] = [
     },
     {
         path: "/admin/reviews",
+        element: ReviewManager,
+        Layout: AdminLayout,
+    },
+    {
+        path: "/admin/reviews/:id",
         element: ReviewManager,
         Layout: AdminLayout,
     },

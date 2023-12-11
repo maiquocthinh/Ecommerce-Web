@@ -1,25 +1,108 @@
-import { FaClock } from "@react-icons/all-files/fa/FaClock";
-import Account from "../commonListing/Account/Account";
-import UserComment from "./userComment";
-interface CommentBoxProps {}
-const CommentBox: React.FC<CommentBoxProps> = ({}) => {
+import { allReviewType } from "@/common/reviewType";
+import { MdOutlineStarRate } from "react-icons/md";
+
+interface CommentBoxProps {
+    listReview: allReviewType;
+}
+const CommentBox: React.FC<CommentBoxProps> = ({ listReview }) => {
+    const handleDate = (time: string) => {
+        const date = new Date(time);
+        return `${date.getDay()} / ${date.getMonth()} / ${date.getFullYear()}`;
+    };
     return (
-        <div className="mt-2 flex flex-col gap-3">
-            <div className="flex justify-between items-center">
-                <Account
-                    src="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/269812011_1083046655869537_4870147934702657640_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=z2OBQZTFhA4AX-7DQ32&_nc_ht=scontent.fsgn8-4.fna&_nc_e2o=f&oh=00_AfABt2KL-H4vS1AcFIn-6fhUdD7P1GbzxNNJqtT5vTV3Lw&oe=65245720"
-                    name="Minh Hoàng"
-                />
-                <div className="flex items-center gap-1 text-sm text-[#707070]">
-                    <FaClock />
-                    <span>
-                        <time>1 </time>
-                        ngày trước
-                    </span>
-                </div>
+        <>
+            <div className="flex items-center gap-2 text-md text-yellow-400">
+                <MdOutlineStarRate size={20} />
+                <h1 className="font-bold py-2">ĐÁNH GIÁ :</h1>
             </div>
-            <UserComment />
-        </div>
+
+            {listReview?.reviews?.length ? (
+                listReview.reviews.map((review) => (
+                    <div
+                        key={review.id}
+                        className="bg-white w-full h-auto shadow px-3 py-2 flex flex-col space-y-2 rounded-md"
+                    >
+                        <div className="flex items-center space-x-2">
+                            <div className="group relative flex flex-shrink-0 self-start cursor-pointer">
+                                <img
+                                    src={review.avatarUrl}
+                                    alt=""
+                                    className="h-12 w-12 object-fill rounded-full"
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-center space-x-2">
+                                <div className="block">
+                                    <div className="flex justify-center items-center space-x-2">
+                                        <div className="bg-gray-100 w-auto rounded-xl px-2 pb-2">
+                                            <div className="font-medium">
+                                                <span>{review.fullname}</span>
+                                            </div>
+                                            <div className="text-sm">
+                                                {review.content}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-start items-center text-sm w-full">
+                                        <div className="font-semibold text-gray-700 px-2 flex items-center justify-center space-x-1">
+                                            <span className="hover:underline">
+                                                <small>thời gian :</small>
+                                            </span>
+                                            <span className="hover:underline">
+                                                <small>
+                                                    {handleDate(
+                                                        review.createdAt
+                                                    )}
+                                                </small>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {review?.reply ? (
+                            <div className="flex items-start justify-start space-x-2 ml-16 pt-2">
+                                <div className="flex flex-shrink-0">
+                                    <img
+                                        src={review.reply.avatarUrl}
+                                        alt=""
+                                        className="h-12 w-12 object-fill rounded-full"
+                                    />
+                                </div>
+                                <div className="block">
+                                    <div className="bg-gray-100 w-auto rounded-xl px-2 pb-2">
+                                        <div className="font-medium">
+                                            <span className="hover:underline text-sm">
+                                                {review.reply.fullname}
+                                            </span>
+                                        </div>
+                                        <div className="text-xs">
+                                            {review.reply.content}
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-start gap-1 items-center text-sm w-full">
+                                        <span className="hover:underline">
+                                            <small>thời gian :</small>
+                                        </span>
+                                        <span className="hover:underline">
+                                            <small>
+                                                {handleDate(
+                                                    review.reply.updatedAt
+                                                )}
+                                            </small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
+                    </div>
+                ))
+            ) : (
+                <h1 className="flex justify-center items-center font-bold text-2xl mt-4">
+                    Trở thành người đánh đầu tiên
+                </h1>
+            )}
+        </>
     );
 };
 

@@ -229,7 +229,7 @@ const Inventories = () => {
                                         </td>
                                         <td className="px-4 py-2">
                                             <span className="text-sm font-semibold">
-                                                {item.isOutOfStock
+                                                {!item.isOutOfStock
                                                     ? "còn hàng"
                                                     : "hết hàng"}
                                             </span>

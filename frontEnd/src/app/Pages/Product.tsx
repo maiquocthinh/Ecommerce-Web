@@ -44,14 +44,16 @@ const ProductPage = () => {
             if (param.type === "category") {
                 dispatch(
                     getAllProduct({
-                        pageIndex: String(numberProduct),
+                        pageIndex: "1",
+                        pageSize: String(numberProduct),
                         Filters: { CategoryId: param.id },
                     })
                 );
             } else if (param.type === "need") {
                 dispatch(
                     getAllProduct({
-                        pageIndex: String(numberProduct),
+                        pageIndex: "1",
+                        pageSize: String(numberProduct),
                         Filters: { NeedId: param.id },
                     })
                 );
@@ -129,7 +131,6 @@ const ProductPage = () => {
                 setIsFilter={setIsFilter}
                 handleGetProductByFilter={handleGetProductByFilter}
             />
-            <Sort />
             <div className="mt-4">
                 {data?.length ? (
                     <div className=" grid grid-cols-1 sm:grid-cols-4 md:grid-cols-10 gap-2">

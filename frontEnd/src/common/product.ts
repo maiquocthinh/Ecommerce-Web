@@ -6,7 +6,7 @@ export interface productVersion {
     name: string;
     originPrice: string;
     price: string;
-    specifications?: {};
+    specifications?: specificationsType;
 }
 
 export interface ProductType {
@@ -16,6 +16,7 @@ export interface ProductType {
     price: string | number;
     originPrice: string | number;
     discountPercent: string | number;
+    description?: string;
     reviewsScore: number;
     isOutOfStock: boolean;
     catalogs: {
@@ -39,23 +40,24 @@ export interface cretaeProductVersionType {
     imageUrl: string;
     color: string;
     price: number;
-    specifications: {
-        os?: string;
-        cpu?: string;
-        gpu?: string;
-        ram?: string;
-        storage?: string;
-        display?: string;
-        webcam?: string;
-        connectivityPorts?: string;
-        wirelessConnectivity?: string;
-        weight?: string;
-        battery?: string;
-        releaseYear?: number;
-        rearCamera?: string;
-        frontCamera?: string;
-        batteryCapacity?: string;
-    };
+    specifications: specificationsType;
+}
+export interface specificationsType {
+    os?: string;
+    cpu?: string;
+    gpu?: string;
+    ram?: string;
+    storage?: string;
+    display?: string;
+    webcam?: string;
+    connectivityPorts?: string;
+    wirelessConnectivity?: string;
+    weight?: string;
+    battery?: string;
+    releaseYear?: number;
+    rearCamera?: string;
+    frontCamera?: string;
+    batteryCapacity?: string;
 }
 export interface paramsProductType {
     Keyword?: string;

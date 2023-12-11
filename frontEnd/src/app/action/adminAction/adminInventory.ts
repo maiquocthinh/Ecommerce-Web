@@ -44,3 +44,17 @@ export const adminCreateImport = createAsyncThunk(
         }
     }
 );
+export const adminGetImportShipment = createAsyncThunk(
+    "adminGetImportShipment/adminGetImportShipment",
+    async (id: number) => {
+        try {
+            const response = await AdminInventoryApi.handleGetImportShipment(
+                id
+            );
+            let data = response;
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+);

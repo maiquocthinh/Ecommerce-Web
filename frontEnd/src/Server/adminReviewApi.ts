@@ -11,7 +11,7 @@ const handleGetListReviews = (formData: getReviewType) => {
         pagesize,
         EndDate,
         IsReply,
-        MacScore,
+        MaxScore,
         MinScore,
         StartDate,
     } = formData;
@@ -22,7 +22,7 @@ const handleGetListReviews = (formData: getReviewType) => {
     if (IsReply !== undefined) queryParams.IsReply = IsReply;
     if (EndDate) queryParams.EndDate = EndDate;
     if (StartDate) queryParams.StartDate = StartDate;
-    if (MacScore !== undefined) queryParams.MacScore = MacScore;
+    if (MaxScore !== undefined) queryParams.MaxScore = MaxScore;
     if (MinScore !== undefined) queryParams.MinScore = MinScore;
 
     return axios.get("/api/reviews", {

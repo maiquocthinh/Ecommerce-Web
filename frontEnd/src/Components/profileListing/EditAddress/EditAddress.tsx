@@ -82,7 +82,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
             setShow={() => handleSetShowUpdateAddress(!showUpdateAddress)}
             showModalTitle={true}
             modalTitle={
-                <div className="flex gap-2 justify-center items-center">
+                <div className="flex gap-2 justify-center items-center mb-4">
                     <AiOutlineEdit
                         className="text-custom-Colorprimary"
                         size={26}

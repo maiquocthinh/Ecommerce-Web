@@ -5,7 +5,6 @@ import Slide from "@/Components/Slide/Slide";
 import HotSale from "@/Components/productListing/HotSale/HotSale";
 import Product from "@/Components/productListing/Product/Product";
 import SlideBar from "@/app/Layout/Sidebar/SideBar";
-import { selectShowModal } from "@/app/Slices/common/modalSlice";
 import { ProductType } from "@/common";
 import { listProduct, posterData } from "@/utils/Data";
 import { useEffect, useState } from "react";
@@ -16,6 +15,7 @@ import {
     getLaptopProduct,
     getMobileProduct,
 } from "../action/product";
+import { getAllBrands } from "../action/catalogs";
 
 interface HomeProps {}
 
@@ -31,7 +31,7 @@ const Home: React.FC<HomeProps> = () => {
     const productdata = useSelector((state: any) => state.allproduct.data);
     const laptopProduct = useSelector((state: any) => state.laptopProduct.data);
     const mobileProduct = useSelector((state: any) => state.mobileProduct.data);
-
+    const branchData = useSelector((state: any) => state.branchData.data);
     const pageLevelLoading = useSelector(
         (sate: any) => sate.pageLevelLoading.pageLevelLoading
     );
@@ -82,7 +82,12 @@ const Home: React.FC<HomeProps> = () => {
             dispatch(setPageLevelLoading(false));
         }
     }, [productdata, dispatch]);
-
+    useEffect(() => {
+        dispatch(getAllProduct({ pageSize: "10", pageIndex: "1" }));
+        dispatch(getAllBrands());
+        dispatch(getLaptopProduct({ pageSize: "10", pageIndex: "1" }));
+        dispatch(getMobileProduct({ pageSize: "10", pageIndex: "1" }));
+    }, [dispatch]);
     const handleChangeDatasale = (link: string) => {
         setChangedDataSale(link);
     };
@@ -95,7 +100,7 @@ const Home: React.FC<HomeProps> = () => {
                 <div className="lg:block col-span-2 hidden">
                     <SlideBar />
                 </div>
-                <div className="shadow-custom rounded-borderContnet overflow-hidden lg:col-span-10 col-span-12">
+                <div className="shadow-custom rounded-borderContnet lg:col-span-10 col-span-12">
                     {posterData && (
                         <Slide
                             data={posterData}
@@ -119,6 +124,7 @@ const Home: React.FC<HomeProps> = () => {
             </div>
             <div>
                 <HeaderProduct
+                    brand={branchData ? branchData : undefined}
                     listProduct={listProduct}
                     heading="sản phẩm mới nhất"
                 />
@@ -132,19 +138,23 @@ const Home: React.FC<HomeProps> = () => {
                         )}
                 </div>
             </div>
-            <div>
+            <div className="flex flex-col gap-2 h-auto">
                 <HeaderProduct
+                    brand={branchData ? branchData : undefined}
                     listProduct={listProduct}
                     heading="LAPTOP THOẠI NỔI BẬT NHẤT"
                 />
-                <Slide
-                    ItemSlide={Product}
-                    data={laptopProduct?.list}
-                    numberSlide={5}
-                />
+                <div className="">
+                    <Slide
+                        ItemSlide={Product}
+                        data={laptopProduct?.list}
+                        numberSlide={5}
+                    />
+                </div>
             </div>
             <div>
                 <HeaderProduct
+                    brand={branchData ? branchData : undefined}
                     listProduct={listProduct}
                     heading="ĐIỆN THOẠI NỔI BẬT NHẤT"
                 />

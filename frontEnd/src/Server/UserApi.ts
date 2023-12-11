@@ -24,7 +24,7 @@ const handleResetPassword = (dataReset: {
         );
     } else {
         return axios.post(`/api/auth/customer/request-reset-password`, {
-            email,
+            email: email,
         });
     }
 };

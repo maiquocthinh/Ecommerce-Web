@@ -2,8 +2,14 @@ import SearchModal from "@/Components/Modal/SearchModal";
 import Notification from "@/Components/PageLoader/Notification";
 import { setIsLoggedIn } from "@/app/Slices/user/auth";
 import { logout } from "@/app/action/UserAction";
+import { getAllCategories, getAllNeeds } from "@/app/action/catalogs";
+import { searchProduct } from "@/app/action/product";
+import useDebounce from "@/app/hook/useDebounce";
+import logo from "@/assets/imgs/logo.png";
+import { ProductType } from "@/common/product";
 import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import { Fragment, useEffect, useState } from "react";
 import { BiUserCircle } from "react-icons/Bi";
 import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -17,17 +23,6 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "@/assets/imgs/logo.png";
-import {
-    getAllProduct,
-    getLaptopProduct,
-    getMobileProduct,
-    searchProduct,
-} from "@/app/action/product";
-import { ProductType } from "@/common/product";
-import useDebounce from "@/app/hook/useDebounce";
-import { getAllCategories, getAllNeeds } from "@/app/action/catalogs";
-import { jwtDecode } from "jwt-decode";
 
 interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
@@ -45,9 +40,6 @@ const Navbar: React.FC<NavbarProps> = () => {
     const debounce = useDebounce(searchValue, 1000) as string;
     const dispatch = useDispatch<any>();
     useEffect(() => {
-        dispatch(getAllProduct({ pageSize: "10", pageIndex: "1" }));
-        dispatch(getLaptopProduct({ pageSize: "10", pageIndex: "1" }));
-        dispatch(getMobileProduct({ pageSize: "10", pageIndex: "1" }));
         dispatch(getAllNeeds());
         dispatch(getAllCategories());
     }, [dispatch]);
@@ -105,7 +97,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             id: 2,
             Icon: <FaCar />,
             title: "Tra cứu đơn hàng",
-            link: "profile/order",
+            link: "profile/order/processing",
         },
         {
             id: 3,

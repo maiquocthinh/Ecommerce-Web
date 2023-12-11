@@ -19,11 +19,13 @@ export interface shippingInfoType {
     phoneNumber: string;
     address: string;
 }
-export interface orderRecentType {
+export interface orderDetailType {
     id: number;
-    date: string;
-    customerName: string;
-    customerAvatarUrl: string;
+    imageUrl: string;
+    productVersionId: number;
+    productVersionName: string;
+    quantity: number;
+    price: number;
+    originPrice: number;
     totalPrice: number;
-    status: string;
 }

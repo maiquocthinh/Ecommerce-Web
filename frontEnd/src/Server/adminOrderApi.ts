@@ -41,9 +41,10 @@ const handleUpdateOrderDetail = (param: {
     const headers = {
         Authorization: `Bearer ${Cookies.get("AdminToken")}`,
     };
-    return axios.patch(
-        `/api/order-detail/${param.orderDetailId}`,
-        param.importShipmentId,
+    const { orderDetailId, importShipmentId } = param;
+    return axios.post(
+        `/order-detail/${orderDetailId}`,
+        { importShipmentId },
         {
             headers,
         }

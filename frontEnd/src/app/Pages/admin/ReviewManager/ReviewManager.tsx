@@ -19,12 +19,14 @@ import { LiaSearchPlusSolid } from "react-icons/lia";
 import { MdDeleteOutline, MdOutlineClear, MdOutlineSend } from "react-icons/md";
 import { RxReset } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 const initFormFarams = {
     pageIndex: 1,
     pagesize: 6,
 };
 const ReviewManager = () => {
+    const param = useParams();
     const dispatch = useDispatch<any>();
     const listReviewData = useSelector(
         (state: any) =>
@@ -52,8 +54,10 @@ const ReviewManager = () => {
     const [isCretaeReply, setIsCretaeReply] = useState<boolean>(false);
     const [ValueReply, setValueReply] = useState<string>("");
     useEffect(() => {
-        dispatch(adminGetListReview({ pagesize: 6, pageIndex: 1 }));
-    }, [dispatch]);
+        if (param?.id) {
+            dispatch(adminGetDetailReview(Number(param.id)));
+        } else dispatch(adminGetListReview({ pagesize: 6, pageIndex: 1 }));
+    }, [dispatch, param]);
     useEffect(() => {
         if (listReviewData && listReviewData?.data?.paging) {
             setPagination({
@@ -212,6 +216,7 @@ const ReviewManager = () => {
             }
         }
     };
+    console.log(detailReviewData);
     return (
         <div className="flex flex-col p-4">
             <h1 className="my-6 text-lg font-bold text-gray-700 dark:text-gray-300">
@@ -257,13 +262,13 @@ const ReviewManager = () => {
                     </div>
                     <div className="flex items-center flex-col">
                         <label className="block text-sm text-gray-800 dark:text-gray-400">
-                            MacScore
+                            MaxScore
                         </label>
                         <input
                             className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md bg-gray-100 focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 dark:focus:border-gray-500 dark:bg-gray-700"
                             type="number"
-                            name="MacScore"
-                            value={formParams?.MacScore || 0}
+                            name="MaxScore"
+                            value={formParams?.MaxScore || 0}
                             onChange={handleOnChange}
                         />
                     </div>
@@ -331,7 +336,8 @@ const ReviewManager = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
-                            {allReviews?.length > 0 &&
+                            {!param?.id ? (
+                                allReviews?.length > 0 &&
                                 allReviews.map((review) => (
                                     <tr
                                         className="bg-custom-addmin_bg"
@@ -437,7 +443,123 @@ const ReviewManager = () => {
                                             </div>
                                         </td>
                                     </tr>
-                                ))}
+                                ))
+                            ) : detailReviewData && detailReviewData.success ? (
+                                <tr
+                                    className="bg-custom-addmin_bg"
+                                    key={detailReviewData.data.id}
+                                >
+                                    <td className="px-4 py-2 ">
+                                        <span className="font-semibold uppercase text-xs">
+                                            {detailReviewData.data.id}
+                                        </span>
+                                    </td>
+                                    <td className="px-4 py-2 ">
+                                        <span className="font-semibold uppercase text-xs">
+                                            {detailReviewData.data.fullname}
+                                        </span>
+                                    </td>
+                                    <td
+                                        className={`px-4 py-2 cursor-pointer ${
+                                            zoomImg ===
+                                            detailReviewData.data.avatarUrl
+                                                ? "fixed top-0 left-0 w-full h-full bg-slate-950 flex justify-center items-center z-30"
+                                                : null
+                                        }`}
+                                        onClick={() =>
+                                            handleZoomImg(
+                                                detailReviewData.data.avatarUrl
+                                            )
+                                        }
+                                    >
+                                        <img
+                                            src={
+                                                detailReviewData.data.avatarUrl
+                                            }
+                                            alt=""
+                                            className={`w-[30px] h-[30px] object-contain ${
+                                                zoomImg ? "w-full h-full" : null
+                                            }`}
+                                        />
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        <span className="text-sm">
+                                            {detailReviewData.data.content}
+                                        </span>
+                                    </td>
+                                    <td className="px-4 py-2 ">
+                                        <span className="text-sm">
+                                            {handleDate(
+                                                detailReviewData.data.createdAt
+                                            )}
+                                        </span>
+                                    </td>
+                                    <td className="px-4 py-2 ">
+                                        <span className="text-sm">
+                                            {
+                                                detailReviewData.data
+                                                    .productVersionName
+                                            }
+                                        </span>
+                                    </td>
+                                    <td
+                                        className={`px-4 py-2 cursor-pointer ${
+                                            zoomImg ===
+                                            detailReviewData.data
+                                                .productVersionImgUrl
+                                                ? "fixed top-0 left-0 w-full h-full bg-slate-950 flex justify-center items-center z-30"
+                                                : null
+                                        }`}
+                                        onClick={() =>
+                                            handleZoomImg(
+                                                detailReviewData.data
+                                                    .productVersionImgUrl
+                                            )
+                                        }
+                                    >
+                                        <img
+                                            src={
+                                                detailReviewData.data
+                                                    .productVersionImgUrl
+                                            }
+                                            alt=""
+                                            className={`w-[30px] h-[30px] object-contain ${
+                                                zoomImg ? "w-full h-full" : null
+                                            }`}
+                                        />
+                                    </td>
+                                    <td className="px-4 py-2 ">
+                                        <span className="text-sm">
+                                            {detailReviewData.data.score}
+                                        </span>
+                                    </td>
+                                    <td className="px-4 py-2 ">
+                                        <div className="flex justify-end">
+                                            <div className="flex justify-between items-center gap-2">
+                                                <Tippy
+                                                    content="chi tiết"
+                                                    placement="bottom"
+                                                    delay={100}
+                                                    className="border text-custom-Colorprimary border-custom-Colorprimary rounded-md px-1"
+                                                >
+                                                    <button
+                                                        onClick={() =>
+                                                            handleShowDetailReview(
+                                                                detailReviewData
+                                                                    .data.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <LiaSearchPlusSolid
+                                                            size={22}
+                                                        />
+                                                    </button>
+                                                </Tippy>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : null}
                         </tbody>
                     </table>
                     {pagination && listReviewData?.data?.paging && (
@@ -450,7 +572,7 @@ const ReviewManager = () => {
                 </div>
             ) : (
                 <div className="flex justify-center items-center w-full font-bold text-white text-2xl">
-                    không có nhân viên nào hợp lệ
+                    không có đánh giá nào hợp lệ
                 </div>
             )}
             {detailReviewData?.data ? (

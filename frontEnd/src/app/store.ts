@@ -37,8 +37,10 @@ export const store = configureStore({
         auth: userSlice.auth.default,
         pageLevelLoading: commonSlice.pageLevelLoading.default,
         componentLoading: commonSlice.componentLevelLoading.default,
+        productComparisonData: commonSlice.ProductComparison.default,
         profile: userSlice.profile.default,
         showAdminSlide: commonSlice.showAdminSlide.default,
+
         //upload
         uploadFileData: userSlice.UploadSlice.default,
         //cart
@@ -111,6 +113,7 @@ export const store = configureStore({
         //inventory
         allInventory: adminInventory.AdminGetAllInventory.default,
         allImports: adminInventory.AdminGetAllImports.default,
+        importShipmentData: adminInventory.AdminGetImportShipment.default,
         //customer
         listCustomnerData: adminCustomerSlice.AdminGetListCustomer.default,
         //review

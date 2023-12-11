@@ -3,10 +3,13 @@ import * as checkoutApi from "@/Server/checkoutApi";
 import { checkoutProductType, productItemType } from "@/common/Cart";
 export const CheckOutWidthCart = createAsyncThunk(
     "CheckOutWidthCart/CheckOutWidthCart",
-    async (cartItemsIds: number[]) => {
+    async (formData: {
+        cartItemsIds: number[];
+        shippingAddressesId?: number;
+    }) => {
         try {
             const response = await checkoutApi.handleCheckOutWidthCart(
-                cartItemsIds
+                formData
             );
             let data = response;
             return data;
@@ -31,11 +34,14 @@ export const CheckoutProduct = createAsyncThunk(
 );
 export const checkoutWidthproductWithAuthentication = createAsyncThunk(
     "checkoutWidthproductWithAuthentication/checkoutWidthproductWithAuthentication",
-    async (productItems: productItemType[]) => {
+    async (formData: {
+        items: productItemType[];
+        shippingAddressesId?: number;
+    }) => {
         try {
             const response =
                 await checkoutApi.handleCheckoutWidthproductWithAuthentication(
-                    productItems
+                    formData
                 );
             let data = response;
             return data;
