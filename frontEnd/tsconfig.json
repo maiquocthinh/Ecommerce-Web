@@ -20,6 +20,6 @@
             "@/*": ["src/*"]
         }
     },
-    "include": ["src", "src/app/Slices/common/.ts"],
+    // "include": ["src", "src/app/Slices/common/.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }
