@@ -40,6 +40,12 @@ const RecentOrders = () => {
             setFormParam({ EndDate: endDate, StartDate: startDate });
         }
     };
+    const handleDate = (time: string) => {
+        const date = new Date(time);
+        return `${
+            date.getDay() + 1
+        } / ${date.getMonth()} / ${date.getFullYear()}`;
+    };
     return (
         <div className="rounded-md border-white border-2 p-3">
             <div className="mb-3 flex justify-between">
@@ -67,7 +73,7 @@ const RecentOrders = () => {
                                 <td className="px-4 py-2">ORDER ID</td>
                                 <td className="px-4 py-2">ORDER DATE</td>
                                 <td className="px-4 py-2">CUSTOMER</td>
-                                <td className="px-4 py-2">QUANTITY SOLD</td>
+                                <td className="px-4 py-2">AMOUNT</td>
                                 <td className="px-4 py-2">STATUS</td>
                                 <td className="px-4 py-2 text-right">
                                     INVOICE
@@ -89,7 +95,9 @@ const RecentOrders = () => {
                                             </td>
                                             <td className="px-4 py-2">
                                                 <span className="text-sm">
-                                                    {orderRecent.date}
+                                                    {handleDate(
+                                                        orderRecent.date
+                                                    )}
                                                 </span>
                                             </td>
                                             <td className="px-4 py-2 text-xs">

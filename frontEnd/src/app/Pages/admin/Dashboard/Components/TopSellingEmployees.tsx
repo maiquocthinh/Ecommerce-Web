@@ -64,7 +64,7 @@ const TopSellingEmployees = () => {
                             <tr>
                                 <td className="px-4 py-2">EMPLOYEE</td>
                                 <td className="px-4 py-2">GENDER</td>
-                                <td className="px-4 py-2">AMOUNT SOLD</td>
+                                <td className="px-4 py-2">QUANTITY SOLD</td>
                                 <td className="px-4 py-2">TOTAL VALUE</td>
                             </tr>
                         </thead>
@@ -98,7 +98,7 @@ const TopSellingEmployees = () => {
                                                         : "female"}
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-2 text-xs">
+                                            <td className="px-4 py-2 text-xs text-center">
                                                 <span className="text-sm font-semibold">
                                                     {
                                                         employeeSeling.totalOrderSold
