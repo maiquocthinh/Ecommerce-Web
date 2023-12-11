@@ -186,14 +186,13 @@ const AdminSidebar = () => {
                                     <div key={task.id}>
                                         <div
                                             onClick={() => handleTask(task)}
-                                            className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${
-                                                active ===
+                                            className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${active ===
                                                 (task.listMore
                                                     ? task.listMore[0]
                                                     : task.link)
-                                                    ? "text-custom-addmin_Active__color"
-                                                    : "hover:text-white"
-                                            }`}
+                                                ? "text-custom-addmin_Active__color"
+                                                : "hover:text-white"
+                                                }`}
                                         >
                                             {task.Icon}
                                             <span>{task.label}</span>
@@ -212,11 +211,10 @@ const AdminSidebar = () => {
                                                     handleShowMore(task)
                                                 }
                                                 key={task.id}
-                                                className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${
-                                                    active === task.id
-                                                        ? "text-custom-addmin_Active__color"
-                                                        : "hover:text-white"
-                                                }`}
+                                                className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${active === task.id
+                                                    ? "text-custom-addmin_Active__color"
+                                                    : "hover:text-white"
+                                                    }`}
                                             >
                                                 {task.Icon}
                                                 <span>{task.label}</span>
@@ -230,11 +228,10 @@ const AdminSidebar = () => {
                                                 {task.listMore.map((item) => (
                                                     <span
                                                         key={item.id}
-                                                        className={`hover:text-white cursor-pointer ${
-                                                            active === item.link
-                                                                ? "text-custom-addmin_Active__color"
-                                                                : "hover:text-white"
-                                                        }`}
+                                                        className={`hover:text-white cursor-pointer ${active === item.link
+                                                            ? "text-custom-addmin_Active__color"
+                                                            : "hover:text-white"
+                                                            }`}
                                                         onClick={() =>
                                                             router(item.link)
                                                         }

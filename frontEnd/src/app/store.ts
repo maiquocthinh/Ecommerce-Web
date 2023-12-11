@@ -24,6 +24,7 @@ import * as adminDiscount from "./Slices/admin/adminDiscount";
 import * as adminInventory from "./Slices/admin/adminInventory";
 import * as adminCustomerSlice from "./Slices/admin/adminCustomer";
 import * as adminReviewSlices from "./Slices/admin/adminReview";
+import * as adminDashboardSlices from "./Slices/admin/adminDashboard";
 export const store = configureStore({
     reducer: {
         modal: modalReducer,
@@ -118,6 +119,19 @@ export const store = configureStore({
         //review
         listReviewData: adminReviewSlices.AdminGetListReviewSlice.default,
         detailReviewData: adminReviewSlices.AdminGetDetailReviewSlice.default,
+        //das
+        productSelingData: adminDashboardSlices.getProductSelingSlice.default,
+        employeeSelingData: adminDashboardSlices.getEmployeeSelingSlice.default,
+        orderRecentData: adminDashboardSlices.getOrderRecentSlice.default,
+        amountNeedsData: adminDashboardSlices.getAmountNeedSlice.default,
+        amountBrandData:
+            adminDashboardSlices.getAmountSoldOfBrandsSlice.default,
+        amountCategoriesData:
+            adminDashboardSlices.getAmountSoldOfCategoriesSlice.default,
+        chartOverviewData: adminDashboardSlices.getChartOverviewSlice.default,
+        chartRevenueAndProfitData:
+            adminDashboardSlices.getChartRevenueAndProfitSlice.default,
+        chartOrderData: adminDashboardSlices.getChartorderSlice.default,
     },
     middleware: [thunk],
 });
