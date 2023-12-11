@@ -1,9 +1,18 @@
 import Notification from "@/Components/PageLoader/Notification";
 import { AiOutlineTags } from "react-icons/ai";
-import { BsBoxSeamFill, BsCart4, BsFillPostageHeartFill, BsPersonWorkspace } from "react-icons/bs";
+import {
+    BsBoxSeamFill,
+    BsCart4,
+    BsFillPostageHeartFill,
+    BsPersonWorkspace,
+} from "react-icons/bs";
 import { MdOutlineCategory, MdOutlineLocalShipping } from "react-icons/md";
 import { GiMoneyStack, GiProfit } from "react-icons/gi";
-import { HiMiniUserGroup, HiOutlineArrowDownRight, HiOutlineArrowUpRight } from "react-icons/hi2";
+import {
+    HiMiniUserGroup,
+    HiOutlineArrowDownRight,
+    HiOutlineArrowUpRight,
+} from "react-icons/hi2";
 
 import RecentOrders from "./Components/RecentOrders";
 import CatalogSellingPercent from "./Components/CatalogSellingPercent";
@@ -12,16 +21,16 @@ import TopSellingEmployees from "./Components/TopSellingEmployees";
 import OverviewChart from "./Components/OverviewChart";
 
 type OverviewDataType = {
-    thisWeek: OverviewType[],
-    total: any[],
-}
+    thisWeek: OverviewType[];
+    total: any[];
+};
 type OverviewType = {
     id: string | number;
     Icon: React.ReactNode;
     bg: string;
     title: string;
     value: string;
-    growthPercent?: number
+    growthPercent?: number;
 };
 
 const OverviewData: OverviewDataType = {
@@ -32,7 +41,7 @@ const OverviewData: OverviewDataType = {
             Icon: <GiMoneyStack />,
             title: "Revenue",
             value: "$245.67",
-            growthPercent: 16.24
+            growthPercent: 16.24,
         },
         {
             id: 2,
@@ -40,7 +49,7 @@ const OverviewData: OverviewDataType = {
             Icon: <GiProfit />,
             title: "Profit",
             value: "$127.07",
-            growthPercent: 29.08
+            growthPercent: 29.08,
         },
         {
             id: 3,
@@ -48,7 +57,7 @@ const OverviewData: OverviewDataType = {
             Icon: <BsCart4 />,
             title: "Orders",
             value: "143",
-            growthPercent: 12.64
+            growthPercent: 12.64,
         },
         {
             id: 4,
@@ -56,7 +65,7 @@ const OverviewData: OverviewDataType = {
             Icon: <HiMiniUserGroup />,
             title: "Customers",
             value: "342",
-            growthPercent: -9.32
+            growthPercent: -9.32,
         },
     ],
     total: [
@@ -116,8 +125,8 @@ const OverviewData: OverviewDataType = {
             value: 6,
             bg: "#f9c200",
         },
-    ]
-}
+    ],
+};
 const Dashboard = () => {
     return (
         <div className="h-full w-full flex flex-col gap-3 p-4 text-gray-600 font-bold text-lg">
@@ -139,7 +148,8 @@ const Dashboard = () => {
                                         <div
                                             className="text-center inline-block text-5xl text-white dark:text-emerald-100 bg-teal-600"
                                             style={{
-                                                backgroundColor: OverviewItem.bg,
+                                                backgroundColor:
+                                                    OverviewItem.bg,
                                             }}
                                         >
                                             {OverviewItem.Icon}
@@ -152,22 +162,26 @@ const Dashboard = () => {
                                                 {OverviewItem.value}
                                             </p>
                                         </div>
-
                                     </div>
                                     <div className="flex flex-col justify-center">
                                         <div className="flex gap-1 items-center">
-                                            {
-                                                OverviewItem.growthPercent >= 0 ?
-                                                    (<div>
-                                                        <HiOutlineArrowUpRight />
-                                                    </div>) :
-                                                    (<div>
-                                                        <HiOutlineArrowDownRight />
-                                                    </div>)
-                                            }
-                                            <span>{OverviewItem.growthPercent}%</span>
+                                            {OverviewItem?.growthPercent &&
+                                            OverviewItem.growthPercent >= 0 ? (
+                                                <div>
+                                                    <HiOutlineArrowUpRight />
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <HiOutlineArrowDownRight />
+                                                </div>
+                                            )}
+                                            <span>
+                                                {OverviewItem.growthPercent}%
+                                            </span>
                                         </div>
-                                        <span className="text-xs font-normal">Since last week</span>
+                                        <span className="text-xs font-normal">
+                                            Since last week
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -222,8 +236,6 @@ const Dashboard = () => {
                         <RecentOrders />
                     </div>
                 </div>
-
-
             </div>
             <Notification />
         </div>

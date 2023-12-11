@@ -27,6 +27,11 @@ export interface defautlParametersGet {
     pageSize: number;
     name?: string;
 }
+export interface limitType {
+    Limit?: number;
+    StartDate?: string;
+    EndDate?: string;
+}
 export interface getOrderType {
     CustomerName?: string;
     Status?: string;

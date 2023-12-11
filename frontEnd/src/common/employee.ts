@@ -31,3 +31,11 @@ export interface employeeGetType {
     updatedAt: string;
     createdAt: string;
 }
+export interface employeeSeling {
+    id: number;
+    name: string;
+    gender: boolean;
+    avatarUrl: string;
+    totalOrderSold: number;
+    totalValueSold: number;
+}

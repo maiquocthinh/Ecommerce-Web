@@ -73,3 +73,13 @@ export interface paramsProductType {
         };
     };
 }
+export interface productSeling {
+    id: number;
+    imageUrl: string;
+    inventoryDto: number;
+    name: string;
+    price: number;
+    rating: number;
+    rattingAmount: number;
+    totalQuantitySold: number;
+}
