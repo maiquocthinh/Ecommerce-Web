@@ -57,7 +57,7 @@ const Register = () => {
                     dispatch(
                         setComponentLevelLoading({ loading: false, id: "" })
                     );
-                } else {
+                } else if (res.payload?.success) {
                     toast.success("đăng kí thành công", {
                         position: toast.POSITION.TOP_RIGHT,
                     });
@@ -65,8 +65,20 @@ const Register = () => {
                     await dispatch(
                         setComponentLevelLoading({ loading: false, id: "" })
                     );
-                    navigate("/login");
+
+                    // navigate("/login");
+                } else {
+                    toast.error(
+                        `đăng kí không thành công ${res.payload?.message}`,
+                        {
+                            position: toast.POSITION.TOP_RIGHT,
+                        }
+                    );
+                    await dispatch(
+                        setComponentLevelLoading({ loading: false, id: "" })
+                    );
                 }
+                console.log(res);
             } catch (error) {}
         } else {
             dispatch(setComponentLevelLoading({ loading: false, id: "" }));
@@ -87,7 +99,7 @@ const Register = () => {
                         register
                     </p>
                     <img
-                        src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png"
+                        src="https://ucarecdn.com/ad51d334-226a-4b8b-a723-cf48f5d941c1/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/"
                         className="h-[100px] mt-2 object-cover object-center"
                         alt=""
                     />

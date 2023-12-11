@@ -10,7 +10,11 @@ import { listProduct, posterData } from "@/utils/Data";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
-import { getAllProduct } from "../action/product";
+import {
+    getAllProduct,
+    getLaptopProduct,
+    getMobileProduct,
+} from "../action/product";
 import { getAllBrands } from "../action/catalogs";
 
 interface HomeProps {}
@@ -81,6 +85,8 @@ const Home: React.FC<HomeProps> = () => {
     useEffect(() => {
         dispatch(getAllProduct({ pageSize: "10", pageIndex: "1" }));
         dispatch(getAllBrands());
+        dispatch(getLaptopProduct({ pageSize: "10", pageIndex: "1" }));
+        dispatch(getMobileProduct({ pageSize: "10", pageIndex: "1" }));
     }, [dispatch]);
     const handleChangeDatasale = (link: string) => {
         setChangedDataSale(link);

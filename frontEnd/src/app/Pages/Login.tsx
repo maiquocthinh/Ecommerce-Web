@@ -139,8 +139,8 @@ export default function Login() {
                                 Login
                             </p>
                             <img
-                                src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png"
-                                className="h-[160px] mt-2 object-cover object-center"
+                                src="https://ucarecdn.com/65cacc2d-da49-4270-bae8-1658ae458ec4/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/"
+                                className="h-[160px] mt-2 object-cover object-center rounded-lg"
                                 alt=""
                             />
                             <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">

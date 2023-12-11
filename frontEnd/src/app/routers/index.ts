@@ -190,6 +190,11 @@ const privateRouter: RouteConfig[] = [
         element: ReviewManager,
         Layout: AdminLayout,
     },
+    {
+        path: "/admin/reviews/:id",
+        element: ReviewManager,
+        Layout: AdminLayout,
+    },
 ];
 
 export { privateRouter, publishRouter };

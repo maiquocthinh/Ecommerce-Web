@@ -64,7 +64,7 @@ export interface InventoryType {
 export interface getReviewType {
     IsReply?: boolean;
     MinScore?: number;
-    MacScore?: number;
+    MaxScore?: number;
     StartDate?: string;
     EndDate?: string;
     pageIndex: number;

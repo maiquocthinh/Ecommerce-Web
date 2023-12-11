@@ -3,11 +3,7 @@ import Notification from "@/Components/PageLoader/Notification";
 import { setIsLoggedIn } from "@/app/Slices/user/auth";
 import { logout } from "@/app/action/UserAction";
 import { getAllCategories, getAllNeeds } from "@/app/action/catalogs";
-import {
-    getLaptopProduct,
-    getMobileProduct,
-    searchProduct,
-} from "@/app/action/product";
+import { searchProduct } from "@/app/action/product";
 import useDebounce from "@/app/hook/useDebounce";
 import logo from "@/assets/imgs/logo.png";
 import { ProductType } from "@/common/product";
@@ -44,8 +40,6 @@ const Navbar: React.FC<NavbarProps> = () => {
     const debounce = useDebounce(searchValue, 1000) as string;
     const dispatch = useDispatch<any>();
     useEffect(() => {
-        dispatch(getLaptopProduct({ pageSize: "10", pageIndex: "1" }));
-        dispatch(getMobileProduct({ pageSize: "10", pageIndex: "1" }));
         dispatch(getAllNeeds());
         dispatch(getAllCategories());
     }, [dispatch]);

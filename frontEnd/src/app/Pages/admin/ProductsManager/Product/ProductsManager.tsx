@@ -28,7 +28,11 @@ import {
     CiImport,
 } from "react-icons/ci";
 import { LiaSearchPlusSolid } from "react-icons/lia";
-import { MdClear, MdOutlineDeleteOutline } from "react-icons/md";
+import {
+    MdClear,
+    MdOutlineDeleteOutline,
+    MdOutlineReviews,
+} from "react-icons/md";
 import { RxReset } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -472,6 +476,25 @@ const ProductsManager = () => {
                                         <td className="px-4 py-2 ">
                                             <div className="flex justify-end">
                                                 <div className="flex justify-between items-center gap-2">
+                                                    <Tippy
+                                                        content="review"
+                                                        placement="bottom"
+                                                        delay={100}
+                                                        className="border text-custom-Colorprimary border-custom-Colorprimary rounded-md px-1"
+                                                    >
+                                                        <button
+                                                            onClick={() =>
+                                                                router(
+                                                                    `/admin/reviews/${product.id}`
+                                                                )
+                                                            }
+                                                            className="hover:text-custom-bg_button"
+                                                        >
+                                                            <MdOutlineReviews
+                                                                size={22}
+                                                            />
+                                                        </button>
+                                                    </Tippy>
                                                     <Tippy
                                                         content="giảm giá"
                                                         placement="bottom"
