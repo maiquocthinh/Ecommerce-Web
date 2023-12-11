@@ -12,7 +12,7 @@ interface MySelecterProps {
     title: string;
     option: optionType[];
     type: string;
-    listFilter: filterType;
+    listFilter: any;
     setListFilter: (listFilter: filterType) => void;
 }
 const MySelecter: React.FC<MySelecterProps> = ({

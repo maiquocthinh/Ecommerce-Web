@@ -2,16 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import { login, logout } from "@/app/action/UserAction";
 import { UserType } from "@/common";
 
-const initialState: UserType.AuthState = {
-    isLoggedIn: false,
-    data: { accessTokenExpiredIn: "", accessToken: "" },
-    loading: false,
-    error: null,
-};
-
 const authSlice = createSlice({
     name: "auth",
-    initialState,
+    initialState: {
+        isLoggedIn: false,
+        data: {},
+        loading: false,
+        error: "",
+    },
     reducers: {
         setIsLoggedIn: (state, action) => {
             state.isLoggedIn = action.payload;
@@ -21,7 +19,7 @@ const authSlice = createSlice({
         builder
             .addCase(login.pending, (state) => {
                 state.loading = true;
-                state.error = null;
+                state.error = "";
             })
             .addCase(login.fulfilled, (state, action) => {
                 state.isLoggedIn = true;
@@ -30,13 +28,13 @@ const authSlice = createSlice({
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message || null;
+                state.error = "";
             })
             .addCase(logout, (state) => {
                 // Thêm action cho logout
                 state.isLoggedIn = false;
                 state.loading = false;
-                state.error = null;
+                state.error = "";
             });
     },
 });

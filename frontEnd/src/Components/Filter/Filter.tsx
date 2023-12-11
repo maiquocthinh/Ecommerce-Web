@@ -7,7 +7,7 @@ interface FilterProps {
     branchData: brandType[];
     categoriesData: categoryType[];
     needsData: needType[];
-    listFilter: filterType;
+    listFilter: any;
     setListFilter: (listFilter: filterType) => void;
     setIsFilter: (isFilter: boolean) => void;
     handleGetProductByFilter: () => void;
@@ -51,7 +51,7 @@ const Filter: React.FC<FilterProps> = ({
                                                 listFilter[data.type] ===
                                                 undefined
                                                     ? false
-                                                    : !listFilter[data.type],
+                                                    : !listFilter[data?.type],
                                         })
                                     }
                                     key={index}
