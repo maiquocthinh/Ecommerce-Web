@@ -67,7 +67,7 @@ const RecentOrders = () => {
                                 <td className="px-4 py-2">ORDER ID</td>
                                 <td className="px-4 py-2">ORDER DATE</td>
                                 <td className="px-4 py-2">CUSTOMER</td>
-                                <td className="px-4 py-2">AMOUNT</td>
+                                <td className="px-4 py-2">QUANTITY SOLD</td>
                                 <td className="px-4 py-2">STATUS</td>
                                 <td className="px-4 py-2 text-right">
                                     INVOICE
@@ -132,11 +132,6 @@ const RecentOrders = () => {
                                                             }
                                                         >
                                                             <AiOutlinePrinter
-                                                                size={22}
-                                                            />
-                                                        </button>
-                                                        <button>
-                                                            <LiaSearchPlusSolid
                                                                 size={22}
                                                             />
                                                         </button>

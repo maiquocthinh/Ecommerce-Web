@@ -65,7 +65,7 @@ const BestSellingProducts = () => {
                             <tr>
                                 <td className="px-4 py-2">PRODUCT</td>
                                 <td className="px-4 py-2">PRICE</td>
-                                <td className="px-4 py-2">ORDERS</td>
+                                <td className="px-4 py-2">QUANTITY SOLD</td>
                                 <td className="px-4 py-2">INVENTORY</td>
                                 <td className="px-4 py-2">RATING</td>
                             </tr>
@@ -98,14 +98,14 @@ const BestSellingProducts = () => {
                                                     {productSealing.price} VND
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-2 text-xs">
+                                            <td className="px-4 py-2 text-xs text-center">
                                                 <span className="text-sm font-semibold">
                                                     {
                                                         productSealing.inventoryDto
                                                     }
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-2">
+                                            <td className="px-4 py-2 text-center">
                                                 {productSealing.totalQuantitySold <=
                                                 0 ? (
                                                     <span className="bg-red-100 text-red-800 text-xs text-center font-medium me-2 px-2 py-0.5 rounded border border-red-400">
