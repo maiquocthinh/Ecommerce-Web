@@ -106,7 +106,7 @@ const AdminProductVersion = () => {
                 try {
                     if (res.payload.success) {
                         dispatch(getProductById(Number(param?.id)));
-                        toast.success("chỉnh sửa sản phẩm thành công!");
+                        toast.success("Chỉnh sửa sản phẩm thành công!");
                         setFormData(initFormData);
                         setISNewProductVersion(false);
                         dispatch(setImgUrl(""));
@@ -114,7 +114,7 @@ const AdminProductVersion = () => {
                         setIsInfomation(false);
                     } else {
                         toast.error(
-                            `chỉnh sửa sản phẩm thất bại! ${res.payload.message}`
+                            `Chỉnh sửa sản phẩm thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -203,7 +203,7 @@ const AdminProductVersion = () => {
                         <UploadImg imgUrl={formData.imageUrl} />
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     Tên :
                                 </p>
                                 <input
@@ -218,7 +218,7 @@ const AdminProductVersion = () => {
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     màu :
                                 </p>
                                 <input
@@ -235,7 +235,7 @@ const AdminProductVersion = () => {
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     giá :
                                 </p>
                                 <input
@@ -277,7 +277,7 @@ const AdminProductVersion = () => {
                             }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
-                            đóng
+                            Đóng
                         </button>
                     </div>
                 }
@@ -298,7 +298,7 @@ const AdminProductVersion = () => {
                     <div className="flex flex-col gap-1">
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     Cpu :
                                 </p>
                                 <input
@@ -313,7 +313,7 @@ const AdminProductVersion = () => {
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     Ram :
                                 </p>
                                 <input
@@ -330,7 +330,7 @@ const AdminProductVersion = () => {
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     Battery :
                                 </p>
                                 <input
@@ -345,7 +345,7 @@ const AdminProductVersion = () => {
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     battery capacity:
                                 </p>
                                 <input
@@ -364,7 +364,7 @@ const AdminProductVersion = () => {
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     connectivity Ports :
                                 </p>
                                 <input
@@ -382,7 +382,7 @@ const AdminProductVersion = () => {
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     display:
                                 </p>
                                 <input
@@ -399,7 +399,7 @@ const AdminProductVersion = () => {
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     frontCamera :
                                 </p>
                                 <input
@@ -414,7 +414,7 @@ const AdminProductVersion = () => {
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     gpu:
                                 </p>
                                 <input
@@ -431,7 +431,7 @@ const AdminProductVersion = () => {
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     os :
                                 </p>
                                 <input
@@ -446,7 +446,7 @@ const AdminProductVersion = () => {
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     rearCamera:
                                 </p>
                                 <input
@@ -463,7 +463,7 @@ const AdminProductVersion = () => {
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     releaseYear :
                                 </p>
                                 <input
@@ -478,7 +478,7 @@ const AdminProductVersion = () => {
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     storage:
                                 </p>
                                 <input
@@ -495,7 +495,7 @@ const AdminProductVersion = () => {
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     webcam :
                                 </p>
                                 <input
@@ -510,7 +510,7 @@ const AdminProductVersion = () => {
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     weight:
                                 </p>
                                 <input
@@ -526,7 +526,7 @@ const AdminProductVersion = () => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-1">
-                            <p className="text-gray-300 text-sm text-start mb-1">
+                            <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                 wireless Connectivity :
                             </p>
                             <input

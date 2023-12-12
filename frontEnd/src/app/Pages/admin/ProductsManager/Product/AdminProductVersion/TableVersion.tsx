@@ -92,7 +92,9 @@ const TableVersion: React.FC<TableVersionProps> = ({
                                             {item?.inventory || 1}
                                         </span>
                                     </td>
-                                    <td className="px-4 py-2">{specsArray}</td>
+                                    <td className="px-4 py-2 capitalize">
+                                        {specsArray}
+                                    </td>
                                     <td className="px-4 py-2">
                                         <div className="flex justify-end text-right">
                                             <button

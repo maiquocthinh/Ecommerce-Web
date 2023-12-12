@@ -141,12 +141,12 @@ const Supplier = () => {
                                 pageSize: paging?.pageSize || 6,
                             })
                         );
-                        toast.success("chỉnh sửa nhà cung cấp thành công!");
+                        toast.success("Chỉnh sửa nhà cung cấp thành công!");
                         setFormData(initFormData);
                         setISNewSupplier(false);
                     } else {
                         toast.error(
-                            `chỉnh sửa nhà cung cấp thất bại! ${res.payload.message}`
+                            `Chỉnh sửa nhà cung cấp thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -312,7 +312,7 @@ const Supplier = () => {
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
                         {isUpdateSupplier
-                            ? "chỉnh sửa nhà cung cấp"
+                            ? "Chỉnh sửa nhà cung cấp"
                             : "Tạo nhà cung cấp mới"}
                     </h1>
                 }
@@ -451,7 +451,7 @@ const Supplier = () => {
                             }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
-                            đóng
+                            Đóng
                         </button>
                     </div>
                 }

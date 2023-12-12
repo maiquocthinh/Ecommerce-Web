@@ -201,8 +201,8 @@ const Discounts = () => {
                                             <td className="px-4 py-2">
                                                 <span className="text-sm font-semibold">
                                                     {item.active
-                                                        ? "hoạt động"
-                                                        : "không hoạt động"}
+                                                        ? "Hoạt động"
+                                                        : "Không hoạt động"}
                                                 </span>
                                             </td>
                                             <td className="px-4 py-2">

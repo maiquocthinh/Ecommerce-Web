@@ -106,7 +106,7 @@ const Orders = () => {
         if (typeId === "filterStatus") {
             setFormData({ ...formData, Status: option.title });
         } else if (option.defaultStatus === "cancelled") {
-            toast.error("không thể cập nhật đơn hàng đã hủy");
+            toast.error("không thể Cập nhật đơn hàng đã hủy");
         } else if (
             (option.defaultStatus === "delivering" ||
                 option.defaultStatus === "shipped") &&
@@ -124,7 +124,7 @@ const Orders = () => {
             );
             try {
                 if (res.payload.success) {
-                    toast.success("cập nhật status thành công");
+                    toast.success("Cập nhật status thành công");
                     dispatch(
                         adminListOrder({
                             pageIndex: pagi.pageIndex || 1,
@@ -133,7 +133,7 @@ const Orders = () => {
                     );
                 } else {
                     toast.error(
-                        `cập nhật status thất bại! ${res.payload.message}`
+                        `Cập nhật status thất bại! ${res.payload.message}`
                     );
                 }
             } catch (error) {
@@ -647,7 +647,7 @@ const Orders = () => {
                                         }}
                                         className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                                     >
-                                        đóng
+                                        Đóng
                                     </button>
                                 </div>
                             }
@@ -698,7 +698,7 @@ const Orders = () => {
                                         }}
                                         className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                                     >
-                                        đóng
+                                        Đóng
                                     </button>
                                     <button
                                         onClick={handleUpdatImportsShipment}

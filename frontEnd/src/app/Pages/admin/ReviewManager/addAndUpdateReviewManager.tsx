@@ -150,7 +150,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                         <h1 className="font-bold text-2xl text-white select-none mt-2">
                             {!customerDataUpdate?.id
                                 ? "Thêm khách hàng mới"
-                                : "chỉnh sửa khách hàng"}
+                                : "Chỉnh sửa khách hàng"}
                         </h1>
                     }
                     mainContent={
@@ -338,7 +338,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                                 onClick={handleShowModal}
                                 className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                             >
-                                đóng
+                                Đóng
                             </button>
                         </div>
                     }

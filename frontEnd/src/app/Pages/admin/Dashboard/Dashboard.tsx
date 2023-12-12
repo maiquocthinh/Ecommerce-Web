@@ -22,7 +22,8 @@ import OverviewChart from "./Components/OverviewChart";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getParameters } from "@/app/action/adminAction/adminDashboard";
-
+import { setPageLevelLoading } from "@/app/Slices/common/PageLeveLoadingSlice";
+import PageLoader from "@/Components/PageLoader/PageLoader";
 type OverviewType = {
     title: string;
     value: number;
@@ -89,10 +90,22 @@ const Dashboard = () => {
     const parametersData = useSelector(
         (state: any) => state.parametersData.data
     );
+    const pageLevelLoading = useSelector(
+        (sate: any) => sate.pageLevelLoading.pageLevelLoading
+    );
     const dispatch = useDispatch<any>();
     useEffect(() => {
+        dispatch(setPageLevelLoading(true));
         dispatch(getParameters());
     }, [dispatch]);
+    useEffect(() => {
+        if (parametersData?.success) {
+            dispatch(setPageLevelLoading(false));
+        }
+    }, [parametersData, dispatch]);
+    if (pageLevelLoading) {
+        return <PageLoader pageLevelLoading={pageLevelLoading} color="white" />;
+    }
     return (
         <div className="h-full w-full flex flex-col gap-3 p-4 text-gray-600 font-bold text-lg">
             <div className="flex flex-col gap-6">

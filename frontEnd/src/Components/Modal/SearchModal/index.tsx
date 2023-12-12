@@ -10,11 +10,8 @@ const SearchModal: React.FC<SearchModalProps> = ({ data }) => {
             <div className="flex flex-col shadow-md max-h-[400px] overflow-y-auto">
                 <div className="flex justify-between items-center p-3 text-md font-medium">
                     <span className="text-[#4a4a4a]">Kết quả</span>
-                    <button className="border-none underline">
-                        Xem tất cả
-                    </button>
                 </div>
-                {data.length &&
+                {data?.length ? (
                     data.map((product) => (
                         <div
                             onClick={() => router(`/product/${product.id}`)}
@@ -48,7 +45,14 @@ const SearchModal: React.FC<SearchModalProps> = ({ data }) => {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    ))
+                ) : (
+                    <div className="flex justify-center items-center pb-2">
+                        <span className="font-bold text-xl text-[#333]">
+                            Không có sản phẩm hợp lệ
+                        </span>
+                    </div>
+                )}
             </div>
         </div>
     );

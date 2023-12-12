@@ -114,13 +114,13 @@ const Brands = () => {
                                     adminBrandsData.data.paging.pageSize || 6,
                             })
                         );
-                        toast.success("chỉnh sửa nhãn hàng thành công!");
+                        toast.success("Chỉnh sửa nhãn hàng thành công!");
                         setFormData(initFormData);
                         setISNewBrand(false);
                         setISUpdateBrand(false);
                     } else {
                         toast.error(
-                            `chỉnh sửa nhãn hàng thất bại! ${res.payload.message}`
+                            `Chỉnh sửa nhãn hàng thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -220,7 +220,7 @@ const Brands = () => {
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
                         {isUpdateBrand
-                            ? "chỉnh sửa nhãn hàng"
+                            ? "Chỉnh sửa nhãn hàng"
                             : "Tạo nhãn hàng mới"}
                     </h1>
                 }
@@ -278,7 +278,7 @@ const Brands = () => {
                             }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
-                            đóng
+                            Đóng
                         </button>
                     </div>
                 }

@@ -134,12 +134,12 @@ const RoleManager = () => {
                                     listRolesAdmin.data.paging.pageSize || 6,
                             })
                         );
-                        toast.success("chỉnh sửa vài trò thành công!");
+                        toast.success("Chỉnh sửa vài trò thành công!");
                         setFormData(initFormData);
                         setISNewRole(false);
                     } else {
                         toast.error(
-                            `chỉnh sửa vài trò thất bại! ${res.payload.message}`
+                            `Chỉnh sửa vài trò thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -320,7 +320,7 @@ const RoleManager = () => {
                 showModalTitle={true}
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
-                        {isUpdateRole ? "chỉnh sửa Role" : "Tạo Role mới"}
+                        {isUpdateRole ? "Chỉnh sửa Role" : "Tạo Role mới"}
                     </h1>
                 }
                 bgAll="bg"
@@ -381,7 +381,7 @@ const RoleManager = () => {
                             }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
-                            đóng
+                            Đóng
                         </button>
                     </div>
                 }

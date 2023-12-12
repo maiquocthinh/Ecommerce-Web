@@ -123,13 +123,13 @@ const Categories = () => {
                                     6,
                             })
                         );
-                        toast.success("chỉnh sửa loại hàng thành công!");
+                        toast.success("Chỉnh sửa loại hàng thành công!");
                         setFormData(initFormData);
                         setISNewCategory(false);
                         setISUpdateCategory(false);
                     } else {
                         toast.error(
-                            `chỉnh sửa loại hàng thất bại! ${res.payload.message}`
+                            `Chỉnh sửa loại hàng thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -232,7 +232,7 @@ const Categories = () => {
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
                         {isUpdateCategory
-                            ? "chỉnh sửa danh mục"
+                            ? "Chỉnh sửa danh mục"
                             : "Tạo danh mục mới"}
                     </h1>
                 }
@@ -290,7 +290,7 @@ const Categories = () => {
                             }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
-                            đóng
+                            Đóng
                         </button>
                     </div>
                 }

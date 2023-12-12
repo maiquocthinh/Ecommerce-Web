@@ -88,7 +88,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
                         size={26}
                     />
                     <h1 className="text-2xl font-bold">
-                        {data ? "cập nhật địa chỉ" : "tạo mới địa chỉ"}
+                        {data ? "Cập nhật địa chỉ" : "tạo mới địa chỉ"}
                     </h1>
                 </div>
             }
@@ -169,12 +169,12 @@ const EditAddress: React.FC<EditAddressProps> = ({
                     >
                         {componentLoading.loading === true ? (
                             <ComponentLevelLoader
-                                text={data ? "đang cập nhật" : "đang tạo mới"}
+                                text={data ? "đang Cập nhật" : "đang tạo mới"}
                                 color={"green"}
                                 loading={componentLoading.loading}
                             />
                         ) : data ? (
-                            "cập nhật"
+                            "Cập nhật"
                         ) : (
                             "tạo mới"
                         )}

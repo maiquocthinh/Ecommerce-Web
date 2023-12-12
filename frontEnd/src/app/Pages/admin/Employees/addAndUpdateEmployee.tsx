@@ -215,7 +215,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                         <h1 className="font-bold text-2xl text-white select-none mt-2">
                             {!employeeIdUpdate
                                 ? "Thêm nhân viên mới"
-                                : "chỉnh sửa nhân viên mới"}
+                                : "Chỉnh sửa nhân viên mới"}
                         </h1>
                     }
                     mainContent={
@@ -414,7 +414,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                 className="px-4 py-2 border-b-4 border border-yellow-500 text-yellow-500 hover:text-white hover:bg-yellow-500 transition-all duration-200"
                             >
                                 {employeeIdUpdate
-                                    ? "cập nhật đỉa chỉ"
+                                    ? "Cập nhật đỉa chỉ"
                                     : "tới nhập đỉa chỉ"}
                             </button>
                             {employeeIdUpdate && (
@@ -429,7 +429,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                 onClick={handleShowModal}
                                 className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                             >
-                                đóng
+                                Đóng
                             </button>
                         </div>
                     }
@@ -538,7 +538,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                 onClick={() => setIsNewEmployee(false)}
                                 className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                             >
-                                đóng
+                                Đóng
                             </button>
                         </div>
                     }

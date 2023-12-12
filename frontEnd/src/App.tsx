@@ -29,7 +29,7 @@ function App() {
         }
         if (!AdminToken && window.location.pathname.includes("/admin")) {
             if (window.location.pathname === "/admin/login") {
-                toast("bạn đang đăng nhập với tư cách quản lí");
+                // toast("bạn đang đăng nhập với tư cách quản lí");
             } else window.location.href = "/";
         }
     }, []);

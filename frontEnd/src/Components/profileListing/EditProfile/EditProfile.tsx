@@ -53,7 +53,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
         try {
             console.log(res);
             if (res?.payload?.success) {
-                toast.success("thông tin đã được cập nhật");
+                toast.success("thông tin đã được Cập nhật");
                 dispatch(setImgUrl(""));
                 setReloadData(true);
                 setShowUpdateAccount(false);
@@ -76,7 +76,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                         className="text-custom-Colorprimary"
                         size={26}
                     />
-                    <h1 className="text-2xl font-bold">chỉnh sửa tài khoản</h1>
+                    <h1 className="text-2xl font-bold">Chỉnh sửa tài khoản</h1>
                 </div>
             }
             mainContent={
@@ -177,7 +177,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                             }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
-                            đóng
+                            Đóng
                         </button>
                     </div>
                 </div>

@@ -16,7 +16,6 @@ import { RxDashboard } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ad } from "vitest/dist/types-e3c9754d.js";
 type taskType = {
     id: string | number;
     Icon: React.ReactNode;
@@ -37,7 +36,9 @@ const AdminSidebar = () => {
     const [active, setActive] = useState<string>(currentPathname);
     const [showMore, setShowMore] = useState<number | string>("");
     const router = useNavigate();
-    const adminRole = useSelector((state: any) => state.adminRole.data);
+    const adminRole = useSelector(
+        (state: any) => state.adminRole.data
+    ) as string[];
     const listTask: taskType[] = [
         {
             id: 1,
@@ -208,7 +209,11 @@ const AdminSidebar = () => {
                     </button>
                     <div className="mt-6 w-full flex flex-col gap-4 text-[14px] font-medium">
                         {listTask.map((task) => {
-                            if (!task.more) {
+                            if (
+                                !task.more &&
+                                adminRole &&
+                                adminRole?.includes(task?.viewShown || "VCg")
+                            ) {
                                 return (
                                     <div key={task.id}>
                                         <div

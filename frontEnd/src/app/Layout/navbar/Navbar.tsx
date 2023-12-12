@@ -49,11 +49,13 @@ const Navbar: React.FC<NavbarProps> = () => {
         }
     }, [dispatch, debounce]);
     useEffect(() => {
-        if (searchProductData?.list?.length) {
+        if (searchProductData?.list) {
             setReslutSearch(searchProductData?.list);
+        }
+        if (searchValue !== "") {
             setShowSearchModal(true);
         }
-    }, [searchProductData]);
+    }, [searchProductData, searchValue]);
     useEffect(() => {
         if (Cookies.get("token") !== undefined) {
             const decodedValue = jwtDecode(Cookies.get("token") as string) as {
@@ -142,23 +144,21 @@ const Navbar: React.FC<NavbarProps> = () => {
                         {showSearchModal && (
                             <Fragment>
                                 <div className="absolute right-4 cursor-pointer top-1/2 -translate-y-1/2 text-sm text-red-500">
-                                    {searchValue ? (
-                                        reslutSearch ? (
-                                            <button
-                                                onClick={() => {
-                                                    setSearchValue("");
-                                                    setShowSearchModal(false);
-                                                }}
-                                            >
-                                                <AiOutlineClose />
-                                            </button>
-                                        ) : (
-                                            <AiOutlineLoading3Quarters className="animate-spin" />
-                                        )
-                                    ) : null}
+                                    {searchProductData?.list ? (
+                                        <button
+                                            onClick={() => {
+                                                setSearchValue("");
+                                                setShowSearchModal(false);
+                                                setReslutSearch([]);
+                                            }}
+                                        >
+                                            <AiOutlineClose />
+                                        </button>
+                                    ) : (
+                                        <AiOutlineLoading3Quarters className="animate-spin" />
+                                    )}
                                 </div>
-                                {reslutSearch?.length &&
-                                searchValue.trim() !== "" ? (
+                                {reslutSearch && searchValue.trim() !== "" ? (
                                     <SearchModal data={reslutSearch} />
                                 ) : null}
                             </Fragment>

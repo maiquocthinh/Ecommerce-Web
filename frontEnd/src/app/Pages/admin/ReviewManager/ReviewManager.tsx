@@ -158,13 +158,13 @@ const ReviewManager = () => {
             );
             try {
                 if (res.payload.success) {
-                    toast.success("cập nhật phản hồi thành công");
+                    toast.success("Cập nhật phản hồi thành công");
                     setIsUpdateReply(false);
                     setValueReply("");
                     dispatch(adminGetDetailReview(id));
                 } else {
                     toast.error(
-                        `cập nhật phản hồi thất bại: ${res.payload.message}`
+                        `Cập nhật phản hồi thất bại: ${res.payload.message}`
                     );
                 }
             } catch (error) {

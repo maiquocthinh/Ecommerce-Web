@@ -470,7 +470,7 @@ const CheckoutWithProduct: React.FC<CheckoutWithProductProps> = ({
                             }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
-                            đóng
+                            Đóng
                         </button>
                     </div>
                 }

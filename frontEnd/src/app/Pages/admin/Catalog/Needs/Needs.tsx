@@ -115,13 +115,13 @@ const Needs = () => {
                                     adminNeedsData.data.paging.pageSize || 6,
                             })
                         );
-                        toast.success("chỉnh sửa Nhu cầu thành công!");
+                        toast.success("Chỉnh sửa Nhu cầu thành công!");
                         setFormData(initFormData);
                         setISNewNeed(false);
                         setISUpdateNeed(false);
                     } else {
                         toast.error(
-                            `chỉnh sửa Nhu cầu thất bại! ${res.payload.message}`
+                            `Chỉnh sửa Nhu cầu thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -220,7 +220,7 @@ const Needs = () => {
                 showModalTitle={true}
                 modalTitle={
                     <h1 className="text-2xl font-bold text-white">
-                        {isUpdateNeed ? "chỉnh sửa nhu cầu" : "Tạo nhu cầu mới"}
+                        {isUpdateNeed ? "Chỉnh sửa nhu cầu" : "Tạo nhu cầu mới"}
                     </h1>
                 }
                 bgAll="bg"
@@ -277,7 +277,7 @@ const Needs = () => {
                             }}
                             className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                         >
-                            đóng
+                            Đóng
                         </button>
                     </div>
                 }

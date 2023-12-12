@@ -186,75 +186,86 @@ const Inventories = () => {
             </div>
             <div className="rounded-lg shadow-xs bg-gray-800 mb-5">
                 <div className="w-full overflow-hidden border border-gray-700 rounded-lg rounded-b-lg">
-                    <table className="w-full whitespace-nowrap">
-                        <thead className="text-xs font-semibold tracking-wide text-left uppercase border-b border-gray-700 text-gray-400 bg-gray-800">
-                            <tr>
-                                <td className="px-4 py-2">
-                                    ID PRODUCT VERSION
-                                </td>
-                                <td className="px-4 py-2">
-                                    TÊN PRODUCT VESION
-                                </td>
-                                <td className="px-4 py-2">IMAGE</td>
-                                <td className="px-4 py-2">HÀNG TỒN KHO</td>
-                                <td className="px-4 py-2">TRẠNG THÁI</td>
-                                <td className="px-4 py-2 text-right">ACTION</td>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-700 bg-gray-800  text-gray-400">
-                            {inventories?.length &&
-                                inventories.map((item, index: number) => (
-                                    <tr key={index}>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm">
-                                                {item.productVersionId}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm font-semibold">
-                                                {item.productVersionName}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <img
-                                                src={item.imageUrl}
-                                                alt=""
-                                                className={`w-[30px] h-[30px] object-contain`}
-                                            />
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm font-semibold">
-                                                {item.inventory}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <span className="text-sm font-semibold">
-                                                {!item.isOutOfStock
-                                                    ? "còn hàng"
-                                                    : "hết hàng"}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <div className="flex justify-end text-right">
-                                                <button
-                                                    onClick={() => {
-                                                        setIsNewImport(true);
-                                                        setIdProductVersion(
-                                                            item.productVersionId
-                                                        );
-                                                    }}
-                                                    className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none"
-                                                >
-                                                    <MdOutlineAddBox
-                                                        size={22}
-                                                    />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </table>
+                    {inventories?.length ? (
+                        <table className="w-full whitespace-nowrap">
+                            <thead className="text-xs font-semibold tracking-wide text-left uppercase border-b border-gray-700 text-gray-400 bg-gray-800">
+                                <tr>
+                                    <td className="px-4 py-2">
+                                        ID PRODUCT VERSION
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        TÊN PRODUCT VESION
+                                    </td>
+                                    <td className="px-4 py-2">IMAGE</td>
+                                    <td className="px-4 py-2">HÀNG TỒN KHO</td>
+                                    <td className="px-4 py-2">TRẠNG THÁI</td>
+                                    <td className="px-4 py-2 text-right">
+                                        ACTION
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-700 bg-gray-800  text-gray-400">
+                                {inventories?.length &&
+                                    inventories.map((item, index: number) => (
+                                        <tr key={index}>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm">
+                                                    {item.productVersionId}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm font-semibold">
+                                                    {item.productVersionName}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <img
+                                                    src={item.imageUrl}
+                                                    alt=""
+                                                    className={`w-[30px] h-[30px] object-contain`}
+                                                />
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm font-semibold">
+                                                    {item.inventory}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm font-semibold">
+                                                    {!item.isOutOfStock
+                                                        ? "còn hàng"
+                                                        : "hết hàng"}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <div className="flex justify-end text-right">
+                                                    <button
+                                                        onClick={() => {
+                                                            setIsNewImport(
+                                                                true
+                                                            );
+                                                            setIdProductVersion(
+                                                                item.productVersionId
+                                                            );
+                                                        }}
+                                                        className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600 focus:outline-none"
+                                                    >
+                                                        <MdOutlineAddBox
+                                                            size={22}
+                                                        />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <div className="flex justify-center items-center text-white text-xl font-bold">
+                            Không có nhà cung cấp nào hợp lệ
+                        </div>
+                    )}
+
                     {allInventory && paging && (
                         <Paginations
                             handlePageChange={handlePageChange}
@@ -343,7 +354,7 @@ const Inventories = () => {
                                 }}
                                 className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                             >
-                                đóng
+                                Đóng
                             </button>
                         </div>
                     }

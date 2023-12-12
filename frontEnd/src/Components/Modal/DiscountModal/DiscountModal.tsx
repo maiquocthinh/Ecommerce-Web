@@ -64,7 +64,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
             const res = await dispatch(adminUpdateDiscount(formData));
             try {
                 if (res.payload.success) {
-                    toast.success("cập nhật giảm giá thành công");
+                    toast.success("Cập nhật giảm giá thành công");
                     setFormData(initFormData);
                     dispatch(
                         getAllDiscount({
@@ -75,7 +75,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                     setShow(false);
                 } else {
                     toast.success(
-                        `cập nhật giảm giá thất bại : ${res.payload.message}`
+                        `Cập nhật giảm giá thất bại : ${res.payload.message}`
                     );
                 }
             } catch (error) {
@@ -202,7 +202,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
             showModalTitle
             modalTitle={
                 <h1 className="font-bold text-2xl text-white">
-                    {type ? "Tạo mã giảm giá" : "chỉnh sửa giảm giá"}
+                    {type ? "Tạo mã giảm giá" : "Chỉnh sửa giảm giá"}
                 </h1>
             }
             showButtons
@@ -212,7 +212,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                         onClick={handleAddNewOrUpdateDiscount}
                         className="px-4 py-2 border-b-4 border border-green-500 text-green-500 hover:text-white hover:bg-green-500 transition-all duration-200"
                     >
-                        {type ? "Tạo mới" : "chỉnh sửa"}
+                        {type ? "Tạo mới" : "Chỉnh sửa"}
                     </button>
 
                     <button
@@ -222,7 +222,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                         }}
                         className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                     >
-                        đóng
+                        Đóng
                     </button>
                 </div>
             }

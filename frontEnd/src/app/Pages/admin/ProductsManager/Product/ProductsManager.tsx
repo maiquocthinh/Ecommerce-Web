@@ -514,7 +514,7 @@ const ProductsManager = () => {
                                                         </button>
                                                     </Tippy>
                                                     <Tippy
-                                                        content="chỉnh sửa"
+                                                        content="Chỉnh sửa"
                                                         placement="bottom"
                                                         delay={100}
                                                         className="border text-custom-Colorprimary border-custom-Colorprimary rounded-md px-1"
@@ -639,7 +639,7 @@ const ProductsManager = () => {
                                     onClick={() => setIsModaleDelete(false)}
                                     className="py-2 px-3 text-sm font-medium rounded-lg border  focus:ring-4 focus:outline-none focus:ring-primary-300  focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600"
                                 >
-                                    đóng
+                                    Đóng
                                 </button>
                                 <button
                                     onClick={() => {

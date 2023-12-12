@@ -102,7 +102,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                 dispatch(adminUpdateProduct(formData)).then((res: any) => {
                     if (res.payload?.success) {
                         dispatch(setImgUrl(""));
-                        toast.success("cập nhật sản phẩm thành công");
+                        toast.success("Cập nhật sản phẩm thành công");
                         dispatch(
                             adminAllProduct({
                                 pageSize: 6,
@@ -126,7 +126,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
             modalTitle={
                 <h1 className="font-bold text-2xl text-white select-none mt-2">
                     {isUpdateProduct
-                        ? "chỉnh sửa sản phẩm"
+                        ? "Chỉnh sửa sản phẩm"
                         : "Thêm sản phẩm mới"}
                 </h1>
             }
@@ -239,17 +239,17 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                             <div className="flex justify-between gap-4">
                                 <div className="flex-1">
                                     <p className="text-gray-300 text-sm text-start capitalize">
-                                        hoạt động :
+                                        Hoạt động :
                                     </p>
                                     <SelecterLab
                                         options={[
                                             {
                                                 id: true,
-                                                title: "đang hoạt động",
+                                                title: "Đang hoạt động",
                                             },
                                             {
                                                 id: false,
-                                                title: "ngừng hoạt động",
+                                                title: "Ngừng hoạt động",
                                             },
                                         ]}
                                         handleGetOptionBySelect={
@@ -258,8 +258,8 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                                         typeId="viewable"
                                         valueUpdate={
                                             formData.viewable
-                                                ? ["đang hoạt động"]
-                                                : ["ngừng hoạt động"]
+                                                ? ["Đang hoạt động"]
+                                                : ["Ngừng hoạt động"]
                                         }
                                     />
                                 </div>
@@ -285,7 +285,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                         }}
                         className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
                     >
-                        đóng
+                        Đóng
                     </button>
                 </div>
             }
