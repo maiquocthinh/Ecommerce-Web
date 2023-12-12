@@ -13,6 +13,7 @@ export interface allInventoryType {
     isOutOfStock: boolean;
     productVersionId: number;
     productVersionName: string;
+    price?: number;
 }
 export interface importShipmentsgetType {
     productVersionId: number;

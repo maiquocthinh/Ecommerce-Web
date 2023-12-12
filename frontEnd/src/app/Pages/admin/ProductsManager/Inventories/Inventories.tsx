@@ -198,6 +198,7 @@ const Inventories = () => {
                                     </td>
                                     <td className="px-4 py-2">IMAGE</td>
                                     <td className="px-4 py-2">HÀNG TỒN KHO</td>
+                                    <td className="px-4 py-2">GIÁ</td>
                                     <td className="px-4 py-2">TRẠNG THÁI</td>
                                     <td className="px-4 py-2 text-right">
                                         ACTION
@@ -228,6 +229,11 @@ const Inventories = () => {
                                             <td className="px-4 py-2">
                                                 <span className="text-sm font-semibold">
                                                     {item.inventory}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <span className="text-sm font-semibold">
+                                                    {item.price || 1}
                                                 </span>
                                             </td>
                                             <td className="px-4 py-2">

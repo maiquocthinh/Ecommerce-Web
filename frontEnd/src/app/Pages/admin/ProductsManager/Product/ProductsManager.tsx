@@ -287,7 +287,7 @@ const ProductsManager = () => {
                                     placeholder="Lựa chọn hiển thị"
                                 />
                             </div>
-                            <div>
+                            <div className="capitalize">
                                 <SelecterFilter
                                     isReset={isReset}
                                     setIsReset={setIsReset}
@@ -305,10 +305,10 @@ const ProductsManager = () => {
                                         },
                                     ]}
                                     typeId="OutOfStock"
-                                    placeholder="hàng có sẳn"
+                                    placeholder="Hàng có sẳn"
                                 />
                             </div>
-                            <div>
+                            <div className="capitalize">
                                 {categoriesData.length ? (
                                     <SelecterFilter
                                         isReset={isReset}
@@ -322,7 +322,7 @@ const ProductsManager = () => {
                                     />
                                 ) : null}
                             </div>
-                            <div>
+                            <div className="capitalize">
                                 {branchData.length ? (
                                     <SelecterFilter
                                         isReset={isReset}
@@ -336,7 +336,7 @@ const ProductsManager = () => {
                                     />
                                 ) : null}
                             </div>
-                            <div>
+                            <div className="capitalize">
                                 {needsData.length ? (
                                     <SelecterFilter
                                         isReset={isReset}

@@ -29,7 +29,7 @@ const CenterModal: React.FC<CenterModalProps> = ({
         <Transition.Root show={show} as={Fragment}>
             <Dialog
                 as="div"
-                className="fixed inset-0 flex items-center justify-center"
+                className="fixed inset-0 flex items-center justify-center overflow-auto"
                 onClose={setShow}
             >
                 <Transition.Child

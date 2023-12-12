@@ -460,7 +460,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                             onChange={(
                                                 e: React.ChangeEvent<HTMLInputElement>
                                             ) => handleOnChangeAddress(e)}
-                                            placeholder="nhập họ và tên lót"
+                                            placeholder="nhập districts"
                                         />
                                     </div>
                                     <div className="flex-1">
@@ -475,7 +475,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                             onChange={(
                                                 e: React.ChangeEvent<HTMLInputElement>
                                             ) => handleOnChangeAddress(e)}
-                                            placeholder="nhập tên"
+                                            placeholder="nhập province"
                                         />
                                     </div>
                                 </div>
@@ -494,7 +494,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                             onChange={(
                                                 e: React.ChangeEvent<HTMLInputElement>
                                             ) => handleOnChangeAddress(e)}
-                                            placeholder="nhập họ và tên lót"
+                                            placeholder="nhập specificAddress"
                                         />
                                     </div>
                                     <div className="flex-1">
@@ -509,7 +509,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                             onChange={(
                                                 e: React.ChangeEvent<HTMLInputElement>
                                             ) => handleOnChangeAddress(e)}
-                                            placeholder="nhập tên"
+                                            placeholder="nhập wards"
                                         />
                                     </div>
                                 </div>
