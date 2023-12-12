@@ -228,7 +228,7 @@ const Brands = () => {
                 mainContent={
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
-                            <p className="text-gray-300 text-sm text-start mb-1">
+                            <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                 tên :
                             </p>
                             <input
@@ -243,7 +243,7 @@ const Brands = () => {
                             />
                         </div>
                         <div className="flex-1">
-                            <p className="text-gray-300 text-sm text-start mb-1">
+                            <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                 mô tả :
                             </p>
                             <input

@@ -67,7 +67,7 @@ const RecentOrders = () => {
                 orderRecentData?.success &&
                 orderRecentData?.data?.length > 0 ? (
                     <table className="w-full whitespace-nowrap">
-                        <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+                        <thead className="text-xs font-semibold tracking-wide text-left uppercase border-b  border-gray-700 text-gray-400bg-gray-800">
                             <tr>
                                 <td className="px-4 py-2">ORDER ID</td>
                                 <td className="px-4 py-2">ORDER DATE</td>
@@ -79,7 +79,7 @@ const RecentOrders = () => {
                                 </td>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-400">
+                        <tbody className="divide-y  divide-gray-700 bg-gray-800 text-gray-400">
                             {orderRecentData?.data &&
                                 orderRecentData.data?.map(
                                     (orderRecent: orderRecentType) => (
@@ -123,7 +123,7 @@ const RecentOrders = () => {
                                             </td>
                                             <td className="px-4 py-2 text-xs">
                                                 <span className="font-serif">
-                                                    <span className="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-yellow-600 bg-yellow-100 dark:text-white dark:bg-yellow-600">
+                                                    <span className="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-white bg-yellow-600">
                                                         {orderRecent.status}
                                                     </span>
                                                 </span>

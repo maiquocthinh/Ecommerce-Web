@@ -104,10 +104,10 @@ const Dashboard = () => {
                             (OverviewItem: OverviewType, index: number) => (
                                 <div
                                     key={index}
-                                    className="min-w-0 rounded-lg overflow-hidden bg-white dark:bg-gray-800 flex justify-center h-full"
+                                    className="min-w-0 rounded-lg overflow-hidden bg-gray-800 flex justify-center h-full"
                                 >
                                     <div
-                                        className="border border-gray-200 justify-between dark:border-gray-800 w-full px-3 py-6 rounded-lg text-white dark:text-emerald-100 bg-teal-600"
+                                        className="border justify-between border-gray-800 w-full px-3 py-6 rounded-lg  text-emerald-100 bg-teal-600"
                                         style={{
                                             backgroundColor:
                                                 thisWeekColor[index].bg,
@@ -116,7 +116,7 @@ const Dashboard = () => {
                                         <div className="flex gap-2 justify-between xl:mb-0 mb-3">
                                             <div className="flex items-center gap-2">
                                                 <div
-                                                    className="text-center inline-block text-5xl text-white dark:text-emerald-100 bg-teal-600"
+                                                    className="text-center inline-block text-5xl text-emerald-100 bg-teal-600"
                                                     style={{
                                                         backgroundColor:
                                                             thisWeekColor[index]
@@ -126,10 +126,10 @@ const Dashboard = () => {
                                                     {thisWeekColor[index].Icon}
                                                 </div>
                                                 <div>
-                                                    <p className="mb-3 text-base font-medium text-gray-50 uppercase dark:text-gray-100">
+                                                    <p className="mb-3 text-base font-medium  uppercase text-gray-100">
                                                         {OverviewItem.title}
                                                     </p>
-                                                    <p className="text-2xl font-bold leading-none text-gray-50 dark:text-gray-50">
+                                                    <p className="text-2xl font-bold leading-none text-gray-50">
                                                         {OverviewItem.value}
                                                     </p>
                                                 </div>
@@ -171,11 +171,11 @@ const Dashboard = () => {
                             (total: totalType, index: number) => (
                                 <div
                                     key={index}
-                                    className="min-w-0 rounded-lg overflow-hidden bg-white dark:bg-gray-800 flex h-full"
+                                    className="min-w-0 rounded-lg overflow-hidden bg-gray-800 flex h-full"
                                 >
-                                    <div className="p-4 flex items-center border border-gray-200 dark:border-gray-800 w-full rounded-lg">
+                                    <div className="p-4 flex items-center border border-gray-800 w-full rounded-lg">
                                         <div
-                                            className="flex items-center justify-center p-3 rounded-full h-12 w-12 text-center mr-4 text-lg text-white dark:text-orange-100 bg-orange-100 dark:bg-orange-500"
+                                            className="flex items-center justify-center p-3 rounded-full h-12 w-12 text-center mr-4 text-lg text-orange-100 bg-orange-500"
                                             style={{
                                                 backgroundColor:
                                                     totalColor[index].bg,
@@ -184,10 +184,10 @@ const Dashboard = () => {
                                             {totalColor[index].Icon}
                                         </div>
                                         <div>
-                                            <h6 className="text-sm mb-1 font-medium text-gray-600 dark:text-gray-400">
+                                            <h6 className="text-sm mb-1 font-medium text-gray-400">
                                                 <span>{total.label}</span>
                                             </h6>
-                                            <p className="text-2xl font-bold leading-none text-gray-600 dark:text-gray-200">
+                                            <p className="text-2xl font-bold leading-none text-gray-200">
                                                 {total.value}
                                             </p>
                                         </div>

@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
 import { cancelOrder, getAllOrder } from "../action/Order";
 import { useNavigate, useParams } from "react-router-dom";
+import DeleModal from "@/Components/Modal/DeleteModal/DeleteModal";
+import { toast } from "react-toastify";
 const Order = () => {
     const param = useParams();
     const router = useNavigate();
@@ -17,6 +19,9 @@ const Order = () => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [orderSearch, setOrderSearch] = useState<orderType[]>([]);
     const [isSearch, setIsSearch] = useState<boolean>(false);
+    const [modalDelete, setIsModaleDelete] = useState<boolean>(false);
+    const [comfirmDelete, setComfirmDelete] = useState<boolean>(false);
+    const [IdOrderDelete, setIdOrderDelete] = useState<number>(0);
     const allOrder = useSelector(
         (state: any) => state.allOrder.data as orderType[]
     );
@@ -48,10 +53,21 @@ const Order = () => {
             dispatch(setPageLevelLoading(false));
         }
     }, [allOrder, dispatch]);
+    useEffect(() => {
+        if (comfirmDelete && IdOrderDelete > 0) {
+            dispatch(cancelOrder(IdOrderDelete)).then(() => {
+                if (param?.status)
+                    dispatch(getAllOrder(param.status)).then(() =>
+                        toast.success("bạn vừa hủy đơn hàng")
+                    );
+                setComfirmDelete(false);
+                setIdOrderDelete(0);
+            });
+        }
+    }, [dispatch, param, comfirmDelete]);
     const handleCancelOrderView = (id: number) => {
-        dispatch(cancelOrder(id)).then(() => {
-            if (param?.status) dispatch(getAllOrder(param.status));
-        });
+        setIdOrderDelete(id);
+        setIsModaleDelete(true);
     };
     if (pageLevelLoading) {
         return <PageLoader pageLevelLoading={pageLevelLoading} />;
@@ -122,7 +138,18 @@ const Order = () => {
                                 {param?.status === "processing" ? (
                                     <CiCircleCheck size={20} />
                                 ) : null}
-                                Đang vẩn chuyển
+                                Đang sử lí
+                            </button>
+                            <button
+                                onClick={() =>
+                                    router("/profile/order/delivering")
+                                }
+                                className="px-2 flex items-center gap-1 py-1 border border-sky-500 text-sky-500 rounded-md text-xs font-bold"
+                            >
+                                {param?.status === "delivering" ? (
+                                    <CiCircleCheck size={20} />
+                                ) : null}
+                                Đang vận chuyển
                             </button>
                             <button
                                 onClick={() => router("/profile/order/shipped")}
@@ -137,7 +164,7 @@ const Order = () => {
                                 onClick={() =>
                                     router("/profile/order/cancelled")
                                 }
-                                className="px-2 flex items-center gap-1 border-yellow-500 text-yellow-500  py-1 border rounded-md text-xs font-bold"
+                                className="px-2 flex items-center gap-1 border-red-500 text-red-500  py-1 border rounded-md text-xs font-bold"
                             >
                                 {param?.status === "cancelled" ? (
                                     <CiCircleCheck size={20} />
@@ -247,6 +274,9 @@ const Order = () => {
                                                                           : order.orderStatus ===
                                                                             "processing"
                                                                           ? "yellow"
+                                                                          : order.orderStatus ===
+                                                                            "delivering"
+                                                                          ? "blue"
                                                                           : "",
                                                               }}
                                                           >
@@ -260,19 +290,19 @@ const Order = () => {
                                                           <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
                                                               {order.orderStatus ===
                                                               "processing" ? (
-                                                                  <div
+                                                                  <button
                                                                       onClick={() =>
                                                                           handleCancelOrderView(
                                                                               order.orderId
                                                                           )
                                                                       }
-                                                                      className="flex gap-1 items-center text-custom-Colorprimary"
+                                                                      className="flex border  hover:bg-backgroundHover rounded-md px-2 py-1 border-custom-primary gap-1 items-center text-custom-Colorprimary"
                                                                   >
                                                                       <MdOutlineCancel />
                                                                       <span>
                                                                           hủy
                                                                       </span>
-                                                                  </div>
+                                                                  </button>
                                                               ) : null}
                                                           </td>
                                                       ) : null}
@@ -345,6 +375,9 @@ const Order = () => {
                                                                           : order.orderStatus ===
                                                                             "processing"
                                                                           ? "yellow"
+                                                                          : order.orderStatus ===
+                                                                            "delivering"
+                                                                          ? "blue"
                                                                           : "",
                                                               }}
                                                           >
@@ -358,19 +391,19 @@ const Order = () => {
                                                           <td className="whitespace-no-wrap py-4 text-right text-sm text-gray-600 sm:px-3 lg:text-left">
                                                               {order.orderStatus ===
                                                               "processing" ? (
-                                                                  <div
+                                                                  <button
                                                                       onClick={() =>
                                                                           handleCancelOrderView(
                                                                               order.orderId
                                                                           )
                                                                       }
-                                                                      className="flex gap-1 items-center text-custom-Colorprimary"
+                                                                      className="flex border rounded-md px-2 py-1 border-custom-primary hover:bg-backgroundHover gap-1 items-center text-custom-Colorprimary"
                                                                   >
                                                                       <MdOutlineCancel />
                                                                       <span>
                                                                           hủy
                                                                       </span>
-                                                                  </div>
+                                                                  </button>
                                                               ) : null}
                                                           </td>
                                                       ) : null}
@@ -385,6 +418,11 @@ const Order = () => {
                 </div>
             </div>
             <Notification />
+            <DeleModal
+                modalDelete={modalDelete}
+                setIsModaleDelete={setIsModaleDelete}
+                setConfirmationDelete={setComfirmDelete}
+            />
         </div>
     );
 };

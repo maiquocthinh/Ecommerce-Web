@@ -7,6 +7,7 @@ export interface productVersion {
     originPrice: string;
     price: string;
     specifications?: specificationsType;
+    inventory?: number;
 }
 
 export interface ProductType {

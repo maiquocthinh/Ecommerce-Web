@@ -99,12 +99,12 @@ const Discounts = () => {
     };
     return (
         <div className="flex flex-col p-4">
-            <div className="rounded-lg  min-w-0 shadow-xs bg-white dark:bg-gray-800 mb-5">
+            <div className="rounded-lg  min-w-0 shadow-xs bg-gray-800 mb-5">
                 <div className="p-4">
                     <div>
                         <div className="flex justify-between items-center gap-4">
                             <input
-                                className="flex-1 w-full h-12 border px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md bg-gray-100 focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 dark:focus:border-gray-500 dark:bg-gray-700"
+                                className="flex-1 w-full h-12 border px-3 py-1 text-sm focus:outline-none text-gray-300 leading-5 rounded-md   focus:bg-gray-700 border-gray-600 focus:border-gray-500 bg-gray-700"
                                 type="search"
                                 name="ProductName"
                                 placeholder="Search by product Name"
@@ -128,10 +128,10 @@ const Discounts = () => {
                                         disabled={
                                             formParam.ProductName?.trim() === ""
                                         }
-                                        className="disabled:bg-custom-disable disabled:border-custom-disable align-bottom leading-5 transition-colors duration-150 font-medium  text-gray-600  dark:text-gray-400 focus:outline-none rounded-lg border bg-gray-200 border-gray-200  w-full mr-3 flex items-center justify-center cursor-pointer h-12 px-4 md:py-1 py-2  text-sm dark:bg-gray-700"
+                                        className="disabled:bg-custom-disable disabled:border-custom-disable align-bottom leading-5 transition-colors duration-150 font-medium   text-gray-400 focus:outline-none rounded-lg border  border-gray-200  w-full mr-3 flex items-center justify-center cursor-pointer h-12 px-4 md:py-1 py-2  text-sm bg-gray-700"
                                         onClick={handleResetSearchDiscount}
                                     >
-                                        <span className="text-black dark:text-gray-200">
+                                        <span className="text-gray-200">
                                             Reset
                                         </span>
                                     </button>
@@ -143,9 +143,9 @@ const Discounts = () => {
             </div>
             {discount?.length ? (
                 <div className="rounded-lg shadow-xs bg-gray-800 mb-5">
-                    <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg rounded-b-lg">
+                    <div className="w-full overflow-hidden border  border-gray-700 rounded-lg rounded-b-lg">
                         <table className="w-full whitespace-nowrap">
-                            <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+                            <thead className="text-xs font-semibold tracking-wide text-left  uppercase border-b border-gray-700 text-gray-400 bg-gray-800">
                                 <tr>
                                     <td className="px-4 py-2">ID</td>
                                     <td className="px-4 py-2">
@@ -163,7 +163,7 @@ const Discounts = () => {
                                     </td>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
+                            <tbody className="divide-y divide-gray-700 bg-gray-800 text-gray-400">
                                 {discount?.length &&
                                     discount.map((item) => (
                                         <tr key={item.id}>

@@ -118,12 +118,12 @@ const Supplier = () => {
                                 pageSize: paging?.pageSize || 6,
                             })
                         );
-                        toast.success("tạo mới nhãn hàng thành công!");
+                        toast.success("tạo mới nhà cung cấp thành công!");
                         setFormData(initFormData);
                         setISNewSupplier(false);
                     } else {
                         toast.error(
-                            `tạo mới nhãn hàng thất bại! ${res.payload.message}`
+                            `tạo mới nhà cung cấp thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -141,12 +141,12 @@ const Supplier = () => {
                                 pageSize: paging?.pageSize || 6,
                             })
                         );
-                        toast.success("chỉnh sửa nhãn hàng thành công!");
+                        toast.success("chỉnh sửa nhà cung cấp thành công!");
                         setFormData(initFormData);
                         setISNewSupplier(false);
                     } else {
                         toast.error(
-                            `chỉnh sửa nhãn hàng thất bại! ${res.payload.message}`
+                            `chỉnh sửa nhà cung cấp thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -164,7 +164,7 @@ const Supplier = () => {
             const res = await dispatch(deleteSupplier(id));
             try {
                 if (res.payload.success) {
-                    toast.success("xóa nhãn hàng thành công!");
+                    toast.success("xóa nhà cung cấp thành công!");
                     dispatch(
                         getListSupplier({
                             pageIndex: paging?.pageIndex || 1,
@@ -174,7 +174,7 @@ const Supplier = () => {
                     );
                 } else {
                     toast.error(
-                        `tạo mới nhãn hàng thất bại! ${res.payload.message}`
+                        `tạo mới nhà cung cấp thất bại! ${res.payload.message}`
                     );
                 }
             } catch (error) {
@@ -208,7 +208,7 @@ const Supplier = () => {
                         <div className="lg:flex md:flex flex-grow-0">
                             <button
                                 onClick={() => setISNewSupplier(true)}
-                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 dark:text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
+                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
                             >
                                 <CiExport size={22} />
                                 <span className="text-xs">Tạo mới</span>
@@ -224,9 +224,9 @@ const Supplier = () => {
                 handleReset={handleResetSupplier}
             />
             {listSuplierData?.data?.list.length ? (
-                <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
+                <div className="w-full overflow-hidden border border-gray-700 rounded-lg mb-8 rounded-b-lg">
                     <table className="w-full whitespace-nowrap">
-                        <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+                        <thead className="text-xs font-semibold tracking-wide text-leftuppercase border-b border-gray-700 text-gray-400 bg-gray-800">
                             <tr>
                                 <td className="px-4 py-2">ID</td>
                                 <td className="px-4 py-2">NAME</td>
@@ -235,7 +235,7 @@ const Supplier = () => {
                                 <td className="px-4 py-2 text-right">ACTION</td>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
+                        <tbody className="divide-y divide-gray-700 bg-gray-800 text-gray-400">
                             {dataSupplier?.length &&
                                 dataSupplier.map((item) => (
                                     <tr key={item.id}>
@@ -321,7 +321,7 @@ const Supplier = () => {
                     <div className="flex flex-col gap-4">
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     tên :
                                 </p>
                                 <input
@@ -332,11 +332,11 @@ const Supplier = () => {
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => handleOnChange(e)}
-                                    placeholder="nhập tên nhãn hàng"
+                                    placeholder="nhập tên nhà cung cấp"
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     email :
                                 </p>
                                 <input
@@ -347,13 +347,13 @@ const Supplier = () => {
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => handleOnChange(e)}
-                                    placeholder="nhập mô tả nhãn hàng"
+                                    placeholder="nhập mô tả nhà cung cấp"
                                 />
                             </div>
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     số điện thoại :
                                 </p>
                                 <input
@@ -364,11 +364,11 @@ const Supplier = () => {
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => handleOnChange(e)}
-                                    placeholder="nhập tên nhãn hàng"
+                                    placeholder="nhập tên nhà cung cấp"
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     tỉnh :
                                 </p>
                                 <input
@@ -379,13 +379,13 @@ const Supplier = () => {
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => handleOnchangeAddress(e)}
-                                    placeholder="nhập tên nhãn hàng"
+                                    placeholder="nhập tên nhà cung cấp"
                                 />
                             </div>
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     huyện :
                                 </p>
                                 <input
@@ -396,11 +396,11 @@ const Supplier = () => {
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => handleOnchangeAddress(e)}
-                                    placeholder="nhập mô tả nhãn hàng"
+                                    placeholder="nhập mô tả nhà cung cấp"
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     phường :
                                 </p>
                                 <input
@@ -411,13 +411,13 @@ const Supplier = () => {
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => handleOnchangeAddress(e)}
-                                    placeholder="nhập mô tả nhãn hàng"
+                                    placeholder="nhập mô tả nhà cung cấp"
                                 />
                             </div>
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start mb-1">
+                                <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                     địa chỉ cụ thể :
                                 </p>
                                 <input
@@ -428,7 +428,7 @@ const Supplier = () => {
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => handleOnchangeAddress(e)}
-                                    placeholder="nhập tên nhãn hàng"
+                                    placeholder="nhập tên nhà cung cấp"
                                 />
                             </div>
                         </div>

@@ -41,9 +41,6 @@ const AdminHeader = () => {
                         <AiOutlineMenuUnfold size={22} />
                     )}
                 </button>
-                <button className="rounded-full bg-gray-500  text-white h-8 w-8 font-medium focus:outline-none text-center">
-                    <span>A</span>
-                </button>
             </div>
             <Notification />
         </div>

@@ -198,7 +198,7 @@ const RoleManager = () => {
                         <div className="lg:flex md:flex flex-grow-0">
                             <button
                                 onClick={() => setISNewRole(true)}
-                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 dark:text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
+                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
                             >
                                 <CiExport size={22} />
                                 <span className="text-xs">Tạo mới</span>
@@ -215,11 +215,11 @@ const RoleManager = () => {
                 placeholder="tìm kiếm theo tên role"
             />
             {roleData.length > 0 ? (
-                <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
+                <div className="w-full overflow-hidden border  border-gray-700 rounded-lg mb-8 rounded-b-lg">
                     {listRolesAdmin.data.list ? (
                         <div className="w-full overflow-x-auto">
                             <table className="w-full whitespace-nowrap">
-                                <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+                                <thead className="text-xs font-semibold tracking-wide text-left uppercase border-b  border-gray-700  text-gray-400 bg-gray-800">
                                     <tr>
                                         <td className="px-4 py-2">ID</td>
                                         <td className="px-4 py-2">NAME</td>
@@ -231,7 +231,7 @@ const RoleManager = () => {
                                         </td>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
+                                <tbody className="divide-y  divide-gray-700 bg-gray-800  text-gray-400">
                                     {roleData &&
                                         roleData.map((item: any) => (
                                             <tr key={item.id}>

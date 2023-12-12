@@ -4,12 +4,11 @@ import { getProfile } from "@/app/action/UserAction";
 import { createReview, getAllReview } from "@/app/action/review";
 import { ProductType, productVersion } from "@/common/product";
 import { allReviewType } from "@/common/reviewType";
-import { useState, useEffect } from "react";
-import { FaPaperPlane } from "react-icons/fa";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import CenterModal from "../Modal/CenterModal/CenterModal";
-import Cookies from "js-cookie";
 interface ReviewProps {
     data: ProductType;
     productVersion?: productVersion;
@@ -19,7 +18,6 @@ const Reviews: React.FC<ReviewProps> = ({ data, productVersion }) => {
     const [isReview, setIsReview] = useState<boolean>(false);
     const [rateReviewsScore, setRateReviewsScore] = useState<number>(5);
     const dispatch = useDispatch<any>();
-    const profile = useSelector((state: any) => state.profile.data);
     const allReviewData = useSelector(
         (state: any) => state.allReview.data
     ) as allReviewType;
@@ -28,7 +26,12 @@ const Reviews: React.FC<ReviewProps> = ({ data, productVersion }) => {
         dispatch(getProfile());
     }, [dispatch, data]);
     const handleCreateReview = async () => {
-        if (comment && comment.trim() !== "" && rateReviewsScore > 0) {
+        if (
+            comment &&
+            comment.trim() !== "" &&
+            rateReviewsScore > 0 &&
+            rateReviewsScore < 5
+        ) {
             if (productVersion?.id) {
                 const res = await dispatch(
                     createReview({
@@ -127,11 +130,20 @@ const Reviews: React.FC<ReviewProps> = ({ data, productVersion }) => {
                                     name="rateReviewsScore"
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
-                                    ) =>
-                                        setRateReviewsScore(
-                                            Number(e.target.value)
-                                        )
-                                    }
+                                    ) => {
+                                        if (
+                                            Number(e.target.value) < 0 ||
+                                            Number(e.target.value) > 5
+                                        ) {
+                                            toast.error(
+                                                "đánh giá không được dưới 0 và vượt quá 5"
+                                            );
+                                        } else {
+                                            setRateReviewsScore(
+                                                Number(e.target.value)
+                                            );
+                                        }
+                                    }}
                                     placeholder="nhập điểm đánh giá"
                                 />
                             </div>

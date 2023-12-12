@@ -87,7 +87,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
             );
             try {
                 if (res.payload.success) {
-                    toast.success("tạo giảm giá thành công");
+                    toast.success(`tạo giảm giá thành công`);
                     setFormData(initFormData);
                     dispatch(
                         getAllDiscount({
@@ -97,7 +97,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                     );
                     setShow(false);
                 } else {
-                    toast.error("tạo giảm giá thất bại");
+                    toast.error(`tạo giảm giá thất bại ${res.payload.message}`);
                 }
             } catch (error) {
                 toast.error("lỗi máy chủ vui lòng quay lại sau");
@@ -113,7 +113,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                 <div className="flex flex-col gap-4">
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
-                            <p className="text-gray-300 text-sm text-start">
+                            <p className="text-gray-300 text-sm text-start capitalize">
                                 phầm năm giảm giá:
                             </p>
                             <input
@@ -128,7 +128,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                             />
                         </div>
                         <div className="flex-1">
-                            <p className="text-gray-300 text-sm text-start">
+                            <p className="text-gray-300 text-sm text-start capitalize">
                                 số lượng :
                             </p>
                             <input
@@ -145,7 +145,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                     </div>
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
-                            <p className="text-gray-300 text-sm text-start">
+                            <p className="text-gray-300 text-sm text-start capitalize">
                                 ngày bắt đầu:
                             </p>
                             <input
@@ -160,7 +160,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                             />
                         </div>
                         <div className="flex-1">
-                            <p className="text-gray-300 text-sm text-start">
+                            <p className="text-gray-300 text-sm text-start capitalize">
                                 ngày kết thúc:
                             </p>
                             <input
@@ -177,7 +177,7 @@ const DiscountModal: React.FC<DiscountModalProps> = ({
                     </div>
                     <div className="flex justify-between gap-4">
                         <div className="w-full">
-                            <p className="text-gray-300 text-sm text-start">
+                            <p className="text-gray-300 text-sm text-start capitalize">
                                 kích hoạt:
                             </p>
                             <SelecterLab

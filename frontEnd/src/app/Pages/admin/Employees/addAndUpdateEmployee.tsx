@@ -214,8 +214,8 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                     modalTitle={
                         <h1 className="font-bold text-2xl text-white select-none mt-2">
                             {!employeeIdUpdate
-                                ? "Thêm sản phẩm mới"
-                                : "chỉnh sửa phẩm mới"}
+                                ? "Thêm nhân viên mới"
+                                : "chỉnh sửa nhân viên mới"}
                         </h1>
                     }
                     mainContent={
@@ -225,8 +225,8 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
 
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
-                                        <p className="text-gray-300 text-sm text-start">
-                                            firstName:
+                                        <p className="text-gray-300 text-sm text-start capitalize">
+                                            firstName :
                                         </p>
                                         <input
                                             className="w-full h-[48px] px-2 rounded-[8px]"
@@ -240,7 +240,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                         />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             lastName :
                                         </p>
                                         <input
@@ -257,7 +257,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                 </div>
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             email:
                                         </p>
                                         <input
@@ -278,7 +278,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                         ) : null}
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             chọn giới tính :
                                         </p>
                                         <SelecterLab
@@ -306,7 +306,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                 </div>
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             password:
                                         </p>
                                         <div className="relative">
@@ -349,7 +349,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                         </div>
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             phoneNumber :
                                         </p>
                                         <input
@@ -366,7 +366,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                 </div>
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             birthday:
                                         </p>
                                         <input
@@ -381,7 +381,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                         />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             chọn quyền hạng :
                                         </p>
                                         {adminRole && optionRoles?.length ? (
@@ -449,7 +449,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                             <div className="flex flex-col gap-6 w-full">
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             districts:
                                         </p>
                                         <input
@@ -464,7 +464,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                         />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             province :
                                         </p>
                                         <input
@@ -481,7 +481,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                 </div>
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             specificAddress:
                                         </p>
                                         <input
@@ -498,7 +498,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                         />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             wards :
                                         </p>
                                         <input

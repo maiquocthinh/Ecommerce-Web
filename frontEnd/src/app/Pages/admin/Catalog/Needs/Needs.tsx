@@ -171,7 +171,7 @@ const Needs = () => {
                         <div className="lg:flex md:flex flex-grow-0">
                             <button
                                 onClick={() => setISNewNeed(true)}
-                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 dark:text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
+                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
                             >
                                 <CiExport size={22} />
                                 <span className="text-xs">Tạo mới</span>
@@ -188,7 +188,7 @@ const Needs = () => {
                 placeholder="tìm kiếm theo nhu cầu"
             />
             {adminNeedsData?.data?.list.length ? (
-                <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
+                <div className="w-full overflow-hidden border border-gray-700 rounded-lg mb-8 rounded-b-lg">
                     {adminNeedsData.data.list ? (
                         <Table
                             data={adminNeedsData.data.list}
@@ -227,7 +227,7 @@ const Needs = () => {
                 mainContent={
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
-                            <p className="text-gray-300 text-sm text-start mb-1">
+                            <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                 tên :
                             </p>
                             <input
@@ -242,7 +242,7 @@ const Needs = () => {
                             />
                         </div>
                         <div className="flex-1">
-                            <p className="text-gray-300 text-sm text-start mb-1">
+                            <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                 mô tả :
                             </p>
                             <input

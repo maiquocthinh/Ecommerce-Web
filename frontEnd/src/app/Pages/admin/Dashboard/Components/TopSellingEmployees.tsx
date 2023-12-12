@@ -68,7 +68,7 @@ const TopSellingEmployees = () => {
                                 <td className="px-4 py-2">TOTAL VALUE</td>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-400">
+                        <tbody className="divide-y divide-gray-700 bg-gray-800 text-gray-400">
                             {employeeSelingData?.data &&
                                 employeeSelingData.data?.map(
                                     (employeeSeling: employeeSeling) => (

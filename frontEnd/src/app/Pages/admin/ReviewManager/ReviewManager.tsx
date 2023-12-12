@@ -219,17 +219,17 @@ const ReviewManager = () => {
     console.log(detailReviewData);
     return (
         <div className="flex flex-col p-4">
-            <h1 className="my-6 text-lg font-bold text-gray-700 dark:text-gray-300">
+            <h1 className="my-6 text-lg font-bold text-gray-300">
                 Reviews management
             </h1>
-            <div className="rounded-lg shadow-xs  dark:bg-gray-800 mb-5">
+            <div className="rounded-lg shadow-xs  bg-gray-800 mb-5">
                 <div className="grid gap-4 lg:gap-4 xl:gap-4 md:gap-2 md:grid-cols-5 py-2 px-4">
                     <div className="">
-                        <label className="block text-sm text-gray-800 dark:text-gray-400">
+                        <label className="block text-sm text-gray-400">
                             Start Date
                         </label>
                         <input
-                            className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md bg-gray-100 focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 dark:focus:border-gray-500 dark:bg-gray-700"
+                            className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none text-gray-300 leading-5 rounded-md  focus:bg-gray-700 border-gray-600 focus:border-gray-500 bg-gray-700"
                             type="date"
                             name="startDate"
                             value={formParams?.StartDate}
@@ -237,11 +237,11 @@ const ReviewManager = () => {
                         />
                     </div>
                     <div className="">
-                        <label className="block text-sm text-gray-800 dark:text-gray-400">
+                        <label className="block text-sm text-gray-400">
                             End Date
                         </label>
                         <input
-                            className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md bg-gray-100 focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 dark:focus:border-gray-500 dark:bg-gray-700"
+                            className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none text-gray-300 leading-5 rounded-md   focus:bg-gray-700  border-gray-600 focus:border-gray-500 bg-gray-700"
                             type="date"
                             name="EndDate"
                             value={formParams?.EndDate}
@@ -249,11 +249,11 @@ const ReviewManager = () => {
                         />
                     </div>
                     <div className="">
-                        <label className="block text-sm text-gray-800 dark:text-gray-400">
+                        <label className="block text-sm text-gray-400">
                             MinScore
                         </label>
                         <input
-                            className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md bg-gray-100 focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 dark:focus:border-gray-500 dark:bg-gray-700"
+                            className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none text-gray-300 leading-5 rounded-md  focus:bg-gray-700 border-gray-600 focus:border-gray-500 bg-gray-700"
                             type="number"
                             name="MinScore"
                             value={formParams?.MinScore || 0}
@@ -261,11 +261,11 @@ const ReviewManager = () => {
                         />
                     </div>
                     <div className="flex items-center flex-col">
-                        <label className="block text-sm text-gray-800 dark:text-gray-400">
+                        <label className="block text-sm  text-gray-400">
                             MaxScore
                         </label>
                         <input
-                            className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md bg-gray-100 focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 border-gray-200 dark:border-gray-600 dark:focus:border-gray-500 dark:bg-gray-700"
+                            className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none text-gray-300 leading-5 rounded-md focus:bg-gray-700 border-gray-600 focus:border-gray-500 bg-gray-700"
                             type="number"
                             name="MaxScore"
                             value={formParams?.MaxScore || 0}
@@ -273,7 +273,7 @@ const ReviewManager = () => {
                         />
                     </div>
                     <div className="">
-                        <label className="block text-sm text-gray-800 dark:text-gray-400">
+                        <label className="block text-sm text-gray-400">
                             reply option
                         </label>
                         <SelecterFilter
@@ -307,11 +307,11 @@ const ReviewManager = () => {
                         </button>
                         <div className="w-full mx-1">
                             <button
-                                className="align-bottom  leading-5 transition-colors duration-150 font-medium  text-gray-600  dark:text-gray-400 focus:outline-none rounded-lg border bg-gray-200 border-gray-200  w-full mr-3 flex items-center justify-center cursor-pointer h-12 px-4 md:py-1 py-2  text-sm dark:bg-gray-700"
+                                className="align-bottom  leading-5 transition-colors duration-150 font-medium  text-gray-400 focus:outline-none rounded-lg border border-gray-200  w-full mr-3 flex items-center justify-center cursor-pointer h-12 px-4 md:py-1 py-2  text-sm bg-gray-700"
                                 onClick={handleResetFilterReview}
                             >
                                 Reset
-                                <span className="text-black dark:text-gray-200 ml-2">
+                                <span className="text-gray-200 ml-2">
                                     <RxReset size={22} />
                                 </span>
                             </button>
@@ -322,7 +322,7 @@ const ReviewManager = () => {
             {allReviews?.length ? (
                 <div style={{ overflowY: "auto" }}>
                     <table className="w-full whitespace-nowrap">
-                        <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+                        <thead className="text-xs font-semibold tracking-wide text-left uppercase border-b border-gray-700 text-gray-400 bg-gray-800">
                             <tr>
                                 <td className="px-4 py-2">ID</td>
                                 <td className="px-4 py-2">FULLNAME</td>
@@ -335,7 +335,7 @@ const ReviewManager = () => {
                                 <td className="px-4 py-2 text-right">ACTION</td>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
+                        <tbody className="divide-y divide-gray-700 bg-gray-800 text-gray-400">
                             {!param?.id ? (
                                 allReviews?.length > 0 &&
                                 allReviews.map((review) => (
@@ -602,40 +602,6 @@ const ReviewManager = () => {
                                             <h1 className="text-lg text-gray-700 font-semibold hover:underline cursor-pointer">
                                                 {detailReviewData.data.fullname}
                                             </h1>
-                                            <div className="flex mt-2">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-4 w-4 text-yellow-400"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-4 w-4 text-yellow-400"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-4 w-4 text-yellow-400"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-4 w-4 text-yellow-400"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                            </div>
                                         </div>
                                     </div>
                                     <div>

@@ -3,10 +3,7 @@ import SelecterLab from "@/Components/FormData/Selecter/SelecterLab";
 import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import Notification from "@/Components/PageLoader/Notification";
 import Paginations from "@/Components/Paginations/Paginations";
-import {
-    adminCreateImport,
-    adminGetImportShipment,
-} from "@/app/action/adminAction/adminInventory";
+import { adminGetImportShipment } from "@/app/action/adminAction/adminInventory";
 import {
     adminGetOrderDetail,
     adminListOrder,
@@ -74,12 +71,15 @@ const Orders = () => {
     }, [listOrderData]);
     const handlePageChange = (newPage: number, oldPage: number) => {
         if (newPage > 0 && oldPage > 0) {
-            if (formData.CustomerName && formData.CustomerName.trim() !== "") {
+            if (formData) {
                 dispatch(
                     adminListOrder({
                         pageSize: 6,
                         pageIndex: newPage,
-                        CustomerName: formData.CustomerName.trim(),
+                        CustomerName: formData?.CustomerName?.trim(),
+                        EndDate: formData?.EndDate,
+                        StartDate: formData?.StartDate,
+                        Status: formData?.Status,
                     })
                 );
             } else {
@@ -220,7 +220,7 @@ const Orders = () => {
                             <div className="min-w-[20%]">
                                 <button
                                     onClick={handleSearchOrder}
-                                    className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600 h-12 w-full"
+                                    className="text-gray-100 align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600 h-12 w-full"
                                 >
                                     Search
                                 </button>
@@ -232,7 +232,7 @@ const Orders = () => {
                                     Start Date
                                 </label>
                                 <input
-                                    className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none leading-5 rounded-md focus: focus:bg-gray-700   border-gray-600 focus:border-gray-500 bg-gray-700"
+                                    className="block w-full h-12 text-custom-addmin_color border px-3 py-1 text-sm focus:outline-none leading-5 rounded-md focus: focus:bg-gray-700   border-gray-600 focus:border-gray-500 bg-gray-700"
                                     type="date"
                                     name="startDate"
                                     value={formData?.StartDate}
@@ -244,7 +244,7 @@ const Orders = () => {
                                     End Date
                                 </label>
                                 <input
-                                    className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none leading-5 rounded-md focus: focus:bg-gray-700   border-gray-600 focus:border-gray-500 bg-gray-700"
+                                    className="placeholder:text-custom-addmin_color text-custom-addmin_color block w-full h-12 border px-3 py-1 text-sm focus:outline-none leading-5 rounded-md focus: focus:bg-gray-700   border-gray-600 focus:border-gray-500 bg-gray-700"
                                     type="date"
                                     name="EndDate"
                                     value={formData?.EndDate}
@@ -287,7 +287,7 @@ const Orders = () => {
                                         Filter
                                     </label>
                                     <button
-                                        className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600 h-12 w-full"
+                                        className="text-gray-100 align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600 h-12 w-full"
                                         onClick={handleFilterProduct}
                                     >
                                         Filter
@@ -298,10 +298,10 @@ const Orders = () => {
                                         Reset
                                     </label>
                                     <button
-                                        className="align-bottom leading-5 transition-colors duration-150 font-medium  text-gray-600 focus:outline-none rounded-lg border  px-4 w-full mr-3 flex items-center justify-center cursor-pointer h-12 md:py-1 py-3 text-sm bg-gray-700"
+                                        className="align-bottom leading-5 transition-colors duration-150 font-medium  text-gray-100 focus:outline-none rounded-lg border  px-4 w-full mr-3 flex items-center justify-center cursor-pointer h-12 md:py-1 py-3 text-sm bg-gray-700"
                                         onClick={handleResetOrder}
                                     >
-                                        <span className="text-black">
+                                        <span className="text-gray-100">
                                             Reset
                                         </span>
                                     </button>
@@ -311,408 +311,422 @@ const Orders = () => {
                     </div>
                 </div>
             </div>
-            <div>
-                <table className="w-full whitespace-nowrap">
-                    <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  border-gray-700 bg-gray-800">
-                        <tr>
-                            <td className="px-4 py-2">ID</td>
-                            <td className="px-4 py-2">Customer Name</td>
-                            <td className="px-4 py-2">PRICE</td>
-                            <td className="px-4 py-2">ADDRESS</td>
-                            <td className="px-4 py-2">PHONENUMBER</td>
-                            <td className="px-4 py-2">STATUS</td>
-                            <td className="px-4 py-2">ACTION</td>
-                            <td className="px-4 py-2 text-right">INVOICE</td>
-                        </tr>
-                    </thead>
-                    <tbody className=" divide-y divide-gray-700 bg-gray-800 text-custom-addmin_color">
-                        {dataOrder?.length &&
-                            dataOrder.map((order) => (
-                                <tr
-                                    key={order.orderId}
-                                    className="bg-custom-addmin_bg"
-                                >
-                                    <td className="px-4 py-2">
-                                        <span className="font-semibold uppercase text-xs">
-                                            {order.orderId}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <span className="text-sm font-semibold">
-                                            {order.shippingInfo.recipientName}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <span className="text-sm">
-                                            {order.totalAmount}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <span className="text-sm font-semibold">
-                                            {order.shippingInfo.address}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <span className="text-sm font-semibold">
-                                            {order.shippingInfo.phoneNumber}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2 text-xs">
-                                        <span className="font-serif">
-                                            <span
-                                                className="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-yellow-600  bg-yellow-600 bg-opacity-50"
-                                                style={{
-                                                    backgroundColor:
-                                                        order.orderStatus ===
-                                                        "processing"
-                                                            ? "#e4a11b"
-                                                            : order.orderStatus ===
-                                                              "shipped"
-                                                            ? "#14a44d"
-                                                            : order.orderStatus ===
-                                                              "cancelled"
-                                                            ? "#dc4c64"
-                                                            : "#54d4d3",
-                                                }}
-                                            >
-                                                {order.orderStatus}
+            {dataOrder?.length ? (
+                <div>
+                    <table className="w-full whitespace-nowrap">
+                        <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  border-gray-700 bg-gray-800">
+                            <tr>
+                                <td className="px-4 py-2">ID</td>
+                                <td className="px-4 py-2">Customer Name</td>
+                                <td className="px-4 py-2">PRICE</td>
+                                <td className="px-4 py-2">ADDRESS</td>
+                                <td className="px-4 py-2">PHONENUMBER</td>
+                                <td className="px-4 py-2">STATUS</td>
+                                <td className="px-4 py-2">ACTION</td>
+                                <td className="px-4 py-2 text-right">
+                                    INVOICE
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody className=" divide-y divide-gray-700 bg-gray-800 text-custom-addmin_color">
+                            {dataOrder?.length &&
+                                dataOrder.map((order) => (
+                                    <tr
+                                        key={order.orderId}
+                                        className="bg-custom-addmin_bg"
+                                    >
+                                        <td className="px-4 py-2">
+                                            <span className="font-semibold uppercase text-xs">
+                                                {order.orderId}
                                             </span>
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2 text-center">
-                                        <SelecterFilter
-                                            handleGetOptionBySelect={
-                                                handleGetOptionBySelect
-                                            }
-                                            options={
-                                                order.orderStatus ===
-                                                "cancelled"
-                                                    ? [
-                                                          {
-                                                              id: order.orderId,
-                                                              title: "cancelled",
-                                                              defaultStatus:
-                                                                  order.orderStatus,
-                                                          },
-                                                      ]
-                                                    : [
-                                                          {
-                                                              id: order.orderId,
-                                                              title: "processing",
-                                                              defaultStatus:
-                                                                  order.orderStatus,
-                                                          },
-                                                          {
-                                                              id: order.orderId,
-                                                              title: "shipped",
-                                                              defaultStatus:
-                                                                  order.orderStatus,
-                                                          },
-                                                          {
-                                                              id: order.orderId,
-                                                              title: "delivering",
-                                                              defaultStatus:
-                                                                  order.orderStatus,
-                                                          },
-                                                          {
-                                                              id: order.orderId,
-                                                              title: "cancelled",
-                                                              defaultStatus:
-                                                                  order.orderStatus,
-                                                          },
-                                                      ]
-                                            }
-                                            typeId="orderAction"
-                                            defaultValue={order.orderStatus}
-                                        />
-                                    </td>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <span className="text-sm font-semibold">
+                                                {
+                                                    order.shippingInfo
+                                                        .recipientName
+                                                }
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <span className="text-sm">
+                                                {order.totalAmount}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <span className="text-sm font-semibold">
+                                                {order.shippingInfo.address}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <span className="text-sm font-semibold">
+                                                {order.shippingInfo.phoneNumber}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2 text-xs">
+                                            <span className="font-serif">
+                                                <span
+                                                    className="text-gray-100 inline-flex px-2 text-xs font-medium leading-5 rounded-full bg-opacity-50"
+                                                    style={{
+                                                        backgroundColor:
+                                                            order.orderStatus ===
+                                                            "processing"
+                                                                ? "#e4a11b"
+                                                                : order.orderStatus ===
+                                                                  "shipped"
+                                                                ? "#14a44d"
+                                                                : order.orderStatus ===
+                                                                  "cancelled"
+                                                                ? "#dc4c64"
+                                                                : "#54d4d3",
+                                                    }}
+                                                >
+                                                    {order.orderStatus}
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2 text-center">
+                                            <SelecterFilter
+                                                handleGetOptionBySelect={
+                                                    handleGetOptionBySelect
+                                                }
+                                                options={
+                                                    order.orderStatus ===
+                                                    "cancelled"
+                                                        ? [
+                                                              {
+                                                                  id: order.orderId,
+                                                                  title: "cancelled",
+                                                                  defaultStatus:
+                                                                      order.orderStatus,
+                                                              },
+                                                          ]
+                                                        : [
+                                                              {
+                                                                  id: order.orderId,
+                                                                  title: "processing",
+                                                                  defaultStatus:
+                                                                      order.orderStatus,
+                                                              },
+                                                              {
+                                                                  id: order.orderId,
+                                                                  title: "shipped",
+                                                                  defaultStatus:
+                                                                      order.orderStatus,
+                                                              },
+                                                              {
+                                                                  id: order.orderId,
+                                                                  title: "delivering",
+                                                                  defaultStatus:
+                                                                      order.orderStatus,
+                                                              },
+                                                              {
+                                                                  id: order.orderId,
+                                                                  title: "cancelled",
+                                                                  defaultStatus:
+                                                                      order.orderStatus,
+                                                              },
+                                                          ]
+                                                }
+                                                typeId="orderAction"
+                                                defaultValue={order.orderStatus}
+                                            />
+                                        </td>
 
-                                    <td className="px-4 py-2 text-right flex justify-end">
-                                        <div className="flex justify-between items-center">
-                                            <button
-                                                onClick={() =>
-                                                    router(
-                                                        `/admin/order-detail/${order.orderId}`
-                                                    )
-                                                }
-                                                className="ml-2 p-2 cursor-pointer text-gray-500 hover:text-emerald-600 focus:outline-none"
-                                            >
-                                                <AiOutlinePrinter size={22} />
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    handleUpdateOrder(
-                                                        order.orderId
-                                                    )
-                                                }
-                                                className="p-2 cursor-pointer hover:text-emerald-600"
-                                            >
-                                                <CiEdit size={22} />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                    </tbody>
-                </table>
-                {orderDetailData.success ? (
-                    <CenterModal
-                        show={isUpdateOrder}
-                        setShow={setISUpdateOrder}
-                        showModalTitle
-                        modalTitle={
-                            <h1 className="font-bold text-2xl text-black select-none mt-2">
-                                Thông tin sản phẩm
-                            </h1>
-                        }
-                        // bgAll="bg-custom-addmin_bg"
-                        mainContent={
-                            <div className="flex gap-4 justify-start items-start p-2">
-                                <div className="flex flex-col gap-6 w-full">
-                                    <div className="flex justify-between gap-4">
-                                        <div className="flex flex-col gap-2 w-full">
-                                            {orderDetailData?.data?.orderDetails
-                                                ?.length &&
-                                                orderDetailData?.data?.orderDetails.map(
-                                                    (
-                                                        orderDetail: orderDetailType
-                                                    ) => (
-                                                        <div className="flex w-full">
-                                                            <div className="flex-1 relative">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    id={`react-option ${orderDetail.id}`}
-                                                                    value=""
-                                                                    className="hidden peer"
-                                                                />
-                                                                <label
-                                                                    key={
-                                                                        orderDetail.id
-                                                                    }
-                                                                    htmlFor={`react-option ${orderDetail.id}`}
-                                                                    className={`gap-2 items-center inline-flex justify-start w-full p-5 border-2  rounded-lg cursor-pointer  border-gray-700 peer-checked:border-blue-600 hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 bg-gray-800hover:bg-gray-700`}
-                                                                >
-                                                                    <img
-                                                                        src={
-                                                                            orderDetail.imageUrl
-                                                                        }
-                                                                        alt=""
-                                                                        className="rounded-sm h-24"
+                                        <td className="px-4 py-2 text-right flex justify-end">
+                                            <div className="flex justify-between items-center">
+                                                <button
+                                                    onClick={() =>
+                                                        router(
+                                                            `/admin/order-detail/${order.orderId}`
+                                                        )
+                                                    }
+                                                    className="ml-2 p-2 cursor-pointer text-gray-500 hover:text-emerald-600 focus:outline-none"
+                                                >
+                                                    <AiOutlinePrinter
+                                                        size={22}
+                                                    />
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleUpdateOrder(
+                                                            order.orderId
+                                                        )
+                                                    }
+                                                    className="p-2 cursor-pointer hover:text-emerald-600"
+                                                >
+                                                    <CiEdit size={22} />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                    </table>
+                    {orderDetailData.success ? (
+                        <CenterModal
+                            show={isUpdateOrder}
+                            setShow={setISUpdateOrder}
+                            showModalTitle
+                            modalTitle={
+                                <h1 className="font-bold text-2xl text-black select-none mt-2">
+                                    Thông tin sản phẩm
+                                </h1>
+                            }
+                            // bgAll="bg-custom-addmin_bg"
+                            mainContent={
+                                <div className="flex gap-4 justify-start items-start p-2">
+                                    <div className="flex flex-col gap-6 w-full">
+                                        <div className="flex justify-between gap-4">
+                                            <div className="flex flex-col gap-2 w-full">
+                                                {orderDetailData?.data
+                                                    ?.orderDetails?.length &&
+                                                    orderDetailData?.data?.orderDetails.map(
+                                                        (
+                                                            orderDetail: orderDetailType
+                                                        ) => (
+                                                            <div className="flex w-full">
+                                                                <div className="flex-1 relative">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={`react-option ${orderDetail.id}`}
+                                                                        value=""
+                                                                        className="hidden peer"
                                                                     />
-                                                                    <div className="flex gap-1 font-medium flex-col">
-                                                                        <span>
-                                                                            Tên:
-                                                                            {
-                                                                                orderDetail.productVersionName
+                                                                    <label
+                                                                        key={
+                                                                            orderDetail.id
+                                                                        }
+                                                                        htmlFor={`react-option ${orderDetail.id}`}
+                                                                        className={`gap-2 items-center inline-flex justify-start w-full p-5 border-2  rounded-lg cursor-pointer  border-gray-700 peer-checked:border-blue-600 hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 bg-gray-800hover:bg-gray-700`}
+                                                                    >
+                                                                        <img
+                                                                            src={
+                                                                                orderDetail.imageUrl
                                                                             }
-                                                                        </span>
-                                                                        <span>
-                                                                            số
-                                                                            lượng:
-                                                                            {
-                                                                                orderDetail.quantity
-                                                                            }
-                                                                        </span>
-                                                                        {orderDetail.price ===
-                                                                        orderDetail.originPrice ? (
+                                                                            alt=""
+                                                                            className="rounded-sm h-24"
+                                                                        />
+                                                                        <div className="flex gap-1 font-medium flex-col">
                                                                             <span>
-                                                                                giá
-                                                                                tiền:{" "}
+                                                                                Tên:
                                                                                 {
-                                                                                    orderDetail.price
+                                                                                    orderDetail.productVersionName
                                                                                 }
-                                                                                VNĐ
                                                                             </span>
-                                                                        ) : (
-                                                                            <span className="flex gap-1">
-                                                                                giá
-                                                                                tiền:
-                                                                                <span className="line-through text-custom-disable">
-                                                                                    {
-                                                                                        orderDetail.originPrice
-                                                                                    }
-                                                                                </span>
-                                                                                <span className="text-red-500">
+                                                                            <span>
+                                                                                số
+                                                                                lượng:
+                                                                                {
+                                                                                    orderDetail.quantity
+                                                                                }
+                                                                            </span>
+                                                                            {orderDetail.price ===
+                                                                            orderDetail.originPrice ? (
+                                                                                <span>
+                                                                                    giá
+                                                                                    tiền:{" "}
                                                                                     {
                                                                                         orderDetail.price
                                                                                     }
                                                                                     VNĐ
                                                                                 </span>
+                                                                            ) : (
+                                                                                <span className="flex gap-1">
+                                                                                    giá
+                                                                                    tiền:
+                                                                                    <span className="line-through text-custom-disable">
+                                                                                        {
+                                                                                            orderDetail.originPrice
+                                                                                        }
+                                                                                    </span>
+                                                                                    <span className="text-red-500">
+                                                                                        {
+                                                                                            orderDetail.price
+                                                                                        }
+                                                                                        VNĐ
+                                                                                    </span>
+                                                                                </span>
+                                                                            )}
+
+                                                                            <span>
+                                                                                Thành
+                                                                                tiền
+                                                                                :{" "}
+                                                                                {
+                                                                                    orderDetail.totalPrice
+                                                                                }
                                                                             </span>
-                                                                        )}
-
-                                                                        <span>
-                                                                            Thành
-                                                                            tiền
-                                                                            :{" "}
-                                                                            {
-                                                                                orderDetail.totalPrice
-                                                                            }
-                                                                        </span>
-                                                                    </div>
-                                                                </label>
-                                                                <button
-                                                                    onClick={() =>
-                                                                        handleSelectImportShipment(
-                                                                            orderDetail.productVersionId,
-                                                                            orderDetail.id
-                                                                        )
-                                                                    }
-                                                                    className="text-custom-Colorprimary absolute top-4 right-4"
-                                                                >
-                                                                    <CiEdit
-                                                                        size={
-                                                                            24
+                                                                        </div>
+                                                                    </label>
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            handleSelectImportShipment(
+                                                                                orderDetail.productVersionId,
+                                                                                orderDetail.id
+                                                                            )
                                                                         }
-                                                                    />
-                                                                </button>
+                                                                        className="text-custom-Colorprimary absolute top-4 right-4"
+                                                                    >
+                                                                        <CiEdit
+                                                                            size={
+                                                                                24
+                                                                            }
+                                                                        />
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    )
-                                                )}
+                                                        )
+                                                    )}
 
-                                            <>
-                                                <h1 className="font-bold text-center text-2xl text-black select-none mt-2">
-                                                    Thông tin đơn hàng
-                                                </h1>
-                                                <div className="flex gap-2 items-start p-2 border">
-                                                    <div className="flex flex-col gap-2 text-lg w-2/5">
-                                                        <span>
-                                                            Trạng thái:
-                                                            {
-                                                                orderDetailData
-                                                                    .data
-                                                                    .orderStatus
-                                                            }
-                                                        </span>
-                                                        <span>
-                                                            Tổng tiền:
-                                                            {
-                                                                orderDetailData
-                                                                    .data
-                                                                    .totalAmount
-                                                            }
-                                                        </span>
+                                                <>
+                                                    <h1 className="font-bold text-center text-2xl text-black select-none mt-2">
+                                                        Thông tin đơn hàng
+                                                    </h1>
+                                                    <div className="flex gap-2 items-start p-2 border">
+                                                        <div className="flex flex-col gap-2 text-lg w-2/5">
+                                                            <span>
+                                                                Trạng thái:
+                                                                {
+                                                                    orderDetailData
+                                                                        .data
+                                                                        .orderStatus
+                                                                }
+                                                            </span>
+                                                            <span>
+                                                                Tổng tiền:
+                                                                {
+                                                                    orderDetailData
+                                                                        .data
+                                                                        .totalAmount
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex flex-col gap-2 text-lg flex-1 pl-4 border-l">
+                                                            <span>
+                                                                Người nhận hàng:
+                                                                {
+                                                                    orderDetailData
+                                                                        .data
+                                                                        .shippingInfo
+                                                                        .recipientName
+                                                                }
+                                                            </span>
+                                                            <span>
+                                                                Số điện thoại:
+                                                                {
+                                                                    orderDetailData
+                                                                        .data
+                                                                        .shippingInfo
+                                                                        .phoneNumber
+                                                                }
+                                                            </span>{" "}
+                                                            <span>
+                                                                đại chỉ:
+                                                                {
+                                                                    orderDetailData
+                                                                        .data
+                                                                        .shippingInfo
+                                                                        .address
+                                                                }
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex flex-col gap-2 text-lg flex-1 pl-4 border-l">
-                                                        <span>
-                                                            Người nhận hàng:
-                                                            {
-                                                                orderDetailData
-                                                                    .data
-                                                                    .shippingInfo
-                                                                    .recipientName
-                                                            }
-                                                        </span>
-                                                        <span>
-                                                            Số điện thoại:
-                                                            {
-                                                                orderDetailData
-                                                                    .data
-                                                                    .shippingInfo
-                                                                    .phoneNumber
-                                                            }
-                                                        </span>{" "}
-                                                        <span>
-                                                            đại chỉ:
-                                                            {
-                                                                orderDetailData
-                                                                    .data
-                                                                    .shippingInfo
-                                                                    .address
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </>
+                                                </>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
-                        showButtons
-                        buttonComponent={
-                            <div className="flex justify-center">
-                                <button
-                                    onClick={() => {
-                                        setISUpdateOrder(false);
-                                    }}
-                                    className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
-                                >
-                                    đóng
-                                </button>
-                            </div>
-                        }
-                    />
-                ) : null}
-                {isImportsShipment ? (
-                    <CenterModal
-                        show={isImportsShipment}
-                        setShow={setIsImportsShipment}
-                        showModalTitle
-                        modalTitle={
-                            <h1 className="font-bold text-2xl text-white select-none mt-2">
-                                Chọn nhà cung cấp
-                            </h1>
-                        }
-                        bgAll="bg-custom-addmin_bg"
-                        mainContent={
-                            <div className="flex gap-4 justify-start items-start p-2">
-                                <div className="flex flex-col gap-6 w-full">
-                                    <div className="flex justify-between gap-4">
-                                        <div className="flex flex-col gap-2 w-full">
-                                            <p className="text-gray-300 text-sm text-start">
-                                                chọn tên sản phẩm cần dặt :
-                                            </p>
-                                            {importShipmentData.success ? (
-                                                <SelecterLab
-                                                    typeId="import"
-                                                    handleGetOptionBySelect={
-                                                        handleGetOptionBySelectLab
-                                                    }
-                                                    options={
-                                                        importShipmentData.data
-                                                    }
-                                                />
-                                            ) : null}
+                            }
+                            showButtons
+                            buttonComponent={
+                                <div className="flex justify-center">
+                                    <button
+                                        onClick={() => {
+                                            setISUpdateOrder(false);
+                                        }}
+                                        className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
+                                    >
+                                        đóng
+                                    </button>
+                                </div>
+                            }
+                        />
+                    ) : null}
+                    {isImportsShipment ? (
+                        <CenterModal
+                            show={isImportsShipment}
+                            setShow={setIsImportsShipment}
+                            showModalTitle
+                            modalTitle={
+                                <h1 className="font-bold text-2xl text-white select-none mt-2">
+                                    Chọn nhà cung cấp
+                                </h1>
+                            }
+                            bgAll="bg-custom-addmin_bg"
+                            mainContent={
+                                <div className="flex gap-4 justify-start items-start p-2">
+                                    <div className="flex flex-col gap-6 w-full">
+                                        <div className="flex justify-between gap-4">
+                                            <div className="flex flex-col gap-2 w-full">
+                                                <p className="text-gray-300 text-sm text-start">
+                                                    chọn tên sản phẩm cần dặt :
+                                                </p>
+                                                {importShipmentData.success ? (
+                                                    <SelecterLab
+                                                        typeId="import"
+                                                        handleGetOptionBySelect={
+                                                            handleGetOptionBySelectLab
+                                                        }
+                                                        options={
+                                                            importShipmentData.data
+                                                        }
+                                                    />
+                                                ) : null}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
-                        showButtons
-                        buttonComponent={
-                            <div className="flex justify-center gap-2">
-                                <button
-                                    onClick={() => {
-                                        setIsImportsShipment(false);
-                                        setISUpdateOrder(true);
-                                    }}
-                                    className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
-                                >
-                                    đóng
-                                </button>
-                                <button
-                                    onClick={handleUpdatImportsShipment}
-                                    className="px-4 py-2 border-b-4 border border-green-500 text-green-500 hover:text-white hover:bg-green-500 transition-all duration-200"
-                                >
-                                    Hoàn tất
-                                </button>
-                            </div>
-                        }
-                    />
-                ) : null}
-                {dataOrder && (
-                    <Paginations
-                        handlePageChange={handlePageChange}
-                        pagination={{
-                            currentPage: pagi.pageIndex || 0,
-                            totalPage: pagi.totalPages || 0,
-                        }}
-                        paging={pagi}
-                    />
-                )}
-            </div>
+                            }
+                            showButtons
+                            buttonComponent={
+                                <div className="flex justify-center gap-2">
+                                    <button
+                                        onClick={() => {
+                                            setIsImportsShipment(false);
+                                            setISUpdateOrder(true);
+                                        }}
+                                        className="px-4 py-2 border-b-4 border border-red-500 text-red-500 hover:text-white hover:bg-red-500 transition-all duration-200"
+                                    >
+                                        đóng
+                                    </button>
+                                    <button
+                                        onClick={handleUpdatImportsShipment}
+                                        className="px-4 py-2 border-b-4 border border-green-500 text-green-500 hover:text-white hover:bg-green-500 transition-all duration-200"
+                                    >
+                                        Hoàn tất
+                                    </button>
+                                </div>
+                            }
+                        />
+                    ) : null}
+                    {dataOrder && (
+                        <Paginations
+                            handlePageChange={handlePageChange}
+                            pagination={{
+                                currentPage: pagi.pageIndex || 0,
+                                totalPage: pagi.totalPages || 0,
+                            }}
+                            paging={pagi}
+                        />
+                    )}
+                </div>
+            ) : (
+                <div className="flex justify-center items-center text-xl text-white">
+                    Không có order nào hợp lệ
+                </div>
+            )}
+
             <Notification />
         </div>
     );

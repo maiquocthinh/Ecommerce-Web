@@ -14,6 +14,7 @@ const handleGetAllSuppliers = (formData: defautlParametersGet) => {
     return axios.get(`/api/supplier`, { params, headers });
 };
 const handleCreateSupplier = (formData: supplierType) => {
+    alert("check");
     const headers = {
         Authorization: `Bearer ${Cookies.get("AdminToken")}`,
     };

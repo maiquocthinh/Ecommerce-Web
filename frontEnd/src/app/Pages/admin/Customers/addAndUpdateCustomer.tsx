@@ -91,7 +91,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
             if (!customerDataUpdate?.id) {
                 const response = await dispatch(adminCreateCustomer(formData));
                 if (response.payload?.success) {
-                    toast.success("tạo nhân viên thành công");
+                    toast.success("tạo khách hàng thành công");
                     setFormData(initFormData);
                     setIsNewCustomer(false);
                     await dispatch(
@@ -113,7 +113,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                 );
 
                 if (response.payload?.success) {
-                    toast.success("Cập nhật nhân viên thành công");
+                    toast.success("Cập nhật khách hàng thành công");
                     setFormData(initFormData);
                     setIsNewCustomer(false);
                     await dispatch(
@@ -160,7 +160,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                                 <UploadImg imgUrl={formData.avatarUrl} />
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             firstName:
                                         </p>
                                         <input
@@ -175,7 +175,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                                         />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             lastName :
                                         </p>
                                         <input
@@ -192,7 +192,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                                 </div>
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             email:
                                         </p>
                                         <input
@@ -213,7 +213,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                                         ) : null}
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             chọn giới tính :
                                         </p>
                                         <SelecterLab
@@ -241,7 +241,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                                 </div>
                                 <div className="flex justify-between gap-4">
                                     <div className="w-1/2">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             password:
                                         </p>
                                         <div className="relative">
@@ -284,7 +284,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                                         </div>
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             phoneNumber :
                                         </p>
                                         <input
@@ -301,7 +301,7 @@ const AddAndUpdateCustomer: React.FC<AddAndUpdateCustomerProps> = ({
                                 </div>
                                 <div className="flex justify-between gap-4">
                                     <div className="w-full">
-                                        <p className="text-gray-300 text-sm text-start">
+                                        <p className="text-gray-300 text-sm text-start capitalize">
                                             birthday:
                                         </p>
                                         <input

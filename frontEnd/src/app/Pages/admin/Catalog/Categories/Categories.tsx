@@ -96,12 +96,12 @@ const Categories = () => {
                                     6,
                             })
                         );
-                        toast.success("tạo mới nhãn hàng thành công!");
+                        toast.success("tạo mới loại hàng thành công!");
                         setFormData(initFormData);
                         setISNewCategory(false);
                     } else {
                         toast.error(
-                            `tạo mới nhãn hàng thất bại! ${res.payload.message}`
+                            `tạo mới loại hàng thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -123,13 +123,13 @@ const Categories = () => {
                                     6,
                             })
                         );
-                        toast.success("chỉnh sửa nhãn hàng thành công!");
+                        toast.success("chỉnh sửa loại hàng thành công!");
                         setFormData(initFormData);
                         setISNewCategory(false);
                         setISUpdateCategory(false);
                     } else {
                         toast.error(
-                            `chỉnh sửa nhãn hàng thất bại! ${res.payload.message}`
+                            `chỉnh sửa loại hàng thất bại! ${res.payload.message}`
                         );
                     }
                 } catch (error) {
@@ -145,7 +145,7 @@ const Categories = () => {
             const res = await dispatch(adminDeleteCategory(id));
             try {
                 if (res.payload.success) {
-                    toast.success("xóa nhãn hàng thành công!");
+                    toast.success("xóa loại hàng thành công!");
                     dispatch(
                         getCategoriesByParams({
                             pageIndex:
@@ -157,7 +157,7 @@ const Categories = () => {
                     );
                 } else {
                     toast.error(
-                        `tạo mới nhãn hàng thất bại! ${res.payload.message}`
+                        `tạo mới loại hàng thất bại! ${res.payload.message}`
                     );
                 }
             } catch (error) {
@@ -180,7 +180,7 @@ const Categories = () => {
                         <div className="lg:flex md:flex flex-grow-0">
                             <button
                                 onClick={() => setISNewCategory(true)}
-                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 dark:text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
+                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
                             >
                                 <CiExport size={22} />
                                 <span className="text-xs">Tạo mới</span>
@@ -197,7 +197,7 @@ const Categories = () => {
                 placeholder="tìm kiếm theo danh mục"
             />
             {adminCategoriesData?.data?.list.length ? (
-                <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
+                <div className="w-full overflow-hidden border border-gray-700 rounded-lg mb-8 rounded-b-lg">
                     {adminCategoriesData.data.list ? (
                         <Table
                             data={adminCategoriesData.data.list}
@@ -240,7 +240,7 @@ const Categories = () => {
                 mainContent={
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
-                            <p className="text-gray-300 text-sm text-start mb-1">
+                            <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                 tên :
                             </p>
                             <input
@@ -251,11 +251,11 @@ const Categories = () => {
                                 onChange={(
                                     e: React.ChangeEvent<HTMLInputElement>
                                 ) => handleOnChange(e)}
-                                placeholder="nhập tên nhãn hàng"
+                                placeholder="nhập tên loại hàng"
                             />
                         </div>
                         <div className="flex-1">
-                            <p className="text-gray-300 text-sm text-start mb-1">
+                            <p className="text-gray-300 text-sm text-start capitalize mb-1">
                                 mô tả :
                             </p>
                             <input
@@ -266,7 +266,7 @@ const Categories = () => {
                                 onChange={(
                                     e: React.ChangeEvent<HTMLInputElement>
                                 ) => handleOnChange(e)}
-                                placeholder="nhập mô tả nhãn hàng"
+                                placeholder="nhập mô tả loại hàng"
                             />
                         </div>
                     </div>

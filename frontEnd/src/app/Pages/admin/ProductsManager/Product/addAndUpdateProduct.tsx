@@ -137,7 +137,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
 
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start">
+                                <p className="text-gray-300 text-sm text-start capitalize">
                                     tên:
                                 </p>
                                 <input
@@ -153,7 +153,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start">
+                                <p className="text-gray-300 text-sm text-start capitalize">
                                     chọn nhu cầu sản phẩm :
                                 </p>
                                 {needsData?.length ? (
@@ -171,7 +171,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start">
+                                <p className="text-gray-300 text-sm text-start capitalize">
                                     bảo hành :
                                 </p>
                                 <input
@@ -187,7 +187,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start">
+                                <p className="text-gray-300 text-sm text-start capitalize">
                                     chọn loại sản phẩm :
                                 </p>
                                 {categoriesData?.length ? (
@@ -204,7 +204,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                         </div>
                         <div className="flex justify-between gap-4">
                             <div className="w-1/2">
-                                <p className="text-gray-300 text-sm text-start">
+                                <p className="text-gray-300 text-sm text-start capitalize">
                                     mô tả :
                                 </p>
                                 <input
@@ -220,7 +220,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-gray-300 text-sm text-start">
+                                <p className="text-gray-300 text-sm text-start capitalize">
                                     chọn nhà cung cấp :
                                 </p>
                                 {branchData?.length ? (
@@ -238,7 +238,7 @@ const AddAndUpdateProduct: React.FC<AddAndUpdateProductProps> = ({
                         {isUpdateProduct ? (
                             <div className="flex justify-between gap-4">
                                 <div className="flex-1">
-                                    <p className="text-gray-300 text-sm text-start">
+                                    <p className="text-gray-300 text-sm text-start capitalize">
                                         hoạt động :
                                     </p>
                                     <SelecterLab

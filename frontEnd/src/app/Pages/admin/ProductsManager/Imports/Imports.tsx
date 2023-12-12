@@ -2,28 +2,16 @@ import CenterModal from "@/Components/Modal/CenterModal/CenterModal";
 import Notification from "@/Components/PageLoader/Notification";
 import Paginations from "@/Components/Paginations/Paginations";
 import { adminAllImports } from "@/app/action/adminAction/adminInventory";
-import { importShipmentsType, importsType } from "@/common/Inventory";
+import { importsType } from "@/common/Inventory";
 import { pagingType } from "@/common/paging";
 import { useEffect, useState } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
-import { CiEdit } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-const initFormData = {
-    supplierId: 0,
-    importShipments: [
-        {
-            productVersionId: 0,
-            quantity: 0,
-            cost: 0,
-        },
-    ],
-};
+
 const Imports = () => {
     const dispatch = useDispatch<any>();
     const allImports = useSelector((state: any) => state.allImports.data);
     const [paging, setPaging] = useState<pagingType>();
     const [importData, setimportData] = useState<importsType[]>();
-    const [formData, setFormData] = useState<importShipmentsType>(initFormData);
     const [isNewImport, setisNewImport] = useState<boolean>(false);
     useEffect(() => {
         dispatch(adminAllImports({ pageIndex: 1, pageSize: 6 }));
@@ -49,18 +37,20 @@ const Imports = () => {
                 Import manager
             </h1>
             <div className="rounded-lg shadow-xs bg-gray-800 mb-5">
-                <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg rounded-b-lg">
+                <div className="w-full overflow-hidden border border-gray-700 rounded-lg rounded-b-lg">
                     <table className="w-full whitespace-nowrap">
-                        <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+                        <thead className="text-xs font-semibold tracking-wide text-left uppercase border-b border-gray-700 text-gray-400 bg-gray-800">
                             <tr>
                                 <td className="px-4 py-2">ID</td>
                                 <td className="px-4 py-2">TÊN NHÂN VIÊN</td>
                                 <td className="px-4 py-2">NHÀ CUNG CẤP</td>
                                 <td className="px-4 py-2">GIÁ</td>
-                                <td className="px-4 py-2">NGÀY THÊM</td>
+                                <td className="px-4 py-2 text-end">
+                                    NGÀY THÊM
+                                </td>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-700 dark:bg-gray-800 text-gray-800 dark:text-gray-400">
+                        <tbody className="divide-y divide-gray-700 bg-gray-800 text-gray-400">
                             {importData?.length &&
                                 importData.map((item, index: number) => (
                                     <tr key={index}>
@@ -84,7 +74,7 @@ const Imports = () => {
                                                 {item.totalAmount}
                                             </span>
                                         </td>
-                                        <td className="px-4 py-2">
+                                        <td className="px-4 py-2 text-end">
                                             <span className="text-sm font-semibold">
                                                 {handleDate(item.createdAt)}
                                             </span>

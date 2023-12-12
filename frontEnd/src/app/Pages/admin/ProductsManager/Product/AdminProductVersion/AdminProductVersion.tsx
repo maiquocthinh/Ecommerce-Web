@@ -162,7 +162,7 @@ const AdminProductVersion = () => {
                         <div className="lg:flex md:flex flex-grow-0">
                             <button
                                 onClick={() => setISNewProductVersion(true)}
-                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 dark:text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
+                                className="border flex justify-center items-center gap-1 border-gray-300 hover:border-emerald-400 hover:text-emerald-400 text-gray-300 cursor-pointer h-10 w-20 rounded-md focus:outline-none"
                             >
                                 <CiExport size={22} />
                                 <span className="text-xs">Tạo mới</span>
@@ -172,7 +172,7 @@ const AdminProductVersion = () => {
                 </div>
             </div>
             {productDetail?.productVersions?.length ? (
-                <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
+                <div className="w-full overflow-hidden border border-gray-700 rounded-lg mb-8 rounded-b-lg">
                     {productDetail?.productVersions ? (
                         <TableVersion
                             data={productDetail?.productVersions}

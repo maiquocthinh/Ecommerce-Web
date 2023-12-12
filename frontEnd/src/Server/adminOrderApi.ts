@@ -43,7 +43,7 @@ const handleUpdateOrderDetail = (param: {
     };
     const { orderDetailId, importShipmentId } = param;
     return axios.post(
-        `/order-detail/${orderDetailId}`,
+        `/api/orders/order-detail/${orderDetailId}`,
         { importShipmentId },
         {
             headers,
