@@ -1,9 +1,8 @@
-import { getAllCategories, getAllNeeds } from "@/app/action/catalogs";
 import { categoryType, needType } from "@/common/catalog";
 import { useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { FcTreeStructure } from "react-icons/fc";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 interface SideBarProps {}
 const SlideBar: React.FC<SideBarProps> = () => {

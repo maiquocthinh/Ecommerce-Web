@@ -1,16 +1,12 @@
 import { AdminLogout } from "@/app/action/adminAction/adminEmployees";
+import { setRoleAdmin } from "@/app/Slices/common/adminRole";
 import Notification from "@/Components/PageLoader/Notification";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { BiTable, BiUserPin } from "react-icons/Bi";
-import {
-    FaHouseUser,
-    FaJediOrder,
-    FaSupple,
-    FaUserAstronaut,
-} from "react-icons/fa";
-import { FcCustomerSupport } from "react-icons/fc";
-import { FiSettings, FiUsers, FiLogOut } from "react-icons/Fi";
+import { FaHouseUser, FaSupple, FaUserAstronaut } from "react-icons/fa";
+import { FiLogOut, FiUsers } from "react-icons/Fi";
 import {
     MdOutlineExpandMore,
     MdOutlineProductionQuantityLimits,
@@ -18,15 +14,22 @@ import {
 } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { ad } from "vitest/dist/types-e3c9754d.js";
 type taskType = {
     id: string | number;
     Icon: React.ReactNode;
     label: string;
     link?: string;
     more?: React.ReactNode;
-    listMore?: { id: string | number; link: string; label: string }[];
+    listMore?: {
+        id: string | number;
+        link: string;
+        label: string;
+        viewShown?: string;
+    }[];
+    viewShown?: string;
 };
 const AdminSidebar = () => {
     const dispatch = useDispatch<any>();
@@ -45,34 +48,39 @@ const AdminSidebar = () => {
         {
             id: 2,
             Icon: <FaHouseUser size={22} />,
-            label: "Emlpoyees management",
+            label: "Emlpoyees",
             link: "/admin/employees",
+            viewShown: "VE",
         },
         {
             id: 3,
             Icon: <MdOutlineProductionQuantityLimits size={22} />,
-            label: "products management",
+            label: "Products",
             more: <MdOutlineExpandMore size={22} />,
             listMore: [
                 {
                     id: 11,
-                    link: "/admin/products-manages/products",
-                    label: "products",
+                    link: "/admin/products-manage/products",
+                    label: "Products",
+                    viewShown: "VP",
                 },
                 {
                     id: 12,
-                    link: "/admin/products-manages/discounts",
-                    label: "discounts",
+                    link: "/admin/products-manage/discounts",
+                    label: "Discounts",
+                    viewShown: "VD",
                 },
                 {
                     id: 13,
-                    link: "/admin/products-manages/inventories",
-                    label: "inventories",
+                    link: "/admin/products-manage/inventories",
+                    label: "Inventories",
+                    viewShown: "VI",
                 },
                 {
                     id: 14,
-                    link: "/admin/products-manages/imports",
-                    label: "imports",
+                    link: "/admin/products-manage/imports",
+                    label: "Imports",
+                    viewShown: "VImp",
                 },
             ],
         },
@@ -85,49 +93,57 @@ const AdminSidebar = () => {
                 {
                     id: 5,
                     link: "/admin/catalog/categories",
-                    label: "categories",
+                    label: "Categories",
+                    viewShown: "VCg",
                 },
                 {
                     id: 6,
                     link: "/admin/catalog/brands",
-                    label: "brands",
+                    label: "Brands",
+                    viewShown: "VB",
                 },
                 {
                     id: 7,
                     link: "/admin/catalog/needs",
-                    label: "needs",
+                    label: "Needs",
+                    viewShown: "VN",
                 },
             ],
         },
         {
             id: 8,
             Icon: <FiUsers size={22} />,
-            label: "role management",
+            label: "Role",
             link: "/admin/role",
+            viewShown: "VR",
         },
         {
             id: 9,
             Icon: <BiUserPin size={22} />,
-            label: "orders management",
+            label: "Orders",
             link: "/admin/orders",
+            viewShown: "VO",
         },
         {
             id: 10,
             Icon: <FaSupple size={22} />,
-            label: "supplier management",
+            label: "Supplier",
             link: "/admin/supplier",
+            viewShown: "VS",
         },
         {
             id: 15,
             Icon: <FaUserAstronaut size={22} />,
             link: "/admin/customer",
             label: "customer management",
+            viewShown: "VC",
         },
         {
             id: 16,
             Icon: <MdOutlineReviews size={22} />,
             link: "/admin/reviews",
-            label: "review management",
+            label: "Reviews",
+            viewShown: "VRv",
         },
     ];
     useEffect(() => {
@@ -165,9 +181,20 @@ const AdminSidebar = () => {
             }
         }
     };
+    useEffect(() => {
+        if (!adminRole?.length) {
+            const AdminToken = Cookies.get("AdminToken");
+            if (AdminToken) {
+                const decodedValue = jwtDecode(AdminToken) as {
+                    permissions: {}[];
+                };
+                dispatch(setRoleAdmin(decodedValue.permissions));
+            }
+        }
+    }, [adminRole, dispatch]);
     return (
-        <div className="col-span-2 overflow-hidden left-0-0 top-0 bottom-0 p-4 bg-custom-admin_bg_content h-full text-custom-addmin_color">
-            <div className="fixed w-56 flex flex-col justify-between h-full">
+        <div className="col-span-2 overflow-y-auto left-0-0 top-0 bottom-0 p-4 bg-custom-admin_bg_content h-full text-custom-addmin_color">
+            <div className="fixed w-56 flex flex-col justify-between h-full overflow-y-auto">
                 <div className="flex-1 ">
                     <button
                         onClick={() => router("/admin/dashboard")}
@@ -186,13 +213,14 @@ const AdminSidebar = () => {
                                     <div key={task.id}>
                                         <div
                                             onClick={() => handleTask(task)}
-                                            className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${active ===
+                                            className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${
+                                                active ===
                                                 (task.listMore
                                                     ? task.listMore[0]
                                                     : task.link)
-                                                ? "text-custom-addmin_Active__color"
-                                                : "hover:text-white"
-                                                }`}
+                                                    ? "text-custom-addmin_Active__color"
+                                                    : "hover:text-white"
+                                            }`}
                                         >
                                             {task.Icon}
                                             <span>{task.label}</span>
@@ -211,10 +239,11 @@ const AdminSidebar = () => {
                                                     handleShowMore(task)
                                                 }
                                                 key={task.id}
-                                                className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${active === task.id
-                                                    ? "text-custom-addmin_Active__color"
-                                                    : "hover:text-white"
-                                                    }`}
+                                                className={`flex gap-2 p-2  items-center cursor-pointer  transition-all duration-200 ${
+                                                    active === task.id
+                                                        ? "text-custom-addmin_Active__color"
+                                                        : "hover:text-white"
+                                                }`}
                                             >
                                                 {task.Icon}
                                                 <span>{task.label}</span>
@@ -228,10 +257,11 @@ const AdminSidebar = () => {
                                                 {task.listMore.map((item) => (
                                                     <span
                                                         key={item.id}
-                                                        className={`hover:text-white cursor-pointer ${active === item.link
-                                                            ? "text-custom-addmin_Active__color"
-                                                            : "hover:text-white"
-                                                            }`}
+                                                        className={`hover:text-white cursor-pointer ${
+                                                            active === item.link
+                                                                ? "text-custom-addmin_Active__color"
+                                                                : "hover:text-white"
+                                                        }`}
                                                         onClick={() =>
                                                             router(item.link)
                                                         }

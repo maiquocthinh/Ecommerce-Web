@@ -136,22 +136,22 @@ const privateRouter: RouteConfig[] = [
         Layout: AdminLayout,
     },
     {
-        path: "/admin/products-manages/products",
+        path: "/admin/products-manage/products",
         element: ProductsManager,
         Layout: AdminLayout,
     },
     {
-        path: "/admin/products-manages/discounts",
+        path: "/admin/products-manage/discounts",
         element: Discounts,
         Layout: AdminLayout,
     },
     {
-        path: "/admin/products-manages/inventories",
+        path: "/admin/products-manage/inventories",
         element: Inventories,
         Layout: AdminLayout,
     },
     {
-        path: "/admin/products-manages/imports",
+        path: "/admin/products-manage/imports",
         element: Imports,
         Layout: AdminLayout,
     },

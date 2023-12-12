@@ -119,7 +119,7 @@ export const store = configureStore({
         //review
         listReviewData: adminReviewSlices.AdminGetListReviewSlice.default,
         detailReviewData: adminReviewSlices.AdminGetDetailReviewSlice.default,
-        //das
+        //dashboard
         productSelingData: adminDashboardSlices.getProductSelingSlice.default,
         employeeSelingData: adminDashboardSlices.getEmployeeSelingSlice.default,
         orderRecentData: adminDashboardSlices.getOrderRecentSlice.default,

@@ -43,13 +43,25 @@ const OrderDetail = () => {
                 <div className="px-4 pt-8 border p-4">
                     <div className="flex flex-col gap-2 mb-4 pb-2 border-b border-[#ccc]">
                         <span className="text-xl font-bold text-black">
-                            hông tin khách hàng :
+                            Thông tin khách hàng :
                         </span>
-                        <span>
+                        <span className="capitalize">
                             Tên người nhận: {shipingInfo?.recipientName}
                         </span>
-                        <span>Số điện thoại: {shipingInfo?.phoneNumber}</span>
-                        <span>Địa chỉ: {shipingInfo?.address}</span>
+                        <span className="capitalize">
+                            Số điện thoại: {shipingInfo?.phoneNumber}
+                        </span>
+                        <span className="capitalize">
+                            Địa chỉ: {shipingInfo?.address}
+                        </span>
+                    </div>
+                    <div className="pt-2 pb-4 mb-2 border-b flex items-center gap-2">
+                        <span className="text-xl font-bold text-black">
+                            Trạng thái :
+                        </span>
+                        <span className="font-bold text-xs px-2 py-1 border border-custom-primary text-custom-primary rounded-md">
+                            {orderDetailData?.data?.orderStatus}
+                        </span>
                     </div>
                     <span className="text-xl font-bold text-black">
                         sản phẩm được chọn :
@@ -67,17 +79,17 @@ const OrderDetail = () => {
                                         alt=""
                                     />
                                     <div className="flex w-full flex-col px-4 py-4">
-                                        <span className="float-right text-gray-400">
+                                        <span className="float-right text-gray-400 capitalize">
                                             tên sản phẩm:
                                             {order.productVersionName}
                                         </span>
-                                        <span className="font-semibold">
+                                        <span className="font-semibold capitalize">
                                             giá: {order.price}
                                         </span>
-                                        <p className="text-lg font-bold">
+                                        <p className="text-lg font-bold capitalize">
                                             số lượng :{order.quantity}
                                         </p>
-                                        <p className="text-lg font-bold">
+                                        <p className="text-lg font-bold capitalize">
                                             thành tiền:
                                             {order.totalPrice}
                                         </p>
@@ -95,7 +107,7 @@ const OrderDetail = () => {
                         <div className="flex gap-2 mt-4 items-center text-sm text-custom-disable">
                             <MdOutlineWarningAmber size={18} />
                             <span>
-                                vui lòng không in khi đang sử dụng điện thoại để
+                                Vui lòng không in khi đang sử dụng điện thoại để
                                 đăng nhập
                             </span>
                         </div>
