@@ -1,4 +1,5 @@
-import { FaStar } from "@react-icons/all-files/fa/FaStar";
+import { FaStar } from "react-icons/fa";
+
 interface StarProps {
     numberStar: number;
 }

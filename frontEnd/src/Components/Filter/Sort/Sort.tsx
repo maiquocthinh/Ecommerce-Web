@@ -1,7 +1,10 @@
-import { FaLongArrowAltDown } from "@react-icons/all-files/fa/FaLongArrowAltDown";
-import { FaLongArrowAltUp } from "@react-icons/all-files/fa/FaLongArrowAltUp";
-import { FaPercentage } from "@react-icons/all-files/fa/FaPercentage";
-import { FaEye } from "@react-icons/all-files/fa/FaEye";
+import {
+    FaEye,
+    FaLongArrowAltDown,
+    FaLongArrowAltUp,
+    FaPercentage,
+} from "react-icons/fa";
+
 const Sort = () => {
     const select = [
         {

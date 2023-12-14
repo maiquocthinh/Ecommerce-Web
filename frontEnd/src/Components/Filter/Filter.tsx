@@ -1,8 +1,8 @@
 import { brandType, categoryType, needType } from "@/common/catalog";
-import { FaTruckMoving } from "@react-icons/all-files/fa/FaTruckMoving";
 import { AiOutlineWindows } from "react-icons/ai";
 import MySelecter from "./MySelecter/MySelecter";
 import { filterType } from "@/common/filter";
+import { FaTruckMoving } from "react-icons/fa";
 interface FilterProps {
     branchData: brandType[];
     categoriesData: categoryType[];

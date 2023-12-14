@@ -1,6 +1,5 @@
 import { deleteCart, getAllCart } from "@/app/action/CartActon";
 import { CartType } from "@/common/Cart";
-import { FaCartPlus } from "@react-icons/all-files/fa/FaCartPlus";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -8,6 +7,7 @@ import BackPage from "./backPage";
 import CartItem from "./cartItem";
 import TotalPrice from "./totalPrice";
 import EmptyCart from "./EmptyCart/EmptyCart";
+import { FaCartPlus } from "react-icons/fa";
 interface CartProps {}
 const Cart: React.FC<CartProps> = () => {
     const [cartItems, setCartItems] = useState<CartType[]>();

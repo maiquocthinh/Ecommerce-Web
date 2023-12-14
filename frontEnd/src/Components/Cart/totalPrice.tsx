@@ -1,5 +1,5 @@
 import { CartType } from "@/common/Cart";
-import { FaChevronRight } from "@react-icons/all-files/fa/FaChevronRight";
+import { FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 interface TotalPriceProps {

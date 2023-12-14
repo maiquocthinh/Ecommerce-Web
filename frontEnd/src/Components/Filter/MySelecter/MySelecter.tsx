@@ -1,6 +1,6 @@
 import { filterType } from "@/common/filter";
-import { FaChevronDown } from "@react-icons/all-files/fa/FaChevronDown";
 import { useEffect, useState } from "react";
+import { FaChevronDown } from "react-icons/fa";
 
 type optionType = {
     id: number;

@@ -1,10 +1,9 @@
 import { updateCart } from "@/app/action/CartActon";
 import { CartType } from "@/common/Cart";
-import { FaChevronLeft } from "@react-icons/all-files/fa/FaChevronLeft";
-import { FaChevronRight } from "@react-icons/all-files/fa/FaChevronRight";
 import Tippy from "@tippyjs/react";
 import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 interface CartItemProps {
     data: CartType;

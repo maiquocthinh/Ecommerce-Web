@@ -1,7 +1,7 @@
 import { productVersion } from "@/common/product";
-import { FaCheck } from "@react-icons/all-files/fa/FaCheck";
 import Tippy from "@tippyjs/react";
 import { useState } from "react";
+import { FaCheck } from "react-icons/fa";
 interface BoxProductProps {
     data: productVersion[];
     handleGetProductVersion: (data: productVersion) => void;

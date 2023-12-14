@@ -1,8 +1,8 @@
-import { FaHeart } from "@react-icons/all-files/fa/FaHeart";
-import { BsHeart } from "@react-icons/all-files/bs/BsHeart";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ProductType } from "../../../common/product";
+import { FaHeart } from "react-icons/fa";
+import { BsHeart } from "react-icons/bs";
 interface ProductProps {
     data: ProductType;
     col?: number;

@@ -1,6 +1,4 @@
-import { FaHeart } from "@react-icons/all-files/fa/FaHeart";
-import { BsHeart } from "@react-icons/all-files/bs/BsHeart";
-import { useEffect, useState } from "react";
+import { FaHeart } from "react-icons/fa";
 
 interface DetailProductSlideProps {
     data: {
