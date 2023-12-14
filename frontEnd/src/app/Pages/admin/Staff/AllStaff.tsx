@@ -1,4 +1,4 @@
-import { BiBookBookmark } from "react-icons/Bi";
+import { BiBookBookmark } from "react-icons/bi";
 import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
 import { FcNext, FcPrevious } from "react-icons/fc";
 import { LiaSearchPlusSolid } from "react-icons/lia";

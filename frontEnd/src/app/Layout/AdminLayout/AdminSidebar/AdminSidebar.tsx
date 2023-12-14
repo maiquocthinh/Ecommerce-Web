@@ -4,9 +4,9 @@ import Notification from "@/Components/PageLoader/Notification";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import { BiTable, BiUserPin } from "react-icons/Bi";
+import { BiTable, BiUserPin } from "react-icons/bi";
 import { FaHouseUser, FaSupple, FaUserAstronaut } from "react-icons/fa";
-import { FiLogOut, FiUsers } from "react-icons/Fi";
+import { FiLogOut, FiUsers } from "react-icons/fi";
 import {
     MdOutlineExpandMore,
     MdOutlineProductionQuantityLimits,

@@ -2,7 +2,7 @@ import InputForm from "@/Components/FormData/InputForm/InputForm";
 import ComponentLevelLoader from "@/Components/Loader/componentlevel";
 import { UserType } from "@/common";
 import { ChangeEvent, useEffect, useState } from "react";
-import { BiLockAlt, BiUserPin } from "react-icons/Bi";
+import { BiLockAlt, BiUserPin } from "react-icons/bi";
 import { AiOutlineMail } from "react-icons/ai";
 import { BsPhoneFlip } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";

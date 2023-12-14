@@ -3,7 +3,7 @@ import PageLoader from "@/Components/PageLoader/PageLoader";
 import SideBarProfile from "@/Components/profileListing/SideBarProfile/SideBarProfile";
 import { orderType } from "@/common/Order";
 import { useEffect, useState } from "react";
-import { BiReset, BiSearchAlt } from "react-icons/Bi";
+import { BiReset, BiSearchAlt } from "react-icons/bi";
 import { CiCircleCheck, CiFilter } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";

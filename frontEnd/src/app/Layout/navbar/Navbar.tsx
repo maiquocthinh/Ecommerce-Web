@@ -11,7 +11,7 @@ import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { Fragment, useEffect, useState } from "react";
-import { BiUserCircle } from "react-icons/Bi";
+import { BiUserCircle } from "react-icons/bi";
 import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
     FaBars,
