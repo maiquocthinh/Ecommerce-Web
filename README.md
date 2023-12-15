@@ -10,8 +10,6 @@ Hệ thống quản lý bán hàng điện thoại - laptop có nhiều đối t
 
 Thêm thông tin về nhân viên mới vào hệ thống, bao gồm Họ, Tên, Giới tính, Ngày sinh, Số điện thoại, Địa chỉ thư điện tử, Mật khẩu, Ảnh đại diện, Hoạt động, ngày bắt đầu làm việc.
 
-## 2. Cập Nhật Thông Tin Nhân Viên
-
 Chỉnh sửa hoặc cập nhật thông tin của nhân viên khi có thêm nhân viên mới, có sự thay đổi trong vị trí công việc, thông tin cá nhân, hoặc bất kỳ thông tin nào khác.
 
 ## 3. Xóa Nhân Viên
