@@ -1,5 +1,4 @@
 import Filter from "@/Components/Filter/Filter";
-import Sort from "@/Components/Filter/Sort/Sort";
 import OrderMobile from "@/Components/commonListing/OrderMobile/OrderMobile";
 import HotSale from "@/Components/productListing/HotSale/HotSale";
 import Product from "@/Components/productListing/Product/Product";
@@ -133,7 +132,7 @@ const ProductPage = () => {
             />
             <div className="mt-4">
                 {data?.length ? (
-                    <div className=" grid grid-cols-1 sm:grid-cols-4 md:grid-cols-10 gap-2">
+                    <div className="grid lg:grid-cols-10 md:grid-cols-4 grid-cols-2 gap-2">
                         {data.map((product) => (
                             <Product data={product} key={product.id} col={2} />
                         ))}

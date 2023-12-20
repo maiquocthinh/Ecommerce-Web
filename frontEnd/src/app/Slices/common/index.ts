@@ -5,3 +5,4 @@ export * as showAdminSlide from "./showAdminSlide";
 export * as showCartSlice from "./showCartSlice";
 export * as adminRole from "./adminRole";
 export * as ProductComparison from "./ProductComparison";
+export * as numberSlideSlide from "./numberSlideSlide";

@@ -13,7 +13,7 @@ const HotSale: React.FC<HotSaleProps> = ({ data, handleChangeData }) => {
             <HeaderSale handleChangeData={handleChangeData} />
             {data && (
                 <div className="mt-4">
-                    <Slide data={data} ItemSlide={Product} numberSlide={5} />
+                    <Slide data={data} ItemSlide={Product} />
                 </div>
             )}
         </div>

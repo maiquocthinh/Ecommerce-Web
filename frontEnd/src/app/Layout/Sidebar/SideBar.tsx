@@ -15,7 +15,7 @@ const SlideBar: React.FC<SideBarProps> = () => {
         (state: any) => state.categoriesData.data as categoryType[]
     );
     useEffect(() => {
-        if (categoriesData.length > 0 && needsData.length > 0) {
+        if (categoriesData?.length > 0 && needsData?.length > 0) {
             setListData([...categoriesData, ...needsData]);
         }
     }, [categoriesData, needsData]);
