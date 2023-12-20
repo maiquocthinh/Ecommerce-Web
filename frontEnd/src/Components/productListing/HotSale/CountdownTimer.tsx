@@ -1,23 +1,32 @@
 import { useEffect, useState } from "react";
+import { endOfDay, differenceInSeconds } from "date-fns";
+
 interface CountdownTimerProps {
-    initialTimeInSeconds: any;
-    onComplete: any;
+    onComplete: () => void;
 }
-const CountdownTimer: React.FC<CountdownTimerProps> = ({
-    initialTimeInSeconds,
-    onComplete,
-}) => {
-    const [timeLeft, setTimeLeft] = useState(initialTimeInSeconds);
+
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ onComplete }) => {
+    const [timeLeft, setTimeLeft] = useState(0);
 
     useEffect(() => {
+        const currentDate = new Date();
+        const endOfDayDate = endOfDay(currentDate);
+        const secondsUntilEndOfDay = differenceInSeconds(
+            endOfDayDate,
+            currentDate
+        );
+
+        setTimeLeft(secondsUntilEndOfDay);
+
         const countdownInterval = setInterval(() => {
             if (timeLeft > 0) {
-                setTimeLeft((prevTimeLeft: any) => prevTimeLeft - 1);
+                setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
             } else {
                 clearInterval(countdownInterval);
                 onComplete();
             }
         }, 1000);
+
         return () => {
             clearInterval(countdownInterval);
         };
@@ -29,7 +38,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     const seconds = timeLeft % 60;
 
     return (
-        <div className="flex text-black  gap-1 font-semibold md:ml-2">
+        <div className="flex text-black gap-1 font-semibold md:ml-2">
             <p className="text-white hidden md:text-sm">kết thúc sau: </p>
             <p className="bg-white px-2 rounded-border">{days}</p>
             <span className="">:</span>

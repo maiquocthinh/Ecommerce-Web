@@ -52,7 +52,6 @@ const CartItem: React.FC<CartItemProps> = ({
             setSelectedItems([cart]);
         }
     };
-    console.log(selectedItems);
     return (
         <tr>
             <td className="border border-gray-300 py-2 px-4 text-center">
@@ -66,22 +65,22 @@ const CartItem: React.FC<CartItemProps> = ({
                     className="w-4 h-4 text-red-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600"
                 />
             </td>
-            <td className="border border-gray-300 py-2 px-4">
+            <td className="border border-gray-300 py-2 md:px-4 mx-2">
                 <div className="flex gap-2 items-center">
                     <img
                         src={data.image}
                         alt=""
-                        width={100}
-                        height={100}
-                        className="p-2 border rounded-borderContnet object-cover"
+                        className="p-2 border rounded-borderContnet object-cover md:w-24 md:h-24 w-16 h-16"
                     />
                     <div className="flex flex-col items-start">
-                        <span className="text-xl font-medium">{data.name}</span>
+                        <span className="md:text-xl text-xs font-medium">
+                            {data.name}
+                        </span>
                         <span>{data.color}</span>
                     </div>
                 </div>
             </td>
-            <td className="border border-gray-300 py-2 px-4 text-center">
+            <td className="border border-gray-300 py-2 md:px-4 text-center">
                 <button
                     disabled={Number(quantity) === 1}
                     className="disabled:text-custom-disable"
@@ -92,7 +91,7 @@ const CartItem: React.FC<CartItemProps> = ({
                     <FaChevronLeft />
                 </button>
                 <input
-                    className="px-2 py-1 border border-black w-1/4 text-center"
+                    className="md:px-2 py-1 border border-black w-1/4 text-center"
                     value={quantity}
                     name="quantity"
                     onChange={(e) => handleChangeQuantity(e.target.value)}
@@ -103,12 +102,12 @@ const CartItem: React.FC<CartItemProps> = ({
                     <FaChevronRight />
                 </button>
             </td>
-            <td className="border border-gray-300 py-2 px-4">
-                <span>
+            <td className="border border-gray-300 py-2 md:px-4 px-1 ">
+                <span className="text-[12px] font-medium md:text-lg">
                     {Number(data.prices.price) * Number(data.quantity)}đ
                 </span>
             </td>
-            <td className="border border-gray-300 py-2 px-4">
+            <td className="border border-gray-300 py-2 md:px-4 text-center">
                 <Tippy
                     content="xóa"
                     placement="bottom"
