@@ -11,16 +11,20 @@ import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { Fragment, useEffect, useState } from "react";
-import { BiUserCircle } from "react-icons/bi";
 import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
+import { BiUserCircle } from "react-icons/bi";
 import {
     FaBars,
     FaCar,
+    FaCartArrowDown,
     FaCartPlus,
+    FaHome,
+    FaJediOrder,
     FaPhone,
     FaSearch,
     FaUser,
 } from "react-icons/fa";
+import { MdContactSupport } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -108,12 +112,18 @@ const Navbar: React.FC<NavbarProps> = () => {
             link: "cart",
         },
     ];
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleNavbar = () => {
+        setIsOpen(!isOpen);
+    };
+
     return (
         <div className="w-full h-header bg-primary border-border border-b fixed z-10">
             <div className="md:container md:mx-auto mx-4 sm:mx-8 xl:w-3/4 h-full">
                 <div className="flex justify-between items-center gap-4 h-full">
                     <div className="md:hidden cursor-pointer text-white">
-                        <FaBars className="text-2xl" />
+                        <FaBars className="text-2xl" onClick={toggleNavbar} />
                     </div>
                     <div className="hidden md:block">
                         <Link to="/">
@@ -123,6 +133,42 @@ const Navbar: React.FC<NavbarProps> = () => {
                                 className="w-24 object-cover"
                             />
                         </Link>
+                    </div>
+                    <div
+                        className={`${
+                            isOpen ? "block" : "hidden"
+                        } md:hidden absolute top-full left-0 right-0 bg-white z-20 rounded-t-lg border-b border-borderContnet`}
+                    >
+                        <div className="flex flex-col" onClick={toggleNavbar}>
+                            <Link
+                                to="/"
+                                className="flex items-center gap-2 text-black border-b py-2 text-sm font-semibold hover:bg-slate-100 px-2 rounded-md"
+                            >
+                                <FaHome size={22} />
+                                Trang chủ
+                            </Link>
+                            <Link
+                                to="/profile/order/processing"
+                                className="flex items-center gap-2 text-black border-b py-2 text-sm font-semibold hover:bg-slate-100 px-2 rounded-md"
+                            >
+                                <FaJediOrder size={22} />
+                                Tra cứu đơn hàng
+                            </Link>
+                            <Link
+                                to="/cart"
+                                className="flex items-center gap-2 text-black border-b py-2 text-sm font-semibold hover:bg-slate-100 px-2 rounded-md"
+                            >
+                                <FaCartArrowDown size={22} />
+                                Giỏ hàng
+                            </Link>
+                            <a
+                                href="https://www.facebook.com/dinhnguyenminhhoang"
+                                className="flex items-center gap-2 text-black border-b py-2 text-sm font-semibold hover:bg-slate-100 px-2 rounded-md"
+                            >
+                                <MdContactSupport size={22} />
+                                Liên hệ hỗ trợ
+                            </a>
+                        </div>
                     </div>
                     <div
                         className={`relative w-80 flex items-center justify-start ${
@@ -138,7 +184,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
                             type="text"
-                            placeholder="bạn cần tìm gì ?"
+                            placeholder="Bạn cần tìm gì?"
                             className="rounded-r-search h-10 w-full pr-6 pl-2 text-black"
                         />
                         {showSearchModal && (
