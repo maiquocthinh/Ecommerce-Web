@@ -105,7 +105,7 @@ public class OrderController : BaseController
     }
 
     [PermissionAuthorize(Permissions.UpdateOrder)]
-    [HttpPost("/order-detail/{orderDetailId:int}")]
+    [HttpPost("order-detail/{orderDetailId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseWithoutData))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorResponse))]

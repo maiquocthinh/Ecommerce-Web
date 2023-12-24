@@ -170,7 +170,7 @@ public class OrderService : IOrderService
     }
     public async Task<IQueryable<OrderInfoDto>> GetListOrders(OrderFilterDto filterDto)
     {
-        var query = _orderRepository.GetQueryable();
+        var query = _orderRepository.GetQueryable().OrderByDescending(o => o.CreatedAt).AsQueryable();
 
         if (filterDto.CustomerName != null)
         {

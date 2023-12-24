@@ -37,7 +37,7 @@ public class ReviewService : IReviewService
 
     public async Task<AllReviewOfProductDto> GetReivewsOfProduct(int productId)
     {
-        var reviews = await _reviewRepository.Where(r => r.ProductVersion.ProductId == 4);
+        var reviews = await _reviewRepository.Where(r => r.ProductVersion.ProductId == productId);
 
         return new AllReviewOfProductDto
         {
@@ -57,12 +57,12 @@ public class ReviewService : IReviewService
         // check customer bought product?
         var orderDetail = await _orderDetailRepository.GetByCutomerIdAndProductVersionId(customerId, reviewInputDto.ProductVersionId);
         if (orderDetail is null) throw new ConflictException("Must purchase this product to review.");
-        if (orderDetail.Order.Status != OrderStatus.Shipped) throw new ConflictException("Product must be received to review.");
+        //if (orderDetail.Order.Status != OrderStatus.Shipped) throw new ConflictException("Product must be received to review.");
 
         // check have any review with this product?
         var oldReview = await _reviewRepository.GetByCustomerIdAndProductVersionId(customerId, reviewInputDto.ProductVersionId);
         if (oldReview != null) throw new ConflictException("You have already reivew this product.");
-
+    
         // create new review
         var review = await _reviewRepository.Add(new Review
         {

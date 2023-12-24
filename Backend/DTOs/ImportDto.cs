@@ -69,7 +69,9 @@ public class InventoryDto
     
     public string ImageUrl { get; set; }
     
-    public int Inventory { get; set; } 
+    public int Inventory { get; set; }
+    
+    public int Price { get; set; } 
     
     public string Color { get; set; }
     

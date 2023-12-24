@@ -53,7 +53,8 @@ public class InventoryService : IInventoryService
             ImageUrl = pv.ImageUrl,
             Color = pv.Color,
             Inventory = pv.ImportShipments.Sum(ishp => ishp.Remaining),
-            IsOutOfStock = pv.ImportShipments.Sum(ishp => ishp.Remaining) <= 0
+            IsOutOfStock = pv.ImportShipments.Sum(ishp => ishp.Remaining) <= 0,
+            Price = pv.Price,
         });
     }
 

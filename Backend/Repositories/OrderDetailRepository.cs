@@ -18,6 +18,12 @@ public class OrderDetailRepository : SqlServerRepository<OrderDetail>, IOrderDet
 
     public async Task<OrderDetail> GetByCutomerIdAndProductVersionId(int customerId, int productVersionId)
     {
-        return await _dbSet.Where(od => od.ProductVersionId == productVersionId && od.Order.CustomerId == customerId).FirstOrDefaultAsync();
+        return await _dbSet.Where(od => od.ProductVersionId == productVersionId && od.Order.CustomerId == customerId && od.Order.Status == OrderStatus.Shipped)
+            .FirstOrDefaultAsync();
+    }
+
+    public IQueryable<OrderDetail> GetQueryable()
+    {
+        return _dbSet.AsQueryable();
     }
 }

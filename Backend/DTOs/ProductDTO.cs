@@ -11,7 +11,7 @@ public class ProductFilterInputDto
     public string? SortedBy { get; set; }
 }
 
-public class ProductFilterExtendInputDto: ProductFilterInputDto
+public class ProductFilterExtendInputDto : ProductFilterInputDto
 {
     public ProductFiltersExtend? Filters { get; set; }
 }
@@ -23,11 +23,11 @@ public class ProductCreateInputDto
 
     [Required(ErrorMessage = "Description is required")]
     public string Description { get; set; }
-    
+
     [Required(ErrorMessage = "ImageUrl is required")]
     [Url(ErrorMessage = "Invalid URL")]
     public string ImageUrl { get; set; }
-    
+
     [Required(ErrorMessage = "Warranty is required")]
     public string Warranty { get; set; }
 
@@ -38,7 +38,7 @@ public class ProductCreateInputDto
     public int BrandId { get; set; }
 
     public int? NeedId { get; set; }
-    
+
     //public bool? Viewable { get; set; }
 }
 
@@ -114,7 +114,7 @@ public class ProductShortInfoDto
 
 public class ProductDetailDto
 {
-    public int Id { get; set;}
+    public int Id { get; set; }
     public string ImageUrl { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
@@ -135,7 +135,7 @@ public class ProductFilters
 }
 
 
-public class ProductFiltersExtend: ProductFilters
+public class ProductFiltersExtend : ProductFilters
 {
     public bool? Viewable { get; set; }
     public bool? OutOfStock { get; set; }
@@ -164,6 +164,8 @@ public class ProductVersionDetail
     public int Price { get; set; }
 
     public bool IsOutOfStock { get; set; }
+
+    public int Inventory { get; set; }
 }
 
 public class ProductCatalogs
@@ -227,34 +229,34 @@ public class SpecificationsOfLaptop : ISpecificationsOfLaptop
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? OS { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? CPU { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? GPU { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? RAM { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Storage { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Display { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Webcam { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ConnectivityPorts { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? WirelessConnectivity { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Weight { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Battery { get; set; }
 
@@ -267,34 +269,34 @@ public class SpecificationsOfSmartPhone : ISpecificationsOfSmartPhone
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? OS { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? CPU { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? RAM { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Storage { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Display { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? RearCamera { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? FrontCamera { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ConnectivityPorts { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? WirelessConnectivity { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Weight { get; set; }
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? BatteryCapacity { get; set; }
 

@@ -42,6 +42,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<JwtUtil>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ICheckoutService, CheckoutService>();

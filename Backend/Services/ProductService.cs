@@ -133,6 +133,7 @@ public class ProductService : IProductService
                 OriginPrice = pv.Price,
                 Price = (int)(Discount is null ? pv.Price : Discount.DiscountPercent * pv.Price),
                 IsOutOfStock = pv.Inventory <= 0,
+                Inventory = pv.Inventory,
             }),
             Catalogs = new ProductCatalogs
             {
