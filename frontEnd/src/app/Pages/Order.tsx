@@ -97,7 +97,7 @@ const Order = () => {
                                             setSearchValue(e.target.value)
                                         }
                                         className="h-12 w-full bg-transparent py-4 pl-12 text-sm outline-none"
-                                        placeholder="tìm kiếm bằng tên hàng"
+                                        placeholder="Tìm kiếm bằng tên hàng"
                                     />
                                 </div>
                                 {isSearch ? (
@@ -123,7 +123,7 @@ const Order = () => {
                                     >
                                         <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
                                         <CiFilter className="mr-2 h-3 w-3" />
-                                        tìm kiếm
+                                        Tìm kiếm
                                     </button>
                                 )}
                             </div>

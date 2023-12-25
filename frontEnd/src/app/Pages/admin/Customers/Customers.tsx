@@ -174,7 +174,7 @@ const Customers = () => {
                                 className="block w-full h-12 border px-3 py-1 text-sm focus:outline-none text-gray-300 leading-5 rounded-md  focus:bg-gray-700 border-gray-600 focus:border-gray-500 bg-gray-700"
                                 type="search"
                                 name="search"
-                                placeholder="tìm kím theo tên khách hàng"
+                                placeholder="Tìm kiếm theo tên khách hàng"
                                 value={searchValue}
                                 onChange={(e) => {
                                     setSearchValue(e.target.value);

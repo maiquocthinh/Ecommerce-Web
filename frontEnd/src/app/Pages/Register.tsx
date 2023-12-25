@@ -96,7 +96,7 @@ const Register = () => {
             <div className="flex flex-col justify-center items-center w-full pr-10 pl-10 lg:flex-row">
                 <div className="flex  flex-col items-center justify-start py-4 px-8 bg-white shadow-2xl rounded-xl">
                     <p className="w-full text-3xl font-medium text-center font-serif">
-                        register
+                        Register
                     </p>
                     <img
                         src="https://ucarecdn.com/ad51d334-226a-4b8b-a723-cf48f5d941c1/-/preview/1024x1024/-/quality/smart_retina/-/format/auto/"
@@ -109,7 +109,7 @@ const Register = () => {
                                 type="text"
                                 placeholder="nhập firstName"
                                 name="firstName"
-                                lable="firstName"
+                                lable="FirstName"
                                 onChange={handleOnchange}
                                 value={formData.firstName}
                                 Icon={<BiUserPin size={20} />}
@@ -117,7 +117,7 @@ const Register = () => {
                             <InputForm
                                 type="text"
                                 placeholder="nhập lastName"
-                                lable="lastName"
+                                lable="LastName"
                                 name="lastName"
                                 onChange={handleOnchange}
                                 value={formData.lastName}
@@ -127,7 +127,7 @@ const Register = () => {
                         <InputForm
                             type="text"
                             placeholder="nhập email"
-                            lable="email"
+                            lable="Email"
                             name="email"
                             onChange={handleOnchange}
                             value={formData.email}
@@ -142,7 +142,7 @@ const Register = () => {
                         <InputForm
                             type={showPassword ? "text" : "password"}
                             placeholder="nhập password"
-                            lable="password"
+                            lable="Password"
                             name="password"
                             err={formError?.Password?.length > 0 ? true : false}
                             textErr={
@@ -171,7 +171,7 @@ const Register = () => {
                         <InputForm
                             type="text"
                             placeholder="nhập phoneNumber"
-                            lable="phoneNumber"
+                            lable="PhoneNumber"
                             name="phoneNumber"
                             onChange={handleOnchange}
                             value={formData.phoneNumber}

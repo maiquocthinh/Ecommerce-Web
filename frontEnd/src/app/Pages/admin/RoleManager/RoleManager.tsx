@@ -212,7 +212,7 @@ const RoleManager = () => {
                 searchValue={searchValue}
                 handleSearch={handleSearchRole}
                 handleReset={handleResetRoles}
-                placeholder="tìm kiếm theo tên role"
+                placeholder="Tìm kiếm theo tên role"
             />
             {roleData.length > 0 ? (
                 <div className="w-full overflow-hidden border  border-gray-700 rounded-lg mb-8 rounded-b-lg">
@@ -328,7 +328,7 @@ const RoleManager = () => {
                     <div className="flex flex-col justify-between items-start gap-4">
                         <div className="w-full">
                             <p className="text-gray-300 text-sm text-start mb-1">
-                                tên :
+                                Tên
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"
@@ -343,7 +343,7 @@ const RoleManager = () => {
                         </div>
                         <div className="w-full">
                             <p className="text-gray-300 text-sm text-start">
-                                chọn quyền hạng :
+                                Chọn quyền hạng :
                             </p>
                             {permissions.length ? (
                                 <SelecterLab

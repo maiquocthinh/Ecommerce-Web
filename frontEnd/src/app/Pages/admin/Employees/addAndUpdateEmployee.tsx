@@ -382,7 +382,7 @@ const AddAndUpdateEmployee: React.FC<AddAndUpdateEmployeeProps> = ({
                                     </div>
                                     <div className="flex-1">
                                         <p className="text-gray-300 text-sm text-start capitalize">
-                                            chọn quyền hạng :
+                                            Chọn quyền hạng :
                                         </p>
                                         {adminRole && optionRoles?.length ? (
                                             <SelecterLab

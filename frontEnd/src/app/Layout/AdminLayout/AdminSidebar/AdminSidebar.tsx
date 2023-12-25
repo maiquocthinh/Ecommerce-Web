@@ -136,7 +136,7 @@ const AdminSidebar = () => {
             id: 15,
             Icon: <FaUserAstronaut size={22} />,
             link: "/admin/customer",
-            label: "customer management",
+            label: "Customer",
             viewShown: "VC",
         },
         {

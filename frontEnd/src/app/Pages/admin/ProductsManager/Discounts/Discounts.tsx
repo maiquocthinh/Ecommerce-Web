@@ -107,7 +107,7 @@ const Discounts = () => {
                                 className="flex-1 w-full h-12 border px-3 py-1 text-sm focus:outline-none text-gray-300 leading-5 rounded-md   focus:bg-gray-700 border-gray-600 focus:border-gray-500 bg-gray-700"
                                 type="search"
                                 name="ProductName"
-                                placeholder="Search by product Name"
+                                placeholder="Search by product name"
                                 value={formParam.ProductName}
                                 onChange={handleOnChange}
                             />

@@ -184,7 +184,7 @@ const Brands = () => {
                 searchValue={searchValue}
                 handleSearch={handleSearchBrand}
                 handleReset={handleResetBrands}
-                placeholder="tìm kiếm theo nhãn hàng"
+                placeholder="Tìm kiếm theo nhãn hàng"
             />
             {adminBrandsData?.data?.list.length ? (
                 <div className="w-full overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg mb-8 rounded-b-lg">
@@ -229,7 +229,7 @@ const Brands = () => {
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
                             <p className="text-gray-300 text-sm text-start capitalize mb-1">
-                                tên :
+                                Tên
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"

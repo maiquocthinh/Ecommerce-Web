@@ -25,7 +25,7 @@ const Filter: React.FC<FilterProps> = ({
                             name="search"
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
-                            placeholder={placeholder || "tìm kiếm"}
+                            placeholder={placeholder || "Tìm kiếm"}
                         />
                         <button className="absolute right-0 top-0 mt-5 mr-1"></button>
                     </div>
