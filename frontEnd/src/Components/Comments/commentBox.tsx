@@ -50,7 +50,11 @@ const CommentBox: React.FC<CommentBoxProps> = ({ listReview }) => {
                                                             ),
                                                         },
                                                         (_, index) => {
-                                                            return <FaStar />;
+                                                            return (
+                                                                <FaStar
+                                                                    key={index}
+                                                                />
+                                                            );
                                                         }
                                                     )}
                                                 </div>
