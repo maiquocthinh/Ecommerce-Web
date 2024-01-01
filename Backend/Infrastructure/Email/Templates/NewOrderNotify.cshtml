@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Order Notification</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <table width="100%" style="font-family: Arial, sans-serif;">
+        <tr>
+            <td align="center" bgcolor="#f4f4f4">
+                <table width="600" cellpadding="20" cellspacing="0">
+                    <tr>
+                        <td bgcolor="#ffffff">
+                            <h1>New Order Notification</h1>
+                            <p>Hello <strong>@Model.CustomerFirstname</strong>,</p>
+                            <p>Thank you for placing an order with our store. Your order has been confirmed and is currently being processed. Here are the details of your order:</p>
+                            <p><strong>Order ID:</strong> <u>#@Model.OrderId</u></p>
+                            <p><strong>Order Date:</strong> @Model.OrderDate</p>
+                            <p><strong>Shipping Information:</strong></p>
+                            <p style="margin-left: 20px;">Address: @Model.ShippingInfo.Address</p>
+                            <p style="margin-left: 20px;">Phone: @Model.ShippingInfo.PhoneNumber</p>
+                            <p style="margin-left: 20px;">Recipient Name: @Model.ShippingInfo.RecipientName</p>
+                            <table>
+                                <tr>
+                                    <th align="left">Product</th>
+                                    <th align="left">Quantity</th>
+                                    <th align="left">Price</th>
+                                </tr>
+                                @foreach (var orderDetail in Model.OrderDetails)
+                                {
+                                    <tr>
+                                        <td>@orderDetail.ProductVersionName</td>
+                                        <td>@orderDetail.Quantity</td>
+                                        <td>@orderDetail.Price @Model.Currency</td>
+                                    </tr>
+                                }
+                            </table>
+                            <p>Total: <u>@Model.TotalPrice @Model.Currency</u></p>
+                            <p>We will notify you once your order has been shipped. Please monitor your account for order status updates.</p>
+                            <p>Best regards.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
