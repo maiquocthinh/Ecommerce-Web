@@ -29,15 +29,15 @@ const Reviews: React.FC<ReviewProps> = ({ data, productVersion }) => {
         if (
             comment &&
             comment.trim() !== "" &&
-            rateReviewsScore > 0 &&
-            rateReviewsScore < 5
+            rateReviewsScore >= 0 &&
+            rateReviewsScore <= 5
         ) {
             if (productVersion?.id) {
                 const res = await dispatch(
                     createReview({
                         content: comment.trim(),
                         productVersionId: Number(productVersion?.id),
-                        score: data.reviewsScore,
+                        score: rateReviewsScore,
                     })
                 );
                 try {

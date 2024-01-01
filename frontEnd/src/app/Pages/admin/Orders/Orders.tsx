@@ -670,7 +670,7 @@ const Orders = () => {
                                         <div className="flex justify-between gap-4">
                                             <div className="flex flex-col gap-2 w-full">
                                                 <p className="text-gray-300 text-sm text-start">
-                                                    chọn tên sản phẩm cần dặt :
+                                                    Chọn tên sản phẩm cần dặt :
                                                 </p>
                                                 {importShipmentData.success ? (
                                                     <SelecterLab

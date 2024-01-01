@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import CountdownTimer from "./CountdownTimer"
+import React, { useState, useEffect } from "react";
+import CountdownTimer from "./CountdownTimer";
+import { toast } from "react-toastify";
+import Notification from "@/Components/PageLoader/Notification";
 
 function TimeSale() {
     const handleCountdownComplete = () => {
-        alert('Đã đếm ngược xong!');
+        toast.success("kết thúc giảm giá cuối tuần");
     };
-
     return (
         <div>
-            <CountdownTimer initialTimeInSeconds={1 * 24 * 60 * 60} onComplete={handleCountdownComplete} />
+            <CountdownTimer onComplete={handleCountdownComplete} />
+            <Notification />
         </div>
     );
 }

@@ -274,7 +274,7 @@ const ReviewManager = () => {
                     </div>
                     <div className="">
                         <label className="block text-sm text-gray-400">
-                            reply option
+                            Reply option
                         </label>
                         <SelecterFilter
                             h="48px"

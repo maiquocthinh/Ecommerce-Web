@@ -25,17 +25,17 @@ const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
                         className="mt-3 w-[160px] h-[200px] object-contain"
                     />
                 </div>
-                <div className="my-2 text-custom-colorProduct h-16">
+                <div className="my-2 text-custom-colorProduct lg:h-12 md:h-10 h-8 md:text-start text-center">
                     <span>{data.name}</span>
                 </div>
-                <div className="flex justify-start gap-4 my-4">
+                <div className="flex md:justify-start justify-center gap-4 my-4 md:text-start text-center">
                     {data.discountPercent ? (
                         <span className="font-bold text-custom-primary">
                             {data.price}đ
                         </span>
                     ) : null}
                     <span
-                        className="font-bold"
+                        className="font-bold  md:text-start text-cente"
                         style={{
                             color: data.discountPercent ? "#707070" : "#d70018",
                             textDecorationLine: data.discountPercent

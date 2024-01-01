@@ -35,7 +35,7 @@ const InputForm: React.FC<InputFormProp> = ({
                 type={type || "text"}
                 value={value}
                 onChange={onChange}
-                className={`border pl-4 placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 mr-0 mt-0 ml-0 text-base bg-white border-gray-300 rounded-md ${
+                className={`border pl-4 placeholder-gray-400 focus:outline-none capitalize focus:border-black w-full pt-4 pr-4 pb-4 mr-0 mt-0 ml-0 text-base bg-white border-gray-300 rounded-md ${
                     err ? "border-red-600" : null
                 } ${w ? `w-[${w}]` : ""}`}
             />

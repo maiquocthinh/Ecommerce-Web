@@ -194,7 +194,7 @@ const Categories = () => {
                 searchValue={searchValue}
                 handleSearch={handleSearchCategory}
                 handleReset={handleResetCategory}
-                placeholder="tìm kiếm theo danh mục"
+                placeholder="Tìm kiếm theo danh mục"
             />
             {adminCategoriesData?.data?.list.length ? (
                 <div className="w-full overflow-hidden border border-gray-700 rounded-lg mb-8 rounded-b-lg">
@@ -241,7 +241,7 @@ const Categories = () => {
                     <div className="flex justify-between gap-4">
                         <div className="w-1/2">
                             <p className="text-gray-300 text-sm text-start capitalize mb-1">
-                                tên :
+                                Tên
                             </p>
                             <input
                                 className="w-full h-[48px] px-2 rounded-[8px]"

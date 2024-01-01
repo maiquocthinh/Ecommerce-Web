@@ -1,4 +1,5 @@
 import { allReviewType } from "@/common/reviewType";
+import { FaStar } from "react-icons/fa";
 import { MdOutlineStarRate } from "react-icons/md";
 
 interface CommentBoxProps {
@@ -35,8 +36,28 @@ const CommentBox: React.FC<CommentBoxProps> = ({ listReview }) => {
                                 <div className="block">
                                     <div className="flex justify-center items-center space-x-2">
                                         <div className="bg-gray-100 w-auto rounded-xl px-2 pb-2">
-                                            <div className="font-medium">
-                                                <span>{review.fullname}</span>
+                                            <div className="flex items-center gap-1">
+                                                <div className="font-medium">
+                                                    <span>
+                                                        {review.fullname}
+                                                    </span>
+                                                </div>
+                                                <div className="text-sm text-yellow-500 flex items-center gap-1">
+                                                    {Array.from(
+                                                        {
+                                                            length: Number(
+                                                                review.score
+                                                            ),
+                                                        },
+                                                        (_, index) => {
+                                                            return (
+                                                                <FaStar
+                                                                    key={index}
+                                                                />
+                                                            );
+                                                        }
+                                                    )}
+                                                </div>
                                             </div>
                                             <div className="text-sm">
                                                 {review.content}

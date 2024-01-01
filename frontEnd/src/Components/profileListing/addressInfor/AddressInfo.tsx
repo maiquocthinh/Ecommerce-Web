@@ -1,7 +1,7 @@
 import { deleteAddress, updateDefaultAddress } from "@/app/action/address";
 import { addressType } from "@/common/Address";
 import { Fragment } from "react";
-import { BiBadgeCheck } from "react-icons/Bi";
+import { BiBadgeCheck } from "react-icons/bi";
 import { AiOutlineEdit, AiOutlineMore } from "react-icons/ai";
 import { BsPhoneFlip, BsPinMapFill } from "react-icons/bs";
 import { FaJediOrder } from "react-icons/fa";

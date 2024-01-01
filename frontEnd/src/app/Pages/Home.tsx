@@ -10,12 +10,12 @@ import { listProduct, posterData } from "@/utils/Data";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageLevelLoading } from "../Slices/common/PageLeveLoadingSlice";
+import { getAllBrands } from "../action/catalogs";
 import {
     getAllProduct,
     getLaptopProduct,
     getMobileProduct,
 } from "../action/product";
-import { getAllBrands } from "../action/catalogs";
 
 interface HomeProps {}
 
@@ -106,6 +106,7 @@ const Home: React.FC<HomeProps> = () => {
                             data={posterData}
                             ItemSlide={Poster}
                             slideDescription
+                            numberSlide={1}
                         />
                     )}
                 </div>
@@ -128,13 +129,13 @@ const Home: React.FC<HomeProps> = () => {
                     listProduct={listProduct}
                     heading="sản phẩm mới nhất"
                 />
-                <div className="grid grid-cols-10 gap-2">
+                <div className="grid lg:grid-cols-10 md:grid-cols-4 grid-cols-2 gap-2">
                     {productdata?.list?.length &&
                         productdata?.list.map(
                             (
                                 product: ProductType.ProductType,
                                 index: number
-                            ) => <Product data={product} col={2} key={index} />
+                            ) => <Product data={product} key={index} />
                         )}
                 </div>
             </div>
@@ -145,11 +146,7 @@ const Home: React.FC<HomeProps> = () => {
                     heading="LAPTOP THOẠI NỔI BẬT NHẤT"
                 />
                 <div className="">
-                    <Slide
-                        ItemSlide={Product}
-                        data={laptopProduct?.list}
-                        numberSlide={5}
-                    />
+                    <Slide ItemSlide={Product} data={laptopProduct?.list} />
                 </div>
             </div>
             <div>
@@ -158,11 +155,7 @@ const Home: React.FC<HomeProps> = () => {
                     listProduct={listProduct}
                     heading="ĐIỆN THOẠI NỔI BẬT NHẤT"
                 />
-                <Slide
-                    ItemSlide={Product}
-                    data={mobileProduct?.list}
-                    numberSlide={5}
-                />
+                <Slide ItemSlide={Product} data={mobileProduct?.list} />
             </div>
         </div>
     );

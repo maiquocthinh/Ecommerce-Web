@@ -133,6 +133,7 @@ export const store = configureStore({
             adminDashboardSlices.getChartRevenueAndProfitSlice.default,
         chartOrderData: adminDashboardSlices.getChartorderSlice.default,
         parametersData: adminDashboardSlices.AdminGetParametersSlice.default,
+        numberSlide: commonSlice.numberSlideSlide.default,
     },
     middleware: [thunk],
 });

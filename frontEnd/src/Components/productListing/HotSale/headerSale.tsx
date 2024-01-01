@@ -47,7 +47,7 @@ const HeaderSale: React.FC<HeaderSaleProps> = ({ handleChangeData }) => {
                 <img
                     src="https://cdn2.cellphones.com.vn/x/media/wysiwyg/Gif_hotsale_cu_i_tu_n_1.gif"
                     alt=""
-                    className="object-cover max-w-md"
+                    className="object-cover md:max-w-sm lg:max-w-md hidden md:block"
                 />
             </div>
             <div>

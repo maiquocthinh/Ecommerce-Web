@@ -55,10 +55,10 @@ const Cart: React.FC<CartProps> = () => {
                         {cartItems && cartItems.length ? (
                             <div className="flex-1 p-4">
                                 <div className="flex justify-between items-center  ">
-                                    <span className="text-3xl font-bold font-serif text-black ">
+                                    <span className="md:text-3xl text-xl font-bold font-serif text-black ">
                                         giỏ hàng của bạn:
                                     </span>
-                                    <div className="flex items-center gap-2 text-xl text-custom-primary">
+                                    <div className="flex items-center gap-2 md:text-xl text-lg text-custom-primary">
                                         <FaCartPlus />
                                         <span>Sản phẩm</span>
                                     </div>

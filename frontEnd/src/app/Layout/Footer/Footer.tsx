@@ -15,7 +15,7 @@ const Footer = () => {
                 {
                     title: "Gọi bảo hành 1800.2064 (8h00 - 21h00)",
                 },
-            ]
+            ],
         },
         {
             heading: "Thông tin và chính sách",
@@ -38,7 +38,7 @@ const Footer = () => {
                 {
                     title: "Xem ưu đãi Smember",
                 },
-            ]
+            ],
         },
         {
             heading: "Dịch vụ và thông tin khác",
@@ -61,9 +61,9 @@ const Footer = () => {
                 {
                     title: "Tuyển dụng",
                 },
-            ]
-        }
-    ]
+            ],
+        },
+    ];
     const contactData = [
         {
             src: "https://cdn2.cellphones.com.vn/44x,webp/media/logo/social/cellphones-youtube.png",
@@ -80,19 +80,24 @@ const Footer = () => {
         {
             src: "https://cdn2.cellphones.com.vn/44x,webp/media/logo/social/cellphones-zalo.png",
         },
-    ]
+    ];
     return (
         <div className="shadow-custom mt-10 pb-10 hidden md:block">
             <div className="md:container md:mx-auto mx-4 sm:mx-8 xl:w-3/4 flex justify-between items-start py-2 gap-4  ">
-                {dataItem?.length > 0 && dataItem.map((item, index) => (
-                    <FooterItem data={item.data} heading={item.heading} key={index} />
-                ))}
+                {dataItem?.length > 0 &&
+                    dataItem.map((item, index) => (
+                        <FooterItem
+                            data={item.data}
+                            heading={item.heading}
+                            key={index}
+                        />
+                    ))}
                 <div>
                     <Contact data={contactData} />
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default Footer;

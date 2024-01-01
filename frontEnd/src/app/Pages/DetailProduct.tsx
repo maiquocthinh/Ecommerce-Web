@@ -169,10 +169,14 @@ const DetailProduct = () => {
                         </button>
                     </div>
                 </header>
-                <div className="flex">
-                    <div className="w-[60%] ">
+                <div className="flex md:flex-row flex-col">
+                    <div className="md:w-[60%] sm:w-full">
                         <div className=" max-h-[400px]">
-                            <Slide data={listImg} ItemSlide={ProductInfo} />
+                            <Slide
+                                data={listImg}
+                                ItemSlide={ProductInfo}
+                                numberSlide={1}
+                            />
                         </div>
                         <div className="mt-4 p-2 border-[1px] rounded-borderContnet">
                             <h1 className="text-center font-bold text-lg my-1">
@@ -202,7 +206,10 @@ const DetailProduct = () => {
                         </div>
                     </div>
                     {productDetail?.productVersions && (
-                        <div className="ml-4 w-[40%]">
+                        <div className="ml-4 md:w-[40%] w-full mt-4 mb-2">
+                            <h1 className="md:hidden block font-bold text-lg">
+                                Các loại sản phẩm
+                            </h1>
                             <BoxProduct
                                 data={productDetail?.productVersions}
                                 handleGetProductVersion={
@@ -260,7 +267,6 @@ const DetailProduct = () => {
                         <Slide
                             data={productSlimiler.list}
                             ItemSlide={Product}
-                            numberSlide={5}
                         />
                     </div>
                 )}
