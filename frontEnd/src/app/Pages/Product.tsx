@@ -95,7 +95,7 @@ const ProductPage = () => {
     };
     return (
         <div className="mt-4">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap">
                 {branchData?.length > 0 &&
                     branchData.map((item: brandType, index: number) => (
                         <span

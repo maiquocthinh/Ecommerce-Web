@@ -25,7 +25,7 @@ const Product: React.FC<ProductProps> = ({ data, col = 2 }) => {
                         className="mt-3 w-[160px] h-[200px] object-contain"
                     />
                 </div>
-                <div className="my-2 text-custom-colorProduct lg:h-12 md:h-10 h-8 md:text-start text-center">
+                <div className="my-2 text-custom-colorProduct lg:h-12 md:h-10 h-8 md:text-start text-center line-clamp-3">
                     <span>{data.name}</span>
                 </div>
                 <div className="flex md:justify-start justify-center gap-4 my-4 md:text-start text-center">

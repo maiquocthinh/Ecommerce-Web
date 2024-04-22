@@ -190,7 +190,7 @@ const CheckoutWithProduct: React.FC<CheckoutWithProductProps> = ({
                                 className="w-60 object-contain"
                             />
                         </div>
-                        <div className="flex flex-col gap-2 mt-4">
+                        <div className="flex flex-col gap-2 mt-4 ml-4">
                             <span className="font-medium text-lg text-slate-600">
                                 Tên : {productVersion?.name}
                             </span>

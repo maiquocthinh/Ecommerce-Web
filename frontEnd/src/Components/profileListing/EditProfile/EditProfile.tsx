@@ -125,6 +125,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                         </div>
                         <div className="flex items-center gap-8">
                             <InputForm
+                                wrapperW="300px"
                                 w="300px"
                                 lable="birthDay"
                                 placeholder="nhập dayOfBirth"

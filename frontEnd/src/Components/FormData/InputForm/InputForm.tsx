@@ -11,6 +11,7 @@ interface InputFormProp {
     err?: boolean;
     textErr?: string;
     w?: string;
+    wrapperW?: string;
 }
 const InputForm: React.FC<InputFormProp> = ({
     lable,
@@ -23,9 +24,10 @@ const InputForm: React.FC<InputFormProp> = ({
     err,
     textErr,
     w,
+    wrapperW,
 }) => {
     return (
-        <div className="relative">
+        <div className={`relative ${wrapperW ? `w-[300px]` : ""}`}>
             <p className="bg-white absolute pt-0 pr-2 pb-0 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600">
                 {lable}
             </p>

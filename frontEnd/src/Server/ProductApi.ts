@@ -36,7 +36,7 @@ const handleGetLaptopProduct = (param: paramsProductType) => {
     if (!pageIndex) pageIndex = "1";
     if (!pageSize) pageSize = "10";
     return axios.get(
-        `/api/products?pageSize=${pageSize}?pageIndex=${pageIndex}&Filters.CategoryId=3&SortedBy=new`
+        `/api/products?pageSize=${pageSize}&pageIndex=${pageIndex}&Filters.CategoryId=2&SortedBy=new`
     );
 };
 const handleGetMobileProduct = (param: paramsProductType) => {
@@ -44,14 +44,14 @@ const handleGetMobileProduct = (param: paramsProductType) => {
     if (!pageIndex) pageIndex = "1";
     if (!pageSize) pageSize = "10";
     return axios.get(
-        `/api/products?pageSize=${pageSize}?pageIndex=${pageIndex}&Filters.CategoryId=2&SortedBy=new`
+        `/api/products?pageSize=${pageSize}&pageIndex=${pageIndex}&Filters.CategoryId=1&SortedBy=new`
     );
 };
 const handleSearchProduct = (Keyword: string) => {
     const pageIndex = "1";
     const pageSize = "10";
     return axios.get(
-        `/api/products?pageSize=${pageSize}?pageIndex=${pageIndex}&Keyword=${Keyword}`
+        `/api/products?pageSize=${pageSize}&pageIndex=${pageIndex}&Keyword=${Keyword}`
     );
 };
 const handleGetProductById = (id: string | number) => {

@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: "http://shop-ttlhg-2.somee.com",
+    // baseURL: "http://shop-ttlhg-2.somee.com",
+    baseURL: "http://localhost:5000",
     validateStatus: function (status) {
         return status >= 200 && status < 500;
     },
