@@ -1,16 +1,16 @@
 import InputForm from "@/Components/FormData/InputForm/InputForm";
 import ComponentLevelLoader from "@/Components/Loader/componentlevel";
 import { UserType } from "@/common";
-import { ChangeEvent, useEffect, useState } from "react";
-import { BiLockAlt, BiUserPin } from "react-icons/bi";
+import { ChangeEvent, useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
+import { BiUserPin } from "react-icons/bi";
 import { BsPhoneFlip } from "react-icons/bs";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setComponentLevelLoading } from "../Slices/common/componentLeveLoadingSlice";
 import { registerAction } from "../action/UserAction";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 const initialFormData = {
     firstName: "",
     lastName: "",

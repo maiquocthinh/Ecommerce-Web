@@ -40,10 +40,11 @@ const RecentOrders = () => {
         }
     };
     const handleDate = (time: string) => {
+        console.log(time);
         const date = new Date(time);
-        return `${
-            date.getDay() + 1
-        } / ${date.getMonth()} / ${date.getFullYear()}`;
+        return `${date.getDate()} / ${
+            date.getMonth() + 1
+        } / ${date.getFullYear()}`;
     };
     return (
         <div className="rounded-md border-white border-2 p-3">

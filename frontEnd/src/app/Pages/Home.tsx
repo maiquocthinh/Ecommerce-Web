@@ -87,7 +87,7 @@ const Home: React.FC<HomeProps> = () => {
         dispatch(getAllBrands());
         dispatch(getLaptopProduct({ pageSize: "10", pageIndex: "1" }));
         dispatch(getMobileProduct({ pageSize: "10", pageIndex: "1" }));
-    }, [dispatch]);
+    }, []);
     const handleChangeDatasale = (link: string) => {
         setChangedDataSale(link);
     };

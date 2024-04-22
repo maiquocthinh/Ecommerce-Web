@@ -8,7 +8,9 @@ interface CommentBoxProps {
 const CommentBox: React.FC<CommentBoxProps> = ({ listReview }) => {
     const handleDate = (time: string) => {
         const date = new Date(time);
-        return `${date.getDay()} / ${date.getMonth()} / ${date.getFullYear()}`;
+        return `${date.getDate()} / ${
+            date.getMonth() + 1
+        } / ${date.getFullYear()}`;
     };
     return (
         <>
